@@ -8,9 +8,10 @@ import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
 import FooterOne from '@/layouts/footers/footer-one';
 
 export const metadata: Metadata = {
-  title: "Job List v1",
+  title: 'Jobs - Hireskills',
+  description:
+    'Explore a wide range of job opportunities on HireSkills. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
 };
-
 
 const JobListOnePage = () => {
   return (

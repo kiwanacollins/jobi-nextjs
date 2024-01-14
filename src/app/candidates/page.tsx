@@ -8,9 +8,10 @@ import CandidateV1Area from '../components/candidate/candidate-v1-area';
 import FooterOne from '@/layouts/footers/footer-one';
 
 export const metadata: Metadata = {
-  title: "Candidate v2",
+  title: 'Candidates',
+  description:
+    'Connect with skilled professionals and discover the perfect candidates for your team. HireSkills is your go-to platform for finding exceptional talent in various industries.'
 };
-
 
 const CandidateV2Page = () => {
   return (
@@ -21,7 +22,10 @@ const CandidateV2Page = () => {
         {/* header end */}
 
         {/* search breadcrumb start */}
-        <JobBreadcrumb title='Candidates' subtitle='Find you desire talents & make your work done' />
+        <JobBreadcrumb
+          title="Candidates"
+          subtitle="Find you desire talents & make your work done"
+        />
         {/* search breadcrumb end */}
 
         {/* candidate area start */}

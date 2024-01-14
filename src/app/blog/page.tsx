@@ -1,14 +1,16 @@
-import React from "react";
-import { Metadata } from "next";
-import Header from "@/layouts/headers/header";
-import Wrapper from "@/layouts/wrapper";
-import JobPortalIntro from "../components/job-portal-intro/job-portal-intro";
-import CompanyBreadcrumb from "../components/common/common-breadcrumb";
-import FooterOne from "@/layouts/footers/footer-one";
-import BlogFullWidthArea from "../components/blogs/blog-frull-width";
+import React from 'react';
+import { Metadata } from 'next';
+import Header from '@/layouts/headers/header';
+import Wrapper from '@/layouts/wrapper';
+import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
+import CompanyBreadcrumb from '../components/common/common-breadcrumb';
+import FooterOne from '@/layouts/footers/footer-one';
+import BlogFullWidthArea from '../components/blogs/blog-frull-width';
 
 export const metadata: Metadata = {
-  title: "Blog v3",
+  title: 'Blog - Hireskills',
+  description:
+    'Stay informed and inspired with the latest insights, trends, and career advice on the HireSkills blog. Discover valuable resources to enhance your hiring process and career development.'
 };
 
 const BlogV3Page = () => {
