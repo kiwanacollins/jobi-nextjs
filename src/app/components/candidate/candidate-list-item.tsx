@@ -1,16 +1,24 @@
-import React from "react";
-import { ICandidate } from "@/data/candidate-data";
-import Image from "next/image";
-import Link from "next/link";
+import React from 'react';
+import { ICandidate } from '@/data/candidate-data';
+import Image from 'next/image';
+import Link from 'next/link';
 
-const CandidateListItem = ({ item,style_2=false }: { item: ICandidate;style_2?:boolean }) => {
+const CandidateListItem = ({
+  item,
+  style_2 = false
+}: {
+  item: ICandidate;
+  style_2?: boolean;
+}) => {
   return (
     <div
-      className={`candidate-profile-card ${item.favorite ? "favourite" : ""} ${style_2?'border-0':''} list-layout mb-25`}
+      className={`candidate-profile-card ${item.favorite ? 'favourite' : ''} ${
+        style_2 ? 'border-0' : ''
+      } list-layout mb-25`}
     >
       <div className="d-flex">
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
-          <Link href="/candidate-profile-v2" className="rounded-circle">
+          <Link href="/candidate-profile-v1" className="rounded-circle">
             <Image
               src={item.img}
               alt="image"
@@ -23,7 +31,7 @@ const CandidateListItem = ({ item,style_2=false }: { item: ICandidate;style_2?:b
             <div className="col-xl-3">
               <div className="position-relative">
                 <h4 className="candidate-name mb-0">
-                  <Link href="/candidate-profile-v2" className="tran3s">
+                  <Link href="/candidate-profile-v1" className="tran3s">
                     {item.name}
                   </Link>
                 </h4>
@@ -56,12 +64,14 @@ const CandidateListItem = ({ item,style_2=false }: { item: ICandidate;style_2?:b
             </div>
             <div className="col-xl-3 col-md-4">
               <div className="d-flex justify-content-lg-end">
-                <Link href="/candidate-profile-v2"
+                <Link
+                  href="/candidate-profile-v1"
                   className="save-btn text-center rounded-circle tran3s mt-10"
                 >
                   <i className="bi bi-heart"></i>
                 </Link>
-                <Link href="/candidate-profile-v2"
+                <Link
+                  href="/candidate-profile-v1"
                   className="profile-btn tran3s ms-md-2 mt-10 sm-mt-20"
                 >
                   View Profile
