@@ -7,7 +7,7 @@ import MapArea from '../components/contact/map-area';
 import ContactArea from '../components/contact/contact-area';
 
 export const metadata: Metadata = {
-  title: 'Contact - Hireskills',
+  title: 'Contact | Hireskills',
   description:
     "Have questions or need assistance? Reach out to the HireSkills team. We're here to help you with any inquiries regarding job postings, candidate searches, or general information."
 };
