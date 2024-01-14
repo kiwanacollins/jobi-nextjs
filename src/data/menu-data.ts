@@ -17,7 +17,7 @@ const menu_data: IMenuData[] = [
   },
   {
     id: 2,
-    link: '/job-list-v1',
+    link: '/jobs',
     title: 'Job'
 
     // sub_menus: [
@@ -34,7 +34,7 @@ const menu_data: IMenuData[] = [
   },
   {
     id: 3,
-    link: '/candidates-v2',
+    link: '/candidates',
     title: 'Explore'
     // mega_menus: [
     //   {
@@ -74,7 +74,7 @@ const menu_data: IMenuData[] = [
   },
   {
     id: 4,
-    link: '/blog-v3',
+    link: '/blog',
     title: 'Blog'
     // sub_menus: [
     //   { link: '/blog-v1', title: 'Blog Standard' },
