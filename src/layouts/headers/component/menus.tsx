@@ -1,13 +1,18 @@
-import React from "react";
-import menu_data from "@/data/menu-data";
-import Link from "next/link";
+import React from 'react';
+import menu_data from '@/data/menu-data';
+import Link from 'next/link';
 
 const Menus = () => {
   return (
     <>
       {menu_data.map((menu) =>
         menu.sub_menus ? (
-          <li key={menu.id} className={`nav-item dropdown ${menu.title === 'Dashboard' ? 'dashboard-menu' : ''}`}>
+          <li
+            key={menu.id}
+            className={`nav-item dropdown ${
+              menu.title === 'Dashboard' ? 'dashboard-menu' : ''
+            }`}
+          >
             <a
               className="nav-link dropdown-toggle"
               href="#"
@@ -49,10 +54,7 @@ const Menus = () => {
                       <ul className="style-none mega-dropdown-list">
                         {m.sub_menus.map((ms, i) => (
                           <li key={i}>
-                            <Link
-                              href={ms.link}
-                              className="dropdown-item"
-                            >
+                            <Link href={ms.link} className="dropdown-item">
                               <span>{ms.title}</span>
                             </Link>
                           </li>
@@ -66,7 +68,7 @@ const Menus = () => {
           </li>
         ) : (
           <li key={menu.id} className="nav-item">
-            <Link className="nav-link" href='/contact' role="button">
+            <Link className="nav-link" href={menu.link} role="button">
               {menu.title}
             </Link>
           </li>

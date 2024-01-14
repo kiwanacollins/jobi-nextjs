@@ -9,13 +9,12 @@ import JobDetailsV1Area from '../components/job-details/job-details-v1-area';
 import job_data from '@/data/job-data';
 import RelatedJobs from '../components/jobs/related-jobs';
 
-
 export const metadata: Metadata = {
-  title: "Job Details v1",
+  title: 'Job Details v1'
 };
 
 const JobDetailsV1Page = () => {
-  const job = job_data[0]
+  const job = job_data[0];
   return (
     <Wrapper>
       <div className="main-page-wrapper">
@@ -24,19 +23,19 @@ const JobDetailsV1Page = () => {
         {/* header end */}
 
         {/* job details breadcrumb start */}
-        <JobDetailsBreadcrumb/>
+        <JobDetailsBreadcrumb />
         {/* job details breadcrumb end */}
 
         {/* job details area start */}
-        <JobDetailsV1Area job={job}/>
+        <JobDetailsV1Area job={job} />
         {/* job details area end */}
 
         {/* related job start */}
-        <RelatedJobs category={job.category}/>
+        <RelatedJobs category={job.category} />
         {/* related job end */}
 
         {/* job portal intro start */}
-        <JobPortalIntro  />
+        <JobPortalIntro />
         {/* job portal intro end */}
 
         {/* footer start */}

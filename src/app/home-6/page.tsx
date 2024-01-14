@@ -1,24 +1,23 @@
-import React from "react";
-import { Metadata } from "next";
-import Wrapper from "@/layouts/wrapper";
-import HeaderSix from "@/layouts/headers/header-6";
-import HeroBannerSix from "../components/hero-banners/hero-banner-six";
-import PartnersSlider from "../components/partners/partners-slider";
-import CategorySectionSix from "../components/category/category-section-6";
-import { TrendingJobs } from "../components/category/category-section-3";
-import { JobListItems } from "../components/jobs/list/job-list-one";
-import FancyBannerThree from "../components/fancy-banner/fancy-banner-3";
-import FeatureNine from "../components/features/feature-nine";
-import FeedbackFive from "../components/feedBacks/feedback-five";
-import BlogFour from "../components/blogs/blog-four";
-import FeatureTwo from "../components/features/feature-two";
-import FancyBannerSix from "../components/fancy-banner/fancy-banner-6";
-import FooterOne from "@/layouts/footers/footer-one";
-import Link from "next/link";
-
+import React from 'react';
+import { Metadata } from 'next';
+import Wrapper from '@/layouts/wrapper';
+import HeaderSix from '@/layouts/headers/header-6';
+import HeroBannerSix from '../components/hero-banners/hero-banner-six';
+import PartnersSlider from '../components/partners/partners-slider';
+import CategorySectionSix from '../components/category/category-section-6';
+import { TrendingJobs } from '../components/category/category-section-3';
+import { JobListItems } from '../components/jobs/list/job-list-one';
+import FancyBannerThree from '../components/fancy-banner/fancy-banner-3';
+import FeatureNine from '../components/features/feature-nine';
+import FeedbackFive from '../components/feedBacks/feedback-five';
+import BlogFour from '../components/blogs/blog-four';
+import FeatureTwo from '../components/features/feature-two';
+import FancyBannerSix from '../components/fancy-banner/fancy-banner-6';
+import FooterOne from '@/layouts/footers/footer-one';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: "Home six",
+  title: 'Home six'
 };
 
 const HomeSix = () => {
@@ -44,11 +43,17 @@ const HomeSix = () => {
         {/* category section end */}
 
         {/* trending jobs start */}
+
         <section className="category-section-three pt-140 lg-pt-100">
           <div className="container">
             <div className="position-relative">
               <div className="title-one mb-60 lg-mb-40">
-                <h2 className="main-font color-blue wow fadeInUp" data-wow-delay="0.3s">Trending Job</h2>
+                <h2
+                  className="main-font color-blue wow fadeInUp"
+                  data-wow-delay="0.3s"
+                >
+                  Trending Job
+                </h2>
               </div>
               <TrendingJobs />
             </div>
@@ -62,12 +67,21 @@ const HomeSix = () => {
             <div className="row justify-content-between align-items-center">
               <div className="col-lg-6">
                 <div className="title-one">
-                  <h2 className="main-font color-blue wow fadeInUp" data-wow-delay="0.3s">New job listing</h2>
+                  <h2
+                    className="main-font color-blue wow fadeInUp"
+                    data-wow-delay="0.3s"
+                  >
+                    New job listing
+                  </h2>
                 </div>
               </div>
               <div className="col-lg-5">
                 <div className="d-flex justify-content-lg-end">
-                  <Link href="/job-list-v1" className="btn-six d-none d-lg-inline-block">Explore all jobs
+                  <Link
+                    href="/job-list-v1"
+                    className="btn-six d-none d-lg-inline-block"
+                  >
+                    Explore all jobs
                   </Link>
                 </div>
               </div>
@@ -76,10 +90,16 @@ const HomeSix = () => {
               <JobListItems style_2={true} />
             </div>
             <div className="text-center mt-40 d-lg-none">
-              <Link href="/job-list-v1" className="btn-six">Explore all jobs</Link>
+              <Link href="/job-list-v1" className="btn-six">
+                Explore all jobs
+              </Link>
             </div>
             <div className="text-center mt-50 wow fadeInUp">
-              <div className="btn-eight fw-500">Do you want to post a job for your company? <span>We can help.</span> <Link href="/register">Click here</Link></div>
+              <div className="btn-eight fw-500">
+                Do you want to post a job for your company?{' '}
+                <span>We can help.</span>{' '}
+                <Link href="/register">Click here</Link>
+              </div>
             </div>
           </div>
         </section>
