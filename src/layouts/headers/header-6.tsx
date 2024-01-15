@@ -2,7 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import logo from '@/assets/images/logo/hireskills-logo.jpg';
+import logo from '@/assets/images/logo/logo_01.png';
 import dark_logo from '@/assets/images/logo/logo_04.png';
 import Menus from './component/menus';
 import useSticky from '@/hooks/use-sticky';
@@ -25,9 +25,6 @@ const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
                   <Image
                     src={dark_style ? dark_logo : logo}
                     alt="logo"
-                    width={100}
-                    height={50}
-                    style={{ objectFit: 'contain' }}
                     priority
                   />
                 </Link>
