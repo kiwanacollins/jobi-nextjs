@@ -1,8 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import RegisterForm from "../forms/register-form";
-import google from "@/assets/images/icon/google.png";
-import facebook from "@/assets/images/icon/facebook.png";
+import React from 'react';
+import Image from 'next/image';
+import RegisterForm from '../forms/register-form';
+import google from '@/assets/images/icon/google.png';
+import facebook from '@/assets/images/icon/facebook.png';
 
 const RegisterArea = () => {
   return (
@@ -45,10 +45,10 @@ const RegisterArea = () => {
                 role="tabpanel"
                 id="fc1"
               >
-                <RegisterForm />
+                <RegisterForm userRole="candidate" />
               </div>
               <div className="tab-pane fade" role="tabpanel" id="fc2">
-                <RegisterForm />
+                <RegisterForm userRole="employer" />
               </div>
             </div>
 
@@ -78,7 +78,7 @@ const RegisterArea = () => {
               </div>
             </div>
             <p className="text-center mt-10">
-              Have an account?{" "}
+              Have an account?{' '}
               <a
                 href="#"
                 className="fw-500"

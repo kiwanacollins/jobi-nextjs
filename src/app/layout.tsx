@@ -1,4 +1,5 @@
 import './globals.scss';
+import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { EB_Garamond } from 'next/font/google';
@@ -48,17 +49,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </head>
-      <body
-        suppressHydrationWarning={true}
-        className={`${gordita.variable} ${garamond.variable}`}
-      >
-        <Providers>{children}</Providers>
-        <BackToTopCom />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+        </head>
+        <body
+          suppressHydrationWarning={true}
+          className={`${gordita.variable} ${garamond.variable}`}
+        >
+          <Providers>{children}</Providers>
+          <BackToTopCom />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.29.3",
     "@emailjs/browser": "^3.12.1",
     "@hookform/resolvers": "^3.3.4",
     "@popperjs/core": "^2.11.8",

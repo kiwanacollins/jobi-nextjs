@@ -1,13 +1,13 @@
-import React from "react";
-import { Metadata } from "next";
-import Header from "@/layouts/headers/header";
-import Wrapper from "@/layouts/wrapper";
-import CompanyBreadcrumb from "../components/common/common-breadcrumb";
-import FooterOne from "@/layouts/footers/footer-one";
-import RegisterArea from "../components/register/register-area";
+import React from 'react';
+import { Metadata } from 'next';
+import Header from '@/layouts/headers/header';
+import Wrapper from '@/layouts/wrapper';
+import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
+import FooterOne from '@/layouts/footers/footer-one';
+import RegisterArea from '../../components/register/register-area';
 
 export const metadata: Metadata = {
-  title: "Register",
+  title: 'Register'
 };
 
 const RegisterPage = () => {
@@ -26,7 +26,7 @@ const RegisterPage = () => {
         {/*breadcrumb end */}
 
         {/* register area start */}
-        <RegisterArea/>
+        <RegisterArea />
         {/* register area end */}
 
         {/* footer start */}

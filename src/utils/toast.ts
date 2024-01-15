@@ -6,9 +6,9 @@ const notifySuccess = (message: string) =>
     autoClose: 3000,
     hideProgressBar: false,
     closeOnClick: true,
-    pauseOnHover: true, 
+    pauseOnHover: true,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 
 const notifyError = (message: string) =>
@@ -19,8 +19,7 @@ const notifyError = (message: string) =>
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    progress: undefined,
+    progress: undefined
   });
 
 export { notifySuccess, notifyError };
-
