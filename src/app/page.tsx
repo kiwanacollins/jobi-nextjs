@@ -72,7 +72,7 @@ export default function Home() {
               <div className="col-lg-5">
                 <div className="d-flex justify-content-lg-end">
                   <Link
-                    href="/job-list-v1"
+                    href="/jobs"
                     className="btn-six d-none d-lg-inline-block"
                   >
                     Explore all jobs
@@ -84,7 +84,7 @@ export default function Home() {
               <JobListItems style_2={true} />
             </div>
             <div className="text-center mt-40 d-lg-none">
-              <Link href="/job-list-v1" className="btn-six">
+              <Link href="/jobs" className="btn-six">
                 Explore all jobs
               </Link>
             </div>
