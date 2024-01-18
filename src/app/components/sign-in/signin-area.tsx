@@ -9,7 +9,7 @@ import LoginForm from '../forms/login-form';
 
 const SignInArea = () => {
   return (
-    <div className="">
+    <div className="registration-section  position-relative pt-100 lg-pt-80 pb-150 lg-pb-80">
       <div className="">
         <div className="container">
           <div className="user-data-form modal-content">

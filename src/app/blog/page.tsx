@@ -1,11 +1,11 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Header from '@/layouts/headers/header';
 import Wrapper from '@/layouts/wrapper';
 import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
 import CompanyBreadcrumb from '../components/common/common-breadcrumb';
 import FooterOne from '@/layouts/footers/footer-one';
 import BlogFullWidthArea from '../components/blogs/blog-frull-width';
+import HeaderSix from '@/layouts/headers/header-6';
 
 export const metadata: Metadata = {
   title: 'Blog - Hireskills',
@@ -18,7 +18,7 @@ const BlogV3Page = () => {
     <Wrapper>
       <div className="main-page-wrapper">
         {/* header start */}
-        <Header />
+        <HeaderSix />
         {/* header end */}
 
         {/*breadcrumb start */}

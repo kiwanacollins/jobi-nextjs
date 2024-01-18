@@ -6,6 +6,7 @@ import JobBreadcrumb from '../components/jobs/breadcrumb/job-breadcrumb';
 import JobListThree from '../components/jobs/list/job-list-three';
 import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
 import FooterOne from '@/layouts/footers/footer-one';
+import HeaderSix from '@/layouts/headers/header-6';
 
 export const metadata: Metadata = {
   title: 'Jobs - Hireskills',
@@ -18,7 +19,7 @@ const JobListOnePage = () => {
     <Wrapper>
       <div className="main-page-wrapper">
         {/* header start */}
-        <Header />
+        <HeaderSix />
         {/* header end */}
 
         {/* search breadcrumb start */}
