@@ -13,6 +13,7 @@ import { notifyError, notifySuccess } from '@/utils/toast';
 type IFormData = {
   firstName: string;
   lastName: string;
+  username: string;
   email: string;
   password: string;
 };
@@ -25,6 +26,7 @@ interface IRegisterFormProps {
 const schema = Yup.object().shape({
   firstName: Yup.string().required().label('firstName'),
   lastName: Yup.string().required().label('lastName'),
+  username: Yup.string().required().label('username'),
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(6).label('Password')
 });
@@ -42,6 +44,10 @@ const resolver: Resolver<IFormData> = async (values) => {
           lastName: {
             type: 'required',
             message: 'Last Name is required.'
+          },
+          username: {
+            type: 'required',
+            message: 'username is required.'
           },
           email: {
             type: 'required',
@@ -81,7 +87,8 @@ const RegisterForm = ({ userRole }: IRegisterFormProps) => {
           firstName: data.firstName,
           lastName: data.lastName,
           emailAddress: data.email,
-          password: data.password
+          password: data.password,
+          username: data.username
         });
 
         // Send email verification code
@@ -136,6 +143,18 @@ const RegisterForm = ({ userRole }: IRegisterFormProps) => {
           </div>
         </div>
         <div className="col-12">
+          <div className="input-group-meta position-relative mb-25">
+            <label>username*</label>
+            <input
+              type="text"
+              placeholder="choose a username"
+              {...register('username', { required: `username is required!` })}
+              name="username"
+            />
+            <div className="help-block with-errors">
+              <ErrorMsg msg={errors.email?.message!} />
+            </div>
+          </div>
           <div className="input-group-meta position-relative mb-25">
             <label>Email*</label>
             <input

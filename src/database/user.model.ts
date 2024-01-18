@@ -19,7 +19,7 @@ export interface IUser extends Document {
 const UserSchema = new Schema({
   clerkId: { type: String, required: true },
   name: { type: String, required: true },
-  username: { type: String, unique: true },
+  username: { type: String, require: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
   userRole: {
