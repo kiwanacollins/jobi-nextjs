@@ -48,7 +48,7 @@ const RegisterArea = () => {
                 <RegisterForm userRole="candidate" />
               </div>
               <div className="tab-pane fade" role="tabpanel" id="fc2">
-                <RegisterForm userRole="employer" />
+                <RegisterForm userRole="employee" />
               </div>
             </div>
 

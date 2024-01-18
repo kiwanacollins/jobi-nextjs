@@ -13,6 +13,7 @@ export default authMiddleware({
     '/contact',
     '/blog'
   ],
+  ignoredRoutes: ['/api/webhook(.*)'],
   async afterAuth(auth, req, evt) {
     if (auth.isPublicRoute) {
       //  For public routes, we don't need to do anything
