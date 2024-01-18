@@ -11,7 +11,8 @@ export default authMiddleware({
     '/candidates(.)',
     '/about',
     '/contact',
-    '/blog'
+    '/blog',
+    '/api/webhook(.*)'
   ],
   ignoredRoutes: ['/api/webhook(.*)'],
   async afterAuth(auth, req, evt) {

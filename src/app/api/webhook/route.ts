@@ -60,7 +60,6 @@ export async function POST(req: Request) {
     const { id, email_addresses, image_url, first_name, last_name } = evt.data;
 
     // Todo: create a user in your database
-    // Create a new user in your database
 
     const mongoUser = await createUser({
       clerkId: id,
