@@ -42,12 +42,12 @@ const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
                   {!userId && (
                     <li>
                       <a
-                        href="#"
+                        href="/sign-in"
                         className={`fw-500 login-btn-three ${
                           dark_style ? 'dark-style' : ''
                         } tran3s`}
-                        data-bs-toggle="modal"
-                        data-bs-target="#loginModal"
+                        // data-bs-toggle="modal"
+                        // data-bs-target="#loginModal"
                       >
                         Login/Sign up
                       </a>
@@ -123,7 +123,7 @@ const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
       </header>
 
       {/* login modal start */}
-      <LoginModal />
+      {/* <LoginModal /> */}
       {/* login modal end */}
     </>
   );

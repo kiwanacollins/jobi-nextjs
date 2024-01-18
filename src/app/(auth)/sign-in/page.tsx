@@ -1,0 +1,42 @@
+import React from 'react';
+import { Metadata } from 'next';
+import Header from '@/layouts/headers/header';
+import Wrapper from '@/layouts/wrapper';
+import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
+import FooterOne from '@/layouts/footers/footer-one';
+import RegisterArea from '../../components/register/register-area';
+import RegisterPage from '../register/page';
+import SignInArea from '@/app/components/sign-in/signin-area';
+
+export const metadata: Metadata = {
+  title: 'Sign In'
+};
+
+const SignInPage = () => {
+  return (
+    <Wrapper>
+      <div className="main-page-wrapper">
+        {/* header start */}
+        <Header />
+        {/* header end */}
+
+        {/*breadcrumb start */}
+        <CompanyBreadcrumb
+          title="Sign In"
+          subtitle="Sign in to your account & Start posting or hiring talents"
+        />
+        {/*breadcrumb end */}
+
+        {/* register area start */}
+        <SignInArea />
+        {/* register area end */}
+
+        {/* footer start */}
+        <FooterOne />
+        {/* footer end */}
+      </div>
+    </Wrapper>
+  );
+};
+
+export default SignInPage;

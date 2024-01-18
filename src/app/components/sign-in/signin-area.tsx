@@ -1,27 +1,18 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import LoginForm from '../../forms/login-form';
+import RegisterForm from '../forms/register-form';
 import google from '@/assets/images/icon/google.png';
 import facebook from '@/assets/images/icon/facebook.png';
+import RegisterArea from '../register/register-area';
+import Link from 'next/link';
+import LoginForm from '../forms/login-form';
 
-const LoginModal = () => {
+const SignInArea = () => {
   return (
-    <div
-      className="modal fade"
-      id="loginModal"
-      tabIndex={-1}
-      aria-hidden="true"
-    >
-      <div className="modal-dialog modal-fullscreen modal-dialog-centered">
+    <div className="">
+      <div className="">
         <div className="container">
           <div className="user-data-form modal-content">
-            <button
-              type="button"
-              className="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
             <div className="text-center">
               <h2>Hi, Welcome Back!</h2>
               <p>
@@ -70,4 +61,4 @@ const LoginModal = () => {
   );
 };
 
-export default LoginModal;
+export default SignInArea;
