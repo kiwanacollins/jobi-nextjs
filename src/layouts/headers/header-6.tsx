@@ -7,9 +7,17 @@ import dark_logo from '@/assets/images/logo/logo_04.png';
 import Menus from './component/menus';
 import useSticky from '@/hooks/use-sticky';
 import LoginModal from '@/app/components/common/popup/login-modal';
+import { SignedIn, UserButton, useAuth } from '@clerk/nextjs';
+
+const avatarBoxStyle = {
+  height: '25px',
+  width: '25px'
+};
 
 const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
   const { sticky } = useSticky();
+  const { userId } = useAuth();
+
   return (
     <>
       <header
@@ -31,17 +39,38 @@ const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
               </div>
               <div className="right-widget ms-auto ms-lg-0 order-lg-2">
                 <ul className="d-flex align-items-center style-none">
+                  {!userId && (
+                    <li>
+                      <a
+                        href="#"
+                        className={`fw-500 login-btn-three ${
+                          dark_style ? 'dark-style' : ''
+                        } tran3s`}
+                        data-bs-toggle="modal"
+                        data-bs-target="#loginModal"
+                      >
+                        Login/Sign up
+                      </a>
+                    </li>
+                  )}
+
                   <li>
-                    <a
-                      href="#"
-                      className={`fw-500 login-btn-three ${
-                        dark_style ? 'dark-style' : ''
-                      } tran3s`}
-                      data-bs-toggle="modal"
-                      data-bs-target="#loginModal"
-                    >
-                      Login/Sign up
-                    </a>
+                    <SignedIn>
+                      <UserButton
+                        afterSignOutUrl="/"
+                        appearance={{
+                          elements: {
+                            avatarBox: {
+                              height: '42px',
+                              width: '42px'
+                            }
+                          },
+                          variables: {
+                            colorPrimary: '#ff7000'
+                          }
+                        }}
+                      />
+                    </SignedIn>
                   </li>
                   <li className="d-none d-md-block ms-3">
                     <Link href="/register" className="btn-five">

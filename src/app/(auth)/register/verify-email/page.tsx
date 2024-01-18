@@ -103,7 +103,6 @@ const Page = () => {
                       disabled={isPending}
                     >
                       {isPending ? 'Loading...' : ' Create Account'}
-                      Create Account
                     </button>
                   </div>
                 </div>
