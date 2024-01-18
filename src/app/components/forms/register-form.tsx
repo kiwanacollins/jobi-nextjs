@@ -152,7 +152,7 @@ const RegisterForm = ({ userRole }: IRegisterFormProps) => {
               name="username"
             />
             <div className="help-block with-errors">
-              <ErrorMsg msg={errors.email?.message!} />
+              <ErrorMsg msg={errors.username?.message!} />
             </div>
           </div>
           <div className="input-group-meta position-relative mb-25">
