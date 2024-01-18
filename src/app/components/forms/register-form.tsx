@@ -7,7 +7,7 @@ import ErrorMsg from '../common/error-msg';
 import icon from '@/assets/images/icon/icon_60.svg';
 import { useSignUp } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
-import { notifySuccess } from '@/utils/toast';
+import { notifyError, notifySuccess } from '@/utils/toast';
 
 // form data type
 type IFormData = {
@@ -91,9 +91,8 @@ const RegisterForm = ({ userRole }: IRegisterFormProps) => {
 
         router.push('/register/verify-email');
         notifySuccess('Check your email for verification code');
-      } catch (err) {
-        // catchClerkError(err);
-        console.log(err);
+      } catch (err: any) {
+        notifyError(`Erorr: ${err.errors[0].longMessage}`);
       }
     });
     reset();
