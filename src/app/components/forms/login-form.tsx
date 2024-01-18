@@ -1,10 +1,14 @@
-"use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import * as Yup from "yup";
-import { Resolver, useForm } from "react-hook-form";
-import ErrorMsg from "../common/error-msg";
-import icon from "@/assets/images/icon/icon_60.svg";
+'use client';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import * as Yup from 'yup';
+import { Resolver, useForm } from 'react-hook-form';
+import ErrorMsg from '../common/error-msg';
+import icon from '@/assets/images/icon/icon_60.svg';
+import { useSignIn } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { notifyError, notifySuccess } from '@/utils/toast';
+import { error } from 'console';
 
 // form data type
 type IFormData = {
@@ -14,8 +18,8 @@ type IFormData = {
 
 // schema
 const schema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(6).label("Password"),
+  email: Yup.string().required().email().label('Email'),
+  password: Yup.string().required().min(6).label('Password')
 });
 
 // resolver
@@ -25,32 +29,55 @@ const resolver: Resolver<IFormData> = async (values) => {
     errors: !values.email
       ? {
           email: {
-            type: "required",
-            message: "Email is required.",
+            type: 'required',
+            message: 'Email is required.'
           },
           password: {
-            type: "required",
-            message: "Password is required.",
-          },
+            type: 'required',
+            message: 'Password is required.'
+          }
         }
-      : {},
+      : {}
   };
 };
 
 const LoginForm = () => {
   const [showPass, setShowPass] = useState<boolean>(false);
+  const router = useRouter();
+  const { isLoaded, signIn, setActive } = useSignIn();
+  const [isPending, startTransition] = React.useTransition();
+
   // react hook form
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    reset
   } = useForm<IFormData>({ resolver });
   // on submit
   const onSubmit = (data: IFormData) => {
-    if (data) {
-      alert("Login successfully!");
-    }
+    if (!isLoaded) return;
+    startTransition(async () => {
+      try {
+        const result = await signIn.create({
+          identifier: data.email,
+          password: data.password
+        });
+
+        if (result.status === 'complete') {
+          await setActive({ session: result.createdSessionId });
+
+          router.push(`${window.location.origin}/`);
+          notifySuccess('Login successful!');
+        } else {
+          /*Investigate why the login hasn't completed */
+          console.log(result);
+        }
+      } catch (err: any) {
+        notifyError(`Erorr: ${err.errors[0].longMessage}`);
+      }
+    });
+
     reset();
   };
   return (
@@ -62,7 +89,7 @@ const LoginForm = () => {
             <input
               type="email"
               placeholder="james@example.com"
-              {...register("email", { required: `Email is required!` })}
+              {...register('email', { required: `Email is required!` })}
               name="email"
             />
             <div className="help-block with-errors">
@@ -74,17 +101,17 @@ const LoginForm = () => {
           <div className="input-group-meta position-relative mb-20">
             <label>Password*</label>
             <input
-              type={`${showPass ? "text" : "password"}`}
+              type={`${showPass ? 'text' : 'password'}`}
               placeholder="Enter Password"
               className="pass_log_id"
-              {...register("password", { required: `Password is required!` })}
+              {...register('password', { required: `Password is required!` })}
               name="password"
             />
             <span
               className="placeholder_icon"
               onClick={() => setShowPass(!showPass)}
             >
-              <span className={`passVicon ${showPass ? "eye-slash" : ""}`}>
+              <span className={`passVicon ${showPass ? 'eye-slash' : ''}`}>
                 <Image src={icon} alt="icon" />
               </span>
             </span>
@@ -105,9 +132,10 @@ const LoginForm = () => {
         <div className="col-12">
           <button
             type="submit"
+            disabled={isPending}
             className="btn-eleven fw-500 tran3s d-block mt-20"
           >
-            Login
+            {isPending ? 'Loading...' : 'Login'}
           </button>
         </div>
       </div>

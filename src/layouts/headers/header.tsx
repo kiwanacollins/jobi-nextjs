@@ -34,10 +34,10 @@ const Header = () => {
                   </li>
                   <li>
                     <a
-                      href="#"
+                      href="/sign-in"
                       className="login-btn-one"
-                      data-bs-toggle="modal"
-                      data-bs-target="#loginModal"
+                      // data-bs-toggle="modal"
+                      // data-bs-target="#loginModal"
                     >
                       Login
                     </a>
