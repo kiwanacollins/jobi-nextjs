@@ -65,7 +65,7 @@ export async function POST(req: Request) {
     // Todo: create a user in your database
     const mongoUser = await createUser({
       clerkId: id,
-      username: username ? '',
+      username: username ? username : '',
       name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
       email: email_addresses[0].email_address,
       picture: image_url,
