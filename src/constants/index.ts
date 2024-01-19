@@ -1,0 +1,20 @@
+export const skills = [
+  'Design',
+  'UI',
+  'Digital',
+  'Graphics',
+  'Developer',
+  'Product',
+  'Microsoft',
+  'Brand',
+  'Photoshop',
+  'Business',
+  'IT & Technology',
+  'Marketing',
+  'Article',
+  'Engineer',
+  'HTML5',
+  'Figma',
+  'Automobile',
+  'Account'
+];

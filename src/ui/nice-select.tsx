@@ -1,6 +1,8 @@
-"use client"
-import React, { useState, useCallback, useRef } from "react";
-import { useClickAway } from "react-use";
+'use client';
+
+import React, { useState, useCallback, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { useClickAway } from 'react-use';
 
 type Option = {
   value: string;
@@ -22,10 +24,11 @@ const NiceSelect = ({
   placeholder,
   cls,
   onChange,
-  name,
+  name
 }: IPropType) => {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(options[defaultCurrent]);
+  const { register } = useForm();
   const onClose = useCallback(() => {
     setOpen(false);
   }, []);
@@ -41,26 +44,27 @@ const NiceSelect = ({
 
   return (
     <div
-      className={`nice-select ${cls?cls:''} ${open && "open"}`}
+      className={`nice-select ${cls ? cls : ''} ${open && 'open'}`}
       role="button"
       tabIndex={0}
       onClick={() => setOpen((prev) => !prev)}
       ref={ref}
     >
       <span className="current">{current?.label || placeholder}</span>
-      <ul
-        className="list"
-        role="menubar"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {options?.map((item,i) => (
+      <ul className="list" role="menubar" onClick={(e) => e.stopPropagation()}>
+        {options?.map((item, i) => (
           <li
             key={i}
             data-value={item.value}
-            className={`option ${item.value === current?.value && "selected focus"
-              }`}
+            className={`option ${
+              item.value === current?.value && 'selected focus'
+            }`}
             role="menuitem"
             onClick={() => currentHandler(item)}
+            {...register(name, {
+              required: `${name} is required!`
+            })}
+            // Remove the 'name' prop from the li element
           >
             {item.label}
           </li>
@@ -71,5 +75,3 @@ const NiceSelect = ({
 };
 
 export default NiceSelect;
-
-

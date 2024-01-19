@@ -1,11 +1,27 @@
-import NiceSelect from "@/ui/nice-select";
-import React from "react";
+import NiceSelect from '@/ui/nice-select';
+import React from 'react';
+import { IJobData } from './submit-job-area';
 
-const EmployExperience = () => {
-  const handleExperience = (item: { value: string; label: string }) => {};
-  const handleLocation = (item: { value: string; label: string }) => {};
+type IPropType = {
+  setValue: (name: keyof IJobData, value: string) => void;
+};
+
+const EmployExperience = ({ setValue }: IPropType) => {
+  const handleExperience = (item: { value: string; label: string }) => {
+    const { value } = item;
+    setValue('experience', value);
+    console.log(value);
+  };
+  const handleLocation = (item: { value: string; label: string }) => {
+    const { value } = item;
+    setValue('location', value);
+    console.log(value);
+  };
   const handleIndustry = (item: { value: string; label: string }) => {};
-  const handleEnglishFluency = (item: { value: string; label: string }) => {};
+  const handleEnglishFluency = (item: { value: string; label: string }) => {
+    const { value } = item;
+    setValue('english_fluency', value);
+  };
   return (
     <div className="row align-items-end">
       <div className="col-md-6">
@@ -13,13 +29,13 @@ const EmployExperience = () => {
           <label htmlFor="">Experience*</label>
           <NiceSelect
             options={[
-              { value: "Intermediate", label: "Intermediate" },
-              { value: "No-Experience", label: "No-Experience" },
-              { value: "Expert", label: "Expert" },
+              { value: 'Intermediate', label: 'Intermediate' },
+              { value: 'No-Experience', label: 'No-Experience' },
+              { value: 'Expert', label: 'Expert' }
             ]}
             defaultCurrent={0}
             onChange={(item) => handleExperience(item)}
-            name="Experience"
+            name="experience"
           />
         </div>
       </div>
@@ -28,14 +44,14 @@ const EmployExperience = () => {
           <label htmlFor="">Location*</label>
           <NiceSelect
             options={[
-              { value: "Washington DC", label: "Washington DC" },
-              { value: "California, CA", label: "California, CA" },
-              { value: "New York", label: "New York" },
-              { value: "Miami", label: "Miami" },
+              { value: 'Washington DC', label: 'Washington DC' },
+              { value: 'California, CA', label: 'California, CA' },
+              { value: 'New York', label: 'New York' },
+              { value: 'Miami', label: 'Miami' }
             ]}
             defaultCurrent={0}
             onChange={(item) => handleLocation(item)}
-            name="Experience"
+            name="location"
           />
         </div>
       </div>
@@ -44,12 +60,12 @@ const EmployExperience = () => {
           <label htmlFor="">Industry*</label>
           <NiceSelect
             options={[
-              { value: "Select Industry", label: "Select Industry" },
-              { value: "Select Industry 2", label: "Select Industry 2" },
+              { value: 'Select Industry', label: 'Select Industry' },
+              { value: 'Select Industry 2', label: 'Select Industry 2' }
             ]}
             defaultCurrent={0}
             onChange={(item) => handleIndustry(item)}
-            name="Industry"
+            name="industry"
           />
         </div>
       </div>
@@ -58,14 +74,14 @@ const EmployExperience = () => {
           <label htmlFor="">English Fluency</label>
           <NiceSelect
             options={[
-              { value: "Basic", label: "Basic" },
-              { value: "Conversational", label: "Conversational" },
-              { value: "Fluent", label: "Fluent" },
-              { value: "Native/Bilingual", label: "Native/Bilingual" },
+              { value: 'Basic', label: 'Basic' },
+              { value: 'Conversational', label: 'Conversational' },
+              { value: 'Fluent', label: 'Fluent' },
+              { value: 'Native/Bilingual', label: 'Native/Bilingual' }
             ]}
             defaultCurrent={0}
             onChange={(item) => handleEnglishFluency(item)}
-            name="English Fluency"
+            name="english_fluency"
           />
         </div>
       </div>

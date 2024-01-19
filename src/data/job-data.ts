@@ -28,86 +28,91 @@ import job_img_26 from '@/assets/images/logo/media_59.png';
 import job_img_27 from '@/assets/images/logo/media_60.png';
 import job_img_28 from '@/assets/images/logo/media_61.png';
 
-const job_data:IJobType[] = [
+const job_data: IJobType[] = [
   {
-    id:1,
-    logo:job_img_1,
-    title:'Developer & expert in java c++',
-    duration:'Fulltime',
-    date:'18 Jul 2024',
-    company:'slack',
-    location:'Spain, Bercelona',
-    category:['Developer','Coder'],
-    experience:'Fresher',
-    salary:900,
-    salary_duration:'Monthly',
-    tags:['java','developer'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 1,
+    logo: job_img_1,
+    title: 'Developer & expert in java c++',
+    duration: 'Fulltime',
+    date: '18 Jul 2024',
+    company: 'slack',
+    location: 'Spain, Bercelona',
+    category: ['Developer', 'Coder'],
+    experience: 'Fresher',
+    salary: 900,
+    salary_duration: 'Monthly',
+    tags: ['java', 'developer'],
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:2,
-    logo:job_img_2,
-    title:'Animator & Expert in maya 3D',
-    duration:'Part time',
-    date:'25 Jul 2024',
-    company:'google',
-    location:'USA,New York',
-    category:['Finance','Accounting'],
-    experience:'Intermediate',
-    salary:100,
-    salary_duration:'Weekly',
-    tags:['finance','accounting'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 2,
+    logo: job_img_2,
+    title: 'Animator & Expert in maya 3D',
+    duration: 'Part time',
+    date: '25 Jul 2024',
+    company: 'google',
+    location: 'USA,New York',
+    category: ['Finance', 'Accounting'],
+    experience: 'Intermediate',
+    salary: 100,
+    salary_duration: 'Weekly',
+    tags: ['finance', 'accounting'],
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:3,
-    logo:job_img_3,
-    title:'Marketing Specialist in SEO & SMM',
-    duration:'Part time',
-    date:'25 Jan 2024',
-    company:'pinterest',
-    location:'USA,Alaska',
-    category:['Design','Artist'],
-    experience:'No-Experience',
-    salary:50,
-    salary_duration:'Hourly',
-    tags:['design','seo'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 3,
+    logo: job_img_3,
+    title: 'Marketing Specialist in SEO & SMM',
+    duration: 'Part time',
+    date: '25 Jan 2024',
+    company: 'pinterest',
+    location: 'USA,Alaska',
+    category: ['Design', 'Artist'],
+    experience: 'No-Experience',
+    salary: 50,
+    salary_duration: 'Hourly',
+    tags: ['design', 'seo'],
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:4,
-    logo:job_img_4,
-    title:'Developer & Expert in javascript c+',
-    duration:'Fulltime',
-    date:'10 Feb 2024',
-    company:'instagram',
-    location:'USA,California',
-    category:['Application','Marketing'],
-    experience:'Internship',
-    salary:800,
-    salary_duration:'Monthly',
-    tags:['javascript','developer'],
-    english_fluency:'Native/Bilingual',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 4,
+    logo: job_img_4,
+    title: 'Developer & Expert in javascript c+',
+    duration: 'Fulltime',
+    date: '10 Feb 2024',
+    company: 'instagram',
+    location: 'USA,California',
+    category: ['Application', 'Marketing'],
+    experience: 'Internship',
+    salary: 800,
+    salary_duration: 'Monthly',
+    tags: ['javascript', 'developer'],
+    english_fluency: 'Native/Bilingual',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:5,
-    logo:job_img_5,
-    title:'Lead & Product Designer',
-    duration:'Fulltime',
-    date:'15 Feb 2024',
-    company:'Linkedin',
-    location:'UK,London',
-    category:['Finance','Business'],
-    experience:'Expert',
-    salary:1200,
-    salary_duration:'Monthly',
-    tags:['designer','finance'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 5,
+    logo: job_img_5,
+    title: 'Lead & Product Designer',
+    duration: 'Fulltime',
+    date: '15 Feb 2024',
+    company: 'Linkedin',
+    location: 'UK,London',
+    category: ['Finance', 'Business'],
+    experience: 'Expert',
+    salary: 1200,
+    salary_duration: 'Monthly',
+    tags: ['designer', 'finance'],
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 6,
@@ -118,12 +123,13 @@ const job_data:IJobType[] = [
     company: 'Microsoft',
     location: 'USA, Mountain View',
     category: ['Developer', 'Web'],
-    experience:'Fresher',
+    experience: 'Fresher',
     salary: 1500,
     salary_duration: 'Monthly',
     tags: ['web', 'frontend'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 7,
@@ -138,8 +144,9 @@ const job_data:IJobType[] = [
     salary: 2500,
     salary_duration: 'Weekly',
     tags: ['data', 'analytics'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 8,
@@ -154,8 +161,9 @@ const job_data:IJobType[] = [
     salary: 1800,
     salary_duration: 'Monthly',
     tags: ['ui', 'ux', 'design'],
-    english_fluency:'Native/Bilingual',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Native/Bilingual',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 9,
@@ -170,8 +178,9 @@ const job_data:IJobType[] = [
     salary: 3000,
     salary_duration: 'Monthly',
     tags: ['marketing', 'management'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 10,
@@ -186,8 +195,9 @@ const job_data:IJobType[] = [
     salary: 200,
     salary_duration: 'Weekly',
     tags: ['software', 'engineering'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 11,
@@ -202,8 +212,9 @@ const job_data:IJobType[] = [
     salary: 800,
     salary_duration: 'Weekly',
     tags: ['writing', 'blogging'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 12,
@@ -218,8 +229,9 @@ const job_data:IJobType[] = [
     salary: 1800,
     salary_duration: 'Monthly',
     tags: ['graphic', 'illustration'],
-    english_fluency:'Native/Bilingual',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Native/Bilingual',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 13,
@@ -234,8 +246,9 @@ const job_data:IJobType[] = [
     salary: 2500,
     salary_duration: 'Monthly',
     tags: ['accounting', 'finance'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 14,
@@ -246,93 +259,99 @@ const job_data:IJobType[] = [
     company: 'Tesla',
     location: 'USA, Palo Alto',
     category: ['Management', 'Product'],
-    experience:'Fresher',
+    experience: 'Fresher',
     salary: 3500,
     salary_duration: 'Monthly',
     tags: ['product', 'management'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   // copy
   {
-    id:15,
-    logo:job_img_15,
-    title:'Data Science Expert With Algorithm',
-    duration:'Fulltime',
-    date:'18 Jul 2024',
-    company:'slack',
-    location:'Spain, Bercelona',
-    category:['Developer','Coder'],
-    experience:'Fresher',
-    salary:450,
-    salary_duration:'Monthly',
-    tags:['java','developer'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 15,
+    logo: job_img_15,
+    title: 'Data Science Expert With Algorithm',
+    duration: 'Fulltime',
+    date: '18 Jul 2024',
+    company: 'slack',
+    location: 'Spain, Bercelona',
+    category: ['Developer', 'Coder'],
+    experience: 'Fresher',
+    salary: 450,
+    salary_duration: 'Monthly',
+    tags: ['java', 'developer'],
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:16,
-    logo:job_img_16,
-    title:'	Entry Level Software Developer',
-    duration:'Part time',
-    date:'25 Jul 2024',
-    company:'google',
-    location:'USA,New York',
-    category:['Finance','Accounting'],
-    experience:'Intermediate',
-    salary:500,
-    salary_duration:'Weekly',
-    tags:['finance','accounting'],
-    english_fluency:'Native/Bilingual',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 16,
+    logo: job_img_16,
+    title: '	Entry Level Software Developer',
+    duration: 'Part time',
+    date: '25 Jul 2024',
+    company: 'google',
+    location: 'USA,New York',
+    category: ['Finance', 'Accounting'],
+    experience: 'Intermediate',
+    salary: 500,
+    salary_duration: 'Weekly',
+    tags: ['finance', 'accounting'],
+    english_fluency: 'Native/Bilingual',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:17,
-    logo:job_img_17,
-    title:'Junior Front End Developer',
-    duration:'Part time',
-    date:'25 Jan 2024',
-    company:'pinterest',
-    location:'USA,Alaska',
-    category:['Design','Artist'],
-    experience:'No-Experience',
-    salary:350,
-    salary_duration:'Hourly',
-    tags:['design','seo'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 17,
+    logo: job_img_17,
+    title: 'Junior Front End Developer',
+    duration: 'Part time',
+    date: '25 Jan 2024',
+    company: 'pinterest',
+    location: 'USA,Alaska',
+    category: ['Design', 'Artist'],
+    experience: 'No-Experience',
+    salary: 350,
+    salary_duration: 'Hourly',
+    tags: ['design', 'seo'],
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:18,
-    logo:job_img_18,
-    title:'Entry Level Network Engineer',
-    duration:'Fulltime',
-    date:'10 Feb 2024',
-    company:'instagram',
-    location:'USA,California',
-    category:['Application','Marketing'],
-    experience:'Internship',
-    salary:980,
-    salary_duration:'Monthly',
-    tags:['javascript','developer'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 18,
+    logo: job_img_18,
+    title: 'Entry Level Network Engineer',
+    duration: 'Fulltime',
+    date: '10 Feb 2024',
+    company: 'instagram',
+    location: 'USA,California',
+    category: ['Application', 'Marketing'],
+    experience: 'Internship',
+    salary: 980,
+    salary_duration: 'Monthly',
+    tags: ['javascript', 'developer'],
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
-    id:19,
-    logo:job_img_19,
-    title:'Embedded Software Engineer',
-    duration:'Fulltime',
-    date:'15 Feb 2024',
-    company:'Linkedin',
-    location:'UK,London',
-    category:['Finance','Business'],
-    experience:'Expert',
-    salary:1650,
-    salary_duration:'Monthly',
-    tags:['designer','finance'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    id: 19,
+    logo: job_img_19,
+    title: 'Embedded Software Engineer',
+    duration: 'Fulltime',
+    date: '15 Feb 2024',
+    company: 'Linkedin',
+    location: 'UK,London',
+    category: ['Finance', 'Business'],
+    experience: 'Expert',
+    salary: 1650,
+    salary_duration: 'Monthly',
+    tags: ['designer', 'finance'],
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 20,
@@ -343,12 +362,13 @@ const job_data:IJobType[] = [
     company: 'Microsoft',
     location: 'USA, Mountain View',
     category: ['Developer', 'Web'],
-    experience:'Fresher',
+    experience: 'Fresher',
     salary: 1200,
     salary_duration: 'Monthly',
     tags: ['web', 'frontend'],
-    english_fluency:'Native/Bilingual',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Native/Bilingual',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 21,
@@ -363,8 +383,9 @@ const job_data:IJobType[] = [
     salary: 2300,
     salary_duration: 'Weekly',
     tags: ['data', 'analytics'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 22,
@@ -379,8 +400,9 @@ const job_data:IJobType[] = [
     salary: 1700,
     salary_duration: 'Monthly',
     tags: ['ui', 'ux', 'design'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 23,
@@ -395,8 +417,9 @@ const job_data:IJobType[] = [
     salary: 3000,
     salary_duration: 'Monthly',
     tags: ['marketing', 'management'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 24,
@@ -411,8 +434,9 @@ const job_data:IJobType[] = [
     salary: 200,
     salary_duration: 'Weekly',
     tags: ['software', 'engineering'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 25,
@@ -427,8 +451,9 @@ const job_data:IJobType[] = [
     salary: 800,
     salary_duration: 'Weekly',
     tags: ['writing', 'blogging'],
-    english_fluency:'Native/Bilingual',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Native/Bilingual',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 26,
@@ -443,8 +468,9 @@ const job_data:IJobType[] = [
     salary: 1800,
     salary_duration: 'Monthly',
     tags: ['graphic', 'illustration'],
-    english_fluency:'Fluent',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Fluent',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 27,
@@ -459,8 +485,9 @@ const job_data:IJobType[] = [
     salary: 2500,
     salary_duration: 'Monthly',
     tags: ['accounting', 'finance'],
-    english_fluency:'Conversational',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Conversational',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   },
   {
     id: 28,
@@ -471,13 +498,14 @@ const job_data:IJobType[] = [
     company: 'Tesla',
     location: 'USA, Palo Alto',
     category: ['Management', 'Product'],
-    experience:'Fresher',
+    experience: 'Fresher',
     salary: 3500,
     salary_duration: 'Monthly',
     tags: ['product', 'management'],
-    english_fluency:'Basic',
-    overview:"When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
+    english_fluency: 'Basic',
+    overview:
+      "When team members told us they needed more flexibility around where and how they worked, we acted, creating two options to accommodate two different styles of work. One non-negotiable principle along the way? We had to retain our deep culture of collaboration, both among ourselves and with our clients. Introducing Work From Near and Work From Anywhere at WillowTree. Please indicate which location(s) you're interested."
   }
-]
+];
 
 export default job_data;
