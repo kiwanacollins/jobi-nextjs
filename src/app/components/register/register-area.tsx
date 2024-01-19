@@ -1,10 +1,40 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import RegisterForm from '../forms/register-form';
 import google from '@/assets/images/icon/google.png';
 import facebook from '@/assets/images/icon/facebook.png';
+import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import router from 'next/navigation';
+
+interface IRegisterFormProps {
+  userRole: 'candidate' | 'employee';
+}
 
 const RegisterArea = () => {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const query = searchParams.get('userRole');
+  const [userRole, setUserRole] = useState(query || 'candidate');
+
+  useEffect(() => {
+    if (userRole) {
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'userRole',
+        value: userRole
+      });
+      router.push(newUrl, { scroll: false });
+    } else {
+      const newUrl = removeKeysFromQuery({
+        params: searchParams.toString(),
+        keysToRemove: ['userRole']
+      });
+      router.push(newUrl, { scroll: false });
+    }
+  }, [query, router, pathname, searchParams, userRole]);
   return (
     <section className="registration-section position-relative pt-100 lg-pt-80 pb-150 lg-pb-80">
       <div className="container">
@@ -22,6 +52,9 @@ const RegisterArea = () => {
                   role="tab"
                   aria-selected="true"
                   tabIndex={-1}
+                  onClick={() => {
+                    setUserRole('candidate');
+                  }}
                 >
                   Candidates
                 </button>
@@ -34,6 +67,9 @@ const RegisterArea = () => {
                   role="tab"
                   aria-selected="false"
                   tabIndex={-1}
+                  onClick={() => {
+                    setUserRole('employee');
+                  }}
                 >
                   Employer
                 </button>
@@ -45,10 +81,10 @@ const RegisterArea = () => {
                 role="tabpanel"
                 id="fc1"
               >
-                <RegisterForm userRole="candidate" />
+                <RegisterForm />
               </div>
               <div className="tab-pane fade" role="tabpanel" id="fc2">
-                <RegisterForm userRole="employee" />
+                <RegisterForm />
               </div>
             </div>
 

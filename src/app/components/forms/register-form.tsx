@@ -1,13 +1,15 @@
 'use client';
-import React, { useState } from 'react';
+import React, { startTransition, useState } from 'react';
 import Image from 'next/image';
 import * as Yup from 'yup';
 import { Resolver, useForm } from 'react-hook-form';
 import ErrorMsg from '../common/error-msg';
 import icon from '@/assets/images/icon/icon_60.svg';
 import { useSignUp } from '@clerk/nextjs';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
+import router from 'next/router';
 
 // form data type
 type IFormData = {
@@ -19,7 +21,7 @@ type IFormData = {
 };
 
 interface IRegisterFormProps {
-  userRole: string;
+  userRole: 'candidate' | 'employee';
 }
 
 // schema
@@ -62,7 +64,7 @@ const resolver: Resolver<IFormData> = async (values) => {
   };
 };
 
-const RegisterForm = ({ userRole }: IRegisterFormProps) => {
+const RegisterForm = () => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const { isLoaded, signUp, setActive } = useSignUp();
   const [pendingVerification, setPendingVerification] = useState(false);
@@ -70,6 +72,8 @@ const RegisterForm = ({ userRole }: IRegisterFormProps) => {
   const router = useRouter();
   const [isPending, startTransition] = React.useTransition();
   const [isTermAccepted, setIsTermAccepted] = useState(false);
+  const searchParams = useSearchParams();
+  const role = searchParams.get('userRole');
 
   // react hook form
   const {
@@ -78,18 +82,25 @@ const RegisterForm = ({ userRole }: IRegisterFormProps) => {
     formState: { errors },
     reset
   } = useForm<IFormData>({ resolver });
+
   // on submit
   const onSubmit = (data: IFormData) => {
     if (!isLoaded) return;
     startTransition(async () => {
       try {
-        await signUp.create({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          emailAddress: data.email,
-          password: data.password,
-          username: data.username
-        });
+        await signUp
+          .create({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            emailAddress: data.email,
+            password: data.password,
+            username: data.username
+          })
+          .then(({ unsafeMetadata }) => {
+            if (!unsafeMetadata.userRole) {
+              unsafeMetadata.userRole = role;
+            }
+          });
 
         // Send email verification code
         await signUp.prepareEmailAddressVerification({

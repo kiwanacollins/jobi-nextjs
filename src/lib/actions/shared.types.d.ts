@@ -4,5 +4,5 @@ export interface CreateUserParams {
   username: string | null;
   email: string;
   picture: string;
-  userRole: 'candidate' | 'employee';
+  userRole: string;
 }
