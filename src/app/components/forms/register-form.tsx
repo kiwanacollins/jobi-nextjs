@@ -88,19 +88,13 @@ const RegisterForm = () => {
     if (!isLoaded) return;
     startTransition(async () => {
       try {
-        await signUp
-          .create({
-            firstName: data.firstName,
-            lastName: data.lastName,
-            emailAddress: data.email,
-            password: data.password,
-            username: data.username
-          })
-          .then(({ unsafeMetadata }) => {
-            if (!unsafeMetadata.userRole) {
-              unsafeMetadata.userRole = role;
-            }
-          });
+        await signUp.create({
+          firstName: data.firstName,
+          lastName: data.lastName,
+          emailAddress: data.email,
+          password: data.password,
+          username: data.username
+        });
 
         // Send email verification code
         await signUp.prepareEmailAddressVerification({
