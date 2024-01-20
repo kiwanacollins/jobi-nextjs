@@ -104,6 +104,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   const {
     register,
     setValue,
+    handleSubmit,
     formState: { errors },
     reset
   } = methods;
@@ -137,7 +138,6 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
 
   // on submit
   const onSubmit = async (data: IFormJobData) => {
-    // setValue('tags', selectedSkills);
     setIsSubmitting(true);
     const {
       title,
@@ -189,6 +189,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
       state,
       industry
     };
+
     try {
       await creatJobPost({
         data: mongoData,
@@ -196,11 +197,12 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
         createdBy: JSON?.parse(mongoUserId),
         path: pathname
       });
+
       notifySuccess('Job post created successfully!');
       router.push('/');
     } catch (error) {
       console.log('onSubmit  error:', error);
-      notifyError('Something went wrong! Please try again.');
+      notifyError(error as string);
     } finally {
       setIsSubmitting(false);
     }
@@ -215,7 +217,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
 
         {/* form start */}
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <h2 className="main-title">Post a New Job</h2>
 
             <div className="bg-white card-box border-20">

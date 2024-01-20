@@ -50,7 +50,7 @@ export async function creatJobPost(jobDataParams: CreateJobParams) {
 
     revalidatePath(path);
 
-    return newJob;
+    return { status: 'ok', newJob };
   } catch (error) {
     console.log(error);
     throw error;

@@ -12,19 +12,20 @@ const EmployDashboardSubmitJobPage = () => {
   const { userId } = useAuth();
   const [mongoUserId, setMongoUser] = useState(null);
   const [error, setError] = useState(null);
+  if (!userId) redirect('/sign-in');
 
   useEffect(() => {
-    if (!userId) redirect('/sign-in');
-
     getUserById({ userId })
       .then((user) => {
         setMongoUser(user._id);
       })
       .catch((error) => {
+        console.log(error);
         setError(error);
       });
   }, [userId]);
 
+  console.log(mongoUserId);
   return (
     <Wrapper>
       <div className="main-page-wrapper">
