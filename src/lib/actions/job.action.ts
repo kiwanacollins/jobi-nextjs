@@ -5,7 +5,7 @@ import { CreateJobParams } from './shared.types';
 import Job from '@/database/job.model';
 import { revalidatePath } from 'next/cache';
 
-export async function creatJobPost(jobDataParams: CreateJobParams) {
+export const creatJobPost = async (jobDataParams: CreateJobParams) => {
   try {
     connectToDatabase();
     const { createdBy, data, path, clerkId } = jobDataParams;
@@ -55,4 +55,4 @@ export async function creatJobPost(jobDataParams: CreateJobParams) {
     console.log(error);
     throw error;
   }
-}
+};

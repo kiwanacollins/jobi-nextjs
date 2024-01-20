@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import DashboardHeader from '../candidate/dashboard-header';
 import StateSelect from '../candidate/state-select';
@@ -96,6 +96,12 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   const { userId } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const type = 'add';
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log(count);
+  }, [count]);
 
   // react hook form
   const methods = useForm<IFormJobData>({ resolver });
@@ -110,12 +116,12 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   } = methods;
 
   const handleSkillButton = (value: string) => {
-    // Create a copy of the skills array without the clicked skill
     const index = skillTags.indexOf(value);
     if (index !== -1) {
       skillTags.splice(index, 1); // Remove the skill
       setSkillTags([...skillTags]); // Trigger re-render
     }
+
     // Add to selected skills only if not already present
     if (!selectedSkills.includes(value)) {
       setSelectedSkills([...selectedSkills, value]);
@@ -139,6 +145,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   // on submit
   const onSubmit = async (data: IFormJobData) => {
     setIsSubmitting(true);
+
     const {
       title,
       category,
@@ -191,18 +198,24 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
     };
 
     try {
-      await creatJobPost({
-        data: mongoData,
-        clerkId: userId as string,
-        createdBy: JSON?.parse(mongoUserId),
-        path: pathname
-      });
+      if (type === 'add') {
+        setCount(count + 1);
+        // !Error: this function is calling two times
+        const response = await creatJobPost({
+          data: mongoData,
+          clerkId: userId,
+          createdBy: JSON?.parse(mongoUserId),
+          path: pathname
+        });
 
-      notifySuccess('Job post created successfully!');
-      router.push('/');
-    } catch (error) {
+        notifySuccess('Job post created successfully!');
+        router.push('/');
+        reset();
+        return response;
+      }
+    } catch (error: any) {
       console.log('onSubmit  error:', error);
-      notifyError(error as string);
+      notifyError(error);
     } finally {
       setIsSubmitting(false);
     }

@@ -10,7 +10,7 @@ export interface CreateUserParams {
 }
 
 export interface CreateJobParams {
-  clerkId: string;
+  clerkId: string | null | undefined;
   createdBy: Schema.Types.ObjectId | IUser;
   data: any;
   path: string;
