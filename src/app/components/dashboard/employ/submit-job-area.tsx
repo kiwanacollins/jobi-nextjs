@@ -92,23 +92,10 @@ const resolver: Resolver<IFormJobData> = async (values) => {
 const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   const [skillTags, setSkillTags] = useState<string[]>(skills);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { userId } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
-
-  const handleSkillButton = (value: string) => {
-    // Create a copy of the skills array without the clicked skill
-    const updatedSkills = skillTags.filter((skill) => skill !== value);
-
-    const matchedSkill = skillTags.find((skill) => skill === value) as string;
-
-    if (selectedSkills.indexOf(matchedSkill) === -1) {
-      setSelectedSkills([...selectedSkills, matchedSkill]);
-    }
-
-    // Update the state with the new array
-    setSkillTags(updatedSkills);
-  };
 
   // react hook form
   const methods = useForm<IFormJobData>({ resolver });
@@ -120,6 +107,20 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
     formState: { errors },
     reset
   } = methods;
+
+  const handleSkillButton = (value: string) => {
+    // Create a copy of the skills array without the clicked skill
+    const index = skillTags.indexOf(value);
+    if (index !== -1) {
+      skillTags.splice(index, 1); // Remove the skill
+      setSkillTags([...skillTags]); // Trigger re-render
+    }
+    // Add to selected skills only if not already present
+    if (!selectedSkills.includes(value)) {
+      setSelectedSkills([...selectedSkills, value]);
+      setValue('tags', [...selectedSkills]);
+    }
+  };
 
   const handleCategory = (item: { value: string; label: string }) => {
     const { value } = item;
@@ -136,7 +137,8 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
 
   // on submit
   const onSubmit = async (data: IFormJobData) => {
-    setValue('tags', selectedSkills);
+    // setValue('tags', selectedSkills);
+    setIsSubmitting(true);
     const {
       title,
       category,
@@ -159,7 +161,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
     } = data;
 
     if (minSalary && maxSalary) {
-      setValue('salaryRange', `${minSalary} - ${maxSalary}`);
+      data.salaryRange = `${minSalary} - ${maxSalary}`;
     }
     // if (address?.address && country && state && city) {
     //   setValue('address', {
@@ -199,8 +201,11 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
     } catch (error) {
       console.log('onSubmit  error:', error);
       notifyError('Something went wrong! Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   return (
     <div className="dashboard-body">
       <div className="position-relative">
@@ -427,8 +432,12 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
             </div>
 
             <div className="button-group d-inline-flex align-items-center mt-30">
-              <button type="submit" className="dash-btn-two tran3s me-3">
-                Submit
+              <button
+                disabled={isSubmitting}
+                type="submit"
+                className="dash-btn-two tran3s me-3"
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
               <button
                 onClick={() => reset()}
