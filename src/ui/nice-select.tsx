@@ -64,7 +64,6 @@ const NiceSelect = ({
             {...register(name, {
               required: `${name} is required!`
             })}
-            // Remove the 'name' prop from the li element
           >
             {item.label}
           </li>

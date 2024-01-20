@@ -22,6 +22,6 @@ export const jobValidationSchema = Yup.object({
   english_fluency: Yup.string().required('English fluency is required'),
   overview: Yup.string()
     .required('Overview is required')
-    .min(50, 'Overview must be at least 50 characters'),
-  createAt: Yup.date().default(Date.now) // Not exposed to user input, but validated for consistency
+    .min(50, 'Overview must be at least 50 characters')
+  // Not exposed to user input, but validated for consistency
 });

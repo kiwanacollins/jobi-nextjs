@@ -5,7 +5,7 @@ import EmployDashboardMain from '@/app/components/dashboard/employ';
 const EmployDashboardPage = () => {
   return (
     <Wrapper>
-      <EmployDashboardMain/>
+      <EmployDashboardMain />
     </Wrapper>
   );
 };

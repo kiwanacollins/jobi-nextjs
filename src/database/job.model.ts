@@ -1,88 +1,69 @@
 import { Schema, models, model, Document } from 'mongoose';
-import { StaticImageData } from 'next/image';
-import { string } from 'yup';
 
-export interface IJobType extends Document {
-  id: number;
-  logo: string;
+interface IAddress {
+  address?: string;
+  country?: string;
+  city?: string;
+  state?: string;
+  mapLocation?: string;
+}
+export interface IJobData extends Document {
   title: string;
-  duration: string;
-  date: string;
-  company: string;
+  overview: string;
+  jobType: string;
+  salary: string;
+
+  category: string;
   location: string;
-  category: string[];
+  address?: {
+    address?: string;
+    country?: string;
+    city?: string;
+    state?: string;
+    mapLocation?: string;
+  };
+  country: string;
+  city: string;
+  state: string;
+  mapLocation?: string;
   tags?: string[];
   experience: string;
-  salary: number;
-  salary_duration: string;
+  minSalary?: string;
+  maxSalary?: string;
+  industry: string;
+  salaryRange: string;
   english_fluency: string;
-  overview: string;
-  creator: Schema.Types.ObjectId;
-  createAt: Date;
+  createdBy?: Schema.Types.ObjectId;
+  createAt?: Date;
 }
 
 const jobSchema = new Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true
+  title: { type: String, required: true },
+  overview: { type: String, required: true },
+  jobType: { type: String, required: true },
+  salary: { type: String, required: true }, // Assuming salary is a number
+  category: { type: [String], required: true },
+  location: { type: String, required: true },
+  address: {
+    address: { type: String },
+    country: { type: String },
+    city: { type: String },
+    state: { type: String },
+    mapLocation: { type: String }
   },
-  logo: {
-    type: string,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  },
-  duration: {
-    type: String,
-    required: true
-  },
-  date: {
-    type: String,
-    required: true
-  },
-  company: {
-    type: String,
-    required: true
-  },
-  location: {
-    type: String,
-    required: true
-  },
-  category: {
-    type: [String],
-    required: true
-  },
-  tags: {
-    type: [String]
-  },
-  experience: {
-    type: String,
-    required: true
-  },
-  salary: {
-    type: Number,
-    required: true
-  },
-  salary_duration: {
-    type: String,
-    required: true
-  },
-  english_fluency: {
-    type: String,
-    required: true
-  },
-  overview: {
-    type: String,
-    required: true
-  },
-  creator: { type: Schema.Types.ObjectId, ref: 'User' },
-  createAt: {
-    type: Date,
-    default: Date.now
-  }
+  country: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  mapLocation: { type: String },
+  tags: { type: [String] },
+  experience: { type: String, required: true },
+  minSalary: { type: String },
+  maxSalary: { type: String },
+  industry: { type: String },
+  salaryRange: { type: String },
+  english_fluency: { type: String, required: true },
+  createdBy: { type: Schema.Types.ObjectId, ref: 'User' }, // Assuming a User model
+  createAt: { type: Date, default: Date.now }
 });
 
 const Job = models.Job || model('Job', jobSchema);

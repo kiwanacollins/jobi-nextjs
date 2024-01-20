@@ -1,23 +1,23 @@
 import NiceSelect from '@/ui/nice-select';
 import React from 'react';
-import { IJobData } from './submit-job-area';
+import { IFormJobData } from './submit-job-area';
+import { useFormContext } from 'react-hook-form';
 
-type IPropType = {
-  setValue: (name: keyof IJobData, value: string) => void;
-};
+const EmployExperience = () => {
+  const { setValue } = useFormContext<IFormJobData>();
 
-const EmployExperience = ({ setValue }: IPropType) => {
   const handleExperience = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('experience', value);
-    console.log(value);
   };
   const handleLocation = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('location', value);
-    console.log(value);
   };
-  const handleIndustry = (item: { value: string; label: string }) => {};
+  const handleIndustry = (item: { value: string; label: string }) => {
+    const { value } = item;
+    setValue('industry', value);
+  };
   const handleEnglishFluency = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('english_fluency', value);
