@@ -18,7 +18,7 @@ import { notifyError, notifySuccess } from '@/utils/toast';
 // props type
 type IProps = {
   setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
-  mongoUserId: string;
+  mongoUserId: string | undefined;
 };
 
 interface IAddress {
@@ -204,7 +204,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
         const response = await creatJobPost({
           data: mongoData,
           clerkId: userId,
-          createdBy: JSON?.parse(mongoUserId),
+          createdBy: mongoUserId,
           path: pathname
         });
 

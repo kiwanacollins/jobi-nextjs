@@ -10,14 +10,14 @@ import { getUserById } from '@/lib/actions/user.action';
 const EmployDashboardSubmitJobPage = () => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const { userId } = useAuth();
-  const [mongoUserId, setMongoUser] = useState(null);
+  const [mongoUserId, setMongoUser] = useState<string>() || '';
   const [error, setError] = useState(null);
   if (!userId) redirect('/sign-in');
 
   useEffect(() => {
     getUserById({ userId })
       .then((user) => {
-        setMongoUser(user._id);
+        setMongoUser(user._id.toString());
       })
       .catch((error) => {
         console.log(error);
@@ -25,7 +25,7 @@ const EmployDashboardSubmitJobPage = () => {
       });
   }, [userId]);
 
-  console.log(mongoUserId);
+  console.log(mongoUserId?.toString());
   return (
     <Wrapper>
       <div className="main-page-wrapper">
@@ -38,7 +38,7 @@ const EmployDashboardSubmitJobPage = () => {
 
         {/* submit job area start */}
         <SubmitJobArea
-          mongoUserId={JSON.stringify(mongoUserId)}
+          mongoUserId={mongoUserId?.toString()}
           setIsOpenSidebar={setIsOpenSidebar}
         />
         {/* submit job area end */}
