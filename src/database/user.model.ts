@@ -5,14 +5,14 @@ interface I_Links {
   github: string;
 }
 
-interface I_Address {
-  country: string;
-  city: string;
-  street: string;
-  zip: string;
-  state: string;
-  mapLocation?: string;
-}
+// interface I_Address {
+//   country: string;
+//   city: string;
+//   street: string;
+//   zip: string;
+//   state: string;
+//   mapLocation?: string;
+// }
 
 export interface IUser extends Document {
   clerkId: string;
@@ -24,7 +24,7 @@ export interface IUser extends Document {
   bio?: string;
   picture: string;
   location?: string;
-  mediaLinks?: I_Links[];
+  mediaLinks?: I_Links;
   address: string;
   country: string;
   city: string;

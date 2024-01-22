@@ -175,8 +175,8 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <input
                   defaultValue={mongoUser?.name}
                   type="text"
-                  placeholder="Karim Uddin"
-                  {...register('name')}
+                  placeholder="You name"
+                  {...(register('name') as const)}
                   name="name"
                 />
                 <ErrorMsg msg={errors?.name?.message} />
