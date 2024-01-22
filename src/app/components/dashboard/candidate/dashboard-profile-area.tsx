@@ -43,7 +43,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
   const resolver: Resolver<IUser> = async (values) => {
     return {
       values: values.name ? values : {},
-      defaultValues: {
+      defaultValue: {
         name: mongoUser?.name,
         username: mongoUser?.username,
         bio: mongoUser?.bio,
@@ -69,10 +69,6 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
             address: {
               type: 'required',
               message: 'Address is required'
-            },
-            mapLocation: {
-              type: 'required',
-              message: 'Map Location is required'
             },
             mediaLinks: {
               linkedin: {
@@ -203,6 +199,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                   className="size-lg"
                   placeholder="Write something interesting about you...."
                   {...register('bio')}
+                  defaultValue={mongoUser?.bio}
                   name="bio"
                 ></textarea>
                 <div className="alert-text">
@@ -219,6 +216,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <label htmlFor="">LinkedIn</label>
                 <input
                   type="text"
+                  defaultValue={mongoUser?.mediaLinks?.linkedin}
                   placeholder="ex. linkedin.com/in/jamesbrower"
                   {...register('mediaLinks.linkedin')}
                 />
@@ -229,6 +227,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <label htmlFor="">Github</label>
                 <input
                   type="text"
+                  defaultValue={mongoUser?.mediaLinks?.github}
                   placeholder="ex. github.com/jamesbrower"
                   {...register('mediaLinks.github')}
                 />
@@ -249,6 +248,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                       type="text"
                       placeholder="Cowrasta, Chandana, Gazipur Sadar"
                       {...register('address')}
+                      defaultValue={mongoUser?.address}
                       name="address"
                     />
                     <ErrorMsg msg={errors?.address?.message} />
@@ -273,6 +273,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                       type="text"
                       {...register('zip')}
                       placeholder="1708"
+                      defaultValue={mongoUser?.zip}
                       name="zip"
                     />
                   </div>
@@ -291,6 +292,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                         type="text"
                         placeholder="XC23+6XC, Moiran, N105"
                         {...register('mapLocation')}
+                        defaultValue={mongoUser?.mapLocation}
                         name="mapLocation"
                       />
                       <ErrorMsg msg={errors?.mapLocation?.message} />
