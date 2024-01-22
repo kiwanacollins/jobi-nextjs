@@ -29,11 +29,11 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
   if (!userId) redirect('/sign-in');
 
   // resolver
-  const resolver: Resolver<IUser> = async (values) => {
+  const resolver: Resolver = async (values) => {
     return {
-      values: values.name ? values : {},
+      values: values.name ? values : '',
       defaultValues: {
-        name: mongoUser?.name as string,
+        name: mongoUser?.name,
         username: mongoUser?.username,
         bio: mongoUser?.bio,
         mediaLinks: mongoUser?.mediaLinks,
@@ -173,38 +173,38 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Full Name*</label>
                 <input
-                  defaultValue={mongoUser?.name as string}
+                  defaultValue={mongoUser?.name}
                   type="text"
                   placeholder="You name"
-                  {...(register('name') as string)}
+                  {...register('name')}
                   name="name"
                 />
-                <ErrorMsg msg={errors?.name?.message} />
+                <ErrorMsg msg={errors?.name?.message as string} />
               </div>
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">username</label>
                 <input
-                  defaultValue={mongoUser?.username as string}
+                  defaultValue={mongoUser?.username}
                   type="text"
                   placeholder="username"
-                  {...(register('username') as string)}
+                  {...register('username')}
                   name="username"
                 />
-                <ErrorMsg msg={errors?.username?.message} />
+                <ErrorMsg msg={errors?.username?.message as string} />
               </div>
               <div className="dash-input-wrapper">
                 <label htmlFor="">Bio*</label>
                 <textarea
                   className="size-lg"
                   placeholder="Write something interesting about you...."
-                  {...(register('bio') as string)}
-                  defaultValue={mongoUser?.bio as string}
+                  defaultValue={mongoUser?.bio}
+                  {...register('bio')}
                   name="bio"
                 ></textarea>
                 <div className="alert-text">
                   Brief description for your profile. URLs are hyperlinked.
                 </div>
-                <ErrorMsg msg={errors.bio?.message} />
+                <ErrorMsg msg={errors.bio?.message as string} />
               </div>
             </div>
 
@@ -215,22 +215,22 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <label htmlFor="">LinkedIn</label>
                 <input
                   type="text"
-                  defaultValue={mongoUser?.mediaLinks?.linkedin as string}
+                  defaultValue={mongoUser?.mediaLinks?.linkedin}
                   placeholder="Ex. linkedin.com/in/jamesbrower"
-                  {...(register('mediaLinks.linkedin') as string)}
+                  {...register('mediaLinks.linkedin')}
                 />
-                <ErrorMsg msg={errors.mediaLinks?.linkedin?.message} />
+                <ErrorMsg msg={errors.mediaLinks?.message as string} />
               </div>
 
               <div className="dash-input-wrapper mb-20">
                 <label htmlFor="">Github</label>
                 <input
                   type="text"
-                  defaultValue={mongoUser?.mediaLinks?.github as string}
+                  defaultValue={mongoUser?.mediaLinks?.github}
                   placeholder="ex. github.com/jamesbrower"
-                  {...(register('mediaLinks.github') as string)}
+                  {...register('mediaLinks.github')}
                 />
-                <ErrorMsg msg={errors.mediaLinks?.github?.message} />
+                <ErrorMsg msg={errors.mediaLinks?.message as string} />
               </div>
               <a href="#/" className="dash-btn-one">
                 <i className="bi bi-plus"></i> Add more link
@@ -246,11 +246,11 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                     <input
                       type="text"
                       placeholder="Cowrasta, Chandana, Gazipur Sadar"
-                      {...(register('address') as string)}
-                      defaultValue={mongoUser?.address as string}
+                      defaultValue={mongoUser?.address}
+                      {...register('address')}
                       name="address"
                     />
-                    <ErrorMsg msg={errors?.address?.message} />
+                    <ErrorMsg msg={errors?.address?.message as string} />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -294,7 +294,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                         defaultValue={mongoUser?.mapLocation}
                         name="mapLocation"
                       />
-                      <ErrorMsg msg={errors?.mapLocation?.message} />
+                      <ErrorMsg msg={errors?.mapLocation?.message as string} />
                       <button className="location-pin tran3s">
                         <Image
                           src={search}
