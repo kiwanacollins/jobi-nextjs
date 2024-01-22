@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { IJobType } from '@/types/job-data-type';
 import job_img_1 from '@/assets/images/logo/media_22.png';
 import job_img_2 from '@/assets/images/logo/media_23.png';

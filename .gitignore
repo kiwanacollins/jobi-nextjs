@@ -5,6 +5,7 @@ node_modules
 /node_modules
 /.pnp
 .pnp.js
+.eslintrc.json
 
 # testing
 /coverage
@@ -19,6 +20,8 @@ node_modules
 # misc
 .DS_Store
 *.pem
+
+
 
 # debug
 npm-debug.log*

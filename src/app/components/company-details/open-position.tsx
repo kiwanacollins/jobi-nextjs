@@ -1,9 +1,13 @@
-import React from "react";
-import job_data from "@/data/job-data";
-import ListItemTwo from "../jobs/list/list-item-2";
+/* eslint-disable camelcase */
+import React from 'react';
+// import job_data from '@/data/job-data';
+import ListItemTwo from '../jobs/list/list-item-2';
+import { getJobPosts } from '@/lib/actions/job.action';
 
-const OpenPosition = () => {
-  const job_items = job_data.slice(0, 4);
+const OpenPosition = async () => {
+  // const job_items = job_data.slice(0, 4);
+  const { jobs } = await getJobPosts();
+  const job_items = jobs.slice(0, 4);
   return (
     <section className="company-open-position pt-80 lg-pt-60 pb-100 lg-pb-60">
       <div className="container">

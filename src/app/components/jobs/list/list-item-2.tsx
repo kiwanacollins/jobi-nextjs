@@ -1,8 +1,9 @@
+/* eslint-disable camelcase */
 'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IJobType } from '@/types/job-data-type';
+// import { IJobType } from '@/types/job-data-type';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { add_to_wishlist } from '@/redux/features/wishlist';
 import { IJobData } from '@/database/job.model';

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
@@ -58,20 +59,13 @@ export async function POST(req: Request) {
 
   if (eventType === 'user.created') {
     // Do something with the user created event
-    const {
-      id,
-      email_addresses,
-      image_url,
-      first_name,
-      last_name,
-      username,
-      private_metadata
-    } = evt.data;
+    const { id, email_addresses, image_url, first_name, last_name, username } =
+      evt.data;
 
     // Todo: create a user in your database
     const mongoUser = await createUser({
       clerkId: id,
-      username: username,
+      username,
       name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
       email: email_addresses[0].email_address,
       picture: image_url,
@@ -81,41 +75,29 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: mongoUser });
   }
 
+  // Todo: update the user in your database
   if (eventType === 'user.updated') {
     const { id, email_addresses, image_url, username, first_name, last_name } =
       evt.data;
 
-    // Todo: update the user in your database
-    if (eventType === 'user.updated') {
-      const {
-        id,
-        email_addresses,
-        image_url,
-        username,
-        first_name,
-        last_name
-      } = evt.data;
+    // Create a new user in your database
+    const mongoUser = await updateUser({
+      clerkId: id,
+      updateData: {
+        name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
+        username: username!,
+        email: email_addresses[0].email_address,
+        picture: image_url
+      },
+      path: `/dashboard/candidate-dashboard/profile`
+    });
 
-      // Create a new user in your database
-      const mongoUser = await updateUser({
-        clerkId: id,
-        updateData: {
-          name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
-          username: username!,
-          email: email_addresses[0].email_address,
-          picture: image_url
-        },
-        path: `/dashboard/candidate-dashboard/profile`
-      });
-
-      return NextResponse.json({ message: 'OK', user: mongoUser });
-    }
+    return NextResponse.json({ message: 'OK', user: mongoUser });
   }
 
+  // todo: delete the user in your database
   if (eventType === 'user.deleted') {
-    const { id } = evt.data;
-
-    // todo: delete the user in your database
+    // const { id } = evt.data;
   }
 
   //   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
