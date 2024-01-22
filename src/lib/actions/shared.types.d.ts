@@ -1,5 +1,5 @@
-import { IJobData } from '@/database/job.model';
 import { IUser } from '@/mongodb';
+import { Schema } from 'mongoose';
 
 export interface CreateUserParams {
   clerkId: string;
