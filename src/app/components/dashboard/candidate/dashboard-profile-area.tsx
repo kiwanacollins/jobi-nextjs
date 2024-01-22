@@ -131,8 +131,8 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
         path: pathname
       });
       notifySuccess('Profile updated successfully');
-    } catch (error) {
-      notifyError(error.message as string);
+    } catch (error: any) {
+      notifyError(error as string);
     } finally {
       setIsSubmitting(false);
     }
