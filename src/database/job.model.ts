@@ -1,12 +1,12 @@
 import { Schema, models, model, Document } from 'mongoose';
 
-interface IAddress {
-  address?: string;
-  country?: string;
-  city?: string;
-  state?: string;
-  mapLocation?: string;
-}
+// interface IAddress {
+//   address?: string;
+//   country?: string;
+//   city?: string;
+//   state?: string;
+//   mapLocation?: string;
+// }
 export interface IJobData extends Document {
   title: string;
   overview: string;
