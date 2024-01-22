@@ -32,9 +32,8 @@ interface IAddress {
 export interface IFormJobData {
   title: string;
   overview: string;
-  jobType: string;
-  salary: string;
-
+  duration: string;
+  salary_duration: string;
   category: string;
   location: string;
   address?: {
@@ -48,6 +47,7 @@ export interface IFormJobData {
   city: string;
   state: string;
   mapLocation?: string;
+
   tags?: string[];
   experience: string;
   minSalary?: string;
@@ -70,8 +70,8 @@ const resolver: Resolver<IFormJobData> = async (values) => {
           title: { type: 'required', message: 'Title is required.' },
           overview: { type: 'required', message: 'Overview is required.' },
           category: { type: 'required', message: 'Category is required.' },
-          jobType: { type: 'required', message: 'jobType is required.' },
-          salary: { type: 'required', message: 'Salary is required.' },
+          duration: { type: 'required', message: 'Duration is required.' },
+          salary_duration: { type: 'required', message: 'Salary is required.' },
 
           // minSalary: { type: 'required', message: 'Min is required.' },
           // maxSalary: { type: 'required', message: 'Max is required.' },
@@ -135,11 +135,11 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   };
   const handleJobType = (item: { value: string; label: string }) => {
     const { value } = item;
-    setValue('jobType', value);
+    setValue('duration', value);
   };
   const handleSalary = (item: { value: string; label: string }) => {
     const { value } = item;
-    setValue('salary', value);
+    setValue('salary_duration', value);
   };
 
   // on submit
@@ -154,9 +154,9 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
       minSalary,
       maxSalary,
       salaryRange,
-      salary,
+      salary_duration,
       tags,
-      jobType,
+      duration,
       location,
       experience,
       industry,
@@ -185,12 +185,14 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
       english_fluency,
       overview,
       salaryRange,
-      salary,
+      salary_duration,
       experience,
       tags,
-      jobType,
+      duration,
       location,
       address,
+      minSalary,
+      maxSalary,
       country,
       city,
       state,
@@ -290,7 +292,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
                       ]}
                       defaultCurrent={0}
                       onChange={(item) => handleJobType(item)}
-                      name="jobType"
+                      name="duration"
                     />
                   </div>
                 </div>
@@ -304,7 +306,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
                       ]}
                       defaultCurrent={0}
                       onChange={(item: any) => handleSalary(item)}
-                      name="salary"
+                      name="salary_duration"
                     />
                   </div>
                 </div>

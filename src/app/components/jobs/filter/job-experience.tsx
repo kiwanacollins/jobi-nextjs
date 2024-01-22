@@ -1,9 +1,13 @@
-import React from "react";
-import job_data from "@/data/job-data";
-import { setExperience } from "@/redux/features/filterSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import React from 'react';
+import job_data from '@/data/job-data';
+import { setExperience } from '@/redux/features/filterSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
 
-export function JobExperienceItems({showLength = true}: {showLength?: boolean}) {
+export function JobExperienceItems({
+  showLength = true
+}: {
+  showLength?: boolean;
+}) {
   const uniqueExperiences = [...new Set(job_data.map((job) => job.experience))];
   const { experience } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();

@@ -10,9 +10,8 @@ interface IAddress {
 export interface IJobData extends Document {
   title: string;
   overview: string;
-  jobType: string;
-  salary: string;
-
+  duration: string;
+  salary_duration: string;
   category: string;
   location: string;
   address?: {
@@ -33,15 +32,15 @@ export interface IJobData extends Document {
   industry: string;
   salaryRange: string;
   english_fluency: string;
-  createdBy?: Schema.Types.ObjectId;
+  createdBy?: Schema.Types.ObjectId | string;
   createAt?: Date;
 }
 
 const jobSchema = new Schema({
   title: { type: String, required: true },
   overview: { type: String, required: true },
-  jobType: { type: String, required: true },
-  salary: { type: String, required: true }, // Assuming salary is a number
+  duration: { type: String, required: true },
+  salary_duration: { type: String, required: true }, // Assuming salary is a number
   category: { type: [String], required: true },
   location: { type: String, required: true },
   address: {

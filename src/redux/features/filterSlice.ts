@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 // Define a type for the slice state
 interface IFilterState {
@@ -14,39 +14,39 @@ interface IFilterState {
 
 // Define the initial state using that type
 const initialState: IFilterState = {
-  location: "",
-  search_key: "",
-  job_type: "",
-  english_fluency: "",
+  location: '',
+  search_key: '',
+  job_type: '',
+  english_fluency: '',
   experience: [],
   category: [],
-  tags: [],
+  tags: []
 };
 
 export const filterSlice = createSlice({
-  name: "counter",
+  name: 'counter',
   initialState,
   reducers: {
     setLocation: (state, action: PayloadAction<string>) => {
       if (state.location === action.payload) {
-        state.location = "";
+        state.location = '';
       } else {
         state.location = action.payload;
       }
     },
     setJobType: (state, action: PayloadAction<string>) => {
       if (state.job_type === action.payload) {
-        state.job_type = "";
+        state.job_type = '';
       } else {
         state.job_type = action.payload;
       }
     },
     setSearchKey: (state, action: PayloadAction<string>) => {
-      state.search_key = action.payload
+      state.search_key = action.payload;
     },
     setEnglishFluency: (state, action: PayloadAction<string>) => {
       if (state.english_fluency === action.payload) {
-        state.english_fluency = "";
+        state.english_fluency = '';
       } else {
         state.english_fluency = action.payload;
       }
@@ -73,14 +73,14 @@ export const filterSlice = createSlice({
       }
     },
     resetFilter: (state) => {
-      state.location = "";
-      state.job_type = "";
-      state.english_fluency = "";
+      state.location = '';
+      state.job_type = '';
+      state.english_fluency = '';
       state.category = [];
       state.tags = [];
       state.experience = [];
-    },
-  },
+    }
+  }
 });
 
 export const {
@@ -91,7 +91,7 @@ export const {
   setTags,
   resetFilter,
   setEnglishFluency,
-  setSearchKey,
+  setSearchKey
 } = filterSlice.actions;
 
 export default filterSlice.reducer;

@@ -15,15 +15,17 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       english_fluency,
       overview,
       salaryRange,
-      salary,
+      salary_duration,
       experience,
       tags,
-      jobType,
+      duration,
       location,
       address,
       city,
       state,
       country,
+      minSalary,
+      maxSalary,
       industry
     } = data;
 
@@ -35,22 +37,35 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       english_fluency,
       overview,
       salaryRange,
-      salary,
+      salary_duration,
       experience,
-      jobType,
+      duration,
       tags,
       location,
       address,
       city,
       state,
       country,
-
+      minSalary,
+      maxSalary,
       industry
     });
 
     revalidatePath(path);
 
     return { status: 'ok', newJob };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// get all job posts
+export const getJobPosts = async () => {
+  try {
+    connectToDatabase();
+    const jobs = await Job.find({});
+    return { status: 'ok', jobs };
   } catch (error) {
     console.log(error);
     throw error;

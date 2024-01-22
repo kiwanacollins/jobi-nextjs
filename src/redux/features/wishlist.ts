@@ -2,11 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getLocalStorage, setLocalStorage } from '@/utils/localstorage';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { IJobType } from '@/types/job-data-type';
+import { IJobData } from '@/database/job.model';
 
 // Check if the cookie exists
 const wishlistData = getLocalStorage('wishlist_items');
 let initialWishlistState: {
-  wishlist: IJobType[];
+  wishlist: IJobData[];
 } = {
   wishlist: []
 };
@@ -26,24 +27,26 @@ export const wishlistSlice = createSlice({
   name: 'wishlist',
   initialState: initialWishlistState,
   reducers: {
-    add_to_wishlist: (state, { payload }: { payload: IJobType }) => {
+    add_to_wishlist: (state, { payload }: { payload: IJobData }) => {
       const isExist = state.wishlist.some(
-        (item: IJobType) => item.id === payload.id
+        (item: IJobData) => item.id === payload.id
       );
       if (!isExist) {
+        // !Error: typescript type check for payload
+        //@ts-ignore
         state.wishlist.push(payload);
         notifySuccess(`${payload.title} added to wishlist`);
       } else {
         state.wishlist = state.wishlist.filter(
-          (item: IJobType) => item.id !== payload.id
+          (item: IJobData) => item.id !== payload.id
         );
         notifyError(`${payload.title} removed from wishlist`);
       }
       setLocalStorage('wishlist_items', state.wishlist);
     },
-    remove_wishlist_product: (state, { payload }: { payload: IJobType }) => {
+    remove_wishlist_product: (state, { payload }: { payload: IJobData }) => {
       state.wishlist = state.wishlist.filter(
-        (item: IJobType) => item.id !== payload.id
+        (item: IJobData) => item.id !== payload.id
       );
       notifyError(`${payload.title} removed from wishlist`);
       setLocalStorage('wishlist_items', state.wishlist);
