@@ -28,22 +28,11 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
   const [error, setError] = useState(null);
   if (!userId) redirect('/sign-in');
 
-  useEffect(() => {
-    getUserById({ userId })
-      .then((user) => {
-        setMongoUser(user);
-      })
-      .catch((error) => {
-        console.log(error);
-        setError(error);
-      });
-  }, [userId]);
-
   // resolver
   const resolver: Resolver<IUser> = async (values) => {
     return {
       values: values.name ? values : {},
-      defaultValue: {
+      defaultValues: {
         name: mongoUser?.name,
         username: mongoUser?.username,
         bio: mongoUser?.bio,
@@ -109,6 +98,18 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
     handleSubmit,
     formState: { errors }
   } = methods;
+
+  useEffect(() => {
+    getUserById({ userId })
+      .then((user) => {
+        setMongoUser(user);
+        reset(user);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      });
+  }, [userId, reset]);
 
   const onSubmit = async (value: any) => {
     setIsSubmitting(true);
