@@ -1,7 +1,6 @@
 import React from 'react';
 import NiceSelect from '@/ui/nice-select';
 import { useFormContext } from 'react-hook-form';
-import { IFormJobData } from '../employ/submit-job-area';
 
 const StateSelect = () => {
   const { setValue } = useFormContext();

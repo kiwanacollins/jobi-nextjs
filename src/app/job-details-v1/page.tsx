@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { Metadata } from 'next';
 import Wrapper from '@/layouts/wrapper';

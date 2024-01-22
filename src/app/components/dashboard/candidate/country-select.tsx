@@ -8,7 +8,6 @@ const CountrySelect = () => {
   const handleCountry = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('country', value);
-    console.log(value);
   };
   return (
     <NiceSelect

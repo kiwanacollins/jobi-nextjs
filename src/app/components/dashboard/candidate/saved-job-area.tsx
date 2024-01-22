@@ -1,17 +1,18 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import DashboardHeader from "./dashboard-header";
-import ShortSelect from "../../common/short-select";
-import job_data from "@/data/job-data";
-import ActionDropdown from "./action-dropdown";
+/* eslint-disable camelcase */
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import DashboardHeader from './dashboard-header';
+import ShortSelect from '../../common/short-select';
+import job_data from '@/data/job-data';
+import ActionDropdown from './action-dropdown';
 
-// props type 
+// props type
 type IProps = {
-  setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
-}
+  setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const SavedJobArea = ({setIsOpenSidebar}:IProps) => {
+const SavedJobArea = ({ setIsOpenSidebar }: IProps) => {
   const job_items = job_data.slice(0, 4);
   return (
     <div className="dashboard-body">
@@ -50,15 +51,16 @@ const SavedJobArea = ({setIsOpenSidebar}:IProps) => {
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-4 col-sm-6 ms-auto">
-                  <Link href={`/job-details-v1/${j.id}`}
+                  <Link
+                    href={`/job-details-v1/${j.id}`}
                     className={`job-duration fw-500 ${
-                      j.duration === "Part time" ? "part-time" : ""
+                      j.duration === 'Part time' ? 'part-time' : ''
                     }`}
                   >
                     {j.duration}
                   </Link>
                   <div className="job-salary">
-                    <span className="fw-500 text-dark">${j.salary}</span> /{" "}
+                    <span className="fw-500 text-dark">${j.salary}</span> /{' '}
                     {j.salary_duration} . {j.experience}
                   </div>
                 </div>
@@ -70,7 +72,7 @@ const SavedJobArea = ({setIsOpenSidebar}:IProps) => {
                     {j.category.map((c, i) => (
                       <a key={i} href="#">
                         {c}
-                        {i < j.category.length - 1 && ", "}
+                        {i < j.category.length - 1 && ', '}
                       </a>
                     ))}
                   </div>
@@ -86,7 +88,7 @@ const SavedJobArea = ({setIsOpenSidebar}:IProps) => {
                       <span></span>
                     </button>
                     {/* action dropdown start */}
-                    <ActionDropdown/>
+                    <ActionDropdown />
                     {/* action dropdown end */}
                   </div>
                 </div>

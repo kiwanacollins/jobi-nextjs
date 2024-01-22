@@ -9,11 +9,11 @@ import StateSelect from './state-select';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { useAuth } from '@clerk/nextjs';
 import { getUserById, updateUser } from '@/lib/actions/user.action';
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
-import { userSchema } from '@/utils/validation';
+
 import ErrorMsg from '../../common/error-msg';
-import { usePathname } from 'next/navigation';
+
 import { notifyError, notifySuccess } from '@/utils/toast';
 
 // props type
@@ -25,7 +25,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
   const { userId } = useAuth();
   const pathname = usePathname();
   const [mongoUser, setMongoUser] = useState<IUser>();
-  const [error, setError] = useState(null);
+
   if (!userId) redirect('/sign-in');
 
   // resolver
@@ -106,8 +106,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
         reset(user);
       })
       .catch((error) => {
-        console.log(error);
-        setError(error);
+        throw new Error(error.message);
       });
   }, [userId, reset]);
 
@@ -133,8 +132,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
       });
       notifySuccess('Profile updated successfully');
     } catch (error) {
-      console.log('onSubmit  error:', error);
-      notifyError(error);
+      notifyError(error.message as string);
     } finally {
       setIsSubmitting(false);
     }
