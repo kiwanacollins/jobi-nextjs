@@ -1,18 +1,38 @@
 import { Schema, models, model, Document } from 'mongoose';
 
+interface I_Links {
+  linkedin: string;
+  github: string;
+}
+
+interface I_Address {
+  country: string;
+  city: string;
+  street: string;
+  zip: string;
+  state: string;
+  mapLocation?: string;
+}
+
 export interface IUser extends Document {
   clerkId: string;
   name: string;
-  username?: string;
+  username: string;
   email: string;
   password?: string;
   userRole: 'candidate' | 'employee';
   bio?: string;
   picture: string;
   location?: string;
-  portfolioWebsite?: string;
-  reputation?: number;
-  saved: Schema.Types.ObjectId[];
+  mediaLinks?: I_Links[];
+  address: string;
+  country: string;
+  city: string;
+  street: string;
+  zip: string;
+  state: string;
+  mapLocation?: string;
+  saved?: Schema.Types.ObjectId[];
   joinedAt: Date;
 }
 
@@ -30,8 +50,17 @@ const UserSchema = new Schema({
   bio: { type: String },
   picture: { type: String, required: true },
   location: { type: String },
-  portfolioWebsite: { type: String },
-  reputation: { type: Number, default: 0 },
+  mediaLinks: {
+    linkedin: { type: String },
+    github: { type: String }
+  },
+  address: { type: String, required: true },
+  country: { type: String, required: true },
+  city: { type: String, required: true },
+  street: { type: String, required: true },
+  zip: { type: String, required: true },
+  state: { type: String, required: true },
+  mapLocation: { type: String },
   saved: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   joinedAt: { type: Date, default: Date.now }
 });

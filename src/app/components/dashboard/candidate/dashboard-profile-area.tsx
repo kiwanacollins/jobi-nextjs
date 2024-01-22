@@ -1,21 +1,147 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import avatar from '@/assets/dashboard/images/avatar_02.jpg';
 import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import DashboardHeader from './dashboard-header';
 import CountrySelect from './country-select';
 import CitySelect from './city-select';
 import StateSelect from './state-select';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Resolver } from 'react-hook-form';
+import { useAuth } from '@clerk/nextjs';
+import { getUserById, updateUser } from '@/lib/actions/user.action';
+import { redirect } from 'next/navigation';
+import { IUser } from '@/database/user.model';
+import { userSchema } from '@/utils/validation';
+import ErrorMsg from '../../common/error-msg';
+import { usePathname } from 'next/navigation';
+import { notifyError, notifySuccess } from '@/utils/toast';
 
 // props type
 type IProps = {
   setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 };
 const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
-  const methods = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { userId } = useAuth();
+  const pathname = usePathname();
+  const [mongoUser, setMongoUser] = useState<IUser>();
+  const [error, setError] = useState(null);
+  if (!userId) redirect('/sign-in');
+
+  useEffect(() => {
+    getUserById({ userId })
+      .then((user) => {
+        setMongoUser(user);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error);
+      });
+  }, [userId]);
+
+  // resolver
+  const resolver: Resolver<IUser> = async (values) => {
+    return {
+      values: values.name ? values : {},
+      defaultValues: {
+        name: mongoUser?.name,
+        username: mongoUser?.username,
+        bio: mongoUser?.bio,
+        mediaLinks: mongoUser?.mediaLinks,
+        address: mongoUser?.address,
+        country: mongoUser?.country,
+        city: mongoUser?.city,
+        zip: mongoUser?.zip,
+        state: mongoUser?.state,
+        mapLocation: mongoUser?.mapLocation,
+        location: mongoUser?.location
+      },
+      errors: !values.name
+        ? {
+            name: {
+              type: 'required',
+              message: 'Name is required'
+            },
+            bio: {
+              type: 'required',
+              message: 'Bio is required'
+            },
+            address: {
+              type: 'required',
+              message: 'Address is required'
+            },
+            mapLocation: {
+              type: 'required',
+              message: 'Map Location is required'
+            },
+            mediaLinks: {
+              linkedin: {
+                type: 'required',
+                message: 'Linkedin is required'
+              },
+              github: {
+                type: 'required',
+                message: 'Github is required'
+              }
+            },
+            country: {
+              type: 'required',
+              message: 'Country is required'
+            },
+            city: {
+              type: 'required',
+              message: 'City is required'
+            },
+            zip: {
+              type: 'required',
+              message: 'Zip is required'
+            },
+            state: {
+              type: 'required',
+              message: 'State is required'
+            }
+          }
+        : {}
+    };
+  };
+
+  const methods = useForm({ resolver });
+
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = methods;
+
+  const onSubmit = async (value: any) => {
+    setIsSubmitting(true);
+    try {
+      console.log(value);
+      await updateUser({
+        clerkId: userId,
+        updateData: {
+          name: value?.name,
+          bio: value.bio,
+          mediaLinks: value.mediaLinks,
+          address: value.address,
+          country: value.country,
+          city: value.city,
+          zip: value.zip,
+          state: value.state,
+          mapLocation: value.mapLocation,
+          location: value.location
+        },
+        path: pathname
+      });
+      notifySuccess('Profile updated successfully');
+    } catch (error) {
+      console.log('onSubmit  error:', error);
+      notifyError(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className="dashboard-body">
       <div className="position-relative">
@@ -26,14 +152,18 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
         <h2 className="main-title">My Profile</h2>
 
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="bg-white card-box border-20">
               <div className="user-avatar-setting d-flex align-items-center mb-30">
-                <Image
-                  src={avatar}
-                  alt="avatar"
-                  className="lazy-img user-img"
-                />
+                {mongoUser?.picture && (
+                  <Image
+                    src={mongoUser?.picture as string}
+                    alt="avatar"
+                    height={80}
+                    width={80}
+                    className="lazy-img user-img"
+                  />
+                )}
                 <div className="upload-btn position-relative tran3s ms-4 me-3">
                   Upload new photo
                   <input
@@ -47,17 +177,38 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
               </div>
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Full Name*</label>
-                <input type="text" placeholder="Md James Brower" />
+                <input
+                  defaultValue={mongoUser?.name}
+                  type="text"
+                  placeholder="Karim Uddin"
+                  {...register('name')}
+                  name="name"
+                />
+                <ErrorMsg msg={errors?.name?.message} />
+              </div>
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">username</label>
+                <input
+                  defaultValue={mongoUser?.username}
+                  type="text"
+                  placeholder="Karim Uddin"
+                  {...register('username')}
+                  name="username"
+                />
+                <ErrorMsg msg={errors?.username?.message} />
               </div>
               <div className="dash-input-wrapper">
                 <label htmlFor="">Bio*</label>
                 <textarea
                   className="size-lg"
                   placeholder="Write something interesting about you...."
+                  {...register('bio')}
+                  name="bio"
                 ></textarea>
                 <div className="alert-text">
                   Brief description for your profile. URLs are hyperlinked.
                 </div>
+                <ErrorMsg msg={errors.bio?.message} />
               </div>
             </div>
 
@@ -65,14 +216,25 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
               <h4 className="dash-title-three">Social Media</h4>
 
               <div className="dash-input-wrapper mb-20">
-                <label htmlFor="">Network 1</label>
-                <input type="text" placeholder="#" />
+                <label htmlFor="">LinkedIn</label>
+                <input
+                  type="text"
+                  placeholder="ex. linkedin.com/in/jamesbrower"
+                  {...register('mediaLinks.linkedin')}
+                />
+                <ErrorMsg msg={errors.mediaLinks?.linkedin?.message} />
               </div>
+
               <div className="dash-input-wrapper mb-20">
-                <label htmlFor="">Network 2</label>
-                <input type="text" placeholder="#" />
+                <label htmlFor="">Github</label>
+                <input
+                  type="text"
+                  placeholder="ex. github.com/jamesbrower"
+                  {...register('mediaLinks.github')}
+                />
+                <ErrorMsg msg={errors.mediaLinks?.github?.message} />
               </div>
-              <a href="#" className="dash-btn-one">
+              <a href="#/" className="dash-btn-one">
                 <i className="bi bi-plus"></i> Add more link
               </a>
             </div>
@@ -86,7 +248,10 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                     <input
                       type="text"
                       placeholder="Cowrasta, Chandana, Gazipur Sadar"
+                      {...register('address')}
+                      name="address"
                     />
+                    <ErrorMsg msg={errors?.address?.message} />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -104,7 +269,12 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <div className="col-lg-3">
                   <div className="dash-input-wrapper mb-25">
                     <label htmlFor="">Zip Code*</label>
-                    <input type="number" placeholder="1708" />
+                    <input
+                      type="text"
+                      {...register('zip')}
+                      placeholder="1708"
+                      name="zip"
+                    />
                   </div>
                 </div>
                 <div className="col-lg-3">
@@ -117,7 +287,13 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                   <div className="dash-input-wrapper mb-25">
                     <label htmlFor="">Map Location*</label>
                     <div className="position-relative">
-                      <input type="text" placeholder="XC23+6XC, Moiran, N105" />
+                      <input
+                        type="text"
+                        placeholder="XC23+6XC, Moiran, N105"
+                        {...register('mapLocation')}
+                        name="mapLocation"
+                      />
+                      <ErrorMsg msg={errors?.mapLocation?.message} />
                       <button className="location-pin tran3s">
                         <Image
                           src={search}
@@ -140,12 +316,19 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
             </div>
 
             <div className="button-group d-inline-flex align-items-center mt-30">
-              <a href="#" className="dash-btn-two tran3s me-3">
-                Save
-              </a>
-              <a href="#" className="dash-cancel-btn tran3s">
+              <button
+                disabled={isSubmitting}
+                type="submit"
+                className="dash-btn-two tran3s me-3"
+              >
+                {isSubmitting ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                onClick={() => reset()}
+                className="dash-cancel-btn tran3s"
+              >
                 Cancel
-              </a>
+              </button>
             </div>
           </form>
         </FormProvider>

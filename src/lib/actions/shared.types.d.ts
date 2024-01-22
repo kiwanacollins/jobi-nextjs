@@ -1,4 +1,5 @@
 import { IJobData } from '@/database/job.model';
+import { IUser } from '@/mongodb';
 
 export interface CreateUserParams {
   clerkId: string;
@@ -13,5 +14,11 @@ export interface CreateJobParams {
   clerkId: string | null | undefined;
   createdBy: Schema.Types.ObjectId | IUser;
   data: any;
+  path: string;
+}
+
+export interface UpdateUserParams {
+  clerkId: string;
+  updateData: Partial<IUser>;
   path: string;
 }

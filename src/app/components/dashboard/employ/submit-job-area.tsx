@@ -104,7 +104,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
   }, [count]);
 
   // react hook form
-  const methods = useForm<IFormJobData>({ resolver });
+  const methods = useForm({ resolver });
 
   // react hook form
   const {

@@ -25,3 +25,32 @@ export const jobValidationSchema = Yup.object({
     .min(50, 'Overview must be at least 50 characters')
   // Not exposed to user input, but validated for consistency
 });
+
+export const userSchema = Yup.object({
+  name: Yup.string().required('Name is required'),
+  bio: Yup.string(),
+  picture: Yup.string(),
+  location: Yup.string(),
+  portfolioWebsite: Yup.string().url('Invalid URL'),
+  // address: Yup.object({
+  //   address: Yup.string().required('Address is required'),
+  //   country: Yup.string().required('Country is required'),
+  //   city: Yup.string().required('City is required'),
+  //   street: Yup.string().required('Street is required'),
+  //   zip: Yup.string().required('Zip code is required'),
+  //   state: Yup.string().required('State is required'),
+  //   mapLocation: Yup.string()
+  // }),
+  address: Yup.string().required('Address is required'),
+  country: Yup.string().required('Country is required'),
+  city: Yup.string().required('City is required'),
+  street: Yup.string().required('Street is required'),
+  zip: Yup.string().required('Zip code is required'),
+  state: Yup.string().required('State is required'),
+  mapLocation: Yup.string(),
+
+  mediaLinks: Yup.object({
+    linkedin: Yup.string(),
+    github: Yup.string()
+  })
+});

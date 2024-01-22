@@ -4,10 +4,11 @@ import { useFormContext } from 'react-hook-form';
 import { IFormJobData } from '../employ/submit-job-area';
 
 const StateSelect = () => {
-  const { setValue } = useFormContext<IFormJobData>();
+  const { setValue } = useFormContext();
   const handleState = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('state', value);
+    console.log(value);
   };
   return (
     <NiceSelect

@@ -3,6 +3,5 @@ import { useState, useEffect } from 'react';
 
 export async function useMongoUser(userId: string) {
   const mongoUser = await getUserById({ userId });
-
   return mongoUser;
 }
