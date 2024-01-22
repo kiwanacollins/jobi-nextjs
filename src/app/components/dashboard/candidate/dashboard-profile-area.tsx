@@ -33,7 +33,7 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
     return {
       values: values.name ? values : {},
       defaultValues: {
-        name: mongoUser?.name,
+        name: mongoUser?.name as string,
         username: mongoUser?.username,
         bio: mongoUser?.bio,
         mediaLinks: mongoUser?.mediaLinks,
@@ -173,10 +173,10 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Full Name*</label>
                 <input
-                  defaultValue={mongoUser?.name}
+                  defaultValue={mongoUser?.name as string}
                   type="text"
                   placeholder="You name"
-                  {...(register('name') as const)}
+                  {...(register('name') as string)}
                   name="name"
                 />
                 <ErrorMsg msg={errors?.name?.message} />
@@ -184,10 +184,10 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">username</label>
                 <input
-                  defaultValue={mongoUser?.username}
+                  defaultValue={mongoUser?.username as string}
                   type="text"
-                  placeholder="Karim Uddin"
-                  {...register('username')}
+                  placeholder="username"
+                  {...(register('username') as string)}
                   name="username"
                 />
                 <ErrorMsg msg={errors?.username?.message} />
@@ -197,8 +197,8 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <textarea
                   className="size-lg"
                   placeholder="Write something interesting about you...."
-                  {...register('bio')}
-                  defaultValue={mongoUser?.bio}
+                  {...(register('bio') as string)}
+                  defaultValue={mongoUser?.bio as string}
                   name="bio"
                 ></textarea>
                 <div className="alert-text">
@@ -215,9 +215,9 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <label htmlFor="">LinkedIn</label>
                 <input
                   type="text"
-                  defaultValue={mongoUser?.mediaLinks?.linkedin}
-                  placeholder="ex. linkedin.com/in/jamesbrower"
-                  {...register('mediaLinks.linkedin')}
+                  defaultValue={mongoUser?.mediaLinks?.linkedin as string}
+                  placeholder="Ex. linkedin.com/in/jamesbrower"
+                  {...(register('mediaLinks.linkedin') as string)}
                 />
                 <ErrorMsg msg={errors.mediaLinks?.linkedin?.message} />
               </div>
@@ -226,9 +226,9 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                 <label htmlFor="">Github</label>
                 <input
                   type="text"
-                  defaultValue={mongoUser?.mediaLinks?.github}
+                  defaultValue={mongoUser?.mediaLinks?.github as string}
                   placeholder="ex. github.com/jamesbrower"
-                  {...register('mediaLinks.github')}
+                  {...(register('mediaLinks.github') as string)}
                 />
                 <ErrorMsg msg={errors.mediaLinks?.github?.message} />
               </div>
@@ -246,8 +246,8 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
                     <input
                       type="text"
                       placeholder="Cowrasta, Chandana, Gazipur Sadar"
-                      {...register('address')}
-                      defaultValue={mongoUser?.address}
+                      {...(register('address') as string)}
+                      defaultValue={mongoUser?.address as string}
                       name="address"
                     />
                     <ErrorMsg msg={errors?.address?.message} />
