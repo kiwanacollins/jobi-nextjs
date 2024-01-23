@@ -44,7 +44,7 @@ const NiceSelect = ({
 
   return (
     <div
-      className={`nice-select ${cls ? cls : ''} ${open && 'open'}`}
+      className={`nice-select ${cls || ''} ${open && 'open'}`}
       role="button"
       tabIndex={0}
       onClick={() => setOpen((prev) => !prev)}

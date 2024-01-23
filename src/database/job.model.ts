@@ -9,6 +9,7 @@ import { Schema, models, model, Document } from 'mongoose';
 // }
 export interface IJobData extends Document {
   title: string;
+  company?: string;
   overview: string;
   duration: string;
   salary_duration: string;
@@ -39,6 +40,7 @@ export interface IJobData extends Document {
 
 const jobSchema = new Schema({
   title: { type: String, required: true },
+  company: { type: String },
   overview: { type: String, required: true },
   duration: { type: String, required: true },
   salary_duration: { type: String, required: true }, // Assuming salary is a number
