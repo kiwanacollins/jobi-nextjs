@@ -214,7 +214,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
         });
 
         notifySuccess('Job post created successfully!');
-        router.push('/');
+        router.push('/jobs');
         reset();
         return response;
       }

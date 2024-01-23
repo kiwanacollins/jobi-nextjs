@@ -13,7 +13,6 @@ import { useSearchParams, useRouter } from 'next/navigation';
 
 const RegisterArea = () => {
   const searchParams = useSearchParams();
-
   const router = useRouter();
   const query = searchParams.get('userRole');
   const [userRole, setUserRole] = useState(query || 'candidate');
