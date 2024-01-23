@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import job_data from "@/data/job-data";
-import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { setCategory } from "@/redux/features/filterSlice";
+'use client';
+import React, { useEffect, useState } from 'react';
+// import job_data from '@/data/job-data';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { setCategory } from '@/redux/features/filterSlice';
+import { IJobData } from '@/database/job.model';
+import { getJobPosts } from '@/lib/actions/job.action';
 
 const JobCategory = () => {
+  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const uniqueCategories = [
-    ...new Set(job_data.flatMap((job) => job.category)),
+    ...new Set(allJobData.flatMap((job) => job.category))
   ];
   const [isShowMore, setIsShowMore] = useState(false);
   const { category } = useAppSelector((state) => state.filter);
@@ -14,6 +18,13 @@ const JobCategory = () => {
   const visibleCategories = isShowMore
     ? uniqueCategories
     : uniqueCategories.slice(0, 5);
+  useEffect(() => {
+    const getAllJobs = async () => {
+      const { jobs } = await getJobPosts();
+      setAllJobData(jobs);
+    };
+    getAllJobs();
+  }, []);
 
   return (
     <div className="main-body">
@@ -28,9 +39,9 @@ const JobCategory = () => {
               checked={category.includes(c)}
             />
             <label>
-              {c}{" "}
+              {c}{' '}
               <span>
-                {job_data.filter((job) => job.category.includes(c)).length}
+                {allJobData.filter((job) => job.category.includes(c)).length}
               </span>
             </label>
           </li>
@@ -40,7 +51,7 @@ const JobCategory = () => {
         onClick={() => setIsShowMore((prevState) => !prevState)}
         className="more-btn"
       >
-        <i className="bi bi-dash"></i> Show {isShowMore ? "Less" : "More"}
+        <i className="bi bi-dash"></i> Show {isShowMore ? 'Less' : 'More'}
       </div>
     </div>
   );

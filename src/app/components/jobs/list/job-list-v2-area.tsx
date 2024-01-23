@@ -1,59 +1,114 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import job_data from "@/data/job-data";
-import ListItemTwo from "./list-item-2";
-import { IJobType } from "@/types/job-data-type";
-import Pagination from "@/ui/pagination";
-import JobGridItem from "../grid/job-grid-item";
-import { useAppSelector } from "@/redux/hook";
-import slugify from "slugify";
-import NiceSelect from "@/ui/nice-select";
-import FilterAreaTwo from "../filter/job-filter-2/filter-area-2";
+'use client';
+import React, { useState, useEffect } from 'react';
+import job_data from '@/data/job-data';
+import ListItemTwo from './list-item-2';
+// import { IJobType } from '@/types/job-data-type';
+import Pagination from '@/ui/pagination';
+import JobGridItem from '../grid/job-grid-item';
+import { useAppSelector } from '@/redux/hook';
+import slugify from 'slugify';
+import NiceSelect from '@/ui/nice-select';
+import FilterAreaTwo from '../filter/job-filter-2/filter-area-2';
+import { IJobData } from '@/database/job.model';
+import { getJobPosts } from '@/lib/actions/job.action';
 
-const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number;grid_style?:boolean }) => {
-  let all_jobs = job_data;
+const JobListV2Area = ({
+  itemsPerPage,
+  grid_style = false
+}: {
+  itemsPerPage: number;
+  grid_style?: boolean;
+}) => {
+  const all_jobs = job_data;
   const maxPrice = job_data.reduce((max, job) => {
     return job.salary > max ? job.salary : max;
   }, 0);
-  const { category, experience, job_type, location,english_fluency,search_key } = useAppSelector(
-    (state) => state.filter
-  );
-  const [currentItems, setCurrentItems] = useState<IJobType[] | null>(null);
-  const [filterItems, setFilterItems] = useState<IJobType[]>([]);
+  const {
+    category,
+    experience,
+    job_type,
+    location,
+    english_fluency,
+    search_key
+  } = useAppSelector((state) => state.filter);
+  const [currentItems, setCurrentItems] = useState<IJobData[] | null>(null);
+  const [filterItems, setFilterItems] = useState<IJobData[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const [jobType, setJobType] = useState(grid_style ?"grid" : "list");
+  const [jobType, setJobType] = useState(grid_style ? 'grid' : 'list');
   const [priceValue, setPriceValue] = useState([0, maxPrice]);
-  const [shortValue, setShortValue] = useState("");
+  const [shortValue, setShortValue] = useState('');
+  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
+
+  useEffect(() => {
+    const getAllJobs = async () => {
+      const { jobs } = await getJobPosts();
+      setAllJobData(jobs);
+    };
+    getAllJobs();
+  }, [
+    itemOffset,
+    itemsPerPage,
+    category,
+    experience,
+    job_type,
+    location,
+    english_fluency,
+    allJobData,
+    priceValue,
+    shortValue,
+    search_key
+  ]);
 
   useEffect(() => {
     // Filter the job_data array based on the selected filters
-    let filteredData = all_jobs
-    .filter((item) => category.length !== 0 ? category.some((c) => item.category.includes(c)) : true)
-    .filter((item) =>
-      experience.length !== 0
-        ? experience.some((e) => item.experience.trim().toLowerCase() === e.trim().toLowerCase()) : true
-    )
-    .filter((e) => english_fluency ? e.english_fluency.toLowerCase() === english_fluency.toLowerCase() : true)
-    .filter((item) => search_key ? item.title.toLowerCase().includes(search_key.toLowerCase()) : true)
-    .filter((item) => (job_type ? item.duration === job_type : true))
-    .filter((l) => location ? slugify(l.location.split(',').join('-').toLowerCase(),'-') === location : true)
-    .filter((j) => j.salary >= priceValue[0] && j.salary <= priceValue[1]);
+    let filteredData = allJobData
+      .filter((item) =>
+        category.length !== 0
+          ? category.some((c) => item.category.includes(c))
+          : true
+      )
+      .filter((item) =>
+        experience.length !== 0
+          ? experience.some(
+              (e) =>
+                item.experience.trim().toLowerCase() === e.trim().toLowerCase()
+            )
+          : true
+      )
+      .filter((e) =>
+        english_fluency
+          ? e.english_fluency.toLowerCase() === english_fluency.toLowerCase()
+          : true
+      )
+      .filter((item) =>
+        search_key
+          ? item.title.toLowerCase().includes(search_key.toLowerCase())
+          : true
+      )
+      .filter((item) => (job_type ? item.duration === job_type : true))
+      .filter((l) =>
+        location
+          ? slugify(l.location.split(',').join('-').toLowerCase(), '-') ===
+            location
+          : true
+      )
+      .filter((j) => j.salary >= priceValue[0] && j.salary <= priceValue[1]);
 
-    if (shortValue === "price-low-to-high") {
+    if (shortValue === 'price-low-to-high') {
       filteredData = filteredData
         .slice()
         .sort((a, b) => Number(a.salary) - Number(b.salary));
     }
 
-    if (shortValue === "price-high-to-low") {
+    if (shortValue === 'price-high-to-low') {
       filteredData = filteredData
         .slice()
         .sort((a, b) => Number(b.salary) - Number(a.salary));
     }
 
     const endOffset = itemOffset + itemsPerPage;
-    setFilterItems(filteredData)
+    setFilterItems(filteredData);
     setCurrentItems(filteredData.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(filteredData.length / itemsPerPage));
   }, [
@@ -64,7 +119,7 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
     job_type,
     location,
     english_fluency,
-    all_jobs,
+    allJobData,
     priceValue,
     shortValue,
     search_key
@@ -95,7 +150,7 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
               <div className="job-post-item-wrapper">
                 <div className="upper-filter d-flex justify-content-between align-items-center mb-25 mt-70 lg-mt-40">
                   <div className="total-job-found">
-                    All <span className="text-dark">{all_jobs.length}</span>{" "}
+                    All <span className="text-dark">{all_jobs.length}</span>{' '}
                     jobs found
                   </div>
                   <div className="d-flex align-items-center">
@@ -103,9 +158,9 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
                       <div className="text-dark fw-500 me-2">Short:</div>
                       <NiceSelect
                         options={[
-                          { value: "", label: "Price Short" },
-                          { value: "price-low-to-high", label: "low to high" },
-                          { value: "price-high-to-low", label: "High to low" },
+                          { value: '', label: 'Price Short' },
+                          { value: 'price-low-to-high', label: 'low to high' },
+                          { value: 'price-high-to-low', label: 'High to low' }
                         ]}
                         defaultCurrent={0}
                         onChange={(item) => handleShort(item)}
@@ -113,17 +168,17 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
                       />
                     </div>
                     <button
-                      onClick={() => setJobType("list")}
+                      onClick={() => setJobType('list')}
                       className={`style-changer-btn text-center rounded-circle tran3s ms-2 list-btn 
-                       ${jobType === "grid" ? "active" : ""}`}
+                       ${jobType === 'grid' ? 'active' : ''}`}
                       title="Active List"
                     >
                       <i className="bi bi-list"></i>
                     </button>
                     <button
-                      onClick={() => setJobType("grid")}
+                      onClick={() => setJobType('grid')}
                       className={`style-changer-btn text-center rounded-circle tran3s ms-2 grid-btn 
-                      ${jobType === "list" ? "active" : ""}`}
+                      ${jobType === 'list' ? 'active' : ''}`}
                       title="Active Grid"
                     >
                       <i className="bi bi-grid"></i>
@@ -132,7 +187,7 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
                 </div>
 
                 <div
-                  className={`accordion-box list-style ${jobType === "list" ? "show" : ""}`}
+                  className={`accordion-box list-style ${jobType === 'list' ? 'show' : ''}`}
                 >
                   {currentItems &&
                     currentItems.map((job) => (
@@ -141,7 +196,7 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
                 </div>
 
                 <div
-                  className={`accordion-box grid-style ${jobType === "grid" ? "show" : ""}`}
+                  className={`accordion-box grid-style ${jobType === 'grid' ? 'show' : ''}`}
                 >
                   <div className="row">
                     {currentItems &&
@@ -157,16 +212,16 @@ const JobListV2Area = ({ itemsPerPage,grid_style=false }: { itemsPerPage: number
                 {currentItems && (
                   <div className="pt-30 lg-pt-20 d-sm-flex align-items-center justify-content-between">
                     <p className="m0 order-sm-last text-center text-sm-start xs-pb-20">
-                      Showing{" "}
-                      <span className="text-dark fw-500">{itemOffset + 1}</span>{" "}
-                      to{" "}
+                      Showing{' '}
+                      <span className="text-dark fw-500">{itemOffset + 1}</span>{' '}
+                      to{' '}
                       <span className="text-dark fw-500">
                         {Math.min(
                           itemOffset + itemsPerPage,
                           currentItems.length
                         )}
-                      </span>{" "}
-                      of{" "}
+                      </span>{' '}
+                      of{' '}
                       <span className="text-dark fw-500">
                         {filterItems.length}
                       </span>

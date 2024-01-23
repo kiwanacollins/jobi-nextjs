@@ -173,7 +173,7 @@ const JobListThree = ({
                 }`}
               >
                 {currentItems &&
-                  mongoData?.map((job) => (
+                  currentItems?.map((job) => (
                     <ListItemTwo key={job._id} item={job} />
                   ))}
               </div>
@@ -185,8 +185,8 @@ const JobListThree = ({
               >
                 <div className="row">
                   {currentItems &&
-                    currentItems.map((job) => (
-                      <div key={job.id} className="col-sm-6 mb-30">
+                    currentItems?.map((job) => (
+                      <div key={job._id} className="col-sm-6 mb-30">
                         <JobGridItem item={job} />
                       </div>
                     ))}
