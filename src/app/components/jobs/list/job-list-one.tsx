@@ -1,16 +1,18 @@
-import React from "react";
-import job_data from "@/data/job-data";
-import ListItem from "./list-item";
-import Link from "next/link";
+import React from 'react';
+// import job_data from '@/data/job-data';
+import ListItem from './list-item';
+import Link from 'next/link';
+import { getJobPosts } from '@/lib/actions/job.action';
 
-export function JobListItems({style_2=false}:{style_2?:boolean}) {
+export async function JobListItems({ style_2 = false }: { style_2?: boolean }) {
+  const { jobs } = await getJobPosts();
   return (
     <>
-      {job_data.slice(0, 5).map((item) => (
-        <ListItem key={item.id} item={item} style_2={style_2} />
+      {jobs.slice(0, 5).map((item) => (
+        <ListItem key={item._id} item={item} style_2={style_2} />
       ))}
     </>
-  )
+  );
 }
 
 const JobListOne = () => {
@@ -21,7 +23,9 @@ const JobListOne = () => {
           <div className="row justify-content-between align-items-center">
             <div className="col-lg-6">
               <div className="title-one">
-                <h2 className="text-dark wow fadeInUp" data-wow-delay="0.3s">New job listing</h2>
+                <h2 className="text-dark wow fadeInUp" data-wow-delay="0.3s">
+                  New job listing
+                </h2>
               </div>
             </div>
             <div className="col-lg-5">
@@ -48,7 +52,7 @@ const JobListOne = () => {
 
           <div className="text-center mt-80 lg-mt-30 wow fadeInUp">
             <div className="btn-eight fw-500">
-              Do you want to post a job for your company?{" "}
+              Do you want to post a job for your company?{' '}
               <span>We can help.</span> <Link href="/register">Click here</Link>
             </div>
           </div>

@@ -1,18 +1,18 @@
-"use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import job_data from "@/data/job-data";
-import shape from "@/assets/images/shape/shape_22.svg";
-import icon from "@/assets/images/icon/icon_19.svg";
+'use client';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import job_data from '@/data/job-data';
+import shape from '@/assets/images/shape/shape_22.svg';
+import icon from '@/assets/images/icon/icon_19.svg';
 
 // categories
 const categories: string[] = [
-  "All Categories",
-  "Design",
-  "Developer",
-  "Marketing",
-  "Business",
+  'All Categories',
+  'Design',
+  'Developer',
+  'Marketing',
+  'Business'
 ];
 // job items
 const jobs = job_data.slice(0, 5);
@@ -22,7 +22,7 @@ const JobListTwo = () => {
   // handle job item
   const handleJob = (value: string) => {
     setActiveCategory(value);
-    if (value === "All Categories") {
+    if (value === 'All Categories') {
       setJobItems(jobs);
     } else {
       const remaining_jobs = job_data.filter((j) => j.category.includes(value));
@@ -36,7 +36,9 @@ const JobListTwo = () => {
           <div className="row align-items-center">
             <div className="col-xl-6 col-lg-5">
               <div className="title-one text-center text-lg-start md-mb-20">
-                <h2 className="main-font wow fadeInUp" data-wow-delay="0.3s">New job listing</h2>
+                <h2 className="main-font wow fadeInUp" data-wow-delay="0.3s">
+                  New job listing
+                </h2>
               </div>
             </div>
             <div className="col-xl-6 col-lg-7">
@@ -45,7 +47,7 @@ const JobListTwo = () => {
                   <li
                     key={i}
                     onClick={() => handleJob(cate)}
-                    className={`${cate === activeCategory ? "is-checked" : ""}`}
+                    className={`${cate === activeCategory ? 'is-checked' : ''}`}
                   >
                     {cate}
                   </li>
@@ -71,25 +73,28 @@ const JobListTwo = () => {
                         alt="logo"
                         width={45}
                         height={45}
-                        style={{ objectFit: "contain" }}
+                        style={{ objectFit: 'contain' }}
                         className="lazy-img m-auto"
                       />
                     </Link>
-                    <Link href={`/job-details-v1/${item.id}`}
+                    <Link
+                      href={`/job-details-v1/${item.id}`}
                       className="save-btn text-center rounded-circle tran3s"
                       title="Save Job"
                     >
                       <i className="bi bi-bookmark-dash"></i>
                     </Link>
                     <div>
-                      <Link href={`/job-details-v1/${item.id}`}
+                      <Link
+                        href={`/job-details-v1/${item.id}`}
                         className="job-duration fw-500"
                       >
                         {item.duration}
                       </Link>
                     </div>
                     <div>
-                      <Link href={`/job-details-v1/${item.id}`}
+                      <Link
+                        href={`/job-details-v1/${item.id}`}
                         className="title fw-500 tran3s"
                       >
                         {item.title}
@@ -98,9 +103,12 @@ const JobListTwo = () => {
                     <div className="job-date">{item.date}</div>
                     <div className="d-flex align-items-center justify-content-between">
                       <div className="job-location">
-                        <Link href={`/job-details-v1/${item.id}`}>{item.location}</Link>
+                        <Link href={`/job-details-v1/${item.id}`}>
+                          {item.location}
+                        </Link>
                       </div>
-                      <Link href={`/job-details-v1/${item.id}`}
+                      <Link
+                        href={`/job-details-v1/${item.id}`}
                         className="apply-btn text-center tran3s"
                       >
                         APPLY
@@ -109,7 +117,7 @@ const JobListTwo = () => {
                   </div>
                 </div>
               ))}
-              {activeCategory === "All Categories" && (
+              {activeCategory === 'All Categories' && (
                 <div className="col-lg-4 col-md-6 isotop-item overflow-hidden">
                   <div className="card-style-four bg-color tran3s w-100 mt-40 lg-mt-20">
                     <a href="#" className="d-block">

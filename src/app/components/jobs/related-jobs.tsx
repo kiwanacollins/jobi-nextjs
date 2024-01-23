@@ -1,14 +1,16 @@
-"use client";
-import React,{useRef} from "react";
-import job_data from "@/data/job-data";
-import Slider from "react-slick";
-import JobGridItem from "./grid/job-grid-item";
+'use client';
+import React, { useRef, useState, useEffect } from 'react';
+// import job_data from '@/data/job-data';
+import Slider from 'react-slick';
+import JobGridItem from './grid/job-grid-item';
+import { IJobData } from '@/database/job.model';
+import { getJobPosts } from '@/lib/actions/job.action';
 
 // slider setting
 const slider_setting = {
   dots: false,
   arrows: false,
-  centerPadding: "0px",
+  centerPadding: '0px',
   slidesToShow: 3,
   slidesToScroll: 1,
   autoplay: true,
@@ -17,21 +19,23 @@ const slider_setting = {
     {
       breakpoint: 992,
       settings: {
-        slidesToShow: 2,
-      },
+        slidesToShow: 2
+      }
     },
     {
       breakpoint: 768,
       settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
+        slidesToShow: 1
+      }
+    }
+  ]
 };
-const RelatedJobs = ({category}:{category:string[]}) => {
-  const job_items = job_data.filter((job) => {
+const RelatedJobs = ({ category }: { category: string[] }) => {
+  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
+
+  const job_items = allJobData.filter((job) => {
     return category.some((c) => job.category.includes(c));
-  });;
+  });
   const sliderRef = useRef<Slider | null>(null);
 
   const sliderPrev = () => {
@@ -41,6 +45,14 @@ const RelatedJobs = ({category}:{category:string[]}) => {
   const sliderNext = () => {
     sliderRef.current?.slickNext();
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { jobs } = await getJobPosts();
+      setAllJobData(jobs);
+    };
+    fetchData();
+  }, []);
   return (
     <section className="related-job-section pt-90 lg-pt-70 pb-120 lg-pb-70">
       <div className="container">
@@ -49,7 +61,11 @@ const RelatedJobs = ({category}:{category:string[]}) => {
             <h2 className="main-font">Related Jobs</h2>
           </div>
 
-          <Slider {...slider_setting} ref={sliderRef} className="related-job-slider">
+          <Slider
+            {...slider_setting}
+            ref={sliderRef}
+            className="related-job-slider"
+          >
             {job_items.map((j) => (
               <div key={j.id} className="item">
                 <JobGridItem item={j} />

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import job_data from '@/data/job-data';
+// import job_data from '@/data/job-data';
 import ListItemTwo from './list-item-2';
 // import { IJobType } from '@/types/job-data-type';
 import Pagination from '@/ui/pagination';
@@ -19,8 +19,9 @@ const JobListV2Area = ({
   itemsPerPage: number;
   grid_style?: boolean;
 }) => {
-  const all_jobs = job_data;
-  const maxPrice = job_data.reduce((max, job) => {
+  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
+  const all_jobs = allJobData;
+  const maxPrice = all_jobs.reduce((max, job) => {
     return job.salary > max ? job.salary : max;
   }, 0);
   const {
@@ -38,31 +39,18 @@ const JobListV2Area = ({
   const [jobType, setJobType] = useState(grid_style ? 'grid' : 'list');
   const [priceValue, setPriceValue] = useState([0, maxPrice]);
   const [shortValue, setShortValue] = useState('');
-  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
 
   useEffect(() => {
-    const getAllJobs = async () => {
+    const fetchData = async () => {
       const { jobs } = await getJobPosts();
       setAllJobData(jobs);
     };
-    getAllJobs();
-  }, [
-    itemOffset,
-    itemsPerPage,
-    category,
-    experience,
-    job_type,
-    location,
-    english_fluency,
-    allJobData,
-    priceValue,
-    shortValue,
-    search_key
-  ]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     // Filter the job_data array based on the selected filters
-    let filteredData = allJobData
+    let filteredData = all_jobs
       .filter((item) =>
         category.length !== 0
           ? category.some((c) => item.category.includes(c))
@@ -119,7 +107,7 @@ const JobListV2Area = ({
     job_type,
     location,
     english_fluency,
-    allJobData,
+    all_jobs,
     priceValue,
     shortValue,
     search_key
