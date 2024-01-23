@@ -206,7 +206,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
       if (type === 'add') {
         setCount(count + 1);
         // !Error: this function is calling two times
-        const response = await creatJobPost({
+        await creatJobPost({
           data: mongoData,
           clerkId: userId,
           createdBy: mongoUserId,
@@ -216,7 +216,6 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
         notifySuccess('Job post created successfully!');
         router.push('/jobs');
         reset();
-        return response;
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
