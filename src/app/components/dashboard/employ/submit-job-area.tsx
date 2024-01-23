@@ -21,13 +21,13 @@ type IProps = {
   mongoUserId: string | undefined;
 };
 
-interface IAddress {
-  address: string;
-  country: string;
-  city: string;
-  state: string;
-  mapLocation?: string;
-}
+// interface IAddress {
+//   address: string;
+//   country: string;
+//   city: string;
+//   state: string;
+//   mapLocation?: string;
+// }
 
 export interface IFormJobData {
   title: string;
@@ -47,7 +47,7 @@ export interface IFormJobData {
   city: string;
   state: string;
   mapLocation?: string;
-
+  salary: number;
   tags?: string[];
   experience: string;
   minSalary?: string;
@@ -57,9 +57,9 @@ export interface IFormJobData {
   english_fluency: string;
 }
 
-interface ISkills {
-  value: string;
-}
+// interface ISkills {
+//   value: string;
+// }
 
 // resolver
 const resolver: Resolver<IFormJobData> = async (values) => {
@@ -72,6 +72,7 @@ const resolver: Resolver<IFormJobData> = async (values) => {
           category: { type: 'required', message: 'Category is required.' },
           duration: { type: 'required', message: 'Duration is required.' },
           salary_duration: { type: 'required', message: 'Salary is required.' },
+          salary: { type: 'required', message: 'Salary is required.' },
 
           // minSalary: { type: 'required', message: 'Min is required.' },
           // maxSalary: { type: 'required', message: 'Max is required.' },
@@ -111,6 +112,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
     register,
     setValue,
     handleSubmit,
+    // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
@@ -163,7 +165,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
       address,
       country,
       state,
-      mapLocation,
+      salary,
       city
     } = data;
 
@@ -193,6 +195,7 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
       address,
       minSalary,
       maxSalary,
+      salary,
       country,
       city,
       state,
@@ -311,6 +314,14 @@ const SubmitJobArea = ({ setIsOpenSidebar, mongoUserId }: IProps) => {
                   </div>
                 </div>
                 <div className="col-md-3">
+                  <div className="dash-input-wrapper mb-30">
+                    <input
+                      type="text"
+                      placeholder="salary"
+                      {...register('salary')}
+                      name="salary"
+                    />
+                  </div>
                   <div className="dash-input-wrapper mb-30">
                     <input
                       type="text"

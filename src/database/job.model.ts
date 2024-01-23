@@ -27,6 +27,7 @@ export interface IJobData extends Document {
   mapLocation?: string;
   tags?: string[];
   experience: string;
+  salary: number;
   minSalary?: string;
   maxSalary?: string;
   industry: string;
@@ -56,8 +57,9 @@ const jobSchema = new Schema({
   mapLocation: { type: String },
   tags: { type: [String] },
   experience: { type: String, required: true },
-  minSalary: { type: String },
-  maxSalary: { type: String },
+  salary: { type: Number, required: true },
+  minSalary: { type: Number },
+  maxSalary: { type: Number },
   industry: { type: String },
   salaryRange: { type: String },
   english_fluency: { type: String, required: true },

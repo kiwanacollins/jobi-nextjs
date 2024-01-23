@@ -31,6 +31,8 @@ const JobGridItem = ({
         <Image
           src={'/public/assets/images/candidates/img_02.jpg'}
           alt="logo"
+          height={60}
+          width={60}
           style={{ height: 'auto', width: 'auto' }}
           className="lazy-img m-auto"
         />

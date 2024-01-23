@@ -4,7 +4,7 @@ import slugify from 'slugify';
 import FilterArea from '../filter/filter-area';
 import job_data from '@/data/job-data';
 import ListItemTwo from './list-item-2';
-import { IJobType } from '@/types/job-data-type';
+// import { IJobType } from '@/types/job-data-type';
 import Pagination from '@/ui/pagination';
 import JobGridItem from '../grid/job-grid-item';
 import { useAppSelector } from '@/redux/hook';
@@ -19,31 +19,30 @@ const JobListThree = ({
   itemsPerPage: number;
   grid_style?: boolean;
 }) => {
-  let all_jobs = job_data;
+  const all_jobs = job_data;
   const maxPrice = job_data.reduce((max, job) => {
     return job.salary > max ? job.salary : max;
   }, 0);
   const { category, experience, job_type, location, tags } = useAppSelector(
     (state) => state.filter
   );
-  const [currentItems, setCurrentItems] = useState<IJobType[] | null>(null);
-  const [filterItems, setFilterItems] = useState<IJobType[]>([]);
+  const [currentItems, setCurrentItems] = useState<IJobData[] | null>(null);
+  const [filterItems, setFilterItems] = useState<IJobData[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [jobType, setJobType] = useState(grid_style ? 'grid' : 'list');
   const [priceValue, setPriceValue] = useState([0, maxPrice]);
   const [shortValue, setShortValue] = useState('');
-  const [mongoData, setmongoData] = useState<IJobData[]>();
+  const [mongoData, setmongoData] = useState<IJobData[]>([]);
 
   useEffect(() => {
     // Filter the job_data array based on the selected filters
 
     getJobPosts().then(({ jobs }) => {
       setmongoData(jobs);
-      console.log(jobs);
     });
 
-    let filteredData = all_jobs
+    let filteredData = mongoData
       .filter((item) =>
         category.length !== 0
           ? category.some((c) => item.category.includes(c))
@@ -94,7 +93,8 @@ const JobListThree = ({
     tags,
     all_jobs,
     priceValue,
-    shortValue
+    shortValue,
+    mongoData
   ]);
 
   const handlePageClick = (event: { selected: number }) => {

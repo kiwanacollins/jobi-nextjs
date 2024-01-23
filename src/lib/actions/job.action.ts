@@ -26,6 +26,7 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       country,
       minSalary,
       maxSalary,
+      salary,
       industry
     } = data;
 
@@ -48,6 +49,7 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       country,
       minSalary,
       maxSalary,
+      salary,
       industry
     });
 
