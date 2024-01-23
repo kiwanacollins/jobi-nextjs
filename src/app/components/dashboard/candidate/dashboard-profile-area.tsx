@@ -7,9 +7,8 @@ import CountrySelect from './country-select';
 import CitySelect from './city-select';
 import StateSelect from './state-select';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
-import { useAuth } from '@clerk/nextjs';
-import { getUserById, updateUser } from '@/lib/actions/user.action';
-import { redirect, usePathname } from 'next/navigation';
+import { updateUser } from '@/lib/actions/user.action';
+import { usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
 
 import ErrorMsg from '../../common/error-msg';
@@ -19,14 +18,17 @@ import { notifyError, notifySuccess } from '@/utils/toast';
 // props type
 type IProps = {
   setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+  userId: string;
+  mongoUser: IUser | null;
 };
-const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
+const DashboardProfileArea = ({
+  setIsOpenSidebar,
+  mongoUser,
+  userId
+}: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { userId } = useAuth();
-  const pathname = usePathname();
-  const [mongoUser, setMongoUser] = useState<IUser>();
 
-  if (!userId) redirect('/sign-in');
+  const pathname = usePathname();
 
   // resolver
   const resolver: Resolver = async (values) => {
@@ -99,21 +101,9 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
     formState: { errors }
   } = methods;
 
-  useEffect(() => {
-    getUserById({ userId })
-      .then((user) => {
-        setMongoUser(user);
-        reset(user);
-      })
-      .catch((error) => {
-        throw new Error(error.message);
-      });
-  }, [userId, reset]);
-
   const onSubmit = async (value: any) => {
     setIsSubmitting(true);
     try {
-      console.log(value);
       await updateUser({
         clerkId: userId,
         updateData: {
@@ -137,6 +127,10 @@ const DashboardProfileArea = ({ setIsOpenSidebar }: IProps) => {
       setIsSubmitting(false);
     }
   };
+  useEffect(() => {
+    reset(mongoUser || undefined);
+  }, [reset, mongoUser]);
+
   return (
     <div className="dashboard-body">
       <div className="position-relative">
