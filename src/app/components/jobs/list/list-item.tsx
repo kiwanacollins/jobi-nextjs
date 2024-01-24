@@ -33,8 +33,10 @@ const ListItem = ({
           <div className="job-title d-flex align-items-center">
             <Link href={`/job-details-v1/${_id}`} className="logo">
               <Image
-                src={'/assets/aegims/logo/media_22.png'}
+                src={'/assets/images/logo/media_22.png'}
                 alt="logo"
+                width={50}
+                height={50}
                 className="lazy-img m-auto"
               />
             </Link>
