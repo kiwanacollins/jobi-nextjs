@@ -20,7 +20,7 @@ export interface IUser extends Document {
   username: string;
   email: string;
   password?: string;
-  userRole: 'candidate' | 'employee';
+  userRole: string;
   bio?: string;
   picture: string;
   location?: string;
@@ -44,7 +44,6 @@ const UserSchema = new Schema({
   password: { type: String },
   userRole: {
     type: String,
-    enum: ['candidate', 'employee'],
     required: true
   },
   bio: { type: String },

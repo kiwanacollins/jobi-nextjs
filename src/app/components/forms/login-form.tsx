@@ -1,26 +1,18 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import * as Yup from 'yup';
 import { Resolver, useForm } from 'react-hook-form';
 import ErrorMsg from '../common/error-msg';
 import icon from '@/assets/images/icon/icon_60.svg';
 import { useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import { error } from 'console';
 
 // form data type
 type IFormData = {
   email: string;
   password: string;
 };
-
-// schema
-const schema = Yup.object().shape({
-  email: Yup.string().required().email().label('Email'),
-  password: Yup.string().required().min(6).label('Password')
-});
 
 // resolver
 const resolver: Resolver<IFormData> = async (values) => {
@@ -70,7 +62,7 @@ const LoginForm = () => {
           router.push(`${window.location.origin}/`);
           notifySuccess('Login successful!');
         } else {
-          /*Investigate why the login hasn't completed */
+          /* Investigate why the login hasn't completed */
           console.log(result);
         }
       } catch (err: any) {
@@ -123,7 +115,7 @@ const LoginForm = () => {
         <div className="col-12">
           <div className="agreement-checkbox d-flex justify-content-between align-items-center">
             <div>
-              <input type="checkbox" id="remember" />
+              <input type="checkbox" id="remember1" />
               <label htmlFor="remember">Keep me logged in</label>
             </div>
             <a href="#">Forget Password?</a>

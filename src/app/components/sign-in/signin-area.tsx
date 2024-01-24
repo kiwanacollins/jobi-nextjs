@@ -1,9 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import RegisterForm from '../forms/register-form';
 import google from '@/assets/images/icon/google.png';
 import facebook from '@/assets/images/icon/facebook.png';
-import RegisterArea from '../register/register-area';
 import Link from 'next/link';
 import LoginForm from '../forms/login-form';
 

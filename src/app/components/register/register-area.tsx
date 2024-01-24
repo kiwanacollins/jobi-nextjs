@@ -1,41 +1,13 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import RegisterForm from '../forms/register-form';
 import google from '@/assets/images/icon/google.png';
 import facebook from '@/assets/images/icon/facebook.png';
-import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
-import { useSearchParams, useRouter } from 'next/navigation';
-
-// interface IRegisterFormProps {
-//   userRole: 'candidate' | 'employee';
-// }
 
 const RegisterArea = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const query = searchParams.get('userRole');
-  const [userRole, setUserRole] = useState(query || 'candidate');
+  const [userRole, setUserRole] = useState('candidate');
 
-  useEffect(() => {
-    if (userRole && userRole !== searchParams.get('userRole')) {
-      // Only update URL if userRole has changed from the query
-      const newUrl = formUrlQuery({
-        params: searchParams.toString(),
-        key: 'userRole',
-        value: userRole
-      });
-      router.push(newUrl, { scroll: false });
-    } else if (!userRole && searchParams.has('userRole')) {
-      // Only remove userRole if it exists in the query
-      const newUrl = removeKeysFromQuery({
-        params: searchParams.toString(),
-        keysToRemove: ['userRole']
-      });
-      router.push(newUrl, { scroll: false });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userRole, searchParams]);
   return (
     <section className="registration-section position-relative pt-100 lg-pt-80 pb-150 lg-pb-80">
       <div className="container">
@@ -51,7 +23,7 @@ const RegisterArea = () => {
                   data-bs-toggle="tab"
                   data-bs-target="#fc1"
                   role="tab"
-                  aria-selected="true"
+                  aria-selected={userRole === 'candidate'}
                   tabIndex={-1}
                   onClick={() => {
                     setUserRole('candidate');
@@ -66,7 +38,7 @@ const RegisterArea = () => {
                   data-bs-toggle="tab"
                   data-bs-target="#fc2"
                   role="tab"
-                  aria-selected="false"
+                  aria-selected={userRole === 'employee'}
                   tabIndex={-1}
                   onClick={() => {
                     setUserRole('employee');
@@ -82,10 +54,10 @@ const RegisterArea = () => {
                 role="tabpanel"
                 id="fc1"
               >
-                <RegisterForm />
+                <RegisterForm userRole={userRole} />
               </div>
               <div className="tab-pane fade" role="tabpanel" id="fc2">
-                <RegisterForm />
+                <RegisterForm userRole={userRole} />
               </div>
             </div>
 

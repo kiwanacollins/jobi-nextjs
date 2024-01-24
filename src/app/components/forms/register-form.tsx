@@ -1,18 +1,13 @@
 /* eslint-disable no-unused-vars */
 'use client';
-import React, { startTransition, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import * as Yup from 'yup';
 import { Resolver, useForm } from 'react-hook-form';
 import ErrorMsg from '../common/error-msg';
 import icon from '@/assets/images/icon/icon_60.svg';
 import { useSignUp } from '@clerk/nextjs';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
-import { updateUser } from '@/lib/actions/user.action';
-import router from 'next/router';
-import path from 'path';
 
 // form data type
 type IFormData = {
@@ -22,10 +17,6 @@ type IFormData = {
   email: string;
   password: string;
 };
-
-interface IRegisterFormProps {
-  userRole: 'candidate' | 'employee';
-}
 
 // resolver
 const resolver: Resolver<IFormData> = async (values) => {
@@ -58,18 +49,15 @@ const resolver: Resolver<IFormData> = async (values) => {
   };
 };
 
-const RegisterForm = () => {
+const RegisterForm = ({ userRole }: { userRole: string }) => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const { isLoaded, signUp } = useSignUp();
-
   const router = useRouter();
   // eslint-disable-next-line no-unused-vars
   const [isPending, startTransition] = React.useTransition();
   const [isTermAccepted, setIsTermAccepted] = useState(false);
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const role = searchParams.get('userRole');
-  console.log('RegisterForm  role:', role);
+
+  console.log('userRole:', userRole);
 
   // react hook form
   const {
@@ -78,6 +66,10 @@ const RegisterForm = () => {
     formState: { errors },
     reset
   } = useForm<IFormData>({ resolver });
+
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   // on submit
   const onSubmit = (data: IFormData) => {
@@ -92,28 +84,17 @@ const RegisterForm = () => {
             password: data.password,
             username: data.username,
             unsafeMetadata: {
-              userRole: role
+              userRole
             }
           })
-          .then(async ({ createdUserId, id, unsafeMetadata }) => {
-            console.log(createdUserId, id);
-            console.log('.then  unsafeMetadata:', unsafeMetadata);
-            if (unsafeMetadata?.userRole) {
-              await updateUser({
-                clerkId: 'id',
-                updateData: {
-                  userRole: unsafeMetadata.userRole
-                },
-                path: pathname
-              });
-            }
+          .then(({ unsafeMetadata }) => {
+            console.log('unsafeMetadata:', unsafeMetadata);
           });
 
         // Send email verification code
         await signUp.prepareEmailAddressVerification({
           strategy: 'email_code'
         });
-
         router.push('/register/verify-email');
         notifySuccess('Check your email for verification code');
       } catch (err: any) {
@@ -216,7 +197,6 @@ const RegisterForm = () => {
                 onChange={handleTermsChange}
                 type="checkbox"
                 name="remember"
-                id="remember"
                 className="form-check-input "
               />
               <label className="form-check-label" htmlFor="remember">
