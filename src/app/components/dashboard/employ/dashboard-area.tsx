@@ -1,22 +1,22 @@
-"use client";
-import React from "react";
-import Image, { StaticImageData } from "next/image";
-import job_data from "@/data/job-data";
-import icon_1 from "@/assets/dashboard/images/icon/icon_12.svg";
-import icon_2 from "@/assets/dashboard/images/icon/icon_13.svg";
-import icon_3 from "@/assets/dashboard/images/icon/icon_14.svg";
-import icon_4 from "@/assets/dashboard/images/icon/icon_15.svg";
-import main_graph from "@/assets/dashboard/images/main-graph.png";
-import DashboardHeader from "../candidate/dashboard-header";
-import { CardItem } from "../candidate/dashboard-area";
-import NiceSelect from "@/ui/nice-select";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import job_data from '@/data/job-data';
+import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
+import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
+import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
+import icon_4 from '@/assets/dashboard/images/icon/icon_15.svg';
+import main_graph from '@/assets/dashboard/images/main-graph.png';
+import DashboardHeader from '../candidate/dashboard-header';
+import { CardItem } from '../candidate/dashboard-area';
+import NiceSelect from '@/ui/nice-select';
 
-// props type 
+// props type
 type IProps = {
-  setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>
-}
+  setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const EmployDashboardArea = ({setIsOpenSidebar}:IProps) => {
+const EmployDashboardArea = ({ setIsOpenSidebar }: IProps) => {
   const job_items = [...job_data.reverse().slice(0, 6)];
   const handleJobs = (item: { value: string; label: string }) => {};
   return (
@@ -44,15 +44,15 @@ const EmployDashboardArea = ({setIsOpenSidebar}:IProps) => {
                   <NiceSelect
                     options={[
                       {
-                        value: "Web-&-Mobile-Prototype-designer",
-                        label: "Web & Mobile Prototype designer....",
+                        value: 'Web-&-Mobile-Prototype-designer',
+                        label: 'Web & Mobile Prototype designer....'
                       },
-                      { value: "Document Writer", label: "Document Writer" },
+                      { value: 'Document Writer', label: 'Document Writer' },
                       {
-                        value: "Outbound Call Service",
-                        label: "Outbound Call Service",
+                        value: 'Outbound Call Service',
+                        label: 'Outbound Call Service'
                       },
-                      { value: "Product Designer", label: "Product Designer" },
+                      { value: 'Product Designer', label: 'Product Designer' }
                     ]}
                     defaultCurrent={0}
                     onChange={(item) => handleJobs(item)}

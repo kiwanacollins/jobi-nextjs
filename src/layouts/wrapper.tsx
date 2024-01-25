@@ -17,6 +17,7 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const handleReset = () => {
     dispatch(resetFilter());
   };
+
   useEffect(() => {
     animationCreate();
   }, []);

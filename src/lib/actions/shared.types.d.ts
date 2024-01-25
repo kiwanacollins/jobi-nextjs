@@ -7,7 +7,6 @@ export interface CreateUserParams {
   username: string | null;
   email: string;
   picture: string;
-  userRole: string;
 }
 
 export interface CreateJobParams {

@@ -1,12 +1,12 @@
 import React from 'react';
-import Wrapper from '@/layouts/wrapper';
-import CandidateDashboardMain from '@/app/components/dashboard/candidate';
+
+import DashboardArea from '@/app/components/dashboard/candidate/dashboard-area';
 
 const CandidateDashboardPage = () => {
   return (
-    <Wrapper>
-      <CandidateDashboardMain />
-    </Wrapper>
+    <>
+      <DashboardArea />
+    </>
   );
 };
 
