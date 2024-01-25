@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import CountrySelect from './country-select';
@@ -9,9 +9,7 @@ import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { updateUser } from '@/lib/actions/user.action';
 import { usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
-
 import ErrorMsg from '../../common/error-msg';
-
 import { notifyError, notifySuccess } from '@/utils/toast';
 
 // props type
@@ -114,16 +112,13 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         },
         path: pathname
       });
-      notifySuccess('Profile updated successfully');
+      notifySuccess('Profile Updated Successfully');
     } catch (error: any) {
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
     }
   };
-  useEffect(() => {
-    reset(mongoUser || undefined);
-  }, [reset, mongoUser]);
 
   return (
     <>
