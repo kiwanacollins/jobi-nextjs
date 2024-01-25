@@ -1,18 +1,12 @@
-'use client'
-import React, { useState } from 'react';
-import EmployAside from './aside';
+import React from 'react';
+
 import EmployDashboardArea from './dashboard-area';
 
 const EmployDashboardMain = () => {
-  const [isOpenSidebar,setIsOpenSidebar] = useState<boolean>(false);
   return (
-    <div className='main-page-wrapper'>
-      {/* aside start */}
-      <EmployAside isOpenSidebar={isOpenSidebar} setIsOpenSidebar={setIsOpenSidebar} />
-      {/* aside end  */}
-
+    <div>
       {/* dashboard area start */}
-      <EmployDashboardArea setIsOpenSidebar={setIsOpenSidebar} />
+      <EmployDashboardArea />
       {/* dashboard area end */}
     </div>
   );

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import EmployDashboardMain from '@/app/components/dashboard/employ';
+import EmployDashboardArea from '@/app/components/dashboard/employ/dashboard-area';
 
 const EmployDashboardPage = () => {
   return (
     <>
-      <EmployDashboardMain />
+      <EmployDashboardArea />
     </>
   );
 };
