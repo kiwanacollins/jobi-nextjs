@@ -1,56 +1,33 @@
-import * as Yup from 'yup';
+import * as z from 'zod';
 
-export const jobValidationSchema = Yup.object({
-  id: Yup.number().required('ID is required'),
-  logo: Yup.mixed().required('Logo is required'), // Assuming validation for StaticImageData exists
-  title: Yup.string()
-    .required('Title is required')
-    .min(5, 'Title must be at least 5 characters'),
-  duration: Yup.string().required('Duration is required'),
-  date: Yup.string().required('Date is required'),
-  company: Yup.string().required('Company is required'),
-  location: Yup.string().required('Location is required'),
-  category: Yup.array()
-    .of(Yup.string().required('Category is required'))
-    .required('Category is required'),
-  tags: Yup.array().of(Yup.string()), // Optional field
-  experience: Yup.string().required('Experience is required'),
-  salary: Yup.number()
-    .required('Salary is required')
-    .positive('Salary must be positive'),
-  salary_duration: Yup.string().required('Salary duration is required'),
-  english_fluency: Yup.string().required('English fluency is required'),
-  overview: Yup.string()
-    .required('Overview is required')
-    .min(50, 'Overview must be at least 50 characters')
-  // Not exposed to user input, but validated for consistency
+const educationSchema = z.object({
+  title: z.string().min(3, 'Title is required'),
+  academy: z.string().min(2, 'Academy is required'),
+  startingYear: z.number().min(2, 'Starting year is required'),
+  endingYear: z.string().optional(),
+  year: z.string().optional(),
+  description: z.string()
 });
 
-export const userSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  bio: Yup.string(),
-  picture: Yup.string(),
-  location: Yup.string(),
-  portfolioWebsite: Yup.string().url('Invalid URL'),
-  // address: Yup.object({
-  //   address: Yup.string().required('Address is required'),
-  //   country: Yup.string().required('Country is required'),
-  //   city: Yup.string().required('City is required'),
-  //   street: Yup.string().required('Street is required'),
-  //   zip: Yup.string().required('Zip code is required'),
-  //   state: Yup.string().required('State is required'),
-  //   mapLocation: Yup.string()
-  // }),
-  address: Yup.string().required('Address is required'),
-  country: Yup.string().required('Country is required'),
-  city: Yup.string().required('City is required'),
-  street: Yup.string().required('Street is required'),
-  zip: Yup.string().required('Zip code is required'),
-  state: Yup.string().required('State is required'),
-  mapLocation: Yup.string(),
+const skillsSchema = z.object({
+  skills: z.string().array().nonempty('Skills list cannot be empty')
+});
 
-  mediaLinks: Yup.object({
-    linkedin: Yup.string(),
-    github: Yup.string()
-  })
+const experienceSchema = z.object({
+  title: z.string().min(4, 'Title is required'),
+  company: z.string().min(3, 'Company is required'),
+  startingYear: z.number().min(2, 'Starting year is required'),
+  endingYear: z.string().optional(),
+  year: z.string().optional(),
+  description: z.string()
+});
+
+export const resumeSchema = z.object({
+  filename: z.string().min(1, 'Filename is required'),
+  overview: z.string(),
+  videos: z.string().array(),
+  education: z.array(educationSchema),
+  skills: z.array(skillsSchema),
+  experience: z.array(experienceSchema),
+  portfolio: z.array(z.string().url('Invalid photo URL'))
 });
