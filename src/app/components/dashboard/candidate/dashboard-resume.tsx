@@ -1,41 +1,199 @@
+/* eslint-disable no-undef */
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import video_bg from '@/assets/dashboard/images/video_post.jpg';
 import DashboardPortfolio from './dashboard-portfolio';
-import SelectYear from './select-year';
 import VideoPopup from '../../common/video-popup';
-import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { resumeSchema } from '@/utils/validation';
+import ErrorMsg from '../../common/error-msg';
+import { createResume } from '@/lib/actions/candidate.action';
+import { useAuth } from '@clerk/nextjs';
+import { notifyError, notifySuccess } from '@/utils/toast';
+import { IEducation, IExperience } from '@/database/resume.model';
 
-const DashboardResume = () => {
+interface IProps {
+  mongoUserId: string | undefined;
+}
+
+const DashboardResume = ({ mongoUserId }: IProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const [educationItems, setEducationItems] = useState([{}]);
+  const [skillsTag, setSkillsTag] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { userId } = useAuth();
+  const parsedMongoUserId = mongoUserId;
 
-  const handleAddMore = () => {
-    setEducationItems([...educationItems, {}]); // Add a new empty item
-  };
+  type resumeSchemaType = z.infer<typeof resumeSchema>;
 
   // 1. Define your form.
-  const methods = useForm<z.infer<typeof resumeSchema>>({
+  const methods = useForm<resumeSchemaType>({
     resolver: zodResolver(resumeSchema),
-    defaultValues: {}
+    defaultValues: {
+      skills: [],
+      overview: '',
+      experience: [
+        {
+          title: '',
+          company: '',
+          year: '',
+          description: '',
+          yearStart: 2020,
+          yearEnd: 2023
+        }
+      ],
+      education: [
+        {
+          title: '',
+          academy: '',
+          year: '',
+          description: '',
+          yearStart: 2020,
+          yearEnd: 2023
+        }
+      ]
+    }
   });
 
   // react hook form
   const {
     register,
-    handleSubmit,
+    control,
+    setValue,
+    clearErrors,
+    setError,
+    trigger,
+    // watch,
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
 
-  // 2. Handle your form submission.
-  const onSubmit = (data: z.infer<typeof resumeSchema>) => {
-    console.log(data);
+  useEffect(() => {
     reset();
+  }, [reset]);
+
+  const { fields: educationArrayFields, append: educationAppend } =
+    useFieldArray({
+      control,
+      name: 'education'
+    });
+
+  const { fields: experienceArrayFields, append: experienceAppend } =
+    useFieldArray({
+      control,
+      name: 'experience'
+    });
+
+  // 2. Handle your form submission.
+  const onSubmit = async (data: resumeSchemaType, e: any) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    console.log(data);
+    const experience = data.experience.map((item: IExperience) => {
+      const year = item.yearStart + '-' + item.yearEnd;
+      return {
+        title: item.title,
+        company: item.company,
+        yearStart: item.yearStart,
+        yearEnd: item.yearEnd || 0,
+        year,
+        description: item.description
+      };
+    });
+
+    const education = data.education.map((item: IEducation) => {
+      const year = item.yearStart + '-' + item.yearEnd;
+      return {
+        title: item.title,
+        academy: item.academy,
+        yearStart: item.yearStart,
+        yearEnd: item.yearEnd || 0,
+        year,
+        description: item.description
+      };
+    });
+    try {
+      await createResume({
+        clerkId: userId || null,
+        userId: parsedMongoUserId,
+        skills: data.skills,
+        overview: data.overview,
+        experience,
+        education
+      });
+      notifySuccess('Resume Created successfully.');
+    } catch (error: any) {
+      console.log(error);
+      notifyError(error as string);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // add skills
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: any
+  ) => {
+    if (e.key === 'Enter' && field === 'skills') {
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagValue = tagInput.value;
+
+      if (tagValue !== '') {
+        if (tagValue.length > 15) {
+          return setError('skills', {
+            type: 'required',
+            message: 'Tag must be less than 15 characters.'
+          });
+        }
+        // Retrieve current skills array
+        const currentSkills = skillsTag || [];
+
+        if (!skillsTag.includes(tagValue as never)) {
+          setValue('skills', [...currentSkills, tagValue]);
+          setSkillsTag([...currentSkills, tagValue]);
+          tagInput.value = '';
+          clearErrors('skills');
+        }
+      } else {
+        trigger();
+      }
+    }
+  };
+
+  const handleTagRemove = (tag: string, e: any) => {
+    e.preventDefault();
+    const newTags = skillsTag.filter((t: string) => t !== tag);
+    setSkillsTag(newTags);
+    setValue('skills', newTags);
+  };
+
+  const handleAddEducation = (e: any) => {
+    e.preventDefault(); // Prevent form submission
+    educationAppend({
+      title: '',
+      academy: '',
+      year: '',
+      description: '',
+      yearStart: 2020,
+      yearEnd: 2023
+    });
+  };
+
+  const handleAddExperience = (e: any) => {
+    e.preventDefault(); // Prevent form submission
+    experienceAppend({
+      title: '',
+      company: '',
+      year: '',
+      description: '',
+      yearStart: 2020,
+      yearEnd: 2023
+    });
   };
 
   return (
@@ -43,7 +201,7 @@ const DashboardResume = () => {
       <div className="position-relative">
         <h2 className="main-title">My Resume</h2>
         <FormProvider {...methods}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={methods.handleSubmit(onSubmit)}>
             <div className="bg-white card-box border-20">
               <h4 className="dash-title-three">Resume Attachment</h4>
               <div className="dash-input-wrapper mb-20">
@@ -82,7 +240,7 @@ const DashboardResume = () => {
                 <textarea
                   className="size-lg"
                   placeholder="Write something interesting about you...."
-                  {...register('overview', { required: true })}
+                  {...register('overview')}
                   name="overview"
                 ></textarea>
                 <div className="alert-text">
@@ -111,13 +269,7 @@ const DashboardResume = () => {
                 <div className="col-sm-6 d-flex">
                   <div className="intro-video-post position-relative empty mt-20">
                     <span>+ Add Intro Video</span>
-                    <input
-                      type="file"
-                      id="uploadVdo"
-                      placeholder=""
-                      {...register('videos')}
-                      name="videos"
-                    />
+                    <input type="file" id="uploadVdo" placeholder="" />
                   </div>
                 </div>
               </div>
@@ -127,31 +279,31 @@ const DashboardResume = () => {
               <h4 className="dash-title-three">Education</h4>
 
               {/* Add Education Start */}
-              {educationItems.map((item, index) => (
-                <>
+              {educationArrayFields.map((item, index) => {
+                return (
                   <div
-                    key={index}
+                    key={item.id}
                     className="accordion dash-accordion-one"
-                    id={`accordionOne${index}`}
+                    id={`accordionTwo${index}`}
                   >
                     <div className="accordion-item">
-                      <div className="accordion-header" id="headingOne">
+                      <div className="accordion-header" id="headingTwo">
                         <button
                           className="accordion-button collapsed"
                           type="button"
                           data-bs-toggle="collapse"
-                          data-bs-target={`#collapseOne${index}`}
+                          data-bs-target={`#collapseTwo${index}`}
                           aria-expanded="false"
-                          aria-controls="collapseOne"
+                          aria-controls="collapseTwo"
                         >
                           Add Education*
                         </button>
                       </div>
                       <div
-                        id={`collapseOne${index}`}
+                        id={`collapseTwo${index}`}
                         className="accordion-collapse collapse"
-                        aria-labelledby="headingOne"
-                        data-bs-parent={`#accordionOne${index}`}
+                        aria-labelledby="headingTwo"
+                        data-bs-parent={`#accordionTwo${index}`}
                       >
                         <div className="accordion-body">
                           <div className="row">
@@ -165,10 +317,13 @@ const DashboardResume = () => {
                                 <input
                                   type="text"
                                   placeholder="Product Designer (Google)"
-                                  {...register('education', {
-                                    required: true
-                                  })}
-                                  name="education.title"
+                                  {...register(`education.${index}.title`)}
+                                  name={`education.${index}.title`}
+                                />
+                                <ErrorMsg
+                                  msg={
+                                    errors.education?.[index]?.title?.message
+                                  }
                                 />
                               </div>
                             </div>
@@ -184,6 +339,13 @@ const DashboardResume = () => {
                                 <input
                                   type="text"
                                   placeholder="Google Arts Collage & University"
+                                  {...register(`education.${index}.academy`)}
+                                  name={`education.${index}.academy`}
+                                />
+                                <ErrorMsg
+                                  msg={
+                                    errors.education?.[index]?.academy?.message
+                                  }
                                 />
                               </div>
                             </div>
@@ -197,10 +359,40 @@ const DashboardResume = () => {
                             <div className="col-lg-10">
                               <div className="row">
                                 <div className="col-sm-6">
-                                  <SelectYear />
+                                  <div className="dash-input-wrapper mb-30">
+                                    <input
+                                      type="number"
+                                      placeholder="year start"
+                                      {...register(
+                                        `education.${index}.yearStart`,
+                                        { valueAsNumber: true }
+                                      )}
+                                    />
+                                    <ErrorMsg
+                                      msg={
+                                        errors.education?.[index]?.yearStart
+                                          ?.message
+                                      }
+                                    />
+                                  </div>
                                 </div>
                                 <div className="col-sm-6">
-                                  <SelectYear />
+                                  <div className="dash-input-wrapper mb-30">
+                                    <input
+                                      type="number"
+                                      placeholder="year end"
+                                      {...register(
+                                        `education.${index}.yearEnd`,
+                                        { valueAsNumber: true }
+                                      )}
+                                    />
+                                    <ErrorMsg
+                                      msg={
+                                        errors.education?.[index]?.yearEnd
+                                          ?.message
+                                      }
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -216,7 +408,16 @@ const DashboardResume = () => {
                                 <textarea
                                   className="size-lg"
                                   placeholder="Morbi ornare ipsum sed sem condimentum, et pulvinar tortor luctus. Suspendisse condimentum lorem ut elementum aliquam et pulvinar tortor luctus."
+                                  {...register(
+                                    `education.${index}.description`
+                                  )}
                                 ></textarea>
+                                <ErrorMsg
+                                  msg={
+                                    errors.education?.[index]?.description
+                                      ?.message
+                                  }
+                                />
                               </div>
                             </div>
                           </div>
@@ -224,10 +425,13 @@ const DashboardResume = () => {
                       </div>
                     </div>
                   </div>
-                </>
-              ))}
+                );
+              })}
               {/* Add Education End */}
-              <button onClick={() => handleAddMore()} className="dash-btn-one">
+              <button
+                onClick={(e) => handleAddEducation(e)}
+                className="dash-btn-one"
+              >
                 <i className="bi bi-plus"></i> Add more
               </button>
             </div>
@@ -238,55 +442,32 @@ const DashboardResume = () => {
                 <label htmlFor="">Add Skills*</label>
 
                 <div className="skills-wrapper">
+                  <div className="dash-input-wrapper mb-30">
+                    <input
+                      type="text"
+                      placeholder="Add skills..."
+                      onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
+                    />
+                    <ErrorMsg msg={errors.skills?.message} />
+                  </div>
                   <ul className="style-none d-flex flex-wrap align-items-center">
-                    <li className="is_tag">
-                      <button>
-                        Figma <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        HTML5 <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        Illustrator <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        Adobe Photoshop <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        WordPress <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        jQuery <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        Web Design <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        Adobe XD <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="is_tag">
-                      <button>
-                        CSS <i className="bi bi-x"></i>
-                      </button>
-                    </li>
-                    <li className="more_tag">
+                    {skillsTag.map((item: any, index) => {
+                      return (
+                        <li className="is_tag" key={index}>
+                          <button>
+                            {item}{' '}
+                            <i
+                              className="bi bi-x"
+                              onClick={(e) => handleTagRemove(item, e)}
+                            ></i>
+                          </button>
+                        </li>
+                      );
+                    })}
+
+                    {/* <li className="more_tag">
                       <button>+</button>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -294,105 +475,180 @@ const DashboardResume = () => {
               <div className="dash-input-wrapper mb-15">
                 <label htmlFor="">Add Work Experience*</label>
               </div>
-
-              <div className="accordion dash-accordion-one" id="accordionTwo">
-                <div className="accordion-item">
-                  <div className="accordion-header" id="headingOneA">
-                    <button
-                      className="accordion-button collapsed"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOneA"
-                      aria-expanded="false"
-                      aria-controls="collapseOneA"
-                    >
-                      Experience 1*
-                    </button>
-                  </div>
+              {experienceArrayFields.map((item, index) => {
+                return (
                   <div
-                    id="collapseOneA"
-                    className="accordion-collapse collapse"
-                    aria-labelledby="headingOneA"
-                    data-bs-parent="#accordionTwo"
+                    className="accordion dash-accordion-one"
+                    id={`accordionOne${index}`}
+                    key={item.id}
                   >
-                    <div className="accordion-body">
-                      <div className="row">
-                        <div className="col-lg-2">
-                          <div className="dash-input-wrapper mb-30 md-mb-10">
-                            <label htmlFor="">Title*</label>
-                          </div>
-                        </div>
-                        <div className="col-lg-10">
-                          <div className="dash-input-wrapper mb-30">
-                            <input
-                              type="text"
-                              placeholder="Lead Product Designer "
-                            />
-                          </div>
-                        </div>
+                    <div className="accordion-item">
+                      <div className="accordion-header" id="headingOneA">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target={`#collapseOne${index}`}
+                          aria-expanded="false"
+                          aria-controls="accordionTwo"
+                        >
+                          Experience {index + 1}
+                        </button>
                       </div>
-                      <div className="row">
-                        <div className="col-lg-2">
-                          <div className="dash-input-wrapper mb-30 md-mb-10">
-                            <label htmlFor="">Company*</label>
-                          </div>
-                        </div>
-                        <div className="col-lg-10">
-                          <div className="dash-input-wrapper mb-30">
-                            <input type="text" placeholder="Amazon Inc" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-lg-2">
-                          <div className="dash-input-wrapper mb-30 md-mb-10">
-                            <label htmlFor="">Year*</label>
-                          </div>
-                        </div>
-                        <div className="col-lg-10">
+                      <div
+                        id={`collapseOne${index}`}
+                        className="accordion-collapse collapse"
+                        aria-labelledby="headingOneA"
+                        data-bs-parent={`#accordionOne${index}`}
+                      >
+                        <div className="accordion-body">
                           <div className="row">
-                            <div className="col-sm-6">
-                              <SelectYear />
+                            <div className="col-lg-2">
+                              <div className="dash-input-wrapper mb-30 md-mb-10">
+                                <label htmlFor="">Title*</label>
+                              </div>
                             </div>
-                            <div className="col-sm-6">
-                              <SelectYear />
+                            <div className="col-lg-10">
+                              <div className="dash-input-wrapper mb-30">
+                                <input
+                                  type="text"
+                                  placeholder="Lead Product Designer "
+                                  {...register(`experience.${index}.title`)}
+                                  name={`experience.${index}.title`}
+                                />
+                                <ErrorMsg
+                                  msg={
+                                    errors.experience?.[index]?.title?.message
+                                  }
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-lg-2">
-                          <div className="dash-input-wrapper mb-30 md-mb-10">
-                            <label htmlFor="">Description*</label>
+                          <div className="row">
+                            <div className="col-lg-2">
+                              <div className="dash-input-wrapper mb-30 md-mb-10">
+                                <label htmlFor="">Company*</label>
+                              </div>
+                            </div>
+                            <div className="col-lg-10">
+                              <div className="dash-input-wrapper mb-30">
+                                <input
+                                  type="text"
+                                  placeholder="Amazon Inc"
+                                  {...register(`experience.${index}.company`)}
+                                  name={`experience.${index}.company`}
+                                />
+                                <ErrorMsg
+                                  msg={
+                                    errors.experience?.[index]?.company?.message
+                                  }
+                                />
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="col-lg-10">
-                          <div className="dash-input-wrapper mb-30">
-                            <textarea
-                              className="size-lg"
-                              placeholder="Morbi ornare ipsum sed sem condimentum, et pulvinar tortor luctus. Suspendisse condimentum lorem ut elementum aliquam et pulvinar tortor luctus."
-                            ></textarea>
+                          <div className="row">
+                            <div className="col-lg-2">
+                              <div className="dash-input-wrapper mb-30 md-mb-10">
+                                <label htmlFor="">Year*</label>
+                              </div>
+                            </div>
+                            <div className="col-lg-10">
+                              <div className="row">
+                                <div className="col-sm-6">
+                                  <div className="dash-input-wrapper mb-30">
+                                    <input
+                                      type="number"
+                                      placeholder="year start"
+                                      {...register(
+                                        `experience.${index}.yearStart`,
+                                        { valueAsNumber: true }
+                                      )}
+                                    />
+                                    <ErrorMsg
+                                      msg={
+                                        errors.experience?.[index]?.yearStart
+                                          ?.message
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                                <div className="col-sm-6">
+                                  <div className="dash-input-wrapper mb-30">
+                                    <input
+                                      type="number"
+                                      placeholder="year start"
+                                      {...register(
+                                        `experience.${index}.yearEnd`,
+                                        { valueAsNumber: true }
+                                      )}
+                                    />
+                                    <ErrorMsg
+                                      msg={
+                                        errors.experience?.[index]?.yearEnd
+                                          ?.message
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-lg-2">
+                              <div className="dash-input-wrapper mb-30 md-mb-10">
+                                <label htmlFor="">Description*</label>
+                              </div>
+                            </div>
+                            <div className="col-lg-10">
+                              <div className="dash-input-wrapper mb-30">
+                                <textarea
+                                  className="size-lg"
+                                  placeholder="Morbi ornare ipsum sed sem condimentum, et pulvinar tortor luctus. Suspendisse condimentum lorem ut elementum aliquam et pulvinar tortor luctus."
+                                  {...register(
+                                    `experience.${index}.description`
+                                  )}
+                                  name={`experience.${index}.description`}
+                                ></textarea>
+                                <ErrorMsg
+                                  msg={
+                                    errors.experience?.[index]?.description
+                                      ?.message
+                                  }
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <a href="#" className="dash-btn-one">
+                );
+              })}
+
+              <button
+                onClick={(e) => handleAddExperience(e)}
+                className="dash-btn-one"
+              >
                 <i className="bi bi-plus"></i> Add more
-              </a>
+              </button>
             </div>
 
             <DashboardPortfolio />
 
             <div className="button-group d-inline-flex align-items-center mt-30">
-              <a href="#" className="dash-btn-two tran3s me-3">
-                Save
-              </a>
-              <a href="#" className="dash-cancel-btn tran3s">
+              <button
+                type="submit"
+                className="dash-btn-two tran3s me-3"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </button>
+              <button
+                onClick={() => reset()}
+                className="dash-cancel-btn tran3s"
+              >
                 Cancel
-              </a>
+              </button>
             </div>
           </form>
         </FormProvider>

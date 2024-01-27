@@ -1,64 +1,66 @@
 import { Schema, models, model, Document } from 'mongoose';
 
-interface IEducation {
+export interface IEducation {
   title: string;
   academy: string;
-  startingYear: string;
-  endingYear: string;
-  year: string;
+  yearStart: number;
+  yearEnd?: number;
+  year?: string;
   description: string;
 }
 
-interface ISkills {
-  skills: string;
-}
-
-interface IExperience {
+export interface IExperience {
   title: string;
   company: string;
-  startingYear: string;
-  endingYear: string;
-  year: string;
+  yearStart: number;
+  yearEnd?: number;
+  year?: string;
   description: string;
 }
 
 export interface IResumeType extends Document {
-  filename: string;
+  clerkId: string;
+  userId: Schema.Types.ObjectId | string;
+  // filename: string;
   overview: string;
-  videos: string[];
+  // videos: string[];
   education: IEducation[];
-  skills: ISkills[];
+  skills: string[];
   experience: IExperience[];
-  porftolio: string[];
+  // porftolio: string[];
 }
 
+const educationSchema = new Schema({
+  title: String,
+  academy: String,
+  yearStart: Number,
+  yearEnd: Number,
+  year: String,
+  description: String
+});
+
+const experienceSchema = new Schema({
+  title: String,
+  company: String,
+  yearStart: Number,
+  yearEnd: Number,
+  year: String,
+  description: String
+});
+
 const resumeSchema = new Schema({
-  user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  filename: String,
+  clerkId: {
+    type: String,
+    required: true
+  },
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  // filename: String, // Optional, uncomment if needed
   overview: String,
-  videos: [String],
-  education: [
-    {
-      title: String,
-      academy: String,
-      startingYear: String,
-      endingYear: String, // Optional
-      year: String, // Optional
-      description: String
-    }
-  ],
-  skills: [{ skills: [String] }], // Array of skills
-  experience: [
-    {
-      title: String,
-      company: String,
-      startingYear: String,
-      endingYear: String, // Optional
-      year: String, // Optional
-      description: String
-    }
-  ],
-  portfolio: [String], // Array of photos
+  // videos: [String], // Optional, uncomment if needed
+  education: [educationSchema],
+  skills: [String], // Adjust type if needed (e.g., [String])
+  experience: [experienceSchema],
+  // portfolio: [String], // Optional, uncomment if needed
   createdAt: { type: Date, default: Date.now }
 });
 

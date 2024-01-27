@@ -1,8 +1,10 @@
 import NiceSelect from '@/ui/nice-select';
 import React from 'react';
-
-const SelectYear = () => {
-  const handleYear = (item: { value: string; label: string }) => {};
+const SelectYear = ({ index, name }: { index: number; name: string }) => {
+  const handleYear = (item: { value: string; label: string }) => {
+    const { value } = item;
+    console.log('handleYear  value:', value);
+  };
   return (
     <div className="dash-input-wrapper mb-30">
       <NiceSelect

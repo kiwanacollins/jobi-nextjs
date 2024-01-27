@@ -19,14 +19,6 @@ type IProps = {
   mongoUserId: string | undefined;
 };
 
-// interface IAddress {
-//   address: string;
-//   country: string;
-//   city: string;
-//   state: string;
-//   mapLocation?: string;
-// }
-
 export interface IFormJobData {
   title: string;
   overview: string;
