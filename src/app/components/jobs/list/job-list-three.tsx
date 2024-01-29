@@ -10,16 +10,17 @@ import JobGridItem from '../grid/job-grid-item';
 import { useAppSelector } from '@/redux/hook';
 import NiceSelect from '@/ui/nice-select';
 import { IJobData } from '@/database/job.model';
-import { getJobPosts } from '@/lib/actions/job.action';
 
 const JobListThree = ({
   itemsPerPage,
-  grid_style = false
+  grid_style = false,
+  allJobs
 }: {
   itemsPerPage: number;
   grid_style?: boolean;
+  allJobs: IJobData[];
 }) => {
-  const all_jobs = job_data;
+  const all_jobs = allJobs;
   const maxPrice = job_data.reduce((max, job) => {
     return job.salary > max ? job.salary : max;
   }, 0);
@@ -33,16 +34,10 @@ const JobListThree = ({
   const [jobType, setJobType] = useState(grid_style ? 'grid' : 'list');
   const [priceValue, setPriceValue] = useState([0, maxPrice]);
   const [shortValue, setShortValue] = useState('');
-  const [mongoData, setmongoData] = useState<IJobData[]>([]);
 
   useEffect(() => {
     // Filter the job_data array based on the selected filters
-
-    getJobPosts().then(({ jobs }) => {
-      setmongoData(jobs);
-    });
-
-    let filteredData = mongoData
+    let filteredData = all_jobs
       .filter((item) =>
         category.length !== 0
           ? category.some((c) => item.category.includes(c))
@@ -91,10 +86,9 @@ const JobListThree = ({
     job_type,
     location,
     tags,
-    all_jobs,
     priceValue,
     shortValue,
-    mongoData
+    all_jobs
   ]);
 
   const handlePageClick = (event: { selected: number }) => {
@@ -132,8 +126,8 @@ const JobListThree = ({
             <div className="job-post-item-wrapper ms-xxl-5 ms-xl-3">
               <div className="upper-filter d-flex justify-content-between align-items-center mb-20">
                 <div className="total-job-found">
-                  All <span className="text-dark">{mongoData?.length}</span>{' '}
-                  jobs found
+                  All <span className="text-dark">{all_jobs?.length}</span> jobs
+                  found
                 </div>
                 <div className="d-flex align-items-center">
                   <div className="short-filter d-flex align-items-center">

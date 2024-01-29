@@ -31,6 +31,7 @@ export async function createUser(userData: CreateUserParams) {
       throw new Error('User not found');
     }
     const userRole = clerkUser.unsafeMetadata.userRole;
+    console.log('createUser  userRole:', userRole);
 
     const mongoUser = { ...userData, userRole };
 
