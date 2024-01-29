@@ -20,6 +20,8 @@ interface resumeDataParams {
   pdf: {
     filename: string | null;
     file: string | null;
+    url: string | null;
+    publicId: string | null;
   };
 }
 
@@ -52,7 +54,9 @@ export async function createResume(resumeData: resumeDataParams) {
       overview,
       pdf: {
         filename,
-        file: result.secure_url
+        file: result.secure_url,
+        url: result.url,
+        publicId: result.public_id
       }
     });
     return newResume;

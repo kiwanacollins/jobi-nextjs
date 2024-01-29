@@ -21,6 +21,8 @@ export interface IExperience {
 interface IPdf {
   filename: string | null;
   file: string | null;
+  url: string | null;
+  publicId: string | null;
 }
 
 export interface IResumeType extends Document {
@@ -61,7 +63,9 @@ const resumeSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   pdf: {
     filename: { type: String },
-    file: { type: String }
+    file: { type: String },
+    url: { type: String },
+    publicId: { type: String }
   },
   overview: String,
   // videos: [String],
