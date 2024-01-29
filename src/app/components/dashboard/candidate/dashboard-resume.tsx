@@ -671,7 +671,10 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                 {isSubmitting ? 'Submitting...' : 'Submit'}
               </button>
               <button
-                onClick={() => reset()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  reset();
+                }}
                 className="dash-cancel-btn tran3s"
               >
                 Cancel
