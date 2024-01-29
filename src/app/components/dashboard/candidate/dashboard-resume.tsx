@@ -22,6 +22,8 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filename, setFilename] = useState('');
+  const [file, setFile] = useState('');
   const { userId } = useAuth();
   const parsedMongoUserId = mongoUserId;
 
@@ -86,6 +88,25 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
       name: 'experience'
     });
 
+  // handle file pdf upload
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+    const pdfFile = new FileReader();
+    const selectedFile = event.target.files?.[0] || null;
+    const fileName = selectedFile?.name || '';
+    setFilename(fileName);
+    if (event.target.name === 'file') {
+      pdfFile.onload = () => {
+        if (pdfFile.readyState === 2) {
+          setFile(pdfFile.result as string);
+        }
+      };
+    }
+    pdfFile.readAsDataURL(event.target.files?.[0] as File);
+  };
+
   // 2. Handle your form submission.
   const onSubmit = async (data: resumeSchemaType, e: any) => {
     e.preventDefault();
@@ -121,7 +142,11 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
         skills: data.skills,
         overview: data.overview,
         experience,
-        education
+        education,
+        pdf: {
+          filename,
+          file
+        }
       });
       notifySuccess('Resume Created successfully.');
     } catch (error: any) {
@@ -226,11 +251,13 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                 <input
                   type="file"
                   id="uploadCV"
-                  name="uploadCV"
-                  placeholder=""
+                  accept="application/pdf"
+                  placeholder="Up load resume"
+                  name="file"
+                  onChange={(e) => handleFileChange(e)}
                 />
               </div>
-              <small>Upload file .pdf, .doc, .docx</small>
+              <small>{filename || 'Upload file .pdf'}</small>
             </div>
 
             <div className="bg-white card-box border-20 mt-40">

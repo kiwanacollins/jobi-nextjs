@@ -8,10 +8,6 @@ const CandidateDashboardResumePage = async () => {
   const { userId } = auth();
   if (!userId) redirect('/sign-in');
   const mongoUser = await getUserById({ userId });
-  console.log(
-    'CandidateDashboardResumePage  mongoUser:',
-    mongoUser._id.toString()
-  );
   return (
     <>
       {/* Resume area start */}

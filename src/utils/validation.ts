@@ -6,7 +6,7 @@ const educationSchema = z.object({
   yearStart: z.number(),
   yearEnd: z.number().optional(),
   year: z.string().optional(),
-  description: z.string().max(500)
+  description: z.string()
 });
 
 const experienceSchema = z.object({
@@ -15,11 +15,15 @@ const experienceSchema = z.object({
   yearStart: z.number(),
   yearEnd: z.number().optional(),
   year: z.string().optional(),
-  description: z.string().max(50)
+  description: z.string()
 });
 
+// const pdfSchema = z.object({
+//   file: z.string()
+// });
+
 export const resumeSchema = z.object({
-  // filename: z.string().min(1, 'Filename is required'),
+  // pdf: pdfSchema,
   overview: z.string(),
   // videos: z.string().array(),
   education: z.array(educationSchema),

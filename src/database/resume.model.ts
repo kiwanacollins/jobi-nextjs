@@ -18,10 +18,15 @@ export interface IExperience {
   description: string;
 }
 
+interface IPdf {
+  filename: string | null;
+  file: string | null;
+}
+
 export interface IResumeType extends Document {
   clerkId: string;
   userId: Schema.Types.ObjectId | string;
-  // filename: string;
+  pdf?: IPdf;
   overview: string;
   // videos: string[];
   education: IEducation[];
@@ -54,13 +59,16 @@ const resumeSchema = new Schema({
     required: true
   },
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
-  // filename: String, // Optional, uncomment if needed
+  pdf: {
+    filename: { type: String },
+    file: { type: String }
+  },
   overview: String,
-  // videos: [String], // Optional, uncomment if needed
+  // videos: [String],
   education: [educationSchema],
-  skills: [String], // Adjust type if needed (e.g., [String])
+  skills: [String],
   experience: [experienceSchema],
-  // portfolio: [String], // Optional, uncomment if needed
+  // portfolio: [String],
   createdAt: { type: Date, default: Date.now }
 });
 
