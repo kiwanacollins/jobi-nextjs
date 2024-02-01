@@ -55,15 +55,12 @@ export async function POST(req: Request) {
 
   // Get the ID and type
   const eventType = evt.type;
-  console.log('POST  eventType:', eventType);
 
+  // Todo: create a user in your database
   if (eventType === 'user.created') {
-    // Do something with the user created event
     const { id, email_addresses, image_url, first_name, last_name, username } =
       evt.data;
-    console.log('POST  user.updated:', evt.data);
 
-    // Todo: create a user in your database
     const mongoUser = await createUser({
       clerkId: id,
       username,

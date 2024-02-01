@@ -135,13 +135,16 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
         description: item.description
       };
     });
+
     try {
       await createResume({
         clerkId: userId || null,
-        userId: parsedMongoUserId,
+        user: parsedMongoUserId,
         skills: data.skills,
         overview: data.overview,
         experience,
+        minSalary: data.minSalary as number,
+        maxSalary: data.maxSalary as number,
         education,
         pdf: {
           filename,
@@ -154,6 +157,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
+      reset();
     }
   };
 
@@ -272,6 +276,43 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                 ></textarea>
                 <div className="alert-text">
                   Brief description for your resume. URLs are hyperlinked.
+                </div>
+                {errors.overview?.message && (
+                  <ErrorMsg msg={errors.overview?.message} />
+                )}
+
+                <div className="d-flex align-items-center mb-3 mt-30">
+                  <label htmlFor="salaryStart" className="form-label me-4">
+                    Salary *
+                  </label>
+                  <div className="d-flex gap-3">
+                    <input
+                      type="text"
+                      placeholder="min salary"
+                      {...register('minSalary', {
+                        required: true,
+                        valueAsNumber: true
+                      })}
+                      name="minSalary"
+                      className=" mb-30 mx-8"
+                    />
+                    {errors?.minSalary?.message && (
+                      <ErrorMsg msg={errors?.minSalary?.message} />
+                    )}
+                    <input
+                      type="text"
+                      placeholder="max salary"
+                      {...register('maxSalary', {
+                        required: true,
+                        valueAsNumber: true
+                      })}
+                      name="maxSalary"
+                      className=" mb-30"
+                    />
+                    {errors?.maxSalary?.message && (
+                      <ErrorMsg msg={errors?.maxSalary?.message} />
+                    )}
+                  </div>
                 </div>
               </div>
 

@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import CandidateV1Area from '../../components/candidate/candidate-v1-area';
+import { getCandidateResumes } from '@/lib/actions/candidate.action';
 
 export const metadata: Metadata = {
   title: 'Candidates',
@@ -10,9 +11,12 @@ export const metadata: Metadata = {
     'Connect with skilled professionals and discover the perfect candidates for your team. HireSkills is your go-to platform for finding exceptional talent in various industries.'
 };
 
-const CandidateV2Page = () => {
+const CandidateV2Page = async () => {
+  const { candidates } = await getCandidateResumes();
+  console.log('CandidateV2Page  candidates:', candidates);
+
   return (
-    <>
+    <div>
       {/* search breadcrumb start */}
       <JobBreadcrumb
         title="Candidates"
@@ -21,13 +25,16 @@ const CandidateV2Page = () => {
       {/* search breadcrumb end */}
 
       {/* candidate area start */}
-      <CandidateV1Area style_2={true} />
+      <CandidateV1Area
+        candidates={JSON.parse(JSON.stringify(candidates))}
+        style_2={true}
+      />
       {/* candidate area end */}
 
       {/* job portal intro start */}
       <JobPortalIntro top_border={true} />
       {/* job portal intro end */}
-    </>
+    </div>
   );
 };
 

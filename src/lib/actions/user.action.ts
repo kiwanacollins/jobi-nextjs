@@ -4,7 +4,6 @@ import User from '@/database/user.model';
 import { connectToDatabase } from '../mongoose';
 import { CreateUserParams, UpdateUserParams } from './shared.types';
 import { revalidatePath } from 'next/cache';
-import { clerkClient } from '@clerk/nextjs';
 
 export async function getUserById(params: any) {
   try {
@@ -24,19 +23,21 @@ export async function getUserById(params: any) {
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
-    const { clerkId } = userData;
-    const clerkUser = await clerkClient.users.getUser(clerkId);
-    console.log('createUser  clerkUser:', clerkUser);
-    if (!clerkUser) {
-      throw new Error('User not found');
-    }
-    const userRole = clerkUser.unsafeMetadata.userRole;
-    console.log('createUser  userRole:', userRole);
-
-    const mongoUser = { ...userData, userRole };
-
-    console.log('createUser  mongoUser:', mongoUser);
-    const newUser = await User.create(mongoUser);
+    const { clerkId, name, email, picture, username } = userData;
+    console.log({
+      clerkId,
+      name,
+      email,
+      picture,
+      username
+    });
+    const newUser = await User.create({
+      clerkId,
+      name,
+      email,
+      picture,
+      username
+    });
     return newUser;
   } catch (error) {
     console.log(error);

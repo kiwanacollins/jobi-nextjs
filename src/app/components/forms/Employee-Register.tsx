@@ -49,7 +49,7 @@ const resolver: Resolver<IFormData> = async (values) => {
   };
 };
 
-const CandidateRegisterForm = () => {
+const EmployeeRegisterForm = () => {
   const [showPass, setShowPass] = useState<boolean>(false);
   const { isLoaded, signUp } = useSignUp();
   const router = useRouter();
@@ -82,7 +82,7 @@ const CandidateRegisterForm = () => {
             password: data.password,
             username: data.username,
             unsafeMetadata: {
-              userRole: 'candidate'
+              userRole: 'employee'
             }
           })
           .then(({ unsafeMetadata }) => {
@@ -95,11 +95,11 @@ const CandidateRegisterForm = () => {
         });
         notifySuccess('Check your email for verification code');
         router.push('/register/verify-email');
-        reset();
       } catch (err: any) {
         notifyError(`Erorr: ${err.errors[0].longMessage}`);
       }
     });
+    reset();
   };
 
   const handleTermsChange = () => {
@@ -221,4 +221,4 @@ const CandidateRegisterForm = () => {
   );
 };
 
-export default CandidateRegisterForm;
+export default EmployeeRegisterForm;

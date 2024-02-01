@@ -1,7 +1,7 @@
 'use client';
 
 import ErrorMsg from '@/app/components/common/error-msg';
-import RegisterForm from '@/app/components/forms/register-form';
+import CandidateRegisterForm from '@/app/components/forms/register-form';
 import * as Yup from 'yup';
 import { useSignUp } from '@clerk/nextjs';
 import { register } from 'module';

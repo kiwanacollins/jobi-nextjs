@@ -95,7 +95,12 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   }, [count]);
 
   // react hook form
-  const methods = useForm({ resolver });
+  const methods = useForm({
+    resolver,
+    defaultValues: {
+      tags: skillTags
+    }
+  });
 
   // react hook form
   const {
@@ -309,7 +314,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                 <div className="dash-input-wrapper mb-30">
                   <input
                     type="text"
-                    placeholder="Min"
+                    placeholder="Min Salary"
                     {...register('minSalary')}
                     name="minSalary"
                   />
@@ -338,6 +343,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                 {...register('tags', { required: `Skills is required!` })}
                 name="tags"
                 value={selectedSkills.join(', ')}
+                defaultValue={skillTags}
               />
               <div className="skill-input-data d-flex align-items-center flex-wrap">
                 {skillTags.map((skill, index) => (

@@ -26,6 +26,8 @@ export const resumeSchema = z.object({
   // pdf: pdfSchema,
   overview: z.string(),
   // videos: z.string().array(),
+  minSalary: z.number(),
+  maxSalary: z.number(),
   education: z.array(educationSchema),
   skills: z.array(z.string()),
   experience: z.array(experienceSchema)

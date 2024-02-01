@@ -2,6 +2,8 @@
 import Resume, { IEducation, IExperience } from '@/database/resume.model';
 import { connectToDatabase } from '../mongoose';
 import cloudinary from 'cloudinary';
+import User from '@/database/user.model';
+
 // import multer from 'multer';
 
 // const multerUploader = multer({
@@ -10,18 +12,20 @@ import cloudinary from 'cloudinary';
 // });
 
 interface resumeDataParams {
-  userId: string | undefined;
+  user: string | undefined;
   clerkId: string | null | undefined;
   overview: string;
   education: IEducation[];
+  minSalary: number;
+  maxSalary: number;
   skills: string[];
   experience: IExperience[];
   // file: File;
   pdf: {
     filename: string | null;
     file: string | null;
-    url: string | null;
-    publicId: string | null;
+    url?: string | null;
+    publicId?: string | null;
   };
 }
 
@@ -34,8 +38,17 @@ cloudinary.v2.config({
 export async function createResume(resumeData: resumeDataParams) {
   try {
     connectToDatabase();
-    const { clerkId, education, experience, skills, overview, userId, pdf } =
-      resumeData;
+    const {
+      clerkId,
+      education,
+      experience,
+      skills,
+      overview,
+      user,
+      pdf,
+      maxSalary,
+      minSalary
+    } = resumeData;
     const { file, filename } = pdf;
 
     const result = await cloudinary.v2.uploader.upload(file as string, {
@@ -47,10 +60,12 @@ export async function createResume(resumeData: resumeDataParams) {
 
     const newResume = await Resume.create({
       clerkId,
-      userId,
+      user,
       education,
       experience,
       skills,
+      minSalary,
+      maxSalary,
       overview,
       pdf: {
         filename,
@@ -62,6 +77,20 @@ export async function createResume(resumeData: resumeDataParams) {
     return newResume;
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+}
+
+export async function getCandidateResumes() {
+  try {
+    connectToDatabase();
+
+    const candidates = await Resume.find({})
+      .populate({ path: 'user', model: User })
+      .exec();
+    return { status: 'ok', candidates };
+  } catch (error) {
+    console.error('Error fetching candidates:', error);
     throw error;
   }
 }

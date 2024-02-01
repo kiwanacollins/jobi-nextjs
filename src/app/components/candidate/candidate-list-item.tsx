@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICandidate } from '@/data/candidate-data';
+// import { ICandidate } from '@/data/candidate-data';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -7,7 +7,7 @@ const CandidateListItem = ({
   item,
   style_2 = false
 }: {
-  item: ICandidate;
+  item: any;
   style_2?: boolean;
 }) => {
   return (
@@ -20,7 +20,9 @@ const CandidateListItem = ({
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
           <Link href="/candidate-profile" className="rounded-circle">
             <Image
-              src={item.img}
+              src={item.user?.picture}
+              width={style_2 ? 120 : 80}
+              height={style_2 ? 120 : 80}
               alt="image"
               className="lazy-img rounded-circle"
             />
@@ -32,12 +34,12 @@ const CandidateListItem = ({
               <div className="position-relative">
                 <h4 className="candidate-name mb-0">
                   <Link href="/candidate-profile" className="tran3s">
-                    {item.name}
+                    {item.user?.name}
                   </Link>
                 </h4>
                 <div className="candidate-post">{item.post}</div>
                 <ul className="cadidate-skills style-none d-flex align-items-center">
-                  {item.skills.slice(0, 3).map((s, i) => (
+                  {item.skills.slice(0, 3).map((s: any, i: any) => (
                     <li key={i}>{s}</li>
                   ))}
                   {item.skills.length > 3 && (
@@ -52,14 +54,15 @@ const CandidateListItem = ({
               <div className="candidate-info">
                 <span>Salary</span>
                 <div>
-                  {item.salary}/{item.salary_duration}
+                  {`$${item.minSalary}-${item.maxSalary} `}/
+                  {item?.salary_duration ?? 'month'}
                 </div>
               </div>
             </div>
             <div className="col-xl-3 col-md-4 col-sm-6">
               <div className="candidate-info">
                 <span>Location</span>
-                <div>{item.location}</div>
+                <div>{item.user.address}</div>
               </div>
             </div>
             <div className="col-xl-3 col-md-4">

@@ -27,9 +27,11 @@ interface IPdf {
 
 export interface IResumeType extends Document {
   clerkId: string;
-  userId: Schema.Types.ObjectId | string;
+  user: Schema.Types.ObjectId | string;
   pdf?: IPdf;
   overview: string;
+  minSalary: number;
+  maxSalary: number;
   // videos: string[];
   education: IEducation[];
   skills: string[];
@@ -60,7 +62,7 @@ const resumeSchema = new Schema({
     type: String,
     required: true
   },
-  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
   pdf: {
     filename: { type: String },
     file: { type: String },
@@ -71,6 +73,8 @@ const resumeSchema = new Schema({
   // videos: [String],
   education: [educationSchema],
   skills: [String],
+  minSalary: { type: Number, reuired: true },
+  maxSalary: { type: Number, required: true },
   experience: [experienceSchema],
   // portfolio: [String],
   createdAt: { type: Date, default: Date.now }
