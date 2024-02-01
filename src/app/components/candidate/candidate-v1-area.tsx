@@ -5,7 +5,7 @@ import CandidateGridItem from './candidate-grid-item';
 import CandidateListItem from './candidate-list-item';
 import CandidateV1FilterArea from './filter/candidate-v1-filter-area';
 import ShortSelect from '../common/short-select';
-import { IResumeType } from '@/database/resume.model';
+// import { IResumeType } from '@/database/resume.model';
 
 interface IProps {
   style_2?: boolean;
@@ -67,22 +67,18 @@ const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
                   className={`accordion-box grid-style ${jobType === 'grid' ? 'show' : ''}`}
                 >
                   <div className="row">
-                    {candidates?.length > 0 &&
-                      candidates?.map((item) => (
-                        <div
-                          key={item.id}
-                          className="col-xxl-4 col-sm-6 d-flex"
-                        >
-                          <CandidateGridItem item={item} />
-                        </div>
-                      ))}
+                    {candidates?.map((item) => (
+                      <div key={item.id} className="col-xxl-4 col-sm-6 d-flex">
+                        <CandidateGridItem item={item} />
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 <div
                   className={`accordion-box list-style ${jobType === 'list' ? 'show' : ''}`}
                 >
-                  {candidates.map((item) => (
+                  {candidates?.map((item) => (
                     <CandidateListItem key={item.id} item={item} />
                   ))}
                 </div>
