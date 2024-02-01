@@ -1,6 +1,6 @@
-import React from "react";
-import candidate_data from "@/data/candidate-data";
-import NiceSelect from "@/ui/nice-select";
+import React from 'react';
+import candidate_data from '@/data/candidate-data';
+import NiceSelect from '@/ui/nice-select';
 
 const FilterSkills = () => {
   const uniqueSkills = [...new Set(candidate_data.flatMap((c) => c.skills))];

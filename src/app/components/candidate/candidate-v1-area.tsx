@@ -38,7 +38,10 @@ const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
               <div className="ms-xxl-5 ms-xl-3">
                 <div className="upper-filter d-flex justify-content-between align-items-center mb-20">
                   <div className="total-job-found">
-                    All <span className="text-dark fw-500">1,270</span>{' '}
+                    All{' '}
+                    <span className="text-dark fw-500">
+                      {candidates?.length}
+                    </span>{' '}
                     candidates found
                   </div>
                   <div className="d-flex align-items-center">

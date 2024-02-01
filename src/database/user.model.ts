@@ -43,7 +43,6 @@ const UserSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String },
   // userRole: { type: String, required: true },
-
   bio: { type: String },
   picture: { type: String, required: true },
   location: { type: String },

@@ -19,9 +19,7 @@ type IProps = {
 };
 const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const pathname = usePathname();
-
   // resolver
   const resolver: Resolver = async (values) => {
     return {

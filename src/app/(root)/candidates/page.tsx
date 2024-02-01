@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 
 const CandidateV2Page = async () => {
   const { candidates } = await getCandidateResumes();
-  console.log('CandidateV2Page  candidates:', candidates);
 
   return (
     <div>

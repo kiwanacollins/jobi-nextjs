@@ -2,7 +2,11 @@
 
 import User from '@/database/user.model';
 import { connectToDatabase } from '../mongoose';
-import { CreateUserParams, UpdateUserParams } from './shared.types';
+import {
+  ClerkUpdateUserParams,
+  CreateUserParams,
+  UpdateUserParams
+} from './shared.types';
 import { revalidatePath } from 'next/cache';
 
 export async function getUserById(params: any) {
@@ -50,13 +54,42 @@ export async function createUser(userData: CreateUserParams) {
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
-
     const { clerkId, updateData, path } = params;
+    console.log('updateUser  updateData:', updateData);
 
-    await User.findOneAndUpdate({ clerkId }, updateData, {
+    const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true
     });
+    console.log('updatedUser:', updatedUser);
+    if (!updatedUser) {
+      throw new Error(`User with clerkId ${clerkId} not found`);
+    }
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+// update user
 
+export async function clekUserUpdate(params: ClerkUpdateUserParams) {
+  try {
+    connectToDatabase();
+    const { clerkId, name, email, picture, username, path } = params;
+
+    const updateData = {
+      clerkId,
+      name,
+      email,
+      picture,
+      username
+    };
+    const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
+      new: true
+    });
+    if (!updatedUser) {
+      throw new Error(`User with clerkId ${clerkId} not found`);
+    }
     revalidatePath(path);
   } catch (error) {
     console.log(error);

@@ -8,6 +8,14 @@ export interface CreateUserParams {
   email: string;
   picture: string;
 }
+export interface ClerkUpdateUserParams {
+  clerkId: string;
+  name: string;
+  username: string | null;
+  email: string;
+  picture: string;
+  path: string;
+}
 
 export interface CreateJobParams {
   clerkId: string | null | undefined;
