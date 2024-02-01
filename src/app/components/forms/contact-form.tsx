@@ -1,10 +1,10 @@
-"use client";
-import React from "react";
-import * as Yup from "yup";
-import { Resolver, useForm } from "react-hook-form";
-import ErrorMsg from "../common/error-msg";
-import emailjs from "@emailjs/browser";
-import { notifyError, notifySuccess } from "@/utils/toast";
+'use client';
+import React from 'react';
+
+import { Resolver, useForm } from 'react-hook-form';
+import ErrorMsg from '../common/error-msg';
+import emailjs from '@emailjs/browser';
+import { notifyError, notifySuccess } from '@/utils/toast';
 
 // form data type
 type IFormData = {
@@ -14,13 +14,6 @@ type IFormData = {
   message: string;
 };
 
-// schema
-const schema = Yup.object().shape({
-  name: Yup.string().required().label("Name"),
-  email: Yup.string().required().email().label("Email"),
-  subject: Yup.string().label("Subject"),
-  message: Yup.string().required().label("Subject"),
-});
 // resolver
 const resolver: Resolver<IFormData> = async (values) => {
   return {
@@ -28,19 +21,19 @@ const resolver: Resolver<IFormData> = async (values) => {
     errors: !values.name
       ? {
           name: {
-            type: "required",
-            message: "Name is required.",
+            type: 'required',
+            message: 'Name is required.'
           },
           email: {
-            type: "required",
-            message: "Email is required.",
+            type: 'required',
+            message: 'Email is required.'
           },
           message: {
-            type: "required",
-            message: "Message is required.",
-          },
+            type: 'required',
+            message: 'Message is required.'
+          }
         }
-      : {},
+      : {}
   };
 };
 const ContactForm = () => {
@@ -49,7 +42,7 @@ const ContactForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    reset
   } = useForm<IFormData>({ resolver });
   // on submit
   const onSubmit = (data: IFormData) => {
@@ -57,19 +50,18 @@ const ContactForm = () => {
       name: data.name,
       email: data.email,
       subject: data.subject,
-      message: data.message,
+      message: data.message
     };
     if (data) {
       emailjs
         .send(
-          'service_gnu2rla', 
-          'template_ilrquco', 
+          'service_gnu2rla',
+          'template_ilrquco',
           templateParams,
           'tDbxqotWh8Z0dv0h6'
         )
         .then(
           (response) => {
-            // console.log("SUCCESS!", response.status, response.text);
             notifySuccess('Your message sent successfully');
           },
           (err) => {
@@ -91,7 +83,7 @@ const ContactForm = () => {
             <input
               type="text"
               placeholder="Your Name*"
-              {...register("name", { required: `Name is required!` })}
+              {...register('name', { required: `Name is required!` })}
               name="name"
             />
             <div className="help-block with-errors">
@@ -105,7 +97,7 @@ const ContactForm = () => {
             <input
               type="email"
               placeholder="Email Address*"
-              {...register("email", { required: `Email is required!` })}
+              {...register('email', { required: `Email is required!` })}
               name="email"
             />
             <div className="help-block with-errors">
@@ -117,7 +109,7 @@ const ContactForm = () => {
           <div className="input-group-meta form-group mb-35">
             <label htmlFor="">Subject (optional)</label>
             <input
-              {...register("subject", { required: false })}
+              {...register('subject', { required: false })}
               type="text"
               placeholder="Write about the subject here.."
               name="subject"
@@ -128,7 +120,7 @@ const ContactForm = () => {
           <div className="input-group-meta form-group mb-35">
             <textarea
               placeholder="Your message*"
-              {...register("message", { required: `Message is required!` })}
+              {...register('message', { required: `Message is required!` })}
               name="message"
             />
             <div className="help-block with-errors">
