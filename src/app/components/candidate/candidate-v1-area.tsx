@@ -68,7 +68,7 @@ const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
                 >
                   <div className="row">
                     {candidates?.map((item) => (
-                      <div key={item.id} className="col-xxl-4 col-sm-6 d-flex">
+                      <div key={item._id} className="col-xxl-4 col-sm-6 d-flex">
                         <CandidateGridItem item={item} />
                       </div>
                     ))}
@@ -79,7 +79,7 @@ const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
                   className={`accordion-box list-style ${jobType === 'list' ? 'show' : ''}`}
                 >
                   {candidates?.map((item) => (
-                    <CandidateListItem key={item.id} item={item} />
+                    <CandidateListItem key={item._id} item={item} />
                   ))}
                 </div>
 

@@ -56,7 +56,6 @@ export async function createResume(resumeData: resumeDataParams) {
       unique_filename: false,
       use_filename: true
     });
-    // console.log(result);
 
     const newResume = await Resume.create({
       clerkId,
