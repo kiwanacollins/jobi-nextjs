@@ -35,6 +35,23 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+export async function getResumeById(resumeId: string) {
+  try {
+    const user = await Resume.findById(resumeId)
+      .populate({ path: 'user', model: User })
+      .exec();
+
+    if (!user) {
+      throw new Error(`User with ID ${resumeId} not found`);
+    }
+
+    return user;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+}
+
 export async function createResume(resumeData: resumeDataParams) {
   try {
     connectToDatabase();

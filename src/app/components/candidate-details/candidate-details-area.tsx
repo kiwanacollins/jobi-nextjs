@@ -2,14 +2,21 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import CandidateProfileSlider from './candidate-profile-slider';
-import avatar from '@/assets/images/candidates/img_01.jpg';
 import VideoPopup from '../common/video-popup';
 import Skills from './skills';
 import WorkExperience from './work-experience';
 import CandidateBio from './bio';
 import EmailSendForm from '../forms/email-send-form';
+import { IResumeType } from '@/database/resume.model';
+import Link from 'next/link';
 
-const CandidateDetailsArea = () => {
+interface ICandidateDetailsAreaProps {
+  candidateDetials: IResumeType;
+}
+
+const CandidateDetailsArea = ({
+  candidateDetials
+}: ICandidateDetailsAreaProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   return (
     <>
@@ -20,24 +27,7 @@ const CandidateDetailsArea = () => {
               <div className="candidates-profile-details me-xxl-5 pe-xxl-4">
                 <div className="inner-card border-style mb-65 lg-mb-40">
                   <h3 className="title">Overview</h3>
-                  <p>
-                    Hello my name is Ariana Gande Connor and I’m a Financial
-                    Supervisor from Netherlands, Rotterdam. In pharetra orci
-                    dignissim, blandit mi semper, ultricies diam. Suspendisse
-                    malesuada suscipit nunc non volutpat. Sed porta nulla id
-                    orci laoreet tempor non consequat enim. Sed vitae aliquam
-                    velit. Aliquam Integer vehicula rhoncus molestie. Morbi
-                    ornare ipsum sed sem condimentum, et pulvinar tortor luctus.
-                    Suspendisse condimentum lorem ut elementum aliquam.{' '}
-                  </p>{' '}
-                  <br />
-                  <p>
-                    Mauris nec erat ut libero vulputate pulvinar. Aliquam ante
-                    erat, blandit at pretium et, accumsan ac est. Integer
-                    vehicula rhoncus molestie. Morbi ornare ipsum sed sem
-                    condimentum, et pulvinar tortor luctus. Suspendisse
-                    condimentum lorem ut elementum aliquam. Mauris nec.
-                  </p>
+                  <p>{candidateDetials?.overview}</p>
                 </div>
                 <h3 className="title">Intro</h3>
                 <div className="video-post d-flex align-items-center justify-content-center mt-25 lg-mt-20 mb-75 lg-mb-50">
@@ -50,42 +40,44 @@ const CandidateDetailsArea = () => {
                 </div>
                 <div className="inner-card border-style mb-75 lg-mb-50">
                   <h3 className="title">Education</h3>
-                  <div className="time-line-data position-relative pt-15">
-                    <div className="info position-relative">
-                      <div className="numb fw-500 rounded-circle d-flex align-items-center justify-content-center">
-                        1
-                      </div>
-                      <div className="text_1 fw-500">University of Boston</div>
-                      <h4>Bachelor Degree of Design</h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Proin a ipsum tellus. Interdum primis
-                      </p>
-                    </div>
-                    <div className="info position-relative">
-                      <div className="numb fw-500 rounded-circle d-flex align-items-center justify-content-center">
-                        2
-                      </div>
-                      <div className="text_1 fw-500">Design Collage</div>
-                      <h4>UI/UX Design Course</h4>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Proin a ipsum tellus. Interdum et malesuada fames ac
-                        ante ipsum primis in faucibus.
-                      </p>
-                    </div>
-                  </div>
+                  {candidateDetials?.education?.length > 0 &&
+                    candidateDetials?.education?.map((item, index) => {
+                      return (
+                        <div
+                          key={item.title + index}
+                          className="time-line-data position-relative pt-15"
+                        >
+                          <div className="info position-relative">
+                            <div className="numb fw-500 rounded-circle d-flex align-items-center justify-content-center">
+                              1
+                            </div>
+                            <div className="text_1 fw-500">{item.academy}</div>
+                            <h4>{item.title}</h4>
+                            <p>{item.description}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
                 <div className="inner-card border-style mb-75 lg-mb-50">
                   <h3 className="title">Skills</h3>
                   {/* skill area */}
-                  <Skills />
+
+                  <Skills skills={candidateDetials?.skills} />
+
                   {/* skill area */}
                 </div>
                 <div className="inner-card border-style mb-60 lg-mb-50">
                   <h3 className="title">Work Experience</h3>
                   {/* WorkExperience */}
-                  <WorkExperience />
+                  {candidateDetials.experience?.length > 0 &&
+                    candidateDetials.experience?.map((item, index) => (
+                      <WorkExperience
+                        key={item.title + index}
+                        experience={item}
+                      />
+                    ))}
+
                   {/* WorkExperience */}
                 </div>
                 <h3 className="title">Portfolio</h3>
@@ -100,13 +92,22 @@ const CandidateDetailsArea = () => {
                   <div className="pt-25">
                     <div className="cadidate-avatar m-auto">
                       <Image
-                        src={avatar}
+                        //@ts-ignore
+                        src={candidateDetials?.user?.picture as string}
                         alt="avatar"
+                        width={80}
+                        height={80}
                         className="lazy-img rounded-circle w-100"
                       />
                     </div>
                   </div>
-                  <h3 className="cadidate-name text-center">James Brower</h3>
+
+                  <h3 className="cadidate-name text-center">
+                    {typeof candidateDetials?.user === 'object'
+                      ? //@ts-ignore
+                        candidateDetials?.user?.name
+                      : ''}
+                  </h3>
                   <div className="text-center pb-25">
                     <a href="#" className="invite-btn fw-500">
                       Invite
@@ -115,12 +116,15 @@ const CandidateDetailsArea = () => {
                   {/* CandidateBio */}
                   <CandidateBio />
                   {/* CandidateBio */}
-                  <a
-                    href="#"
+                  <Link
+                    href={`${candidateDetials?.pdf?.url}` as string}
+                    download={candidateDetials?.pdf?.filename as string}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="btn-ten fw-500 text-white w-100 text-center tran3s mt-15"
                   >
                     Download CV
-                  </a>
+                  </Link>
                 </div>
                 <h4 className="sidebar-title">Location</h4>
                 <div className="map-area mb-60 md-mb-40">
