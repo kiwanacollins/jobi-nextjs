@@ -63,13 +63,13 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
     let filteredData = allJobData
       .filter((item) =>
         category.length !== 0
-          ? category.some((c) => item.category.includes(c))
+          ? category.some((c: any) => item.category.includes(c))
           : true
       )
       .filter((item) =>
         experience.length !== 0
           ? experience.some(
-              (e) =>
+              (e: any) =>
                 item.experience.trim().toLowerCase() === e.trim().toLowerCase()
             )
           : true
@@ -195,7 +195,10 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
                 >
                   {currentItems &&
                     currentItems.map((job) => (
-                      <ListItemTwo key={job.id} item={job} />
+                      <ListItemTwo
+                        key={job.id}
+                        item={JSON.parse(JSON.stringify(job))}
+                      />
                     ))}
                 </div>
 
@@ -206,7 +209,7 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
                     {currentItems &&
                       currentItems.map((job) => (
                         <div key={job.id} className="col-lg-4 mb-30">
-                          <JobGridItem item={job} />
+                          <JobGridItem item={JSON.parse(JSON.stringify(job))} />
                         </div>
                       ))}
                   </div>

@@ -27,20 +27,22 @@ export async function getUserById(params: any) {
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
-    const { clerkId, name, email, picture, username } = userData;
+    const { clerkId, name, email, picture, username, role } = userData;
     console.log({
       clerkId,
       name,
       email,
       picture,
-      username
+      username,
+      role
     });
     const newUser = await User.create({
       clerkId,
       name,
       email,
       picture,
-      username
+      username,
+      role
     });
     return newUser;
   } catch (error) {
@@ -50,7 +52,6 @@ export async function createUser(userData: CreateUserParams) {
 }
 
 // update user
-
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();

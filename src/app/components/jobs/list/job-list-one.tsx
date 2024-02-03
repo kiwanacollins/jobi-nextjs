@@ -9,7 +9,11 @@ export async function JobListItems({ style_2 = false }: { style_2?: boolean }) {
   return (
     <>
       {jobs.slice(0, 5).map((item) => (
-        <ListItem key={item._id} item={item} style_2={style_2} />
+        <ListItem
+          key={item._id}
+          item={JSON.parse(JSON.stringify(item))}
+          style_2={style_2}
+        />
       ))}
     </>
   );

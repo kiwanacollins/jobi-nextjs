@@ -1,9 +1,13 @@
 import NiceSelect from '@/ui/nice-select';
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { UseFormSetValue } from 'react-hook-form';
+import { IFormJobData } from '../employ/submit-job-area';
 
-const CitySelect = () => {
-  const { setValue } = useFormContext();
+const CitySelect = ({
+  setValue
+}: {
+  setValue: UseFormSetValue<IFormJobData>;
+}) => {
   const handleCity = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('city', value);

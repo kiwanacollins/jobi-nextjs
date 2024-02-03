@@ -12,7 +12,7 @@ const EmployDashboardSubmitJobPage = async () => {
   return (
     <>
       {/* submit job area start */}
-      <SubmitJobArea mongoUserId={JSON.parse(JSON.stringify(mongoUser?._id))} />
+      <SubmitJobArea mongoUserId={mongoUser?._id.toString()} />
       {/* submit job area end */}
     </>
   );

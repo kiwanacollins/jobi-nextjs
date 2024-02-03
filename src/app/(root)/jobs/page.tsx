@@ -20,7 +20,10 @@ const JobListOnePage = async () => {
       {/* search breadcrumb end */}
 
       {/* job list three start */}
-      <JobListThree allJobs={jobs} itemsPerPage={8} />
+      <JobListThree
+        allJobs={JSON.parse(JSON.stringify(jobs))}
+        itemsPerPage={8}
+      />
       {/* job list three end */}
 
       {/* job portal intro start */}

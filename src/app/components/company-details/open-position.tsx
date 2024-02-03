@@ -27,7 +27,10 @@ const OpenPosition = async () => {
         </div>
         <div className="mt-50">
           {job_items.map((item) => (
-            <ListItemTwo key={item.id} item={item} />
+            <ListItemTwo
+              key={item.id}
+              item={JSON.parse(JSON.stringify(item))}
+            />
           ))}
         </div>
       </div>

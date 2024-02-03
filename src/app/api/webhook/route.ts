@@ -58,15 +58,23 @@ export async function POST(req: Request) {
 
   // Todo: create a user in your database
   if (eventType === 'user.created') {
-    const { id, email_addresses, image_url, first_name, last_name, username } =
-      evt.data;
+    const {
+      id,
+      email_addresses,
+      image_url,
+      first_name,
+      last_name,
+      username,
+      unsafe_metadata
+    } = evt.data;
     try {
       const mongoUser = await createUser({
         clerkId: id,
         username,
         name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
         email: email_addresses[0].email_address,
-        picture: image_url
+        picture: image_url,
+        role: unsafe_metadata.userRole as string
       });
 
       return NextResponse.json({ message: 'OK', user: mongoUser });

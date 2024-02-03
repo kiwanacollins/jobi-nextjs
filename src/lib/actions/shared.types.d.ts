@@ -7,6 +7,7 @@ export interface CreateUserParams {
   username: string | null;
   email: string;
   picture: string;
+  role: string;
 }
 export interface ClerkUpdateUserParams {
   clerkId: string;

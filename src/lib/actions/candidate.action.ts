@@ -104,7 +104,7 @@ export async function getCandidateResumes() {
     const candidates = await Resume.find({})
       .populate({ path: 'user', model: User })
       .exec();
-    return { status: 'ok', candidates };
+    return { status: 'ok', candidates: JSON.parse(JSON.stringify(candidates)) };
   } catch (error) {
     console.error('Error fetching candidates:', error);
     throw error;

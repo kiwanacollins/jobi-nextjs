@@ -67,7 +67,7 @@ export const getJobPosts = async () => {
   try {
     connectToDatabase();
     const jobs = await Job.find({});
-    return { status: 'ok', jobs };
+    return { status: 'ok', jobs: JSON.parse(JSON.stringify(jobs)) };
   } catch (error) {
     console.log(error);
     throw error;

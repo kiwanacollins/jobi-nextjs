@@ -5,22 +5,13 @@ interface I_Links {
   github: string;
 }
 
-// interface I_Address {
-//   country: string;
-//   city: string;
-//   street: string;
-//   zip: string;
-//   state: string;
-//   mapLocation?: string;
-// }
-
 export interface IUser extends Document {
   clerkId: string;
   name: string;
   username: string;
   email: string;
   password?: string;
-  // userRole: string;
+  role: string;
   bio?: string;
   picture: string;
   location?: string;
@@ -42,7 +33,7 @@ const UserSchema = new Schema({
   username: { type: String, require: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  // userRole: { type: String, required: true },
+  role: { type: String, required: true },
   bio: { type: String },
   picture: { type: String, required: true },
   location: { type: String },

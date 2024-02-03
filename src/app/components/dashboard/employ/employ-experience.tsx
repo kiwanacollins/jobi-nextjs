@@ -1,11 +1,13 @@
 import NiceSelect from '@/ui/nice-select';
 import React from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 import { IFormJobData } from './submit-job-area';
-import { useFormContext } from 'react-hook-form';
 
-const EmployExperience = () => {
-  const { setValue } = useFormContext<IFormJobData>();
-
+const EmployExperience = ({
+  setValue
+}: {
+  setValue: UseFormSetValue<IFormJobData>;
+}) => {
   const handleExperience = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('experience', value);

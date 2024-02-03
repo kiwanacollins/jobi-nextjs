@@ -191,7 +191,12 @@ const SearchItems = () => {
                     jobType === 'list' ? 'show' : ''
                   }`}
                 >
-                  {jobs?.map((job) => <ListItemTwo key={job.id} item={job} />)}
+                  {jobs?.map((job) => (
+                    <ListItemTwo
+                      key={job.id}
+                      item={JSON.parse(JSON.stringify(job))}
+                    />
+                  ))}
                 </div>
 
                 <div
@@ -202,7 +207,7 @@ const SearchItems = () => {
                   <div className="row">
                     {jobs?.map((job) => (
                       <div key={job.id} className="col-sm-6 mb-30">
-                        <JobGridItem item={job} />
+                        <JobGridItem item={JSON.parse(JSON.stringify(job))} />
                       </div>
                     ))}
                   </div>
