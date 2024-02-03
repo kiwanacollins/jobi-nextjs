@@ -80,6 +80,6 @@ const resumeSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const Resume = models.Resume || model('Resume', resumeSchema);
+const Resume = models.Resume || model<IResumeType>('Resume', resumeSchema);
 
 export default Resume;

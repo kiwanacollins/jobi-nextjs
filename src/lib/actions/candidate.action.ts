@@ -54,7 +54,7 @@ export async function getResumeById(resumeId: string) {
 
 export async function createResume(resumeData: resumeDataParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const {
       clerkId,
       education,
