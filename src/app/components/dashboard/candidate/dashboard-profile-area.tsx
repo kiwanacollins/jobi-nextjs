@@ -87,6 +87,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   const {
     register,
     reset,
+    setValue,
     handleSubmit,
     formState: { errors }
   } = methods;
@@ -232,13 +233,13 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">Country*</label>
-                  <CountrySelect />
+                  <CountrySelect setValue={setValue} />
                 </div>
               </div>
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">City*</label>
-                  <CitySelect />
+                  <CitySelect setValue={setValue} />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -256,7 +257,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">State*</label>
-                  <StateSelect />
+                  <StateSelect setValue={setValue} />
                 </div>
               </div>
               <div className="col-12">
