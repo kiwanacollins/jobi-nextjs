@@ -14,12 +14,12 @@ export interface IUser extends Document {
   picture: string;
   location?: string;
   mediaLinks?: I_Links;
-  address: string;
-  country: string;
-  city: string;
-  street: string;
-  zip: string;
-  state: string;
+  address?: string;
+  country?: string;
+  city?: string;
+  street?: string;
+  zip?: string;
+  state?: string;
   mapLocation?: string;
   saved?: Schema.Types.ObjectId[];
   joinedAt: Date;
@@ -37,12 +37,12 @@ const UserSchema = new Schema({
     linkedin: { type: String },
     github: { type: String }
   },
-  address: { type: String, required: true },
-  country: { type: String, required: true },
-  city: { type: String, required: true },
-  street: { type: String, required: true },
-  zip: { type: String, required: true },
-  state: { type: String, required: true },
+  address: { type: String },
+  country: { type: String },
+  city: { type: String },
+  street: { type: String },
+  zip: { type: String },
+  state: { type: String },
   mapLocation: { type: String },
   saved: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   joinedAt: { type: Date, default: Date.now }
