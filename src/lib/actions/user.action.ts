@@ -27,30 +27,17 @@ export async function getUserById(params: any) {
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
-    const { clerkId, name, email, picture, username, role } = userData;
-    console.log({
-      clerkId,
-      name,
-      email,
-      picture,
-      username,
-      role
-    });
-    const newUser = await User.create({
-      clerkId,
-      name,
-      email,
-      picture,
-      username,
-      role
-    });
+
+    console.log('before create user');
+    const newUser = await User.create(userData);
+    console.log('after create user');
+
     return newUser;
   } catch (error) {
     console.log(error);
     throw error;
   }
 }
-
 // update user
 export async function updateUser(params: UpdateUserParams) {
   try {
