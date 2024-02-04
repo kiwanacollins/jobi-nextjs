@@ -3,12 +3,13 @@ import React from 'react';
 import ListItem from './list-item';
 import Link from 'next/link';
 import { getJobPosts } from '@/lib/actions/job.action';
+import { IJobData } from '@/database/job.model';
 
 export async function JobListItems({ style_2 = false }: { style_2?: boolean }) {
   const { jobs } = await getJobPosts();
   return (
     <>
-      {jobs.slice(0, 5).map((item) => (
+      {jobs.slice(0, 5).map((item: IJobData) => (
         <ListItem
           key={item._id}
           item={JSON.parse(JSON.stringify(item))}
