@@ -2,7 +2,6 @@
 const nextConfig = {
   experimental: {
     mdxRs: true,
-    esmExternals: 'loose',
     serverComponentsExternalPackages: ['mongoose']
   },
   images: {

@@ -3,6 +3,7 @@ import React from 'react';
 // import job_data from '@/data/job-data';
 import ListItemTwo from '../jobs/list/list-item-2';
 import { getJobPosts } from '@/lib/actions/job.action';
+import { IJobData } from '@/database/job.model';
 
 const OpenPosition = async () => {
   // const job_items = job_data.slice(0, 4);
@@ -26,7 +27,7 @@ const OpenPosition = async () => {
           </div>
         </div>
         <div className="mt-50">
-          {job_items.map((item) => (
+          {job_items.map((item: IJobData) => (
             <ListItemTwo
               key={item.id}
               item={JSON.parse(JSON.stringify(item))}
