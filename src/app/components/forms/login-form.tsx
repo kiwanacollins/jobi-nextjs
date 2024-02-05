@@ -7,6 +7,8 @@ import icon from '@/assets/images/icon/icon_60.svg';
 import { useSignIn } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import Link from 'next/link';
+import { revalidatePath } from 'next/cache';
 
 // form data type
 type IFormData = {
@@ -58,8 +60,8 @@ const LoginForm = () => {
 
         if (result.status === 'complete') {
           await setActive({ session: result.createdSessionId });
-
-          router.push(`${window.location.origin}/`);
+          revalidatePath('/');
+          router.push(`/`);
           notifySuccess('Login successful!');
         } else {
           /* Investigate why the login hasn't completed */
@@ -118,7 +120,7 @@ const LoginForm = () => {
               <input type="checkbox" id="remember1" />
               <label htmlFor="remember">Keep me logged in</label>
             </div>
-            <a href="#">Forget Password?</a>
+            <Link href="/sign-in/reset-password">Forget Password?</Link>
           </div>
         </div>
         <div className="col-12">

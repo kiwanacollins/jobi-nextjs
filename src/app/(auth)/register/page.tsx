@@ -7,12 +7,20 @@ import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
 import FooterOne from '@/layouts/footers/footer-one';
 import RegisterArea from '../../components/register/register-area';
 import HeaderSix from '@/layouts/headers/header-6';
+import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'Register'
+  title: 'Register',
+  description: 'Register new user as candidate of employee description'
 };
 
-const RegisterPage = () => {
+const RegisterPage = async () => {
+  const user = await currentUser();
+
+  if (user) {
+    redirect('/');
+  }
   return (
     <Wrapper>
       <div className="main-page-wrapper">

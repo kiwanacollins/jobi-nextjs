@@ -6,12 +6,19 @@ import FooterOne from '@/layouts/footers/footer-one';
 
 import SignInArea from '@/app/components/sign-in/signin-area';
 import HeaderSix from '@/layouts/headers/header-6';
+import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Sign In'
 };
 
-const SignInPage = () => {
+const SignInPage = async () => {
+  const user = await currentUser();
+
+  if (user) {
+    redirect('/');
+  }
   return (
     <Wrapper>
       <div className="main-page-wrapper">

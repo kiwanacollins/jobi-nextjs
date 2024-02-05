@@ -1,23 +1,14 @@
 'use client';
 
 import ErrorMsg from '@/app/components/common/error-msg';
-import CandidateRegisterForm from '@/app/components/forms/register-form';
-import * as Yup from 'yup';
 import { useSignUp } from '@clerk/nextjs';
-import { register } from 'module';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Resolver, useForm } from 'react-hook-form';
-
 // form data type
 type IFormData = {
   code: string;
 };
-
-// schema
-const schema = Yup.object().shape({
-  code: Yup.string().required().label('code')
-});
 
 // resolver
 const resolver: Resolver<IFormData> = async (values) => {
@@ -36,8 +27,8 @@ const resolver: Resolver<IFormData> = async (values) => {
 
 const Page = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const [code, setCode] = useState('');
   const router = useRouter();
+  const [error, setError] = useState('');
   const [isPending, startTransition] = React.useTransition();
 
   // react hook form
@@ -46,7 +37,7 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm<IFormData>({ resolver });
+  } = useForm({ resolver });
 
   // Verify User Email Code
   function onSubmit(data: IFormData) {
@@ -57,19 +48,22 @@ const Page = () => {
         const completeSignUp = await signUp.attemptEmailAddressVerification({
           code: data.code
         });
+
         if (completeSignUp.status !== 'complete') {
           /*  investigate the response, to see if there was an error
              or if the user needs to complete more steps.*/
+          setError('Something went wrong, please try again.');
           console.log(JSON.stringify(completeSignUp, null, 2));
         }
         if (completeSignUp.status === 'complete') {
           await setActive({ session: completeSignUp.createdSessionId });
-
           router.push(`/`);
         }
       } catch (err) {
         // catchClerkError(err);
         console.log(err);
+      } finally {
+        reset();
       }
     });
   }
@@ -93,7 +87,8 @@ const Page = () => {
                       name="code"
                     />
                     <div className="help-block with-errors">
-                      {/* <ErrorMsg msg={'' ? errors?.email?.message! : ''} /> */}
+                      <ErrorMsg msg={error || ''} />
+                      <ErrorMsg msg={errors.code?.message || ''} />
                     </div>
                   </div>
                   <div className="col-12">
