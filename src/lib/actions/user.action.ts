@@ -5,9 +5,11 @@ import { connectToDatabase } from '../mongoose';
 import {
   ClerkUpdateUserParams,
   CreateUserParams,
+  DeleteUserParams,
   UpdateUserParams
 } from './shared.types';
 import { revalidatePath } from 'next/cache';
+import Resume from '@/database/resume.model';
 
 export async function getUserById(params: any) {
   try {
@@ -79,6 +81,30 @@ export async function clekUserUpdate(params: ClerkUpdateUserParams) {
       throw new Error(`User with clerkId ${clerkId} not found`);
     }
     revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteUser(params: DeleteUserParams) {
+  try {
+    connectToDatabase();
+
+    const { clerkId } = params;
+
+    const user = await User.findOneAndDelete({ clerkId });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // delete candidate resume
+    await Resume.deleteMany({ user: user._id });
+
+    const deletedUser = await User.findByIdAndDelete(user._id);
+
+    return deletedUser;
   } catch (error) {
     console.log(error);
     throw error;

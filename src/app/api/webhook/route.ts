@@ -3,7 +3,11 @@ import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { WebhookEvent } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import { clekUserUpdate, createUser } from '@/lib/actions/user.action';
+import {
+  clekUserUpdate,
+  createUser,
+  deleteUser
+} from '@/lib/actions/user.action';
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -106,7 +110,13 @@ export async function POST(req: Request) {
 
   // todo: delete the user in your database
   if (eventType === 'user.deleted') {
-    // const { id } = evt.data;
+    const { id } = evt.data;
+
+    const deletedUser = await deleteUser({
+      clerkId: id!
+    });
+
+    return NextResponse.json({ message: 'OK', user: deletedUser });
   }
 
   //   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);

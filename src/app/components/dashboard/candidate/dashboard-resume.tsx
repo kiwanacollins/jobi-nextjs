@@ -66,6 +66,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
     clearErrors,
     setError,
     trigger,
+    handleSubmit,
 
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
@@ -230,16 +231,10 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
     <>
       <div className="position-relative">
         <h2 className="main-title">My Resume</h2>
-        <form
-          onSubmit={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            return methods.handleSubmit(onSubmit)(e);
-          }}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="bg-white card-box border-20">
             <h4 className="dash-title-three">Resume Attachment</h4>
-            <div className="dash-input-wrapper mb-20">
+            {/* <div className="dash-input-wrapper mb-20">
               <label htmlFor="">CV Attachment*</label>
               <div className="attached-file d-flex align-items-center justify-content-between mb-15">
                 <span>MyCvResume.PDF</span>
@@ -253,7 +248,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                   <i className="bi bi-x"></i>
                 </a>
               </div>
-            </div>
+            </div> */}
 
             <div className="dash-btn-one d-inline-block position-relative me-3">
               <i className="bi bi-plus"></i>
