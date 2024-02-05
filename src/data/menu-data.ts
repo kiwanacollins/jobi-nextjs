@@ -90,7 +90,7 @@ const menu_data: IMenuData[] = [
   },
   {
     id: 6,
-    link: '/dashboard/employer-dashboard',
+    link: '/dashboard/candidate-dashboard',
     title: 'Dashboard',
     sub_menus: [
       { link: '/dashboard/candidate-dashboard', title: 'Candidate Dashboard' },

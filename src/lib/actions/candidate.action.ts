@@ -3,6 +3,8 @@ import Resume, { IEducation, IExperience } from '@/database/resume.model';
 import { connectToDatabase } from '../mongoose';
 import cloudinary from 'cloudinary';
 import User from '@/database/user.model';
+import { getCandidatesParams } from './shared.types';
+import { FilterQuery } from 'mongoose';
 
 // import multer from 'multer';
 
@@ -97,11 +99,18 @@ export async function createResume(resumeData: resumeDataParams) {
   }
 }
 
-export async function getCandidateResumes() {
+export async function getCandidateResumes(params: getCandidatesParams) {
   try {
     connectToDatabase();
+    const { keyword } = params;
 
-    const candidates = await Resume.find({})
+    const query: FilterQuery<typeof Resume> = {};
+
+    if (keyword) {
+      query.$or = [{ 'user.name': { $regex: new RegExp(keyword, 'i') } }];
+    }
+
+    const candidates = await Resume.find(query)
       .populate({ path: 'user', model: User })
       .exec();
     return { status: 'ok', candidates: JSON.parse(JSON.stringify(candidates)) };

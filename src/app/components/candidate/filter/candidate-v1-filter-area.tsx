@@ -1,13 +1,47 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import FilterSkills from './filter-skills';
 import FilterCandidateLocation from './filter-location';
 import FilterCandidateExperience from './filter-experince';
 import JobPrices from '../../jobs/filter/job-prices';
 import FilterEnglishFluency from './filter-english-fluency';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
 
 const CandidateV1FilterArea = () => {
   const [priceValue, setPriceValue] = useState<number[]>([0, 50000]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const query = searchParams.get('keyword');
+
+  const [keyword, setKeyword] = useState<string>(query || '');
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (keyword) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: 'keyword',
+          value: keyword
+        });
+
+        router.push(newUrl, { scroll: false });
+      } else {
+        if (pathname === '/candidates') {
+          const newUrl = removeKeysFromQuery({
+            params: searchParams.toString(),
+            keysToRemove: ['keyword']
+          });
+
+          router.push(newUrl, { scroll: false });
+        }
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [keyword, pathname, router, searchParams, query]);
   return (
     <div
       className="filter-area-tab offcanvas offcanvas-start"
@@ -34,7 +68,12 @@ const CandidateV1FilterArea = () => {
           <div className="collapse show" id="collapseSemploye">
             <div className="main-body">
               <form action="#" className="input-box position-relative">
-                <input type="text" placeholder="Name or keyword" />
+                <input
+                  type="text"
+                  placeholder="Name or keyword"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                />
                 <button>
                   <i className="bi bi-search"></i>
                 </button>

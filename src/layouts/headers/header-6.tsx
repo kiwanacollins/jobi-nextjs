@@ -6,17 +6,18 @@ import logo from '@/assets/images/logo/logo_01.png';
 import dark_logo from '@/assets/images/logo/logo_04.png';
 import Menus from './component/menus';
 import useSticky from '@/hooks/use-sticky';
-import LoginModal from '@/app/components/common/popup/login-modal';
-import { SignedIn, UserButton, useAuth } from '@clerk/nextjs';
 
-const avatarBoxStyle = {
-  height: '25px',
-  width: '25px'
-};
+import { SignedIn, UserButton } from '@clerk/nextjs';
+import { IUser } from '@/database/user.model';
 
-const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
+interface Props {
+  dark_style?: boolean;
+  userId?: string;
+  currentUser?: IUser | null;
+}
+
+const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
   const { sticky } = useSticky();
-  const { userId } = useAuth();
 
   return (
     <>
@@ -72,11 +73,13 @@ const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
                       />
                     </SignedIn>
                   </li>
-                  <li className="d-none d-md-block ms-3">
-                    <Link href="/register" className="btn-five">
-                      Post a job
-                    </Link>
-                  </li>
+                  {currentUser?.role === 'employee' && (
+                    <li className="d-none d-md-block ms-3">
+                      <Link href="/register" className="btn-five">
+                        Post a job
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
 
@@ -107,7 +110,10 @@ const HeaderSix = ({ dark_style = false }: { dark_style?: boolean }) => {
                       </div>
                     </li>
                     {/* menus start */}
-                    <Menus />
+                    <Menus
+                      userId={userId as string}
+                      role={currentUser?.role as string}
+                    />
                     {/* menus end */}
                     <li className="d-md-none mt-5">
                       <Link href="/register" className="btn-five w-100">

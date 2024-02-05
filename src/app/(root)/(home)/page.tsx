@@ -10,16 +10,11 @@ import HeroBannerSix from '@/app/components/hero-banners/hero-banner-six';
 import { JobListItems } from '@/app/components/jobs/list/job-list-one';
 import PartnersSlider from '@/app/components/partners/partners-slider';
 
-import HeaderSix from '@/layouts/headers/header-6';
 import Link from 'next/link';
 
 export default function HomePage() {
   return (
     <>
-      {/* header start */}
-      <HeaderSix />
-      {/* header end */}
-
       {/* hero banner start */}
       <HeroBannerSix />
       {/* hero banner end */}

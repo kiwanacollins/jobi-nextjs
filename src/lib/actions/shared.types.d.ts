@@ -34,3 +34,13 @@ export interface UpdateUserParams {
 export interface DeleteUserParams {
   clerkId: string;
 }
+
+export interface getCandidatesParams {
+  keyword?: string | undefined;
+  skill?: string | undefined;
+  location?: string | undefined;
+  level?: string | undefined;
+  qualification?: string | undefined;
+  gender?: string | undefined;
+  fluency?: string | undefined;
+}

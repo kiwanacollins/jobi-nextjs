@@ -2,7 +2,7 @@ import React from 'react';
 import menu_data from '@/data/menu-data';
 import Link from 'next/link';
 
-const Menus = () => {
+const Menus = ({ role, userId }: { role: string; userId: string }) => {
   return (
     <>
       {menu_data.map((menu) =>
@@ -67,11 +67,13 @@ const Menus = () => {
             </ul>
           </li>
         ) : (
-          <li key={menu.id} className="nav-item">
-            <Link className="nav-link" href={menu.link} role="button">
-              {menu.title}
-            </Link>
-          </li>
+          <>
+            <li key={menu.id} className="nav-item">
+              <Link className="nav-link" href={menu.link}>
+                {menu.title}
+              </Link>
+            </li>
+          </>
         )
       )}
     </>
