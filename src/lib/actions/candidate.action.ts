@@ -5,6 +5,7 @@ import cloudinary from 'cloudinary';
 import User from '@/database/user.model';
 import { getCandidatesParams } from './shared.types';
 import { FilterQuery } from 'mongoose';
+import { revalidatePath } from 'next/cache';
 
 // import multer from 'multer';
 
@@ -92,6 +93,8 @@ export async function createResume(resumeData: resumeDataParams) {
         publicId: result.public_id
       }
     });
+
+    revalidatePath('/candidates');
     return newResume;
   } catch (error) {
     console.log(error);
