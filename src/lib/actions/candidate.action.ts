@@ -112,6 +112,7 @@ export async function getCandidateResumes(params: getCandidatesParams) {
 
     const candidates = await Resume.find(query)
       .populate({ path: 'user', model: User })
+      .sort({ createdAt: -1 })
       .exec();
     return { status: 'ok', candidates: JSON.parse(JSON.stringify(candidates)) };
   } catch (error) {

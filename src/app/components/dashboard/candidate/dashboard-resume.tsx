@@ -156,6 +156,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
+      reset();
     }
   };
 
