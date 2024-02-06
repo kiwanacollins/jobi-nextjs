@@ -47,7 +47,7 @@ export async function getResumeById(resumeId: string) {
       throw new Error(`User with ID ${resumeId} not found`);
     }
 
-    return user;
+    return JSON.parse(JSON.stringify(user));
   } catch (error) {
     console.error('Error fetching user:', error);
     throw error;

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image, { StaticImageData } from 'next/image';
 import { usePathname } from 'next/navigation';
 import logo from '@/assets/dashboard/images/logo_01.png';
-import avatar from '@/assets/dashboard/images/avatar_01.jpg';
 import profile_icon_1 from '@/assets/dashboard/images/icon/icon_23.svg';
 import profile_icon_2 from '@/assets/dashboard/images/icon/icon_24.svg';
 import profile_icon_3 from '@/assets/dashboard/images/icon/icon_25.svg';
@@ -26,6 +25,7 @@ import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 import nav_8 from '@/assets/dashboard/images/icon/icon_8.svg';
 import LogoutModal from '../../common/popup/logout-modal';
+import { useUser } from '@clerk/nextjs';
 
 // nav data
 const nav_data: {
@@ -93,6 +93,7 @@ type IProps = {
 
 const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
   const pathname = usePathname();
+  const { user } = useUser();
   return (
     <>
       <aside className={`dash-aside-navbar ${isOpenSidebar ? 'show' : ''}`}>
@@ -111,10 +112,11 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
           <div className="user-data">
             <div className="user-avatar online position-relative rounded-circle">
               <Image
-                src={avatar}
+                src={user?.imageUrl as string | StaticImageData}
                 alt="avatar"
                 className="lazy-img"
-                style={{ height: 'auto' }}
+                width={75}
+                height={75}
               />
             </div>
             <div className="user-name-data">
@@ -126,7 +128,7 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                 data-bs-auto-close="outside"
                 aria-expanded="false"
               >
-                James Brower
+                {user?.fullName}
               </button>
               <ul className="dropdown-menu" aria-labelledby="profile-dropdown">
                 <li>

@@ -1,13 +1,15 @@
 /* eslint-disable camelcase */
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ShortSelect from '../../common/short-select';
-import job_data from '@/data/job-data';
 import ActionDropdown from './action-dropdown';
+import { useAppSelector } from '@/redux/hook';
 
 const SavedJobArea = () => {
-  const job_items = job_data.slice(0, 4);
+  const { wishlist } = useAppSelector((state) => state.wishlist);
+  const job_items = wishlist.slice(0, 4);
   return (
     <>
       <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">
@@ -21,14 +23,20 @@ const SavedJobArea = () => {
       <div className="wrapper">
         {job_items.map((j) => (
           <div
-            key={j.id}
+            key={j._id}
             className="job-list-one style-two position-relative mb-20"
           >
             <div className="row justify-content-between align-items-center">
               <div className="col-xxl-3 col-lg-4">
                 <div className="job-title d-flex align-items-center">
                   <a href="#" className="logo">
-                    <Image src={j.logo} alt="img" className="lazy-img m-auto" />
+                    <Image
+                      src={'/assets/images/candidates/img_01.jpg'}
+                      width={60}
+                      height={60}
+                      alt="img"
+                      className="lazy-img m-auto"
+                    />
                   </a>
                   <a href="#" className="title fw-500 tran3s">
                     {j.title}
@@ -54,12 +62,14 @@ const SavedJobArea = () => {
                   <a href="#">{j.location}</a>
                 </div>
                 <div className="job-category">
-                  {j.category.map((c, i) => (
+                  <p>{j.category}</p>
+
+                  {/* {j?.category?.map((c: any, i: any) => (
                     <a key={i} href="#">
                       {c}
                       {i < j.category.length - 1 && ', '}
                     </a>
-                  ))}
+                  ))} */}
                 </div>
               </div>
               <div className="col-lg-2 col-md-4">
