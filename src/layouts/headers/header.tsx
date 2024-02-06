@@ -86,7 +86,7 @@ const Header = () => {
                       {/* CategoryDropdown end */}
                     </li>
                     {/* menus start */}
-                    <Menus />
+                    <Menus userId="" role="" />
                     {/* menus end */}
                     <li className="d-md-none">
                       <Link href="/register" className="job-post-btn tran3s">
