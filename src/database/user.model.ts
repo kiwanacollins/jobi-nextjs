@@ -23,7 +23,7 @@ export interface IUser extends Document {
   state?: string;
   mapLocation?: string;
   saved?: Schema.Types.ObjectId[];
-  resumeId?: Schema.Types.ObjectId;
+  resumeId?: Schema.Types.ObjectId | string;
   joinedAt: Date;
 }
 

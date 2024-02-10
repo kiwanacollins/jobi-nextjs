@@ -95,6 +95,7 @@ export async function createResume(resumeData: resumeDataParams) {
     });
 
     const userToUpdate = await User.findById(user);
+    console.log('createResume  userToUpdate:', userToUpdate);
     if (!userToUpdate) {
       throw new Error('User not found');
     }
