@@ -1,19 +1,20 @@
-import React from "react";
-import { Metadata } from "next";
-import Header from "@/layouts/headers/header";
-import Wrapper from "@/layouts/wrapper";
-import JobPortalIntro from "../components/job-portal-intro/job-portal-intro";
-import CompanyBreadcrumb from "../components/common/common-breadcrumb";
-import FooterOne from "@/layouts/footers/footer-one";
-import BlogDetailsArea from "../components/blogs/blog-details";
-import blog_data from "@/data/blog-data";
+import React from 'react';
+import { Metadata } from 'next';
+import Header from '@/layouts/headers/header';
+import Wrapper from '@/layouts/wrapper';
+import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
+import CompanyBreadcrumb from '../components/common/common-breadcrumb';
+import FooterOne from '@/layouts/footers/footer-one';
+import BlogDetailsArea from '../components/blogs/blog-details';
+import blog_data from '@/data/blog-data';
 
 export const metadata: Metadata = {
-  title: "Blog Details",
+  title: 'Blog Details',
+  description: 'Blog Details Page'
 };
 
 const BlogDetailsPage = () => {
-  const blog = blog_data[0]
+  const blog = blog_data[0];
   return (
     <Wrapper>
       <div className="main-page-wrapper">
@@ -29,7 +30,7 @@ const BlogDetailsPage = () => {
         {/*breadcrumb end */}
 
         {/* blog details start */}
-        <BlogDetailsArea item={blog}/>
+        <BlogDetailsArea item={blog} />
         {/* blog details end */}
 
         {/* job portal intro start */}
