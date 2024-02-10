@@ -94,13 +94,13 @@ export async function createResume(resumeData: resumeDataParams) {
       }
     });
 
-    const userToUpdate = await User.findById(user);
-    console.log('createResume  userToUpdate:', userToUpdate);
-    if (!userToUpdate) {
-      throw new Error('User not found');
-    }
-    userToUpdate.resumeId = newResume._id;
-    await userToUpdate.save();
+    await User.findOneAndUpdate(
+      { clerkId },
+      { resumeId: newResume._id },
+      {
+        new: true
+      }
+    );
 
     revalidatePath('/candidates');
     return newResume;
