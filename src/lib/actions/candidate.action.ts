@@ -93,14 +93,16 @@ export async function createResume(resumeData: resumeDataParams) {
         publicId: result.public_id
       }
     });
+    console.log('newResume:', newResume);
 
-    await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { clerkId },
       { resumeId: newResume._id },
       {
         new: true
       }
     );
+    console.log('updatedUser:', updatedUser);
 
     revalidatePath('/candidates');
     return newResume;
