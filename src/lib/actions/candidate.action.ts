@@ -94,6 +94,13 @@ export async function createResume(resumeData: resumeDataParams) {
       }
     });
 
+    const userToUpdate = await User.findById(user);
+    if (!userToUpdate) {
+      throw new Error('User not found');
+    }
+    userToUpdate.resumeId = newResume._id;
+    await userToUpdate.save();
+
     revalidatePath('/candidates');
     return newResume;
   } catch (error) {
