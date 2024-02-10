@@ -40,15 +40,16 @@ cloudinary.v2.config({
 
 export async function getResumeById(resumeId: string) {
   try {
-    const user = await Resume.findById(resumeId)
+    await connectToDatabase();
+    const resume = await Resume.findById(resumeId)
       .populate({ path: 'user', model: User })
       .exec();
 
-    if (!user) {
+    if (!resume) {
       throw new Error(`User with ID ${resumeId} not found`);
     }
 
-    return JSON.parse(JSON.stringify(user));
+    return JSON.parse(JSON.stringify(resume));
   } catch (error) {
     console.error('Error fetching user:', error);
     throw error;
@@ -93,21 +94,47 @@ export async function createResume(resumeData: resumeDataParams) {
         publicId: result.public_id
       }
     });
-    console.log('newResume:', newResume);
 
-    const updatedUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { clerkId },
       { resumeId: newResume._id },
       {
         new: true
       }
     );
-    console.log('updatedUser:', updatedUser);
 
     revalidatePath('/candidates');
     return newResume;
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+}
+
+interface updateResumeParams {
+  resumeId: string;
+  resumeData: resumeDataParams;
+  path: string;
+}
+
+export async function updateResume(params: updateResumeParams) {
+  try {
+    await connectToDatabase();
+    const { resumeId, resumeData, path } = params;
+    console.log('updateResume  path:', path);
+    const updatedResume = await Resume.findByIdAndUpdate(
+      { _id: resumeId },
+      resumeData,
+      { new: true }
+    );
+
+    if (!updatedResume) {
+      throw new Error(`User with ID ${resumeId} not found`);
+    }
+
+    revalidatePath(path);
+  } catch (error) {
+    console.error('Error fetching user:', error);
     throw error;
   }
 }

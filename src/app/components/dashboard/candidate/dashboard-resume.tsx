@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import video_bg from '@/assets/dashboard/images/video_post.jpg';
 import DashboardPortfolio from './dashboard-portfolio';
 import VideoPopup from '../../common/video-popup';
@@ -9,23 +9,49 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { resumeSchema } from '@/utils/validation';
 import ErrorMsg from '../../common/error-msg';
-import { createResume } from '@/lib/actions/candidate.action';
+import { createResume, updateResume } from '@/lib/actions/candidate.action';
 import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import { IEducation, IExperience } from '@/database/resume.model';
+import { IEducation, IExperience, IResumeType } from '@/database/resume.model';
+import { usePathname } from 'next/navigation';
 
 interface IProps {
   mongoUserId: string | undefined;
+  resume: IResumeType;
 }
 
-const DashboardResume = ({ mongoUserId }: IProps) => {
+const DashboardResume = ({ mongoUserId, resume }: IProps) => {
+  const pathname = usePathname();
+  console.log('DashboardResume  pathname:', pathname);
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const [skillsTag, setSkillsTag] = useState<string[]>([]);
+  const [skillsTag, setSkillsTag] = useState<string[]>(resume?.skills || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [filename, setFilename] = useState('');
-  const [file, setFile] = useState('');
+  const [filename, setFilename] = useState(resume.pdf?.filename || '');
+  const [file, setFile] = useState(resume?.pdf?.file || '');
+  const isResumeExist = !!resume?._id;
   const { userId } = useAuth();
   const parsedMongoUserId = mongoUserId;
+
+  const groupedExperience = resume?.experience.map((item: IExperience) => {
+    return {
+      title: item.title,
+      company: item.company,
+      year: item.year,
+      description: item.description,
+      yearStart: item.yearStart,
+      yearEnd: item.yearEnd
+    };
+  });
+  const groupedEducation = resume?.education.map((item: IEducation) => {
+    return {
+      title: item.title,
+      academy: item.academy,
+      year: item.year,
+      description: item.description,
+      yearStart: item.yearStart,
+      yearEnd: item.yearEnd
+    };
+  });
 
   type resumeSchemaType = z.infer<typeof resumeSchema>;
 
@@ -33,9 +59,11 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
   const methods = useForm<resumeSchemaType>({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
-      skills: [],
-      overview: '',
-      experience: [
+      skills: resume?.skills || [],
+      overview: resume?.overview || '',
+      minSalary: resume?.minSalary || 0,
+      maxSalary: resume?.maxSalary || 0,
+      experience: groupedExperience || [
         {
           title: '',
           company: '',
@@ -45,7 +73,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
           yearEnd: 2023
         }
       ],
-      education: [
+      education: groupedEducation || [
         {
           title: '',
           academy: '',
@@ -148,9 +176,18 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
           file
         }
       };
-      const newResume = await createResume(resumeData);
-      console.log('onSubmit  newResume:', newResume);
-      notifySuccess('Resume Created successfully.');
+      if (isResumeExist) {
+        // update resume
+        await updateResume({
+          resumeId: resume?._id,
+          resumeData,
+          path: pathname
+        });
+        notifySuccess('Resume Updated successfully.');
+      } else {
+        await createResume(resumeData);
+        notifySuccess('Resume Created successfully.');
+      }
     } catch (error: any) {
       console.log(error);
       notifyError(error as string);
@@ -160,9 +197,9 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
     }
   };
 
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  // useEffect(() => {
+  //   reset();
+  // }, [reset]);
 
   // add skills
   const handleInputKeyDown = (
@@ -290,6 +327,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                 <div className="d-flex gap-3">
                   <input
                     type="text"
+                    defaultValue={resume?.minSalary}
                     placeholder="min salary"
                     {...register('minSalary', {
                       required: true,
@@ -303,6 +341,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                   )}
                   <input
                     type="text"
+                    defaultValue={resume?.maxSalary}
                     placeholder="max salary"
                     {...register('maxSalary', {
                       required: true,
@@ -577,7 +616,7 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
                             <div className="dash-input-wrapper mb-30">
                               <input
                                 type="text"
-                                placeholder="Lead Product Designer "
+                                placeholder="Lead Product Designer"
                                 {...register(`experience.${index}.title`)}
                                 name={`experience.${index}.title`}
                               />
@@ -702,7 +741,11 @@ const DashboardResume = ({ mongoUserId }: IProps) => {
               className="dash-btn-two tran3s me-3"
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit'}
+              {isSubmitting
+                ? 'Submitting...'
+                : isResumeExist
+                  ? 'Update'
+                  : 'Save'}
             </button>
             <button
               onClick={(e) => {

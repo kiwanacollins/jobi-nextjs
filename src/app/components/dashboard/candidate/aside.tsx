@@ -112,7 +112,7 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
           <div className="user-data">
             <div className="user-avatar online position-relative rounded-circle">
               <Image
-                src={user?.imageUrl as string | StaticImageData}
+                src={user?.imageUrl as string}
                 alt="avatar"
                 className="lazy-img"
                 width={75}
