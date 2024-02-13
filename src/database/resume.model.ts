@@ -1,6 +1,7 @@
 import { Schema, models, model, Document } from 'mongoose';
 
 export interface IEducation {
+  length: number;
   title: string;
   academy: string;
   yearStart: number;
@@ -10,6 +11,7 @@ export interface IEducation {
 }
 
 export interface IExperience {
+  length: number;
   title: string;
   company: string;
   yearStart: number;

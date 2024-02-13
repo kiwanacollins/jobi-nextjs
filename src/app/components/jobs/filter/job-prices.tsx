@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import InputRange from "@/ui/input-range";
+import React from 'react';
+import InputRange from '@/ui/input-range';
 
 // prop type
 type IProps = {
@@ -8,7 +8,11 @@ type IProps = {
   maxPrice: number;
 };
 // Salary Range Slider
-export function SalaryRangeSlider({ priceValue, setPriceValue, maxPrice }: IProps) {
+export function SalaryRangeSlider({
+  priceValue,
+  setPriceValue,
+  maxPrice
+}: IProps) {
   // handleChanges
   const handleChanges = (val: number[]) => {
     setPriceValue(val);

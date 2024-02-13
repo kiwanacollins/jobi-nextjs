@@ -55,24 +55,23 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     </li>
                   )}
 
-                  <li>
-                    <SignedIn>
-                      <UserButton
-                        afterSignOutUrl="/"
-                        appearance={{
-                          elements: {
-                            avatarBox: {
-                              height: '42px',
-                              width: '42px'
-                            }
-                          },
-                          variables: {
-                            colorPrimary: '#ff7000'
+                  <SignedIn>
+                    <UserButton
+                      afterSignOutUrl="/"
+                      appearance={{
+                        elements: {
+                          avatarBox: {
+                            height: '50px',
+                            width: '50px'
                           }
-                        }}
-                      />
-                    </SignedIn>
-                  </li>
+                        },
+                        variables: {
+                          colorPrimary: '#ff7000'
+                        }
+                      }}
+                    />
+                  </SignedIn>
+
                   {currentUser?.role === 'employee' && (
                     <li className="d-none d-md-block ms-3">
                       <Link href="/register" className="btn-five">

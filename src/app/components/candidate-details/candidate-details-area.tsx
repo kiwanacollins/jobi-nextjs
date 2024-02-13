@@ -9,15 +9,27 @@ import CandidateBio from './bio';
 import EmailSendForm from '../forms/email-send-form';
 import { IResumeType } from '@/database/resume.model';
 import Link from 'next/link';
+import Resume from '@/app/components/resume/Resume';
+import ResumeModal from '../resume/ResumeModal';
+import dynamic from 'next/dynamic';
 
 interface ICandidateDetailsAreaProps {
   candidateDetials: IResumeType;
 }
 
+const PDFDownloadLink = dynamic(
+  () => import('@react-pdf/renderer').then((mod) => mod.PDFDownloadLink),
+  {
+    ssr: false,
+    loading: () => <p>Loading...</p>
+  }
+);
+
 const CandidateDetailsArea = ({
   candidateDetials
 }: ICandidateDetailsAreaProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
+  const { overview, user, education, experience } = candidateDetials;
   return (
     <>
       <section className="candidates-profile pt-100 lg-pt-70 pb-150 lg-pb-80">
@@ -116,6 +128,15 @@ const CandidateDetailsArea = ({
                   {/* CandidateBio */}
                   <CandidateBio />
                   {/* CandidateBio */}
+                  <button
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#resumeModal"
+                    rel="noopener noreferrer"
+                    className="btn-ten fw-500 text-white w-100 text-center tran3s mt-15"
+                  >
+                    View Resume
+                  </button>
                   <Link
                     href={`${candidateDetials?.pdf?.url}` as string}
                     download={candidateDetials?.pdf?.filename as string}
@@ -123,7 +144,22 @@ const CandidateDetailsArea = ({
                     rel="noopener noreferrer"
                     className="btn-ten fw-500 text-white w-100 text-center tran3s mt-15"
                   >
-                    Download CV
+                    <PDFDownloadLink
+                      document={
+                        <Resume
+                          overview={overview}
+                          user={user}
+                          education={education}
+                          experience={experience}
+                        />
+                      }
+                      // @ts-ignore
+                      fileName={`${user?.name as string}.pdf`}
+                    >
+                      {({ blob, url, loading, error }) =>
+                        loading ? 'Loading...' : 'Download Resume'
+                      }
+                    </PDFDownloadLink>
                   </Link>
                 </div>
                 <h4 className="sidebar-title">Location</h4>
@@ -154,6 +190,16 @@ const CandidateDetailsArea = ({
         videoId={'-6ZbrfSRWKc'}
       />
       {/* video modal end */}
+      {/* Resume Modal start */}
+      <ResumeModal>
+        <Resume
+          overview={overview}
+          user={user}
+          education={education}
+          experience={experience}
+        />
+      </ResumeModal>
+      {/* Resume Modal end */}
     </>
   );
 };
