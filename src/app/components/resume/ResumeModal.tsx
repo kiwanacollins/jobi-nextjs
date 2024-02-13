@@ -25,7 +25,7 @@ const ResumeModal = ({
     >
       <div className="modal-dialog">
         <div className="modal-content">
-          <PDFViewer style={{ width: '700px', height: '500px' }}>
+          <PDFViewer style={{ width: '100%', height: '100vh' }}>
             {children}
           </PDFViewer>
         </div>
