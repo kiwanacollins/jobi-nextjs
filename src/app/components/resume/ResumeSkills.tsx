@@ -20,13 +20,16 @@ const styles = StyleSheet.create({
     gap: '10px'
   }
 });
-const skillsData = ['JavaScript', 'React', 'Node.js', 'HTML', 'CSS', 'Git'];
-const ResumeSkills = () => {
+
+interface IResumeSkillsProps {
+  skills: string[];
+}
+const ResumeSkills = ({ skills }: IResumeSkillsProps) => {
   return (
     <View style={styles.section}>
       <Text style={styles.header}>Skills</Text>
       <Text style={styles.skills}>
-        <Text style={styles.skillItem}>{skillsData.join(', ')}</Text>
+        <Text style={styles.skillItem}>{skills?.join(', ')}</Text>
       </Text>
     </View>
   );

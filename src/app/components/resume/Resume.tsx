@@ -44,9 +44,16 @@ interface IResumeProps {
   user: string | ObjectId;
   education: IEducation[];
   experience: IExperience[];
+  skills: string[];
 }
 
-const Resume = ({ overview, user, education, experience }: IResumeProps) => {
+const Resume = ({
+  overview,
+  user,
+  education,
+  experience,
+  skills
+}: IResumeProps) => {
   return (
     <Document
       title="Rakib Hasan Resume"
@@ -71,7 +78,7 @@ const Resume = ({ overview, user, education, experience }: IResumeProps) => {
           </View>
           <View style={styles.rightColumn}>
             <ResumeObjective overview={overview} />
-            <ResumeSkills />
+            <ResumeSkills skills={skills} />
             <ResumeExperience experience={experience} />
           </View>
         </View>

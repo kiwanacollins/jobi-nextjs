@@ -1,4 +1,3 @@
-'use client';
 import { DocumentProps } from '@react-pdf/renderer';
 import React from 'react';
 import dynamic from 'next/dynamic';

@@ -29,7 +29,7 @@ const CandidateDetailsArea = ({
   candidateDetials
 }: ICandidateDetailsAreaProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const { overview, user, education, experience } = candidateDetials;
+  const { overview, user, education, experience, skills } = candidateDetials;
   return (
     <>
       <section className="candidates-profile pt-100 lg-pt-70 pb-150 lg-pb-80">
@@ -151,6 +151,7 @@ const CandidateDetailsArea = ({
                           user={user}
                           education={education}
                           experience={experience}
+                          skills={skills}
                         />
                       }
                       // @ts-ignore
@@ -197,6 +198,7 @@ const CandidateDetailsArea = ({
           user={user}
           education={education}
           experience={experience}
+          skills={skills}
         />
       </ResumeModal>
       {/* Resume Modal end */}
