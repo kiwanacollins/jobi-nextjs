@@ -6,7 +6,7 @@ import CandidateDetailsArea from '../../../components/candidate-details/candidat
 import { getResumeById } from '@/lib/actions/candidate.action';
 
 export const metadata: Metadata = {
-  title: 'Candidate Details v1'
+  title: 'Candidate Details'
 };
 
 export interface URLProps {
