@@ -33,14 +33,14 @@ const Education = ({ education }: IEducationProps) => {
   return (
     <View style={styles.section}>
       <Text style={styles.header}>Education</Text>
-      {education?.map((education: IEducation, index) => (
+      {education?.map((item: IEducation, index) => (
         <View key={index}>
-          <Text style={styles.title}>{education.title}</Text>
-          <Text style={styles.academy}>{education.academy}</Text>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.academy}>{item.academy}</Text>
           <Text style={styles.content}>
-            {education.yearStart} - {education.yearEnd}
+            {item.yearStart} - {item.yearEnd}
           </Text>
-          {index < education.length - 1 && (
+          {index < education?.length - 1 && (
             <View style={{ marginBottom: 10 }} />
           )}
         </View>
