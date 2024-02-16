@@ -25,17 +25,18 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
     return {
       values: values.name ? values : '',
       defaultValues: {
-        name: mongoUser?.name,
-        username: mongoUser?.username,
-        bio: mongoUser?.bio,
+        name: mongoUser?.name || '',
+        username: mongoUser?.username || '  ',
+        phone: mongoUser?.phone || '',
+        bio: mongoUser?.bio || '',
         mediaLinks: mongoUser?.mediaLinks,
-        address: mongoUser?.address,
-        country: mongoUser?.country,
-        city: mongoUser?.city,
-        zip: mongoUser?.zip,
-        state: mongoUser?.state,
-        mapLocation: mongoUser?.mapLocation,
-        location: mongoUser?.location
+        address: mongoUser?.address || '',
+        country: mongoUser?.country || '',
+        city: mongoUser?.city || '',
+        zip: mongoUser?.zip || '',
+        state: mongoUser?.state || '',
+        mapLocation: mongoUser?.mapLocation || '',
+        location: mongoUser?.location || ''
       },
       errors: !values.name
         ? {
@@ -100,6 +101,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         updateData: {
           name: value?.name,
           bio: value.bio,
+          phone: value.phone,
           mediaLinks: value.mediaLinks,
           address: value.address,
           country: value.country,
@@ -122,7 +124,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   return (
     <>
       <h2 className="main-title">My Profile</h2>
-
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="bg-white card-box border-20">
@@ -168,6 +169,19 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                 name="username"
               />
               <ErrorMsg msg={errors?.username?.message as string} />
+            </div>
+            <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">Phone</label>
+              <input
+                defaultValue={mongoUser?.phone}
+                type="tel"
+                placeholder="017xxxxxxxxx"
+                {...register('phone', { valueAsNumber: true, maxLength: 11 })}
+                name="phone"
+              />
+              {errors?.phone && (
+                <ErrorMsg msg={errors?.phone?.message as string} />
+              )}
             </div>
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>
