@@ -66,7 +66,7 @@ const Resume = ({
           name={user?.name as string}
           designation="Software Developer"
           email={user?.email as string}
-          phone={'01700000000'}
+          phone={user.phone as string}
           address={user?.address as string}
           imageSrc={user?.picture as string}
         />
