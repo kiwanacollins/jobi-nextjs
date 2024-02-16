@@ -50,14 +50,17 @@ export async function updateUser(params: UpdateUserParams) {
     const { clerkId, updateData, path } = params;
     const { picture } = updateData;
 
-    const result = await cloudinary.v2.uploader.upload(picture as string, {
-      folder: 'users',
-      unique_filename: false,
-      use_filename: true
-    });
-    console.log('result', result);
+    console.log('updateData', updateData);
 
-    updateData.picture = result.secure_url;
+    if (picture) {
+      const result = await cloudinary.v2.uploader.upload(picture as string, {
+        folder: 'users',
+        unique_filename: false,
+        use_filename: true
+      });
+
+      updateData.picture = result.secure_url;
+    }
 
     const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true

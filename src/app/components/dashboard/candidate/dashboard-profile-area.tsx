@@ -22,7 +22,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
   const [filename, setFilename] = useState('');
-  const [file, setFile] = useState('');
+  // const [file, setFile] = useState('');
 
   // resolver
   const resolver: Resolver = async (values) => {
@@ -35,6 +35,8 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         phone: mongoUser?.phone || '',
         qualification: mongoUser?.qualification || '',
         bio: mongoUser?.bio || '',
+        minSalary: mongoUser?.minSalary || '',
+        maxSalary: mongoUser?.maxSalary || '',
         mediaLinks: mongoUser?.mediaLinks,
         address: mongoUser?.address || '',
         country: mongoUser?.country || '',
@@ -111,8 +113,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
     if (event.target.name === 'file') {
       pdfFile.onload = () => {
         if (pdfFile.readyState === 2) {
-          setFile(pdfFile.result as string);
-          console.log(file);
+          setValue('picture', pdfFile.result as string);
         }
       };
     }
@@ -130,9 +131,11 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           bio: value.bio,
           phone: value.phone,
           age: value.age,
-          picture: file,
+          picture: value.picture,
           gender: value.gender,
           qualification: value.qualification,
+          minSalary: value.minSalary,
+          maxSalary: value.maxSalary,
           mediaLinks: value.mediaLinks,
           address: value.address,
           country: value.country,
@@ -276,6 +279,42 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               <QualicationSelect setValue={setValue} />
             </div>
             {/* Qualification End */}
+
+            {/* Salary start */}
+            <div className="d-flex align-items-center mb-3 mt-30">
+              <label htmlFor="salaryStart" className="form-label me-4">
+                Salary *
+              </label>
+              <div className="d-flex dash-input-wrapper gap-3">
+                <input
+                  type="text"
+                  defaultValue={mongoUser?.minSalary}
+                  placeholder="min salary"
+                  {...register('minSalary', {
+                    required: true,
+                    valueAsNumber: true
+                  })}
+                  name="minSalary"
+                />
+                {errors?.minSalary && (
+                  <ErrorMsg msg={errors?.minSalary?.message as string} />
+                )}
+                <input
+                  type="text"
+                  defaultValue={mongoUser?.maxSalary}
+                  placeholder="max salary"
+                  {...register('maxSalary', {
+                    required: true,
+                    valueAsNumber: true
+                  })}
+                  name="maxSalary"
+                />
+                {errors?.maxSalary?.message && (
+                  <ErrorMsg msg={errors?.maxSalary?.message as string} />
+                )}
+              </div>
+            </div>
+            {/* Salary end */}
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>
               <textarea

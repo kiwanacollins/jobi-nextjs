@@ -14,6 +14,8 @@ export interface IUser extends Document {
   bio?: string;
   gender?: string;
   qualification?: string;
+  minSalary: number;
+  maxSalary: number;
   phone?: string;
   picture?: string;
   role?: string;
@@ -41,6 +43,8 @@ const UserSchema = new Schema({
   phone: { type: String },
   gender: { type: String },
   qualification: { type: String },
+  minSalary: { type: Number, reuired: true },
+  maxSalary: { type: Number, required: true },
   picture: { type: String },
   role: { type: String },
   location: { type: String },
