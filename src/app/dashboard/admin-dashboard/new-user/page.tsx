@@ -13,6 +13,7 @@ import QualicationSelect from '@/app/components/dashboard/candidate/QualicationS
 import ErrorMsg from '@/app/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import NiceSelect from '@/ui/nice-select';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -20,6 +21,7 @@ const NewUser = () => {
   const [gender, setGender] = useState('male');
   const [role, setRole] = useState('candidate');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
+  const [skillsTag, setSkillsTag] = useState<string[]>([]);
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -29,6 +31,9 @@ const NewUser = () => {
       name: '',
       username: '',
       phone: '',
+      post: '',
+      skills: [],
+      salary_duration: '',
       qualification: '',
       bio: '',
       mediaLinks: {
@@ -49,6 +54,8 @@ const NewUser = () => {
     register,
     reset,
     setValue,
+    setError,
+    clearErrors,
     handleSubmit,
     formState: { errors }
   } = methods;
@@ -83,6 +90,53 @@ const NewUser = () => {
   const handleRoleChange = (event: any) => {
     setRole(event.target.value);
   };
+  const handleSalary = (item: { value: string; label: string }) => {
+    const { value } = item;
+    setValue('salary_duration', value);
+  };
+  const handleExperience = (item: { value: string; label: string }) => {
+    const { value } = item;
+    setValue('experience', value);
+  };
+
+  // add skills
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: any
+  ) => {
+    if (e.key === 'Enter' && field === 'skills') {
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagValue = tagInput.value;
+
+      if (tagValue !== '') {
+        if (tagValue.length > 15) {
+          return setError('skills', {
+            type: 'required',
+            message: 'Tag must be less than 15 characters.'
+          });
+        }
+        // Retrieve current skills array
+        const currentSkills = skillsTag || [];
+
+        if (!skillsTag.includes(tagValue as never)) {
+          setValue('skills', [...currentSkills, tagValue]);
+          setSkillsTag([...currentSkills, tagValue]);
+          tagInput.value = '';
+          clearErrors('skills');
+        }
+      }
+    }
+  };
+
+  // remove skill
+  const handleTagRemove = (tag: string, e: any) => {
+    e.preventDefault();
+    const newTags = skillsTag.filter((t: string) => t !== tag);
+    setSkillsTag(newTags);
+    setValue('skills', newTags);
+  };
 
   const onSubmit = async (value: userSchemaType) => {
     setIsSubmitting(true);
@@ -91,14 +145,18 @@ const NewUser = () => {
       await createUserByAdmin({
         name: value?.name,
         email: value.email,
+        post: value.post,
         username: value.username,
         role: value.role,
         bio: value.bio,
+        salary_duration: value.salary_duration,
+        experience: value.experience,
         phone: value.phone,
         age: value.age,
         picture: value.picture,
         gender: value.gender,
         qualification: value.qualification,
+        skills: value.skills,
         minSalary: value.minSalary,
         maxSalary: value.maxSalary,
         mediaLinks: {
@@ -184,6 +242,16 @@ const NewUser = () => {
               <ErrorMsg msg={errors?.email?.message as string} />
             </div>
             <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">post*</label>
+              <input
+                type="text"
+                placeholder="Designation"
+                {...register('post', { required: true })}
+                name="post"
+              />
+              <ErrorMsg msg={errors?.post?.message as string} />
+            </div>
+            <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Phone</label>
               <input
                 type="text"
@@ -250,6 +318,56 @@ const NewUser = () => {
             </div>
             {/* Qualification End */}
 
+            {/* Skills start */}
+            <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">Skills*</label>
+              <div className="skills-wrapper">
+                <div className="dash-input-wrapper mb-30">
+                  <input
+                    type="text"
+                    placeholder="Add skills..."
+                    onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
+                  />
+                  <ErrorMsg msg={errors.skills?.message} />
+                </div>
+                <ul className="style-none d-flex flex-wrap align-items-center">
+                  {skillsTag.map((item: any, index) => {
+                    return (
+                      <li className="is_tag" key={index}>
+                        <button>
+                          {item}{' '}
+                          <i
+                            className="bi bi-x"
+                            onClick={(e) => handleTagRemove(item, e)}
+                          ></i>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+
+            {/* Skills end */}
+
+            {/* Experience start */}
+
+            <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">Experience*</label>
+              <NiceSelect
+                options={[
+                  { value: 'Intermediate', label: 'Intermediate' },
+                  { value: 'No-Experience', label: 'No-Experience' },
+                  { value: 'Expert', label: 'Expert' }
+                ]}
+                defaultCurrent={0}
+                onChange={(item) => handleExperience(item)}
+                name="experience"
+              />
+            </div>
+
+            {/* Experience end */}
+
             {/* Salary start */}
             <div className="d-flex align-items-center mb-3 mt-30">
               <label htmlFor="salaryStart" className="form-label me-4">
@@ -274,6 +392,15 @@ const NewUser = () => {
                     valueAsNumber: true
                   })}
                   name="maxSalary"
+                />
+                <NiceSelect
+                  options={[
+                    { value: 'Monthly', label: 'Monthly' },
+                    { value: 'Weekly', label: 'Weekly' }
+                  ]}
+                  defaultCurrent={0}
+                  onChange={(item: any) => handleSalary(item)}
+                  name="salary_duration"
                 />
                 {errors?.maxSalary?.message && (
                   <ErrorMsg msg={errors?.maxSalary?.message as string} />

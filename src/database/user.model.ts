@@ -11,11 +11,15 @@ export interface IUser extends Document {
   username: string;
   age?: number;
   email: string;
+  post?: string;
   bio?: string;
   gender?: string;
   qualification?: string;
   minSalary: number;
   maxSalary: number;
+  salary_duration?: string;
+  experience?: string;
+  skills?: string[];
   phone?: string;
   picture?: string;
   role?: string;
@@ -39,12 +43,16 @@ const UserSchema = new Schema({
   username: { type: String, require: true, unique: true },
   email: { type: String, required: true, unique: true },
   bio: { type: String },
+  post: { type: String },
   age: { type: Number },
   phone: { type: String },
   gender: { type: String },
   qualification: { type: String },
+  skills: [{ type: String }],
   minSalary: { type: Number, reuired: true },
   maxSalary: { type: Number, required: true },
+  salary_duration: { type: String },
+  experience: { type: String },
   picture: { type: String },
   role: { type: String },
   location: { type: String },

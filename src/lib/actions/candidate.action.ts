@@ -160,3 +160,18 @@ export async function getCandidateResumes(params: getCandidatesParams) {
     throw error;
   }
 }
+
+// get All candidates
+export async function getAllCandidates() {
+  try {
+    await connectToDatabase();
+    const candidates = await User.find({ role: 'candidate' }).sort({
+      createdAt: -1
+    });
+
+    return JSON.parse(JSON.stringify(candidates));
+  } catch (error) {
+    console.error('Error fetching candidates:', error);
+    throw error;
+  }
+}
