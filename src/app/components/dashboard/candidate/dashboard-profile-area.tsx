@@ -95,6 +95,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
 
   const onSubmit = async (value: any) => {
     setIsSubmitting(true);
+    console.log(value);
     try {
       await updateUser({
         clerkId: userId,
@@ -174,9 +175,9 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               <label htmlFor="">Phone</label>
               <input
                 defaultValue={mongoUser?.phone}
-                type="tel"
+                type="text"
                 placeholder="017xxxxxxxxx"
-                {...register('phone', { valueAsNumber: true, maxLength: 11 })}
+                {...register('phone', { valueAsNumber: true })}
                 name="phone"
               />
               {errors?.phone && (
