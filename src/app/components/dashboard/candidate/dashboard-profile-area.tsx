@@ -11,6 +11,7 @@ import { usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
 import ErrorMsg from '../../common/error-msg';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import QualicationSelect from './QualicationSelect';
 
 // props type
 type IProps = {
@@ -28,7 +29,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         name: mongoUser?.name || '',
         username: mongoUser?.username || '  ',
         phone: mongoUser?.phone || '',
-
+        qualification: mongoUser?.qualification || '',
         bio: mongoUser?.bio || '',
         mediaLinks: mongoUser?.mediaLinks,
         address: mongoUser?.address || '',
@@ -105,6 +106,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           bio: value.bio,
           phone: value.phone,
           gender: value.gender,
+          qualification: value.qualification,
           mediaLinks: value.mediaLinks,
           address: value.address,
           country: value.country,
@@ -225,6 +227,12 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                 <ErrorMsg msg={errors?.gender?.message as string} />
               )}
             </div>
+            {/* Qualification Start */}
+            <div className="dash-input-wrapper mb-25">
+              <label htmlFor="">Qualification*</label>
+              <QualicationSelect setValue={setValue} />
+            </div>
+            {/* Qualification End */}
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>
               <textarea
