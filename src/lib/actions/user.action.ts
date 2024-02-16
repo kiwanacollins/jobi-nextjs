@@ -19,7 +19,7 @@ export async function getUserById(params: any) {
 
     const user = await User.findOne({ clerkId: userId });
 
-    return user;
+    return JSON.parse(JSON.stringify(user));
   } catch (error) {
     console.log(error);
     throw error;
@@ -46,10 +46,10 @@ export async function updateUser(params: UpdateUserParams) {
     connectToDatabase();
     const { clerkId, updateData, path } = params;
 
+    console.log('updatedUser:', updateData);
     const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true
     });
-    console.log('updatedUser:', updatedUser);
     if (!updatedUser) {
       throw new Error(`User with clerkId ${clerkId} not found`);
     }

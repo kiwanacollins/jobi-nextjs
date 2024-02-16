@@ -177,7 +177,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                 defaultValue={mongoUser?.phone}
                 type="text"
                 placeholder="017xxxxxxxxx"
-                {...register('phone', { valueAsNumber: true })}
+                {...register('phone')}
                 name="phone"
               />
               {errors?.phone && (

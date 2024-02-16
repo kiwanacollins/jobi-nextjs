@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image, { StaticImageData } from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -25,7 +25,9 @@ import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 import nav_8 from '@/assets/dashboard/images/icon/icon_8.svg';
 import LogoutModal from '../../common/popup/logout-modal';
-import { useUser } from '@clerk/nextjs';
+import { useAuth } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
+import { IUser } from '@/database/user.model';
 
 // nav data
 const nav_data: {
@@ -93,7 +95,18 @@ type IProps = {
 
 const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
   const pathname = usePathname();
-  const { user } = useUser();
+  const { userId } = useAuth();
+
+  const [currentUser, setCurrentUser] = useState<IUser>({} as IUser);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      const mongoUser = await getUserById({ userId });
+      setCurrentUser(mongoUser);
+    };
+    fetchCurrentUser();
+  }, [userId]);
+
   return (
     <>
       <aside className={`dash-aside-navbar ${isOpenSidebar ? 'show' : ''}`}>
@@ -112,7 +125,7 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
           <div className="user-data">
             <div className="user-avatar online position-relative rounded-circle">
               <Image
-                src={user?.imageUrl as string}
+                src={currentUser?.picture as string}
                 alt="avatar"
                 className="lazy-img"
                 width={75}
@@ -128,7 +141,7 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                 data-bs-auto-close="outside"
                 aria-expanded="false"
               >
-                {user?.fullName}
+                {currentUser?.name}
               </button>
               <ul className="dropdown-menu" aria-labelledby="profile-dropdown">
                 <li>
