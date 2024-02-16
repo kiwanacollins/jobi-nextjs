@@ -22,7 +22,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
   const [filename, setFilename] = useState('');
-  // const [file, setFile] = useState('');
+  const [gender, setGender] = useState(mongoUser?.gender || 'male');
 
   // resolver
   const resolver: Resolver = async (values) => {
@@ -118,6 +118,10 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
       };
     }
     pdfFile.readAsDataURL(event.target.files?.[0] as File);
+  };
+
+  const handleGenderChange = (event: any) => {
+    setGender(event.target.value);
   };
 
   const onSubmit = async (value: any) => {
@@ -243,7 +247,8 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                     id="male"
                     value="male"
                     className="me-2"
-                    defaultChecked
+                    checked={gender === 'male'}
+                    onChange={handleGenderChange}
                   />
                   <label htmlFor="male">Male</label>
                 </div>
@@ -255,18 +260,10 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                     id="female"
                     className="me-2"
                     value="female"
+                    checked={gender === 'female'}
+                    onChange={handleGenderChange}
                   />
                   <label htmlFor="female">Female</label>
-                </div>
-                <div>
-                  <input
-                    {...register('gender', { required: true })}
-                    type="radio"
-                    id="thirdGender"
-                    className="me-2"
-                    value="thirdGender"
-                  />
-                  <label htmlFor="thirdGender">Third Gender</label>
                 </div>
               </div>
               {errors?.gender && (
