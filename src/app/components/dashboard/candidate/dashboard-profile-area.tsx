@@ -21,6 +21,9 @@ type IProps = {
 const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
+  const [filename, setFilename] = useState('');
+  const [file, setFile] = useState('');
+
   // resolver
   const resolver: Resolver = async (values) => {
     return {
@@ -96,6 +99,26 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
     formState: { errors }
   } = methods;
 
+  // handle file pdf upload
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+    const pdfFile = new FileReader();
+    const selectedFile = event.target.files?.[0] || null;
+    const fileName = selectedFile?.name || '';
+    setFilename(fileName);
+    if (event.target.name === 'file') {
+      pdfFile.onload = () => {
+        if (pdfFile.readyState === 2) {
+          setFile(pdfFile.result as string);
+          console.log(file);
+        }
+      };
+    }
+    pdfFile.readAsDataURL(event.target.files?.[0] as File);
+  };
+
   const onSubmit = async (value: any) => {
     setIsSubmitting(true);
     console.log(value);
@@ -107,6 +130,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           bio: value.bio,
           phone: value.phone,
           age: value.age,
+          picture: file,
           gender: value.gender,
           qualification: value.qualification,
           mediaLinks: value.mediaLinks,
@@ -145,12 +169,15 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                 />
               )}
               <div className="upload-btn position-relative tran3s ms-4 me-3">
-                Upload new photo
+                <small>{filename || ' Upload new photo'}</small>
+
                 <input
                   type="file"
                   id="uploadImg"
-                  name="uploadImg"
-                  placeholder=""
+                  name="file"
+                  accept="image/*"
+                  placeholder="Upload new photo"
+                  onChange={(e) => handleFileChange(e)}
                 />
               </div>
               <button className="delete-btn tran3s">Delete</button>

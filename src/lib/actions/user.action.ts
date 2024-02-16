@@ -10,6 +10,8 @@ import {
 } from './shared.types';
 import { revalidatePath } from 'next/cache';
 import Resume from '@/database/resume.model';
+import connectToCloudinary from '../cloudinary';
+import cloudinary from 'cloudinary';
 
 export async function getUserById(params: any) {
   try {
@@ -44,12 +46,23 @@ export async function createUser(userData: CreateUserParams) {
 export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
+    connectToCloudinary();
     const { clerkId, updateData, path } = params;
-    console.log('updateUser  updateData:', updateData);
+    const { picture } = updateData;
+
+    const result = await cloudinary.v2.uploader.upload(picture as string, {
+      folder: 'users',
+      unique_filename: false,
+      use_filename: true
+    });
+    console.log('result', result);
+
+    updateData.picture = result.secure_url;
 
     const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true
     });
+    console.log('updatedUser', updateUser);
 
     if (!updatedUser) {
       throw new Error(`User with clerkId ${clerkId} not found`);
