@@ -106,8 +106,8 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           name: value?.name,
           bio: value.bio,
           phone: value.phone,
-          gender: value.gender,
           age: value.age,
+          gender: value.gender,
           qualification: value.qualification,
           mediaLinks: value.mediaLinks,
           address: value.address,
@@ -213,6 +213,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                     id="male"
                     value="male"
                     className="me-2"
+                    defaultChecked
                   />
                   <label htmlFor="male">Male</label>
                 </div>
