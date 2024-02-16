@@ -33,3 +33,34 @@ export const resumeSchema = z.object({
   experience: z.array(experienceSchema)
   // portfolio: z.array(z.string().url('Invalid photo URL'))
 });
+
+const linksSchema = z.object({
+  linkedin: z.string().max(255).optional(),
+  github: z.string().max(255).optional()
+});
+
+// Define the Zod schema for the IUser interface
+export const userSchema = z.object({
+  clerkId: z.string().optional(),
+  name: z.string().max(255),
+  username: z.string().min(1).max(255),
+  age: z.number().optional(),
+  email: z.string().max(100).email('Invalid email'),
+  bio: z.string().optional(),
+  gender: z.string().optional(),
+  qualification: z.string().optional(),
+  minSalary: z.number(),
+  maxSalary: z.number(),
+  phone: z.string().min(11).max(11).optional(),
+  picture: z.string().optional(),
+  role: z.string().optional(),
+  location: z.string().optional(),
+  mediaLinks: linksSchema.optional(),
+  address: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  street: z.string().optional(),
+  zip: z.string().optional(),
+  state: z.string().optional(),
+  mapLocation: z.string().optional()
+});

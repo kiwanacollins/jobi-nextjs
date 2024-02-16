@@ -41,22 +41,22 @@ const nav_data: {
     id: 1,
     icon: nav_1,
     icon_active: nav_1_active,
-    link: '/dashboard/admin-dashboard',
+    link: '/dashboard/candidate-dashboard',
     title: 'Dashboard'
   },
   {
     id: 2,
     icon: nav_2,
     icon_active: nav_2_active,
-    link: '/dashboard/admin-dashboard/new-user',
-    title: 'Create User'
+    link: '/dashboard/candidate-dashboard/profile',
+    title: 'My Profile'
   },
   {
     id: 3,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/candidate-dashboard/resume',
-    title: 'Users'
+    title: 'Resume'
   },
   {
     id: 4,
@@ -93,7 +93,7 @@ type IProps = {
   setIsOpenSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
+const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
   const pathname = usePathname();
   const { userId } = useAuth();
 
@@ -240,4 +240,4 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
   );
 };
 
-export default CandidateAside;
+export default AdminAside;

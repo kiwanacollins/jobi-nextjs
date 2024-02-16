@@ -12,6 +12,8 @@ import { revalidatePath } from 'next/cache';
 import Resume from '@/database/resume.model';
 import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
+import { userSchema } from '@/utils/validation';
+import * as z from 'zod';
 
 export async function getUserById(params: any) {
   try {
@@ -31,11 +33,19 @@ export async function getUserById(params: any) {
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
-
-    console.log('before create user');
     const newUser = await User.create(userData);
-    console.log('after create user');
+    return newUser;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
+type createUserByAdminParams = z.infer<typeof userSchema>;
+export async function createUserByAdmin(userData: createUserByAdminParams) {
+  try {
+    connectToDatabase();
+    const newUser = await User.create(userData);
     return newUser;
   } catch (error) {
     console.log(error);

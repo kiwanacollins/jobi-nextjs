@@ -1,12 +1,12 @@
 import { Schema, models, model, Document } from 'mongoose';
 
 interface I_Links {
-  linkedin: string;
-  github: string;
+  linkedin: string | undefined;
+  github: string | undefined;
 }
 
 export interface IUser extends Document {
-  clerkId: string;
+  clerkId?: string;
   name: string;
   username: string;
   age?: number;
@@ -30,11 +30,11 @@ export interface IUser extends Document {
   mapLocation?: string;
   saved?: Schema.Types.ObjectId[];
   resumeId?: Schema.Types.ObjectId | string;
-  joinedAt: Date;
+  joinedAt?: Date;
 }
 
 const UserSchema = new Schema({
-  clerkId: { type: String, required: true },
+  clerkId: { type: String, required: false },
   name: { type: String, required: true },
   username: { type: String, require: true, unique: true },
   email: { type: String, required: true, unique: true },
