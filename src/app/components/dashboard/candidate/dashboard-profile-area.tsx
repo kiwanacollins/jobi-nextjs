@@ -28,6 +28,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
       defaultValues: {
         name: mongoUser?.name || '',
         username: mongoUser?.username || '  ',
+        age: mongoUser?.age || '',
         phone: mongoUser?.phone || '',
         qualification: mongoUser?.qualification || '',
         bio: mongoUser?.bio || '',
@@ -106,6 +107,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           bio: value.bio,
           phone: value.phone,
           gender: value.gender,
+          age: value.age,
           qualification: value.qualification,
           mediaLinks: value.mediaLinks,
           address: value.address,
@@ -188,6 +190,19 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                 <ErrorMsg msg={errors?.phone?.message as string} />
               )}
             </div>
+            {/* age start */}
+            <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">age</label>
+              <input
+                defaultValue={mongoUser?.age || ''}
+                type="text"
+                placeholder="your age"
+                {...register('age', { valueAsNumber: true })}
+                name="age"
+              />
+              <ErrorMsg msg={errors?.age?.message as string} />
+            </div>
+            {/* age end */}
             <div className="mb-30">
               <label className="mb-20 ">Gender</label>
               <div>
