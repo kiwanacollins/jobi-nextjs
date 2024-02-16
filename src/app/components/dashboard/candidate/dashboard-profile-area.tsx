@@ -28,6 +28,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         name: mongoUser?.name || '',
         username: mongoUser?.username || '  ',
         phone: mongoUser?.phone || '',
+
         bio: mongoUser?.bio || '',
         mediaLinks: mongoUser?.mediaLinks,
         address: mongoUser?.address || '',
@@ -103,6 +104,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           name: value?.name,
           bio: value.bio,
           phone: value.phone,
+          gender: value.gender,
           mediaLinks: value.mediaLinks,
           address: value.address,
           country: value.country,
@@ -182,6 +184,45 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               />
               {errors?.phone && (
                 <ErrorMsg msg={errors?.phone?.message as string} />
+              )}
+            </div>
+            <div className="mb-30">
+              <label className="mb-20 ">Gender</label>
+              <div>
+                <div>
+                  <input
+                    {...register('gender', { required: true })}
+                    type="radio"
+                    id="male"
+                    value="male"
+                    className="me-2"
+                  />
+                  <label htmlFor="male">Male</label>
+                </div>
+
+                <div>
+                  <input
+                    {...register('gender', { required: true })}
+                    type="radio"
+                    id="female"
+                    className="me-2"
+                    value="female"
+                  />
+                  <label htmlFor="female">Female</label>
+                </div>
+                <div>
+                  <input
+                    {...register('gender', { required: true })}
+                    type="radio"
+                    id="thirdGender"
+                    className="me-2"
+                    value="thirdGender"
+                  />
+                  <label htmlFor="thirdGender">Third Gender</label>
+                </div>
+              </div>
+              {errors?.gender && (
+                <ErrorMsg msg={errors?.gender?.message as string} />
               )}
             </div>
             <div className="dash-input-wrapper">

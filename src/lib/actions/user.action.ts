@@ -45,11 +45,12 @@ export async function updateUser(params: UpdateUserParams) {
   try {
     connectToDatabase();
     const { clerkId, updateData, path } = params;
+    console.log('updateUser  updateData:', updateData);
 
-    console.log('updatedUser:', updateData);
     const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true
     });
+
     if (!updatedUser) {
       throw new Error(`User with clerkId ${clerkId} not found`);
     }
