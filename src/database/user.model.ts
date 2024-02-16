@@ -6,7 +6,7 @@ interface I_Links {
 }
 
 export interface IUser extends Document {
-  clerkId?: string;
+  clerkId?: string | undefined;
   name: string;
   username: string;
   age?: number;
@@ -34,7 +34,7 @@ export interface IUser extends Document {
 }
 
 const UserSchema = new Schema({
-  clerkId: { type: String, required: false },
+  clerkId: { type: String },
   name: { type: String, required: true },
   username: { type: String, require: true, unique: true },
   email: { type: String, required: true, unique: true },

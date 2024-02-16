@@ -45,6 +45,17 @@ type createUserByAdminParams = z.infer<typeof userSchema>;
 export async function createUserByAdmin(userData: createUserByAdminParams) {
   try {
     connectToDatabase();
+    connectToCloudinary();
+    const { picture } = userData;
+    if (picture) {
+      const result = await cloudinary.v2.uploader.upload(picture as string, {
+        folder: 'users',
+        unique_filename: false,
+        use_filename: true
+      });
+
+      userData.picture = result.secure_url;
+    }
     const newUser = await User.create(userData);
     return newUser;
   } catch (error) {

@@ -41,22 +41,22 @@ const nav_data: {
     id: 1,
     icon: nav_1,
     icon_active: nav_1_active,
-    link: '/dashboard/candidate-dashboard',
+    link: '/dashboard/admin-dashboard',
     title: 'Dashboard'
   },
   {
     id: 2,
     icon: nav_2,
     icon_active: nav_2_active,
-    link: '/dashboard/candidate-dashboard/profile',
-    title: 'My Profile'
+    link: '/dashboard/admin-dashboard/new-user',
+    title: 'create user'
   },
   {
     id: 3,
     icon: nav_3,
     icon_active: nav_3_active,
-    link: '/dashboard/candidate-dashboard/resume',
-    title: 'Resume'
+    link: '/dashboard/admin-dashboard/users',
+    title: 'Users'
   },
   {
     id: 4,
