@@ -283,7 +283,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
             {/* Salary start */}
             <div className="d-flex align-items-center mb-3 mt-30">
               <label htmlFor="salaryStart" className="form-label me-4">
-                Salary *
+                Salary Range *
               </label>
               <div className="d-flex dash-input-wrapper gap-3">
                 <input
@@ -291,7 +291,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                   defaultValue={mongoUser?.minSalary}
                   placeholder="min salary"
                   {...register('minSalary', {
-                    required: true,
                     valueAsNumber: true
                   })}
                   name="minSalary"
@@ -304,7 +303,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                   defaultValue={mongoUser?.maxSalary}
                   placeholder="max salary"
                   {...register('maxSalary', {
-                    required: true,
                     valueAsNumber: true
                   })}
                   name="maxSalary"
