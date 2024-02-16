@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import search from '@/assets/dashboard/images/icon/icon_16.svg';
-
 import { useForm, FormProvider } from 'react-hook-form';
 import { createUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
@@ -20,73 +19,7 @@ const NewUser = () => {
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
   const [role, setRole] = useState('candidate');
-
-  // resolver
-  //   const resolver: Resolver = async (values) => {
-  //     return {
-  //       values: values.name ? values : '',
-  //       defaultValues: {
-  //         name: '',
-  //         username: '  ',
-  //         age: '',
-  //         phone: '',
-  //         qualification: '',
-  //         bio: '',
-  //         minSalary: '',
-  //         maxSalary: '',
-  //         mediaLinks: [],
-  //         address: '',
-  //         country: '',
-  //         city: '',
-  //         zip: '',
-  //         state: '',
-  //         mapLocation: '',
-  //         location: ''
-  //       },
-  //       errors: !values.name
-  //         ? {
-  //             name: {
-  //               type: 'required',
-  //               message: 'Name is required'
-  //             },
-  //             bio: {
-  //               type: 'required',
-  //               message: 'Bio is required'
-  //             },
-  //             address: {
-  //               type: 'required',
-  //               message: 'Address is required'
-  //             },
-  //             mediaLinks: {
-  //               linkedin: {
-  //                 type: 'required',
-  //                 message: 'Linkedin is required'
-  //               },
-  //               github: {
-  //                 type: 'required',
-  //                 message: 'Github is required'
-  //               }
-  //             },
-  //             country: {
-  //               type: 'required',
-  //               message: 'Country is required'
-  //             },
-  //             city: {
-  //               type: 'required',
-  //               message: 'City is required'
-  //             },
-  //             zip: {
-  //               type: 'required',
-  //               message: 'Zip is required'
-  //             },
-  //             state: {
-  //               type: 'required',
-  //               message: 'State is required'
-  //             }
-  //           }
-  //         : {}
-  //     };
-  //   };
+  const [imagePreview, setImagePreview] = useState<string | undefined>();
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -127,6 +60,7 @@ const NewUser = () => {
     event.preventDefault();
     const pdfFile = new FileReader();
     const selectedFile = event.target.files?.[0] || null;
+
     const fileName = selectedFile?.name || '';
     setFilename(fileName);
     if (event.target.name === 'file') {
@@ -134,6 +68,10 @@ const NewUser = () => {
         if (pdfFile.readyState === 2) {
           setValue('picture', pdfFile.result as string);
         }
+      };
+
+      pdfFile.onloadend = () => {
+        setImagePreview(pdfFile.result as string | undefined);
       };
     }
     pdfFile.readAsDataURL(event.target.files?.[0] as File);
@@ -186,18 +124,20 @@ const NewUser = () => {
 
   return (
     <>
-      <h2 className="main-title">My Profile</h2>
+      <h2 className="main-title">Create User</h2>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="bg-white card-box border-20">
             <div className="user-avatar-setting d-flex align-items-center mb-30">
-              <Image
-                src={'/images/avatar/01.jpg'}
-                alt="avatar"
-                height={80}
-                width={80}
-                className="lazy-img user-img"
-              />
+              {imagePreview && (
+                <Image
+                  src={imagePreview}
+                  alt="avatar"
+                  height={80}
+                  width={80}
+                  className="lazy-img user-img"
+                />
+              )}
 
               <div className="upload-btn position-relative tran3s ms-4 me-3">
                 <small>{filename || ' Upload new photo'}</small>
@@ -498,9 +438,9 @@ const NewUser = () => {
             <button
               disabled={isSubmitting}
               type="submit"
-              className="dash-btn-two tran3s me-3"
+              className="dash-btn-two tran3s me-3 px-4"
             >
-              {isSubmitting ? 'Creating user...' : 'Create user'}
+              {isSubmitting ? 'Creating...' : 'Create User'}
             </button>
             <button onClick={() => reset()} className="dash-cancel-btn tran3s">
               Cancel
