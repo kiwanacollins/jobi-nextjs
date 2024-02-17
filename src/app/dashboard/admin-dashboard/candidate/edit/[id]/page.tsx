@@ -68,7 +68,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
     reset,
     setValue,
     setError,
-    watch,
     clearErrors,
     handleSubmit,
     formState: { errors }
@@ -90,9 +89,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
     };
     fetchUserById();
   }, [params.id, reset]);
-
-  console.log(mongoUser);
-  console.log('watching', watch());
 
   // handle file pdf upload
   const handleFileChange = async (
