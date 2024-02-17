@@ -83,7 +83,7 @@ const SavedJobArea = () => {
                     <span></span>
                   </button>
                   {/* action dropdown start */}
-                  <ActionDropdown />
+                  <ActionDropdown id={j._id} />
                   {/* action dropdown end */}
                 </div>
               </div>
