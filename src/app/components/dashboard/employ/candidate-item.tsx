@@ -1,19 +1,21 @@
-import React from "react";
-import ActionDropdown from "../candidate/action-dropdown";
-import { ICandidate } from "@/data/candidate-data";
-import Image from "next/image";
+import React from 'react';
+import ActionDropdown from '../candidate/action-dropdown';
+// import { ICandidate } from "@/data/candidate-data";
+import Image from 'next/image';
+import { IUser } from '@/database/user.model';
 
-const CandidateItem = ({ item }: { item: ICandidate }) => {
+const CandidateItem = ({ item }: { item: IUser }) => {
   return (
     <div className="candidate-profile-card list-layout border-0 mb-25">
       <div className="d-flex">
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
           <a href="#" className="rounded-circle">
             <Image
-              src={item.img}
+              src={item?.picture as string}
               alt="image"
               className="lazy-img rounded-circle"
-              style={{height:'auto'}}
+              width={70}
+              height={70}
             />
           </a>
         </div>
@@ -26,25 +28,27 @@ const CandidateItem = ({ item }: { item: ICandidate }) => {
                     {item.name}
                   </a>
                 </h4>
-                <div className="candidate-post">{item.post}</div>
+                <div className="candidate-post">{item?.post}</div>
                 <ul className="cadidate-skills style-none d-flex align-items-center">
-                  <li>{item.skills[0]}</li>
-                  <li>{item.skills[1]}</li>
-                  <li>{item.skills[2]}</li>
-                  <li className="more">2+</li>
+                  {item?.skills?.map((skill, index) => {
+                    return <li key={index}>{skill}</li>;
+                  })}
                 </ul>
               </div>
             </div>
             <div className="col-xl-3 col-md-4 col-sm-6">
               <div className="candidate-info">
                 <span>Salary</span>
-                <div>{item.salary}/{item.salary_duration}</div>
+                <div>
+                  {`${item.minSalary}$ - ${item.maxSalary}$`}/
+                  {item.salary_duration}
+                </div>
               </div>
             </div>
             <div className="col-xl-3 col-md-4 col-sm-6">
               <div className="candidate-info">
                 <span>Location</span>
-                <div>{item.location}</div>
+                <div>{item.address}</div>
               </div>
             </div>
             <div className="col-xl-3 col-md-4">
@@ -64,7 +68,7 @@ const CandidateItem = ({ item }: { item: ICandidate }) => {
                   >
                     <span></span>
                   </button>
-                  <ActionDropdown />
+                  <ActionDropdown id={item._id} />
                 </div>
               </div>
             </div>

@@ -1,17 +1,18 @@
 import React from 'react';
-import candidate_data from '@/data/candidate-data';
+// import candidate_data from '@/data/candidate-data';
 import EmployShortSelect from '@/app/components/dashboard/employ/short-select';
 import CandidateItem from '@/app/components/dashboard/employ/candidate-item';
 import { getAllCandidates } from '@/lib/actions/candidate.action';
+import { IUser } from '@/database/user.model';
 
 const UsersPage = async () => {
-  const candidate_items = candidate_data.slice(0, 4);
+  // const candidate_items = candidate_data.slice(0, 4);
   const candidates = await getAllCandidates();
   console.log('UsersPage  candidates:', candidates);
   return (
     <div className="position-relative">
       <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">
-        <h2 className="main-title m0">Saved Candidate</h2>
+        <h2 className="main-title m0">All Candidates</h2>
         <div className="short-filter d-flex align-items-center">
           <div className="text-dark fw-500 me-2">Short by:</div>
           <EmployShortSelect />
@@ -19,8 +20,8 @@ const UsersPage = async () => {
       </div>
 
       <div className="wrapper">
-        {candidate_items.map((item) => (
-          <CandidateItem key={item.id} item={item} />
+        {candidates?.map((item: IUser) => (
+          <CandidateItem key={item._id} item={item} />
         ))}
       </div>
 
