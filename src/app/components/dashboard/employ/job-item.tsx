@@ -1,12 +1,12 @@
-import React from "react";
-import ActionDropdown from "../candidate/action-dropdown";
+import React from 'react';
+import ActionDropdown from '../candidate/action-dropdown';
 
 const EmployJobItem = ({
   title,
   info,
   date,
   application,
-  status,
+  status
 }: {
   title: string;
   info: string;
@@ -36,7 +36,7 @@ const EmployJobItem = ({
             <span></span>
           </button>
           {/* action dropdown start */}
-          <ActionDropdown />
+          <ActionDropdown id="" />
           {/* action dropdown end */}
         </div>
       </td>
