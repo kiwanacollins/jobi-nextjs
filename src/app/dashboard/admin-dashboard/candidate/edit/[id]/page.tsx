@@ -33,33 +33,31 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const pathname = usePathname();
 
-  const parsedMongoUser = mongoUser && JSON.parse(JSON.stringify(mongoUser));
-
   type userSchemaType = z.infer<typeof userSchema>;
 
   const methods = useForm<userSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      name: parsedMongoUser?.name || '',
-      username: parsedMongoUser?.username || '',
-      phone: parsedMongoUser?.phone || '',
-      post: parsedMongoUser?.post || '',
-      email: parsedMongoUser?.email || '',
-      skills: parsedMongoUser?.skills || [],
-      salary_duration: parsedMongoUser?.salary_duration,
-      qualification: parsedMongoUser?.qualification,
-      bio: parsedMongoUser?.bio,
+      name: mongoUser?.name || '',
+      username: mongoUser?.username || '',
+      phone: mongoUser?.phone || '',
+      post: mongoUser?.post || '',
+      email: mongoUser?.email || '',
+      skills: mongoUser?.skills || [],
+      salary_duration: mongoUser?.salary_duration,
+      qualification: mongoUser?.qualification,
+      bio: mongoUser?.bio,
       mediaLinks: {
-        linkedin: parsedMongoUser?.mediaLinks?.linkedin,
-        github: parsedMongoUser?.mediaLinks?.github
+        linkedin: mongoUser?.mediaLinks?.linkedin,
+        github: mongoUser?.mediaLinks?.github
       },
-      address: parsedMongoUser?.address,
-      country: parsedMongoUser?.country,
-      city: parsedMongoUser?.city,
-      zip: parsedMongoUser?.zip,
-      state: parsedMongoUser?.state,
-      mapLocation: parsedMongoUser?.mapLocation,
-      location: parsedMongoUser?.location
+      address: mongoUser?.address,
+      country: mongoUser?.country,
+      city: mongoUser?.city,
+      zip: mongoUser?.zip,
+      state: mongoUser?.state,
+      mapLocation: mongoUser?.mapLocation,
+      location: mongoUser?.location
     }
   });
 
@@ -205,12 +203,11 @@ const UpdateUser = ({ params }: ParamsProps) => {
         },
         path: pathname
       });
-      notifySuccess('User Created Successfully');
+      notifySuccess('User Updated Successfully');
     } catch (error: any) {
       notifyError(error.message as string);
     } finally {
       setIsSubmitting(false);
-      reset();
     }
   };
 
@@ -221,16 +218,16 @@ const UpdateUser = ({ params }: ParamsProps) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="bg-white card-box border-20">
             <div className="user-avatar-setting d-flex align-items-center mb-30">
-              {imagePreview ||
-                (mongoUser?.picture && (
-                  <Image
-                    src={imagePreview || mongoUser?.picture}
-                    alt="avatar"
-                    height={80}
-                    width={80}
-                    className="lazy-img user-img"
-                  />
-                ))}
+              {(imagePreview || mongoUser?.picture) && (
+                <Image
+                  //@ts-ignore
+                  src={imagePreview || mongoUser?.picture}
+                  alt="avatar"
+                  height={80}
+                  width={80}
+                  className="lazy-img user-img"
+                />
+              )}
 
               <div className="upload-btn position-relative tran3s ms-4 me-3">
                 <small>{filename || ' Upload new photo'}</small>
@@ -241,7 +238,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   name="file"
                   accept="image/*"
                   placeholder="Upload new photo"
-                  defaultValue={parsedMongoUser?.picture}
+                  defaultValue={mongoUser?.picture}
                   onChange={(e) => handleFileChange(e)}
                 />
               </div>
@@ -252,7 +249,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
               <input
                 type="text"
                 placeholder="You fullname"
-                defaultValue={parsedMongoUser?.name}
+                defaultValue={mongoUser?.name}
                 {...register('name')}
                 name="name"
               />
@@ -264,7 +261,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="username"
                 {...register('username')}
-                defaultValue={parsedMongoUser?.username}
+                defaultValue={mongoUser?.username}
                 name="username"
               />
               <ErrorMsg msg={errors?.username?.message as string} />
@@ -275,7 +272,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="email"
                 placeholder="Your email address"
                 {...register('email', { required: true })}
-                defaultValue={parsedMongoUser?.email}
+                defaultValue={mongoUser?.email}
                 name="email"
               />
               <ErrorMsg msg={errors?.email?.message as string} />
@@ -286,7 +283,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="Designation"
                 {...register('post', { required: true })}
-                defaultValue={parsedMongoUser?.post}
+                defaultValue={mongoUser?.post}
                 name="post"
               />
               <ErrorMsg msg={errors?.post?.message as string} />
@@ -297,7 +294,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="017xxxxxxxxx"
                 {...register('phone')}
-                defaultValue={parsedMongoUser?.phone}
+                defaultValue={mongoUser?.phone}
                 name="phone"
               />
               {errors?.phone && (
@@ -311,7 +308,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="number"
                 placeholder="your age"
                 {...register('age', { valueAsNumber: true })}
-                defaultValue={parsedMongoUser?.age}
+                defaultValue={mongoUser?.age}
                 name="age"
               />
               <ErrorMsg msg={errors?.age?.message as string} />
@@ -422,7 +419,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   {...register('minSalary', {
                     valueAsNumber: true
                   })}
-                  defaultValue={parsedMongoUser?.minSalary}
+                  defaultValue={mongoUser?.minSalary}
                   name="minSalary"
                 />
                 {errors?.minSalary && (
@@ -434,7 +431,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   {...register('maxSalary', {
                     valueAsNumber: true
                   })}
-                  defaultValue={parsedMongoUser?.maxSalary}
+                  defaultValue={mongoUser?.maxSalary}
                   name="maxSalary"
                 />
                 <NiceSelect
@@ -458,7 +455,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 className="size-lg"
                 placeholder="Write something interesting about you...."
                 {...register('bio')}
-                defaultValue={parsedMongoUser?.bio}
+                defaultValue={mongoUser?.bio}
                 name="bio"
               ></textarea>
               <div className="alert-text">
@@ -477,7 +474,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="Ex. linkedin.com/in/jamesbrower"
                 {...register('mediaLinks.linkedin')}
-                defaultValue={parsedMongoUser?.mediaLinks?.linkedin}
+                defaultValue={mongoUser?.mediaLinks?.linkedin}
               />
               <ErrorMsg msg={errors.mediaLinks?.message as string} />
             </div>
@@ -488,7 +485,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="ex. github.com/jamesbrower"
                 {...register('mediaLinks.github')}
-                defaultValue={parsedMongoUser?.mediaLinks?.github}
+                defaultValue={mongoUser?.mediaLinks?.github}
               />
               <ErrorMsg msg={errors.mediaLinks?.message as string} />
             </div>
@@ -507,7 +504,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     type="text"
                     placeholder="Cowrasta, Chandana, Gazipur Sadar"
                     {...register('address')}
-                    defaultValue={parsedMongoUser?.address}
+                    defaultValue={mongoUser?.address}
                     name="address"
                   />
                   <ErrorMsg msg={errors?.address?.message as string} />
@@ -532,7 +529,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     type="text"
                     {...register('zip')}
                     placeholder="1708"
-                    defaultValue={parsedMongoUser?.zip}
+                    defaultValue={mongoUser?.zip}
                     name="zip"
                   />
                 </div>
@@ -551,7 +548,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                       type="text"
                       placeholder="XC23+6XC, Moiran, N105"
                       {...register('mapLocation')}
-                      defaultValue={parsedMongoUser?.mapLocation}
+                      defaultValue={mongoUser?.mapLocation}
                       name="mapLocation"
                     />
                     <ErrorMsg msg={errors?.mapLocation?.message as string} />
