@@ -30,6 +30,11 @@ export interface UpdateUserParams {
   updateData: Partial<IUser>;
   path: string;
 }
+export interface UpdateUserByAdminParams {
+  mongoId: string;
+  updateData: Partial<IUser>;
+  path: string;
+}
 
 export interface DeleteUserParams {
   clerkId: string;

@@ -6,6 +6,7 @@ import {
   ClerkUpdateUserParams,
   CreateUserParams,
   DeleteUserParams,
+  UpdateUserByAdminParams,
   UpdateUserParams
 } from './shared.types';
 import { revalidatePath } from 'next/cache';
@@ -35,7 +36,7 @@ export async function getUserByMongoId(params: any) {
 
     const { id } = params;
 
-    const user = await User.findOne({ _id: id });
+    const user = await User.findById(id);
 
     return JSON.parse(JSON.stringify(user));
   } catch (error) {
@@ -77,6 +78,45 @@ export async function createUserByAdmin(userData: createUserByAdminParams) {
     throw error;
   }
 }
+
+// update user
+
+export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
+  try {
+    connectToDatabase();
+    connectToCloudinary();
+    const { mongoId, updateData, path } = params;
+    const { picture } = updateData;
+
+    if (picture) {
+      const result = await cloudinary.v2.uploader.upload(picture as string, {
+        folder: 'users',
+        unique_filename: false,
+        use_filename: true
+      });
+
+      updateData.picture = result.secure_url;
+    }
+
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: mongoId },
+      updateData,
+      {
+        new: true
+      }
+    );
+    console.log('updatedUser', updateUser);
+
+    if (!updatedUser) {
+      throw new Error(`User with Id ${mongoId} not found`);
+    }
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 // update user
 export async function updateUser(params: UpdateUserParams) {
   try {

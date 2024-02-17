@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import { useForm, FormProvider } from 'react-hook-form';
-import { createUserByAdmin, getUserByMongoId } from '@/lib/actions/user.action';
+import { getUserByMongoId, updateUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import StateSelect from '@/app/components/dashboard/candidate/state-select';
@@ -15,6 +15,7 @@ import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import NiceSelect from '@/ui/nice-select';
 import { IUser } from '@/database/user.model';
+import { usePathname } from 'next/navigation';
 
 interface ParamsProps {
   params: {
@@ -26,50 +27,39 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [mongoUser, setMongoUser] = useState<IUser>();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
-  const [gender, setGender] = useState(mongoUser?.gender || 'male');
+  const [gender, setGender] = useState('male');
   const [role, setRole] = useState('candidate');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
-  const [skillsTag, setSkillsTag] = useState<string[]>(mongoUser?.skills || []);
+  const [skillsTag, setSkillsTag] = useState<string[]>([]);
+  const pathname = usePathname();
 
-  // fetchUser by id
-
-  useEffect(() => {
-    const fetchUserById = async () => {
-      try {
-        const user = await getUserByMongoId({ id: params.id });
-        setMongoUser(user);
-        console.log('user:', user);
-      } catch (error: any) {
-        notifyError(error as string);
-      }
-    };
-    fetchUserById();
-  }, [params.id]);
+  const parsedMongoUser = mongoUser && JSON.parse(JSON.stringify(mongoUser));
 
   type userSchemaType = z.infer<typeof userSchema>;
 
   const methods = useForm<userSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      name: mongoUser?.name,
-      username: mongoUser?.username,
-      phone: mongoUser?.phone,
-      post: mongoUser?.post,
-      skills: skillsTag,
-      salary_duration: mongoUser?.salary_duration,
-      qualification: mongoUser?.qualification,
-      bio: mongoUser?.bio,
+      name: parsedMongoUser?.name || '',
+      username: parsedMongoUser?.username || '',
+      phone: parsedMongoUser?.phone || '',
+      post: parsedMongoUser?.post || '',
+      email: parsedMongoUser?.email || '',
+      skills: parsedMongoUser?.skills || [],
+      salary_duration: parsedMongoUser?.salary_duration,
+      qualification: parsedMongoUser?.qualification,
+      bio: parsedMongoUser?.bio,
       mediaLinks: {
-        linkedin: mongoUser?.mediaLinks?.linkedin,
-        github: mongoUser?.mediaLinks?.github
+        linkedin: parsedMongoUser?.mediaLinks?.linkedin,
+        github: parsedMongoUser?.mediaLinks?.github
       },
-      address: mongoUser?.address,
-      country: mongoUser?.country,
-      city: mongoUser?.city,
-      zip: mongoUser?.zip,
-      state: mongoUser?.state,
-      mapLocation: mongoUser?.mapLocation,
-      location: mongoUser?.location
+      address: parsedMongoUser?.address,
+      country: parsedMongoUser?.country,
+      city: parsedMongoUser?.city,
+      zip: parsedMongoUser?.zip,
+      state: parsedMongoUser?.state,
+      mapLocation: parsedMongoUser?.mapLocation,
+      location: parsedMongoUser?.location
     }
   });
 
@@ -78,14 +68,31 @@ const UpdateUser = ({ params }: ParamsProps) => {
     reset,
     setValue,
     setError,
+    watch,
     clearErrors,
     handleSubmit,
     formState: { errors }
   } = methods;
 
+  // fetchUser by id
   useEffect(() => {
-    reset();
-  }, [reset]);
+    const fetchUserById = async () => {
+      try {
+        const user = await getUserByMongoId({ id: params.id });
+        setMongoUser(user);
+        setGender(user?.gender);
+        setSkillsTag(user?.skills || []);
+        setRole(user.role);
+        reset(user);
+      } catch (error: any) {
+        notifyError(error as string);
+      }
+    };
+    fetchUserById();
+  }, [params.id, reset]);
+
+  console.log(mongoUser);
+  console.log('watching', watch());
 
   // handle file pdf upload
   const handleFileChange = async (
@@ -169,38 +176,42 @@ const UpdateUser = ({ params }: ParamsProps) => {
     setIsSubmitting(true);
     console.log(value);
     try {
-      await createUserByAdmin({
-        name: value?.name,
-        email: value.email,
-        post: value.post,
-        username: value.username,
-        role: value.role,
-        bio: value.bio,
-        salary_duration: value.salary_duration,
-        experience: value.experience,
-        phone: value.phone,
-        age: value.age,
-        picture: value.picture,
-        gender: value.gender,
-        qualification: value.qualification,
-        skills: value.skills,
-        minSalary: value.minSalary,
-        maxSalary: value.maxSalary,
-        mediaLinks: {
-          linkedin: value.mediaLinks?.linkedin,
-          github: value.mediaLinks?.github
+      await updateUserByAdmin({
+        mongoId: mongoUser?._id,
+        updateData: {
+          name: value?.name,
+          email: value.email,
+          post: value.post,
+          username: value.username,
+          role: value.role,
+          bio: value.bio,
+          salary_duration: value.salary_duration,
+          experience: value.experience,
+          phone: value.phone,
+          age: value.age,
+          picture: value.picture,
+          gender: value.gender,
+          qualification: value.qualification,
+          skills: value.skills,
+          minSalary: value.minSalary,
+          maxSalary: value.maxSalary,
+          mediaLinks: {
+            linkedin: value.mediaLinks?.linkedin,
+            github: value.mediaLinks?.github
+          },
+          address: value.address,
+          country: value.country,
+          city: value.city,
+          zip: value.zip,
+          state: value.state,
+          mapLocation: value.mapLocation,
+          location: value.location
         },
-        address: value.address,
-        country: value.country,
-        city: value.city,
-        zip: value.zip,
-        state: value.state,
-        mapLocation: value.mapLocation,
-        location: value.location
+        path: pathname
       });
       notifySuccess('User Created Successfully');
     } catch (error: any) {
-      notifyError(error as string);
+      notifyError(error.message as string);
     } finally {
       setIsSubmitting(false);
       reset();
@@ -234,7 +245,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   name="file"
                   accept="image/*"
                   placeholder="Upload new photo"
-                  defaultValue={mongoUser?.picture}
+                  defaultValue={parsedMongoUser?.picture}
                   onChange={(e) => handleFileChange(e)}
                 />
               </div>
@@ -245,19 +256,19 @@ const UpdateUser = ({ params }: ParamsProps) => {
               <input
                 type="text"
                 placeholder="You fullname"
-                defaultValue={mongoUser?.name}
+                defaultValue={parsedMongoUser?.name}
                 {...register('name')}
                 name="name"
               />
               <ErrorMsg msg={errors?.name?.message as string} />
             </div>
             <div className="dash-input-wrapper mb-30">
-              <label htmlFor="">username</label>
+              <label htmlFor="">username*</label>
               <input
                 type="text"
                 placeholder="username"
                 {...register('username')}
-                defaultValue={mongoUser?.username}
+                defaultValue={parsedMongoUser?.username}
                 name="username"
               />
               <ErrorMsg msg={errors?.username?.message as string} />
@@ -268,7 +279,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="email"
                 placeholder="Your email address"
                 {...register('email', { required: true })}
-                defaultValue={mongoUser?.email}
+                defaultValue={parsedMongoUser?.email}
                 name="email"
               />
               <ErrorMsg msg={errors?.email?.message as string} />
@@ -279,7 +290,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="Designation"
                 {...register('post', { required: true })}
-                defaultValue={mongoUser?.post}
+                defaultValue={parsedMongoUser?.post}
                 name="post"
               />
               <ErrorMsg msg={errors?.post?.message as string} />
@@ -290,7 +301,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="017xxxxxxxxx"
                 {...register('phone')}
-                defaultValue={mongoUser?.phone}
+                defaultValue={parsedMongoUser?.phone}
                 name="phone"
               />
               {errors?.phone && (
@@ -304,7 +315,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="number"
                 placeholder="your age"
                 {...register('age', { valueAsNumber: true })}
-                defaultValue={mongoUser?.age}
+                defaultValue={parsedMongoUser?.age}
                 name="age"
               />
               <ErrorMsg msg={errors?.age?.message as string} />
@@ -366,7 +377,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   <ErrorMsg msg={errors.skills?.message} />
                 </div>
                 <ul className="style-none d-flex flex-wrap align-items-center">
-                  {skillsTag.map((item: any, index) => {
+                  {skillsTag?.map((item: any, index) => {
                     return (
                       <li className="is_tag" key={index}>
                         <button>
@@ -415,7 +426,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   {...register('minSalary', {
                     valueAsNumber: true
                   })}
-                  defaultValue={mongoUser?.minSalary}
+                  defaultValue={parsedMongoUser?.minSalary}
                   name="minSalary"
                 />
                 {errors?.minSalary && (
@@ -427,7 +438,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   {...register('maxSalary', {
                     valueAsNumber: true
                   })}
-                  defaultValue={mongoUser?.maxSalary}
+                  defaultValue={parsedMongoUser?.maxSalary}
                   name="maxSalary"
                 />
                 <NiceSelect
@@ -451,7 +462,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 className="size-lg"
                 placeholder="Write something interesting about you...."
                 {...register('bio')}
-                defaultValue={mongoUser?.bio}
+                defaultValue={parsedMongoUser?.bio}
                 name="bio"
               ></textarea>
               <div className="alert-text">
@@ -470,7 +481,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="Ex. linkedin.com/in/jamesbrower"
                 {...register('mediaLinks.linkedin')}
-                defaultValue={mongoUser?.mediaLinks?.linkedin}
+                defaultValue={parsedMongoUser?.mediaLinks?.linkedin}
               />
               <ErrorMsg msg={errors.mediaLinks?.message as string} />
             </div>
@@ -481,7 +492,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 type="text"
                 placeholder="ex. github.com/jamesbrower"
                 {...register('mediaLinks.github')}
-                defaultValue={mongoUser?.mediaLinks?.github}
+                defaultValue={parsedMongoUser?.mediaLinks?.github}
               />
               <ErrorMsg msg={errors.mediaLinks?.message as string} />
             </div>
@@ -500,7 +511,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     type="text"
                     placeholder="Cowrasta, Chandana, Gazipur Sadar"
                     {...register('address')}
-                    defaultValue={mongoUser?.address}
+                    defaultValue={parsedMongoUser?.address}
                     name="address"
                   />
                   <ErrorMsg msg={errors?.address?.message as string} />
@@ -525,7 +536,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     type="text"
                     {...register('zip')}
                     placeholder="1708"
-                    defaultValue={mongoUser?.zip}
+                    defaultValue={parsedMongoUser?.zip}
                     name="zip"
                   />
                 </div>
@@ -544,7 +555,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                       type="text"
                       placeholder="XC23+6XC, Moiran, N105"
                       {...register('mapLocation')}
-                      defaultValue={mongoUser?.mapLocation}
+                      defaultValue={parsedMongoUser?.mapLocation}
                       name="mapLocation"
                     />
                     <ErrorMsg msg={errors?.mapLocation?.message as string} />
@@ -610,7 +621,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
               type="submit"
               className="dash-btn-two tran3s me-3 px-4"
             >
-              {isSubmitting ? 'Creating...' : 'Create User'}
+              {isSubmitting ? 'Updating...' : 'Update User'}
             </button>
             <button onClick={() => reset()} className="dash-cancel-btn tran3s">
               Cancel

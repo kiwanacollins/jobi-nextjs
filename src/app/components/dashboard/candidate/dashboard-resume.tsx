@@ -22,7 +22,6 @@ interface IProps {
 
 const DashboardResume = ({ mongoUserId, resume }: IProps) => {
   const pathname = usePathname();
-
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   const [skillsTag, setSkillsTag] = useState<string[]>(resume?.skills || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
