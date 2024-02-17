@@ -51,25 +51,25 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const methods = useForm<userSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      name: mongoUser?.name || '',
-      username: mongoUser?.username || '',
-      phone: mongoUser?.phone || '',
-      post: mongoUser?.post || '',
+      name: mongoUser?.name,
+      username: mongoUser?.username,
+      phone: mongoUser?.phone,
+      post: mongoUser?.post,
       skills: skillsTag,
-      salary_duration: mongoUser?.salary_duration || '',
-      qualification: mongoUser?.qualification || '',
-      bio: mongoUser?.bio || '',
+      salary_duration: mongoUser?.salary_duration,
+      qualification: mongoUser?.qualification,
+      bio: mongoUser?.bio,
       mediaLinks: {
-        linkedin: mongoUser?.mediaLinks?.linkedin || '',
-        github: mongoUser?.mediaLinks?.github || ''
+        linkedin: mongoUser?.mediaLinks?.linkedin,
+        github: mongoUser?.mediaLinks?.github
       },
-      address: mongoUser?.address || '',
-      country: mongoUser?.country || '',
-      city: mongoUser?.city || '',
-      zip: mongoUser?.zip || '',
-      state: mongoUser?.state || '',
-      mapLocation: mongoUser?.mapLocation || '',
-      location: mongoUser?.location || ''
+      address: mongoUser?.address,
+      country: mongoUser?.country,
+      city: mongoUser?.city,
+      zip: mongoUser?.zip,
+      state: mongoUser?.state,
+      mapLocation: mongoUser?.mapLocation,
+      location: mongoUser?.location
     }
   });
 
@@ -500,6 +500,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     type="text"
                     placeholder="Cowrasta, Chandana, Gazipur Sadar"
                     {...register('address')}
+                    defaultValue={mongoUser?.address}
                     name="address"
                   />
                   <ErrorMsg msg={errors?.address?.message as string} />
@@ -524,6 +525,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     type="text"
                     {...register('zip')}
                     placeholder="1708"
+                    defaultValue={mongoUser?.zip}
                     name="zip"
                   />
                 </div>
@@ -542,6 +544,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                       type="text"
                       placeholder="XC23+6XC, Moiran, N105"
                       {...register('mapLocation')}
+                      defaultValue={mongoUser?.mapLocation}
                       name="mapLocation"
                     />
                     <ErrorMsg msg={errors?.mapLocation?.message as string} />
