@@ -1,6 +1,6 @@
-import React from "react";
-import Image from "next/image";
-import icon from "@/assets/dashboard/images/icon/icon_22.svg";
+import React from 'react';
+import Image from 'next/image';
+import icon from '@/assets/dashboard/images/icon/icon_22.svg';
 
 const LogoutModal = () => {
   return (

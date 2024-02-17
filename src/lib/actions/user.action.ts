@@ -202,3 +202,26 @@ export async function deleteUser(params: DeleteUserParams) {
     throw error;
   }
 }
+
+interface DeleteUserByIdParams {
+  id: string;
+  path: string;
+}
+
+export async function deleteUserById(params: DeleteUserByIdParams) {
+  try {
+    connectToDatabase();
+    const { id, path } = params;
+    // Find the user with the specified ID
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    revalidatePath(path);
+    return JSON.parse(JSON.stringify(user));
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error; // Rethrow to allow for further handling
+  }
+}

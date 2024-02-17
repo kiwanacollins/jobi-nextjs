@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import view from '@/assets/dashboard/images/icon/icon_18.svg';
@@ -5,12 +6,22 @@ import share from '@/assets/dashboard/images/icon/icon_19.svg';
 import edit from '@/assets/dashboard/images/icon/icon_20.svg';
 import delete_icon from '@/assets/dashboard/images/icon/icon_21.svg';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { deleteUserById } from '@/lib/actions/user.action';
 
 interface IProps {
   id: string;
 }
 
 const ActionDropdown = ({ id }: IProps) => {
+  const pathname = usePathname();
+
+  const handleDeleteUser = async (userId: string) => {
+    await deleteUserById({
+      id: userId,
+      path: pathname
+    });
+  };
   return (
     <ul className="dropdown-menu dropdown-menu-end">
       <li>
@@ -32,9 +43,9 @@ const ActionDropdown = ({ id }: IProps) => {
         </Link>
       </li>
       <li>
-        <a className="dropdown-item" href="#">
+        <button onClick={() => handleDeleteUser(id)} className="dropdown-item">
           <Image src={delete_icon} alt="icon" className="lazy-img" /> Delete
-        </a>
+        </button>
       </li>
     </ul>
   );
