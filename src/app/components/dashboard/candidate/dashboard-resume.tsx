@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 'use client';
 import React, { useState, useEffect } from 'react';
-import video_bg from '@/assets/dashboard/images/video_post.jpg';
+
 import DashboardPortfolio from './dashboard-portfolio';
 import VideoPopup from '../../common/video-popup';
 import * as z from 'zod';
@@ -31,6 +31,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   const [skillsTag, setSkillsTag] = useState<string[]>(resume?.skills || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [videoId, setVideoId] = useState<string>(resume?.videos[0]?.videoId);
+  const [thumbnail, setThumbnail] = useState<string>(
+    resume?.videos[0]?.videoId
+  );
+
+  const videoThumanail = `https://img.youtube.com/vi/${thumbnail}/0.jpg`;
+
   const isResumeExist = !!resume?._id;
   const groupedExperience = resume?.experience?.map((item: IExperience) => {
     return {
@@ -275,6 +282,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     });
   };
 
+  const handleVideoClick = (videoId: string, thumbnail: string) => {
+    setVideoId(videoId);
+    setThumbnail(thumbnail);
+  };
+
   return (
     <>
       <div className="position-relative">
@@ -367,21 +379,41 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
             </div>
 
             <div className="row">
-              <div className="col-sm-6 d-flex">
+              <div className="col-sm-6 d-flex flex-column ">
                 <div
-                  className="intro-video-post position-relative mt-20"
-                  style={{ backgroundImage: `url(${video_bg.src})` }}
+                  className="intro-video-post d-flex align-items-center justify-content-center mt-25 lg-mt-20 mb-50 lg-mb-20"
+                  style={{ backgroundImage: `url(${videoThumanail})` }}
                 >
-                  <a
-                    className="fancybox rounded-circle video-icon tran3s text-center"
+                  <button
                     onClick={() => setIsVideoOpen(true)}
-                    style={{ cursor: 'pointer' }}
+                    className="fancybox rounded-circle video-icon tran3s text-center cursor-pointer"
                   >
                     <i className="bi bi-play"></i>
-                  </a>
-                  <a href="#" className="close">
-                    <i className="bi bi-x"></i>
-                  </a>
+                  </button>
+                </div>
+                <div className="mb-4 p-4">
+                  <h3 className="title">videos </h3>
+                  <div className="d-flex flex-wrap gap-4">
+                    {resume?.videos?.map((video, index) => {
+                      return (
+                        <div
+                          key={video.title + index}
+                          className="bg-primary  p-3   text-white rounded-3 cursor-pointer"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleVideoClick(video?.videoId, video?.videoId);
+                          }}
+                        >
+                          <div className="card-body ">
+                            <h5 className="card-title fw-bold ">
+                              {video?.title}{' '}
+                            </h5>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
               <div className="col-sm-6 d-flex">
@@ -815,7 +847,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       <VideoPopup
         isVideoOpen={isVideoOpen}
         setIsVideoOpen={setIsVideoOpen}
-        videoId={'lr87yrvK86w'}
+        videoId={videoId as string}
       />
       {/* video modal end */}
     </>
