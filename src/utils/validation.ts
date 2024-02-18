@@ -18,14 +18,15 @@ const experienceSchema = z.object({
   description: z.string()
 });
 
-// const pdfSchema = z.object({
-//   file: z.string()
-// });
+const videoSchema = z.object({
+  title: z.string().min(1).max(100),
+  videoId: z.string().min(1).max(100)
+});
 
 export const resumeSchema = z.object({
   // pdf: pdfSchema,
   overview: z.string(),
-  // videos: z.string().array(),
+  videos: z.array(videoSchema),
   minSalary: z.number(),
   maxSalary: z.number(),
   education: z.array(educationSchema),

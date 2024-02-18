@@ -18,12 +18,17 @@ export interface IExperience {
   description: string;
 }
 
+export interface IVideos {
+  title: string;
+  videoId: string;
+}
+
 export interface IResumeType extends Document {
   user: Schema.Types.ObjectId | string;
   overview: string;
   minSalary: number;
   maxSalary: number;
-  // videos: string[];
+  videos: IVideos[];
   education: IEducation[];
   skills: string[];
   experience: IExperience[];
@@ -51,7 +56,7 @@ const experienceSchema = new Schema({
 const resumeSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
   overview: String,
-  // videos: [String],
+  videos: [{ title: String, videoId: String }],
   education: [educationSchema],
   skills: [String],
   minSalary: { type: Number, reuired: true },

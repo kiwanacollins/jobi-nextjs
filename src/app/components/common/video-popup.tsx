@@ -1,5 +1,5 @@
-import React from "react";
-import ModalVideo from "react-modal-video";
+import React from 'react';
+import ModalVideo from 'react-modal-video';
 
 // prop type
 type IPropType = {
@@ -11,7 +11,7 @@ type IPropType = {
 const VideoPopup = ({
   isVideoOpen,
   setIsVideoOpen,
-  videoId = "-6ZbrfSRWKc",
+  videoId = '-6ZbrfSRWKc'
 }: IPropType) => {
   return (
     <ModalVideo

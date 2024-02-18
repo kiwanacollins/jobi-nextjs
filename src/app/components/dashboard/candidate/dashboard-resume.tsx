@@ -12,7 +12,12 @@ import ErrorMsg from '../../common/error-msg';
 import { createResume, updateResume } from '@/lib/actions/candidate.action';
 
 import { notifyError, notifySuccess } from '@/utils/toast';
-import { IEducation, IExperience, IResumeType } from '@/database/resume.model';
+import {
+  IEducation,
+  IExperience,
+  IResumeType,
+  IVideos
+} from '@/database/resume.model';
 import { usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
 
@@ -48,6 +53,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     };
   });
 
+  const groupedVideos = resume?.videos?.map((item: IVideos) => {
+    return {
+      title: item.title,
+      videoId: item.videoId
+    };
+  });
+
   type resumeSchemaType = z.infer<typeof resumeSchema>;
 
   // 1. Define your form.
@@ -77,6 +89,12 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
           yearStart: 2020,
           yearEnd: 2023
         }
+      ],
+      videos: groupedVideos || [
+        {
+          title: '',
+          videoId: ''
+        }
       ]
     }
   });
@@ -90,11 +108,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     setError,
     trigger,
     handleSubmit,
-
+    // watch,
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
+
+  // console.log(watch('videos'));
 
   const { fields: educationArrayFields, append: educationAppend } =
     useFieldArray({
@@ -107,6 +127,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       control,
       name: 'experience'
     });
+  const { fields: videosArrayFields, append: videoAppend } = useFieldArray({
+    control,
+    name: 'videos'
+  });
 
   // 2. Handle your form submission.
   const onSubmit = async (data: resumeSchemaType) => {
@@ -137,6 +161,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       };
     });
 
+    const videos = data?.videos?.map((item: IVideos) => {
+      return {
+        title: item.title,
+        videoId: item.videoId
+      };
+    });
+
     try {
       const resumeData: any = {
         user: mongoUser._id,
@@ -145,7 +176,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
         experience,
         minSalary: data.minSalary as number,
         maxSalary: data.maxSalary as number,
-        education
+        education,
+        videos
       };
       if (isResumeExist) {
         // update resume
@@ -221,6 +253,14 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       description: '',
       yearStart: 2020,
       yearEnd: 2023
+    });
+  };
+
+  const handleAddVideos = (e: any) => {
+    e.preventDefault(); // Prevent form submission
+    videoAppend({
+      title: '',
+      videoId: ''
     });
   };
 
@@ -346,9 +386,51 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                 </div>
               </div>
               <div className="col-sm-6 d-flex">
-                <div className="intro-video-post position-relative empty mt-20">
-                  <span>+ Add Intro Video</span>
-                  <input type="file" id="uploadVdo" placeholder="" />
+                <div className="bg-white card-box border-20">
+                  <h4 className="dash-title-three">Add Video</h4>
+                  {/* Video add Start */}
+                  {videosArrayFields.map((item, index) => {
+                    return (
+                      <div key={item.id}>
+                        <div className="d-flex justify-content-center align-items-center gap-4">
+                          <div className="dash-input-wrapper mb-30 md-mb-10">
+                            <label htmlFor="">Title*</label>
+                          </div>
+                          <div className="dash-input-wrapper mb-30">
+                            <input
+                              type="text"
+                              placeholder="Your Video Title"
+                              {...register(`videos.${index}.title`)}
+                              name={`videos.${index}.title`}
+                            />
+                            <ErrorMsg msg={errors?.videos?.message} />
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center align-items-center gap-4">
+                          <div className="dash-input-wrapper mb-30 md-mb-10">
+                            <label htmlFor="">Video id*</label>
+                          </div>
+                          <div className="dash-input-wrapper mb-30">
+                            <input
+                              type="text"
+                              placeholder="Enter Video ID"
+                              {...register(`videos.${index}.videoId`)}
+                              name={`videos.${index}.videoId`}
+                            />
+                            <ErrorMsg msg={errors?.videos?.message} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Video add end */}
+                  <button
+                    onClick={(e) => handleAddVideos(e)}
+                    className="dash-btn-one"
+                  >
+                    <i className="bi bi-plus"></i> Add more
+                  </button>
                 </div>
               </div>
             </div>
@@ -734,7 +816,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       <VideoPopup
         isVideoOpen={isVideoOpen}
         setIsVideoOpen={setIsVideoOpen}
-        videoId={'-6ZbrfSRWKc'}
+        videoId={'lr87yrvK86w'}
       />
       {/* video modal end */}
     </>

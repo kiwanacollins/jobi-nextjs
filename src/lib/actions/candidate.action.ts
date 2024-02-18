@@ -1,5 +1,9 @@
 'use server';
-import Resume, { IEducation, IExperience } from '@/database/resume.model';
+import Resume, {
+  IEducation,
+  IExperience,
+  IVideos
+} from '@/database/resume.model';
 import { connectToDatabase } from '../mongoose';
 import User from '@/database/user.model';
 import { getCandidatesParams } from './shared.types';
@@ -21,6 +25,7 @@ interface resumeDataParams {
   maxSalary: number;
   skills: string[];
   experience: IExperience[];
+  videos: IVideos[];
 }
 
 export async function getResumeById(resumeId: string) {
@@ -50,13 +55,15 @@ export async function createResume(resumeData: resumeDataParams) {
       overview,
       user,
       maxSalary,
-      minSalary
+      minSalary,
+      videos
     } = resumeData;
 
     const newResume = await Resume.create({
       user,
       education,
       experience,
+      videos,
       skills,
       minSalary,
       maxSalary,
