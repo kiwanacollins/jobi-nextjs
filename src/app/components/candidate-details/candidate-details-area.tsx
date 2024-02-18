@@ -112,7 +112,6 @@ const CandidateDetailsArea = ({
                       />
                     </div>
                   </div>
-
                   <h3 className="cadidate-name text-center">
                     {typeof candidateDetials?.user === 'object'
                       ? //@ts-ignore
@@ -125,7 +124,11 @@ const CandidateDetailsArea = ({
                     </a>
                   </div>
                   {/* CandidateBio */}
-                  <CandidateBio />
+
+                  <CandidateBio
+                    //@ts-ignore
+                    user={user}
+                  />
                   {/* CandidateBio */}
                   <button
                     type="button"

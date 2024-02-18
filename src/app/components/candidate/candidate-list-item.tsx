@@ -23,7 +23,7 @@ const CandidateListItem = ({
             className="rounded-circle"
           >
             <Image
-              src={item.user?.picture}
+              src={item?.picture}
               width={style_2 ? 120 : 80}
               height={style_2 ? 120 : 80}
               alt="image"
@@ -40,15 +40,15 @@ const CandidateListItem = ({
                     href={`/candidate-profile/${item._id}`}
                     className="tran3s"
                   >
-                    {item.user?.name}
+                    {item?.name}
                   </Link>
                 </h4>
                 <div className="candidate-post">{item.post}</div>
                 <ul className="cadidate-skills style-none d-flex align-items-center">
-                  {item.skills.slice(0, 3).map((s: any, i: any) => (
-                    <li key={i}>{s}</li>
-                  ))}
-                  {item.skills.length > 3 && (
+                  {item?.skills
+                    ?.slice(0, 3)
+                    .map((s: any, i: any) => <li key={i}>{s}</li>)}
+                  {item?.skills?.length > 3 && (
                     <li className="more">
                       {item.skills.length - item.skills.slice(0, 3).length}+
                     </li>
@@ -60,7 +60,7 @@ const CandidateListItem = ({
               <div className="candidate-info">
                 <span>Salary</span>
                 <div>
-                  {`$${item.minSalary}-${item.maxSalary} `}/
+                  {`$${item?.minSalary}-${item?.maxSalary} `}/
                   {item?.salary_duration ?? 'month'}
                 </div>
               </div>
@@ -68,7 +68,7 @@ const CandidateListItem = ({
             <div className="col-xl-3 col-md-4 col-sm-6">
               <div className="candidate-info">
                 <span>Location</span>
-                <div>{item.user.address}</div>
+                <div>{item?.address}</div>
               </div>
             </div>
             <div className="col-xl-3 col-md-4">
@@ -80,7 +80,7 @@ const CandidateListItem = ({
                   <i className="bi bi-heart"></i>
                 </Link>
                 <Link
-                  href={`/candidate-profile/${item._id}`}
+                  href={`/candidate-profile/${item.resumeId}`}
                   className="profile-btn tran3s ms-md-2 mt-10 sm-mt-20"
                 >
                   View Profile

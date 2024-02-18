@@ -3,8 +3,8 @@ import { Metadata } from 'next';
 import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import CandidateV1Area from '../../components/candidate/candidate-v1-area';
-import { getCandidateResumes } from '@/lib/actions/candidate.action';
-import { SearchParamsProps } from '@/types';
+
+import { getAllCandidates } from '@/lib/actions/candidate.action';
 
 export const metadata: Metadata = {
   title: 'Candidates',
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
     'Connect with skilled professionals and discover the perfect candidates for your team. HireSkills is your go-to platform for finding exceptional talent in various industries.'
 };
 
-const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
-  const { candidates } = await getCandidateResumes({
-    keyword: searchParams.keyword
-  });
+// { searchParams }: SearchParamsProps
+
+const CandidateV2Page = async () => {
+  const candidates = await getAllCandidates();
 
   return (
     <div>

@@ -1,33 +1,34 @@
-import React from "react";
+import { IUser } from '@/database/user.model';
+import React from 'react';
 
-const CandidateBio = () => {
+const CandidateBio = ({ user }: { user: IUser }) => {
   return (
     <ul className="style-none">
       <li>
         <span>Location: </span>
-        <div>Spain, Barcelona </div>
+        <div>{user?.address}</div>
       </li>
       <li>
         <span>Age: </span>
-        <div>28</div>
+        <div>{user?.age}</div>
       </li>
       <li>
         <span>Email: </span>
         <div>
-          <a href="mailto:me@support.com">me@support.com</a>
+          <a href="mailto:me@support.com">{user?.email}</a>
         </div>
       </li>
       <li>
         <span>Qualification: </span>
-        <div>Master Degree</div>
+        <div>{user?.qualification}</div>
       </li>
       <li>
         <span>Gender: </span>
-        <div>Male</div>
+        <div>{user?.gender}</div>
       </li>
       <li>
         <span>Expected Salary: </span>
-        <div>$3k-$4k/month</div>
+        <div>{`$${user.minSalary}k-${user.maxSalary}k/${user.salary_duration}`}</div>
       </li>
       <li>
         <span>Social:</span>

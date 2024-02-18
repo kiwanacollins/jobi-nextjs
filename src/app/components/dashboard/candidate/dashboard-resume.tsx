@@ -24,7 +24,7 @@ interface IProps {
 const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const pathname = usePathname();
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const [skillsTag, setSkillsTag] = useState<string[]>(mongoUser?.skills || []);
+  const [skillsTag, setSkillsTag] = useState<string[]>(resume?.skills || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isResumeExist = !!resume?._id;
   const groupedExperience = resume?.experience?.map((item: IExperience) => {

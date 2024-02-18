@@ -50,7 +50,6 @@ const experienceSchema = new Schema({
 
 const resumeSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
-
   overview: String,
   // videos: [String],
   education: [educationSchema],
