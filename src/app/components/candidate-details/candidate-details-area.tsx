@@ -8,7 +8,6 @@ import WorkExperience from './work-experience';
 import CandidateBio from './bio';
 import EmailSendForm from '../forms/email-send-form';
 import { IResumeType } from '@/database/resume.model';
-import Link from 'next/link';
 import Resume from '@/app/components/resume/Resume';
 import ResumeModal from '../resume/ResumeModal';
 import dynamic from 'next/dynamic';
@@ -137,14 +136,11 @@ const CandidateDetailsArea = ({
                   >
                     View Resume
                   </button>
-                  <Link
-                    href={`${candidateDetials?.pdf?.url}` as string}
-                    download={candidateDetials?.pdf?.filename as string}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn-ten fw-500 text-white w-100 text-center tran3s mt-15"
-                  >
+                  <div>
                     <PDFDownloadLink
+                      className="btn-ten fw-500 text-white w-100 text-center tran3s mt-15"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       document={
                         <Resume
                           overview={overview}
@@ -161,7 +157,7 @@ const CandidateDetailsArea = ({
                         loading ? 'Loading...' : 'Download Resume'
                       }
                     </PDFDownloadLink>
-                  </Link>
+                  </div>
                 </div>
                 <h4 className="sidebar-title">Location</h4>
                 <div className="map-area mb-60 md-mb-40">
