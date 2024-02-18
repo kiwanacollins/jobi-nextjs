@@ -55,10 +55,13 @@ const NewUser = () => {
     reset,
     setValue,
     setError,
+    watch,
     clearErrors,
     handleSubmit,
     formState: { errors }
   } = methods;
+
+  console.log('createUser', watch());
 
   // handle file pdf upload
   const handleFileChange = async (
@@ -142,6 +145,7 @@ const NewUser = () => {
     setIsSubmitting(true);
     console.log(value);
     try {
+      console.count('submit');
       await createUserByAdmin({
         name: value?.name,
         email: value.email,
@@ -173,12 +177,14 @@ const NewUser = () => {
       });
       notifySuccess('User Created Successfully');
     } catch (error: any) {
+      console.log('error', error);
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
       reset();
       setSkillsTag([]);
       setImagePreview(undefined);
+      setFilename('');
     }
   };
 
@@ -269,7 +275,7 @@ const NewUser = () => {
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">age</label>
               <input
-                type="number"
+                type="text"
                 placeholder="your age"
                 {...register('age', { valueAsNumber: true })}
                 name="age"
@@ -377,7 +383,7 @@ const NewUser = () => {
               </label>
               <div className="d-flex dash-input-wrapper gap-3">
                 <input
-                  type="number"
+                  type="text"
                   placeholder="min salary"
                   {...register('minSalary', {
                     valueAsNumber: true
@@ -388,7 +394,7 @@ const NewUser = () => {
                   <ErrorMsg msg={errors?.minSalary?.message as string} />
                 )}
                 <input
-                  type="number"
+                  type="text"
                   placeholder="max salary"
                   {...register('maxSalary', {
                     valueAsNumber: true
