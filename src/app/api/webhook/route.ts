@@ -89,7 +89,7 @@ export async function POST(req: Request) {
     // Todo: update the user in your database
     const { id, username, first_name, last_name, email_addresses, image_url } =
       evt.data;
-    console.log('user.updated', evt.data);
+    
     try {
       // Create a new user in your database
       const mongoUser = await clekUserUpdate({

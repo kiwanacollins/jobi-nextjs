@@ -115,13 +115,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     setError,
     trigger,
     handleSubmit,
-    watch,
+   
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
 
-  console.log(watch('videos'));
+  
 
   const { fields: educationArrayFields, append: educationAppend } =
     useFieldArray({
