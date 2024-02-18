@@ -15,6 +15,7 @@ import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
 import { userSchema } from '@/utils/validation';
 import * as z from 'zod';
+import { clerkClient } from '@clerk/nextjs';
 
 export async function getUserById(params: any) {
   try {
@@ -218,6 +219,11 @@ export async function deleteUserById(params: DeleteUserByIdParams) {
     if (!user) {
       throw new Error('User not found');
     }
+
+    if (user.clerkId) {
+      await clerkClient.users.deleteUser(user.clerkId);
+    }
+
     revalidatePath(path);
     return JSON.parse(JSON.stringify(user));
   } catch (error) {
