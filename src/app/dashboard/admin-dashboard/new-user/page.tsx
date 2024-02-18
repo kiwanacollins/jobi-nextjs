@@ -26,28 +26,28 @@ const NewUser = () => {
   type userSchemaType = z.infer<typeof userSchema>;
 
   const methods = useForm<userSchemaType>({
-    resolver: zodResolver(userSchema),
-    defaultValues: {
-      name: '',
-      username: '',
-      phone: '',
-      post: '',
-      skills: [],
-      salary_duration: '',
-      qualification: '',
-      bio: '',
-      mediaLinks: {
-        linkedin: '',
-        github: ''
-      },
-      address: '',
-      country: '',
-      city: '',
-      zip: '',
-      state: '',
-      mapLocation: '',
-      location: ''
-    }
+    resolver: zodResolver(userSchema)
+    // defaultValues: {
+    //   name: '',
+    //   username: '',
+    //   phone: '',
+    //   post: '',
+    //   skills: [],
+    //   salary_duration: '',
+    //   qualification: '',
+    //   bio: '',
+    //   mediaLinks: {
+    //     linkedin: '',
+    //     github: ''
+    //   },
+    //   address: '',
+    //   country: '',
+    //   city: '',
+    //   zip: '',
+    //   state: '',
+    //   mapLocation: '',
+    //   location: ''
+    // }
   });
 
   const {
@@ -177,6 +177,8 @@ const NewUser = () => {
     } finally {
       setIsSubmitting(false);
       reset();
+      setSkillsTag([]);
+      setImagePreview(undefined);
     }
   };
 
