@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+
 import Image from 'next/image';
 import CandidateProfileSlider from './candidate-profile-slider';
 import VideoPopup from '../common/video-popup';
@@ -28,7 +29,18 @@ const CandidateDetailsArea = ({
   candidateDetials
 }: ICandidateDetailsAreaProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const { overview, user, education, experience, skills } = candidateDetials;
+  const { overview, user, education, experience, skills, videos } =
+    candidateDetials;
+  const [videoId, setVideoId] = useState<string>(videos[0]?.videoId);
+  const [thumbnail, setThumbnail] = useState<string>(videos[0]?.videoId);
+
+  const videoThumanail = `https://img.youtube.com/vi/${thumbnail}/0.jpg`;
+
+  const handleVideoClick = (videoId: string, thumbnail: string) => {
+    setVideoId(videoId);
+    setThumbnail(thumbnail);
+  };
+
   return (
     <>
       <section className="candidates-profile pt-100 lg-pt-70 pb-150 lg-pb-80">
@@ -40,15 +52,42 @@ const CandidateDetailsArea = ({
                   <h3 className="title">Overview</h3>
                   <p>{candidateDetials?.overview}</p>
                 </div>
+                {/* Video thumbnail start */}
                 <h3 className="title">Intro</h3>
-                <div className="video-post d-flex align-items-center justify-content-center mt-25 lg-mt-20 mb-75 lg-mb-50">
-                  <a
+                <div
+                  className="video-post d-flex align-items-center justify-content-center mt-25 lg-mt-20 mb-50 lg-mb-20"
+                  style={{ backgroundImage: `url(${videoThumanail})` }}
+                >
+                  <button
                     onClick={() => setIsVideoOpen(true)}
                     className="fancybox rounded-circle video-icon tran3s text-center cursor-pointer"
                   >
                     <i className="bi bi-play"></i>
-                  </a>
+                  </button>
                 </div>
+                <div className="mb-4 p-4">
+                  <h3 className="title">videos </h3>
+                  <div className="d-flex flex-wrap gap-4">
+                    {candidateDetials?.videos?.map((video, index) => {
+                      return (
+                        <div
+                          key={video.title + index}
+                          className="bg-primary  p-3   text-white rounded-3 cursor-pointer"
+                          onClick={() =>
+                            handleVideoClick(video?.videoId, video?.videoId)
+                          }
+                        >
+                          <div className="card-body ">
+                            <h5 className="card-title fw-bold ">
+                              {video?.title}{' '}
+                            </h5>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {/* Video thumbnail end */}
                 <div className="inner-card border-style mb-75 lg-mb-50">
                   <h3 className="title">Education</h3>
                   {candidateDetials?.education?.length > 0 &&
@@ -187,7 +226,7 @@ const CandidateDetailsArea = ({
       <VideoPopup
         isVideoOpen={isVideoOpen}
         setIsVideoOpen={setIsVideoOpen}
-        videoId={'-6ZbrfSRWKc'}
+        videoId={videoId as string}
       />
       {/* video modal end */}
       {/* Resume Modal start */}

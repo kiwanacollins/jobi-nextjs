@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from "next/image";
-import Link from "next/link";
 import candidate_img from '@/assets/images/candidates/img_01.jpg';
 import shape_1 from '@/assets/images/shape/shape_02.svg';
 import shape_2 from '@/assets/images/shape/shape_03.svg';

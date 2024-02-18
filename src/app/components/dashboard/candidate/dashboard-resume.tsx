@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import video_bg from '@/assets/dashboard/images/video_post.jpg';
 import DashboardPortfolio from './dashboard-portfolio';
 import VideoPopup from '../../common/video-popup';
@@ -66,10 +66,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const methods = useForm<resumeSchemaType>({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
-      skills: mongoUser?.skills || [],
-      overview: mongoUser?.bio || '',
-      minSalary: mongoUser?.minSalary || 0,
-      maxSalary: mongoUser?.maxSalary || 0,
+      skills: resume?.skills || mongoUser.bio || [],
+      overview: resume?.overview || mongoUser.bio || '',
+      minSalary: resume?.minSalary || mongoUser?.minSalary || 0,
+      maxSalary: resume?.maxSalary || mongoUser?.maxSalary || 0,
       experience: groupedExperience || [
         {
           title: '',
@@ -108,13 +108,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     setError,
     trigger,
     handleSubmit,
-    // watch,
+    watch,
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
 
-  // console.log(watch('videos'));
+  console.log(watch('videos'));
 
   const { fields: educationArrayFields, append: educationAppend } =
     useFieldArray({
@@ -196,13 +196,12 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
-      reset();
     }
   };
 
-  // useEffect(() => {
-  //   reset();
-  // }, [reset]);
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   // add skills
   const handleInputKeyDown = (
