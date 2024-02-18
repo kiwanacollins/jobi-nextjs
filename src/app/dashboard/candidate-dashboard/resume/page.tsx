@@ -9,15 +9,12 @@ const CandidateDashboardResumePage = async () => {
   const { userId } = auth();
   if (!userId) redirect('/sign-in');
   const mongoUser = await getUserById({ userId });
-  const currentResume = await getResumeById(mongoUser.resumeId);
+  const currentResume = await getResumeById(mongoUser?.resumeId || '');
 
   return (
     <>
       {/* Resume area start */}
-      <DashboardResume
-        resume={currentResume}
-        mongoUserId={mongoUser?._id.toString()}
-      />
+      <DashboardResume resume={currentResume} mongoUser={mongoUser} />
       {/* Resume area end */}
     </>
   );

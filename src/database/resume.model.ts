@@ -18,17 +18,8 @@ export interface IExperience {
   description: string;
 }
 
-interface IPdf {
-  filename: string | null;
-  file: string | null;
-  url: string | null;
-  publicId: string | null;
-}
-
 export interface IResumeType extends Document {
-  clerkId: string;
   user: Schema.Types.ObjectId | string;
-  pdf?: IPdf;
   overview: string;
   minSalary: number;
   maxSalary: number;
@@ -58,17 +49,8 @@ const experienceSchema = new Schema({
 });
 
 const resumeSchema = new Schema({
-  clerkId: {
-    type: String,
-    required: true
-  },
   user: { type: Schema.Types.ObjectId, ref: 'User' },
-  pdf: {
-    filename: { type: String },
-    file: { type: String },
-    url: { type: String },
-    publicId: { type: String }
-  },
+
   overview: String,
   // videos: [String],
   education: [educationSchema],

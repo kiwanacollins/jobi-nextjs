@@ -10,28 +10,24 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { resumeSchema } from '@/utils/validation';
 import ErrorMsg from '../../common/error-msg';
 import { createResume, updateResume } from '@/lib/actions/candidate.action';
-import { useAuth } from '@clerk/nextjs';
+
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { IEducation, IExperience, IResumeType } from '@/database/resume.model';
 import { usePathname } from 'next/navigation';
+import { IUser } from '@/database/user.model';
 
 interface IProps {
-  mongoUserId: string | undefined;
+  mongoUser: IUser;
   resume: IResumeType;
 }
 
-const DashboardResume = ({ mongoUserId, resume }: IProps) => {
+const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const pathname = usePathname();
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const [skillsTag, setSkillsTag] = useState<string[]>(resume?.skills || []);
+  const [skillsTag, setSkillsTag] = useState<string[]>(mongoUser?.skills || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [filename, setFilename] = useState(resume.pdf?.filename || '');
-  const [file, setFile] = useState(resume?.pdf?.file || '');
   const isResumeExist = !!resume?._id;
-  const { userId } = useAuth();
-  const parsedMongoUserId = mongoUserId;
-
-  const groupedExperience = resume?.experience.map((item: IExperience) => {
+  const groupedExperience = resume?.experience?.map((item: IExperience) => {
     return {
       title: item.title,
       company: item.company,
@@ -41,7 +37,7 @@ const DashboardResume = ({ mongoUserId, resume }: IProps) => {
       yearEnd: item.yearEnd
     };
   });
-  const groupedEducation = resume?.education.map((item: IEducation) => {
+  const groupedEducation = resume?.education?.map((item: IEducation) => {
     return {
       title: item.title,
       academy: item.academy,
@@ -58,10 +54,10 @@ const DashboardResume = ({ mongoUserId, resume }: IProps) => {
   const methods = useForm<resumeSchemaType>({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
-      skills: resume?.skills || [],
-      overview: resume?.overview || '',
-      minSalary: resume?.minSalary || 0,
-      maxSalary: resume?.maxSalary || 0,
+      skills: mongoUser?.skills || [],
+      overview: mongoUser?.bio || '',
+      minSalary: mongoUser?.minSalary || 0,
+      maxSalary: mongoUser?.maxSalary || 0,
       experience: groupedExperience || [
         {
           title: '',
@@ -112,25 +108,6 @@ const DashboardResume = ({ mongoUserId, resume }: IProps) => {
       name: 'experience'
     });
 
-  // handle file pdf upload
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    event.preventDefault();
-    const pdfFile = new FileReader();
-    const selectedFile = event.target.files?.[0] || null;
-    const fileName = selectedFile?.name || '';
-    setFilename(fileName);
-    if (event.target.name === 'file') {
-      pdfFile.onload = () => {
-        if (pdfFile.readyState === 2) {
-          setFile(pdfFile.result as string);
-        }
-      };
-    }
-    pdfFile.readAsDataURL(event.target.files?.[0] as File);
-  };
-
   // 2. Handle your form submission.
   const onSubmit = async (data: resumeSchemaType) => {
     setIsSubmitting(true);
@@ -162,18 +139,13 @@ const DashboardResume = ({ mongoUserId, resume }: IProps) => {
 
     try {
       const resumeData: any = {
-        clerkId: userId || null,
-        user: parsedMongoUserId,
+        user: mongoUser._id,
         skills: data.skills,
         overview: data.overview,
         experience,
         minSalary: data.minSalary as number,
         maxSalary: data.maxSalary as number,
-        education,
-        pdf: {
-          filename,
-          file
-        }
+        education
       };
       if (isResumeExist) {
         // update resume
@@ -296,10 +268,9 @@ const DashboardResume = ({ mongoUserId, resume }: IProps) => {
                 accept="application/pdf"
                 placeholder="Up load resume"
                 name="file"
-                onChange={(e) => handleFileChange(e)}
               />
             </div>
-            <small>{filename || 'Upload file .pdf'}</small>
+            <small>{'Upload file .pdf'}</small>
           </div>
 
           <div className="bg-white card-box border-20 mt-40">

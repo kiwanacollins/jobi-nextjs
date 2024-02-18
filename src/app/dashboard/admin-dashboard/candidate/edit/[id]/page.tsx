@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import NiceSelect from '@/ui/nice-select';
 import { IUser } from '@/database/user.model';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 interface ParamsProps {
   params: {
@@ -244,6 +245,18 @@ const UpdateUser = ({ params }: ParamsProps) => {
               </div>
               <button className="delete-btn tran3s">Delete</button>
             </div>
+
+            <div>
+              {mongoUser?._id && (
+                <Link
+                  href={`/dashboard/admin-dashboard/candidate/addresume/${mongoUser._id}`}
+                  className="btn btn-primary mb-3"
+                >
+                  Add resume
+                </Link>
+              )}
+            </div>
+
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Full Name*</label>
               <input
