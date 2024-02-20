@@ -15,7 +15,8 @@ import {
   IEducation,
   IExperience,
   IResumeType,
-  IVideos
+  IVideos,
+  Iportfolio
 } from '@/database/resume.model';
 import { usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
@@ -66,6 +67,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     };
   });
 
+  const groupedPortfolio = resume?.portfolio?.map((item: Iportfolio) => {
+    return {
+      imageUrl: item.imageUrl,
+      public_id: item.public_id
+    };
+  });
+
   type resumeSchemaType = z.infer<typeof resumeSchema>;
 
   // 1. Define your form.
@@ -76,7 +84,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       overview: resume?.overview || mongoUser.bio || '',
       minSalary: resume?.minSalary || mongoUser?.minSalary || 0,
       maxSalary: resume?.maxSalary || mongoUser?.maxSalary || 0,
-      portfolio: [
+      portfolio: groupedPortfolio || [
         {
           imageUrl: ''
         }
@@ -119,13 +127,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     setError,
     trigger,
     handleSubmit,
-    watch,
+
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
-  console.log('watching portfolio', watch('portfolio'));
-  console.log('errros:', errors?.portfolio);
 
   const { fields: educationArrayFields, append: educationAppend } =
     useFieldArray({
@@ -180,7 +186,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     });
 
     const portfolio = data?.portfolio?.map((item: any) => {
-      console.log('image file item', item);
       return item;
     });
 
@@ -828,6 +833,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
 
           <DashboardPortfolio
             setValue={setValue}
+            portfolios={resume?.portfolio}
             className="mb-4 pt-6 px-6 border"
           />
 

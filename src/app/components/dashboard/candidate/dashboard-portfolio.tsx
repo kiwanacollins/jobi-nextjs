@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import Image, { StaticImageData } from 'next/image';
 import { ArrowUp } from 'lucide-react';
 import { UseFormSetValue } from 'react-hook-form';
+import { Iportfolio } from '@/database/resume.model';
 
 // portfolio item
 export function PortfolioItem({
@@ -49,10 +50,15 @@ export function PortfolioItem({
 interface IDashboardPortfolio {
   className: string;
   setValue: UseFormSetValue<any>;
+  portfolios: Iportfolio[];
 }
 
-const DashboardPortfolio = ({ className, setValue }: IDashboardPortfolio) => {
-  const [files, setFiles] = useState([]);
+const DashboardPortfolio = ({
+  className,
+  setValue,
+  portfolios
+}: IDashboardPortfolio) => {
+  const [files, setFiles] = useState(portfolios || []);
   const [rejected, setRejected] = useState([]);
   const onDrop = useCallback(
     (acceptedFiles: any, rejectedFiles: any) => {
@@ -73,18 +79,16 @@ const DashboardPortfolio = ({ className, setValue }: IDashboardPortfolio) => {
             portfolioFiles.push({
               imageUrl: base64
             });
-            setValue('portfolio', [...portfolioFiles]);
-            console.log('return  base64:', base64);
+            setValue('portfolio', [...portfolioFiles, ...files]);
           });
         });
-        console.log('portfolioFiles:', portfolioFiles);
       }
 
       if (rejectedFiles?.length) {
         setRejected((previousFiles) => [...previousFiles, ...rejectedFiles]);
       }
     },
-    [setValue]
+    [setValue, files]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -101,10 +105,19 @@ const DashboardPortfolio = ({ className, setValue }: IDashboardPortfolio) => {
     return () => files?.forEach((file) => URL.revokeObjectURL(file?.preview));
   }, [files]);
 
-  const removeFile = (name: string) => {
-    const newFiles = files.filter((file) => file.name !== name);
-    setFiles(newFiles);
-    setValue('portfolio', [...newFiles]);
+  const removeFile = (name: string, publicId: string) => {
+    const hasNameProperty = files.some((file) => file.name !== undefined);
+
+    if (hasNameProperty) {
+      const newFiles = files.filter((file) => file.name !== name);
+      setFiles(newFiles);
+
+      setValue('portfolio', [...newFiles]);
+    } else {
+      const newFiles = files.filter((file) => file.public_id !== publicId);
+      setFiles(newFiles);
+      setValue('portfolio', [...newFiles]);
+    }
   };
 
   const removeAll = () => {
@@ -116,8 +129,6 @@ const DashboardPortfolio = ({ className, setValue }: IDashboardPortfolio) => {
   const removeRejected = (name: string) => {
     setRejected((files) => files.filter(({ file }) => file.name !== name));
   };
-
-  console.log('files', files);
 
   return (
     <div className="bg-white card-box border-20 mt-40">
@@ -144,12 +155,15 @@ const DashboardPortfolio = ({ className, setValue }: IDashboardPortfolio) => {
       </h3>
       <div className="row">
         {files?.map((file, index) => (
-          <div key={file.name} className="col-lg-3 col-6">
+          <div
+            key={file.name + index + file.public_id}
+            className="col-lg-3 col-6"
+          >
             <div className="candidate-portfolio-block position-relative mb-25">
               <a href="#" className="d-block">
                 <Image
-                  src={file.preview}
-                  alt={file.name}
+                  src={file.imageUrl || file.preview}
+                  alt={file?.name}
                   className="lazy-img w-100"
                   onLoad={() => {
                     URL.revokeObjectURL(file.preview);
@@ -160,7 +174,10 @@ const DashboardPortfolio = ({ className, setValue }: IDashboardPortfolio) => {
                 />
               </a>
               <button
-                onClick={() => removeFile(file.name)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  removeFile(file?.name, file?.public_id);
+                }}
                 className="remove-portfolio-item rounded-circle d-flex align-items-center justify-content-center tran3s"
               >
                 <i className="bi bi-x"></i>

@@ -37,7 +37,7 @@ export interface IResumeType extends Document {
   education: IEducation[];
   skills: string[];
   experience: IExperience[];
-  porftolio: Iportfolio[];
+  portfolio: Iportfolio[];
 }
 
 const educationSchema = new Schema({

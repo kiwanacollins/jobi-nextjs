@@ -106,22 +106,22 @@ export async function updateResume(params: updateResumeParams) {
     await connectToCloudinary();
     const { resumeId, resumeData, path } = params;
     const { portfolio } = resumeData;
-    console.log('updateResume server portfolio:', portfolio);
+
     for (const image of portfolio) {
       try {
-        const result = await cloudinary.v2.uploader.upload(image.imageUrl, {
+        const result = await cloudinary.v2.uploader.upload(image?.imageUrl, {
           folder: 'portfolios',
           unique_filename: false,
           use_filename: true
         });
+
         image.imageUrl = result.secure_url;
         image.public_id = result.public_id;
       } catch (error: any) {
-        console.log(error.message);
+        console.log('error ', error);
         return;
       }
     }
-    console.log('resumeData server', resumeData);
 
     const updatedResume = await Resume.findByIdAndUpdate(
       { _id: resumeId },
