@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 'use client';
 import React, { useState, useEffect } from 'react';
-
 import DashboardPortfolio from './dashboard-portfolio';
 import VideoPopup from '../../common/video-popup';
 import * as z from 'zod';
@@ -77,6 +76,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       overview: resume?.overview || mongoUser.bio || '',
       minSalary: resume?.minSalary || mongoUser?.minSalary || 0,
       maxSalary: resume?.maxSalary || mongoUser?.maxSalary || 0,
+      portfolio: [
+        {
+          imageUrl: ''
+        }
+      ],
       experience: groupedExperience || [
         {
           title: '',
@@ -100,7 +104,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       videos: groupedVideos || [
         {
           title: '',
-          videoId: ''
+          videoId
         }
       ]
     }
@@ -115,13 +119,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     setError,
     trigger,
     handleSubmit,
-   
+    watch,
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
-
-  
+  console.log('watching portfolio', watch('portfolio'));
+  console.log('errros:', errors?.portfolio);
 
   const { fields: educationArrayFields, append: educationAppend } =
     useFieldArray({
@@ -143,7 +147,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const onSubmit = async (data: resumeSchemaType) => {
     setIsSubmitting(true);
 
-    console.log(data);
+    console.log('submtted data', data);
     const experience = data?.experience?.map((item: IExperience) => {
       const year = item?.yearStart + '-' + item?.yearEnd;
       return {
@@ -175,6 +179,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       };
     });
 
+    const portfolio = data?.portfolio?.map((item: any) => {
+      console.log('image file item', item);
+      return item;
+    });
+
     try {
       const resumeData: any = {
         user: mongoUser._id,
@@ -184,6 +193,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
         minSalary: data.minSalary as number,
         maxSalary: data.maxSalary as number,
         education,
+        portfolio,
         videos
       };
       if (isResumeExist) {
@@ -816,7 +826,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
             </button>
           </div>
 
-          <DashboardPortfolio />
+          <DashboardPortfolio
+            setValue={setValue}
+            className="mb-4 pt-6 px-6 border"
+          />
 
           <div className="button-group d-inline-flex align-items-center mt-30">
             <button

@@ -23,6 +23,11 @@ export interface IVideos {
   videoId: string;
 }
 
+export interface Iportfolio {
+  imageUrl: string;
+  public_id?: string;
+}
+
 export interface IResumeType extends Document {
   user: Schema.Types.ObjectId | string;
   overview: string;
@@ -32,7 +37,7 @@ export interface IResumeType extends Document {
   education: IEducation[];
   skills: string[];
   experience: IExperience[];
-  // porftolio: string[];
+  porftolio: Iportfolio[];
 }
 
 const educationSchema = new Schema({
@@ -62,7 +67,7 @@ const resumeSchema = new Schema({
   minSalary: { type: Number, reuired: true },
   maxSalary: { type: Number, required: true },
   experience: [experienceSchema],
-  // portfolio: [String],
+  portfolio: [{ imageUrl: String, public_id: String }],
   createdAt: { type: Date, default: Date.now }
 });
 

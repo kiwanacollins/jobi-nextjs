@@ -9,6 +9,8 @@ import User from '@/database/user.model';
 import { getCandidatesParams } from './shared.types';
 import { FilterQuery } from 'mongoose';
 import { revalidatePath } from 'next/cache';
+import connectToCloudinary from '../cloudinary';
+import cloudinary from 'cloudinary';
 
 // import multer from 'multer';
 
@@ -16,6 +18,11 @@ import { revalidatePath } from 'next/cache';
 //   storage: multer.diskStorage({}),
 //   limits: { fileSize: 500000 }
 // });
+
+interface IPortfolio {
+  imageUrl: string;
+  public_id?: string;
+}
 
 interface resumeDataParams {
   user: string | undefined;
@@ -25,7 +32,8 @@ interface resumeDataParams {
   maxSalary: number;
   skills: string[];
   experience: IExperience[];
-  videos: IVideos[];
+  videos?: IVideos[];
+  portfolio?: IPortfolio[] | any;
 }
 
 export async function getResumeById(resumeId: string) {
@@ -95,8 +103,26 @@ interface updateResumeParams {
 export async function updateResume(params: updateResumeParams) {
   try {
     await connectToDatabase();
+    await connectToCloudinary();
     const { resumeId, resumeData, path } = params;
-    console.log('updateResume  path:', path);
+    const { portfolio } = resumeData;
+    console.log('updateResume server portfolio:', portfolio);
+    for (const image of portfolio) {
+      try {
+        const result = await cloudinary.v2.uploader.upload(image.imageUrl, {
+          folder: 'portfolios',
+          unique_filename: false,
+          use_filename: true
+        });
+        image.imageUrl = result.secure_url;
+        image.public_id = result.public_id;
+      } catch (error: any) {
+        console.log(error.message);
+        return;
+      }
+    }
+    console.log('resumeData server', resumeData);
+
     const updatedResume = await Resume.findByIdAndUpdate(
       { _id: resumeId },
       resumeData,

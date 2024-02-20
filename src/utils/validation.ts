@@ -23,6 +23,11 @@ const videoSchema = z.object({
   videoId: z.string().min(1).max(100)
 });
 
+export const portfolioSchema = z.object({
+  imageUrl: z.string().optional(),
+  public_id: z.string().optional()
+});
+
 export const resumeSchema = z.object({
   // pdf: pdfSchema,
   overview: z.string(),
@@ -31,8 +36,8 @@ export const resumeSchema = z.object({
   maxSalary: z.number(),
   education: z.array(educationSchema),
   skills: z.array(z.string()),
-  experience: z.array(experienceSchema)
-  // portfolio: z.array(z.string().url('Invalid photo URL'))
+  experience: z.array(experienceSchema),
+  portfolio: z.array(portfolioSchema)
 });
 
 const linksSchema = z.object({
