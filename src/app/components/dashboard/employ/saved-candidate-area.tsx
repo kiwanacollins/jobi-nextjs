@@ -5,7 +5,7 @@ import { getAllCandidates } from '@/lib/actions/candidate.action';
 import { IUser } from '@/database/user.model';
 
 const SavedCandidateArea = async () => {
-  const candidates = await getAllCandidates();
+  const candidates = await getAllCandidates({});
   return (
     <div className="position-relative">
       <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">

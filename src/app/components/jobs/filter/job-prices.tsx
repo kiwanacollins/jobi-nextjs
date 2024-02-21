@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import InputRange from '@/ui/input-range';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery } from '@/utils/utils';
 
 // prop type
 type IProps = {
@@ -13,9 +16,29 @@ export function SalaryRangeSlider({
   setPriceValue,
   maxPrice
 }: IProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const gte = searchParams.get('gte');
+  const lte = searchParams.get('lte');
+
+  // eslint-disable-next-line no-unused-vars
+  const [active, setActive] = useState(gte || lte || '');
+  console.log('active:', active);
   // handleChanges
   const handleChanges = (val: number[]) => {
     setPriceValue(val);
+    const newGtUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: 'price',
+      value: `${val[0]},${val[1]}`
+    });
+
+    router.push(newGtUrl, { scroll: false });
+
+    console.log({
+      gte: val[0],
+      lte: val[1]
+    });
   };
   return (
     <div className="salary-slider">

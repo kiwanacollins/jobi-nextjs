@@ -12,6 +12,7 @@ const FilterSkills = () => {
   });
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const skill = searchParams.get('skill');
   const [active, setActive] = useState(skill || '');
   const handleSkills = (item: { value: string; label: string }) => {
