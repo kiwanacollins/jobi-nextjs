@@ -41,11 +41,11 @@ export interface DeleteUserParams {
 }
 
 export interface getCandidatesParams {
-  keyword?: string | undefined;
-  skill?: string | undefined;
-  location?: string | undefined;
-  level?: string | undefined;
-  qualification?: string | undefined;
-  gender?: string | undefined;
-  fluency?: string | undefined;
+  keyword?: string;
+  skill?: string;
+  location?: string;
+  level?: string;
+  qualification?: string;
+  gender?: string;
+  fluency?: string;
 }

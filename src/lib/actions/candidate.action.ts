@@ -182,10 +182,20 @@ export async function getCandidateResumes(params: getCandidatesParams) {
 }
 
 // get All candidates
-export async function getAllCandidates() {
+export async function getAllCandidates(params: getCandidatesParams) {
   try {
     await connectToDatabase();
-    const candidates = await User.find({ role: 'candidate' }).sort({
+
+    const { keyword } = params;
+
+    const query: FilterQuery<typeof User> = { role: 'candidate' };
+    if (keyword) {
+      query.$or = [
+        { name: { $regex: new RegExp(keyword, 'i') } },
+        { post: { $regex: new RegExp(keyword, 'i') } }
+      ];
+    }
+    const candidates = await User.find(query).sort({
       createdAt: -1
     });
 
