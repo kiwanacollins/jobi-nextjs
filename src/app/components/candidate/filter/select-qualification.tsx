@@ -1,17 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import candidate_data from '@/data/candidate-data';
 import NiceSelect from '@/ui/nice-select';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery } from '@/utils/utils';
 
 const SelectCandidateQualification = () => {
-  const uniqueQualification = [
-    ...new Set(candidate_data.map((c) => c.qualification))
-  ];
-  const options = uniqueQualification.map((l) => {
-    return { value: l, label: l };
-  });
   const router = useRouter();
   const searchParams = useSearchParams();
   const experience = searchParams.get('experience');
@@ -41,7 +34,11 @@ const SelectCandidateQualification = () => {
 
   return (
     <NiceSelect
-      options={options}
+      options={[
+        { value: `master's degree`, label: `Master's Degree` },
+        { value: `bachelor degree`, label: `Bachelor Degree` },
+        { value: `None`, label: `None` }
+      ]}
       defaultCurrent={0}
       onChange={(item) => handleQualification(item)}
       name="Qualification"
