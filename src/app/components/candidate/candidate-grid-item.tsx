@@ -23,7 +23,7 @@ const CandidateGridItem = ({
       <div className="cadidate-avatar online position-relative d-block m-auto">
         <Link href="/candidate-profile" className="rounded-circle">
           <Image
-            src={item?.user?.picture}
+            src={item?.picture}
             width={style_2 ? 120 : 80}
             height={style_2 ? 120 : 80}
             alt="image"
@@ -32,8 +32,8 @@ const CandidateGridItem = ({
         </Link>
       </div>
       <h4 className="candidate-name mt-15 mb-0">
-        <Link href="/candidate-profile" className="tran3s">
-          {item.user?.name}
+        <Link href={`/candidate-profile/${item.resumeId}`} className="tran3s">
+          {item?.name}
         </Link>
       </h4>
       <div className="candidate-post">{item?.post}</div>
@@ -60,14 +60,14 @@ const CandidateGridItem = ({
         <div className="col-md-6">
           <div className="candidate-info mt-10">
             <span>Location</span>
-            <div>{item.user?.country}</div>
+            <div>{item?.country}</div>
           </div>
         </div>
       </div>
       <div className="row gx-2 pt-25 sm-pt-10">
         <div className="col-md-6">
           <Link
-            href="/candidate-profile"
+            href={`/candidate-profile/${item?.resumeId}`}
             className="profile-btn tran3s w-100 mt-5"
           >
             View Profile

@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import candidate_data from '@/data/candidate-data';
 
@@ -6,14 +7,17 @@ const FilterCandidateExperience = () => {
     ...new Set(candidate_data.map((c) => c.experience))
   ];
   const [experience, setExperience] = useState<string[]>([]);
+
   // handle Experience
   const handleExperience = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newExperience = e.target.value;
     if (experience.includes(newExperience)) {
       const remaining = experience.filter((e) => e !== newExperience);
       setExperience(remaining);
+      console.log('experience remaining', experience);
     } else {
       setExperience((prevExperience) => [...prevExperience, newExperience]);
+      console.log('experience existing', experience);
     }
   };
   return (

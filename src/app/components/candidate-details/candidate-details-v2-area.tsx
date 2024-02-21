@@ -90,7 +90,7 @@ const CandidateDetailsV2Area = () => {
                 <div className="inner-card">
                   <h3 className="title">Portfolio</h3>
                   {/* Candidate Profile Slider */}
-                  <CandidateProfileSlider />
+                  <CandidateProfileSlider portfolios={[]} />
                   {/* Candidate Profile Slider */}
                 </div>
               </div>

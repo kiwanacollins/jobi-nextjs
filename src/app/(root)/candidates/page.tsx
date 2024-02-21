@@ -17,7 +17,7 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
   const candidates = await getAllCandidates({
     keyword: searchParams.keyword,
     skill: searchParams.skill,
-    qualification: searchParams.experience,
+    qualification: searchParams.qualification,
     gender: searchParams.gender
   });
 

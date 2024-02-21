@@ -19,7 +19,7 @@ const CandidateListItem = ({
       <div className="d-flex">
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
           <Link
-            href={`/candidate-profile/:${item._id}`}
+            href={`/candidate-profile/${item?.resumeId}`}
             className="rounded-circle"
           >
             <Image
@@ -37,7 +37,7 @@ const CandidateListItem = ({
               <div className="position-relative">
                 <h4 className="candidate-name mb-0">
                   <Link
-                    href={`/candidate-profile/${item._id}`}
+                    href={`/candidate-profile/${item?.resumeId}`}
                     className="tran3s"
                   >
                     {item?.name}
@@ -80,7 +80,7 @@ const CandidateListItem = ({
                   <i className="bi bi-heart"></i>
                 </Link>
                 <Link
-                  href={`/candidate-profile/${item.resumeId}`}
+                  href={`/candidate-profile/${item?.resumeId}`}
                   className="profile-btn tran3s ms-md-2 mt-10 sm-mt-20"
                 >
                   View Profile

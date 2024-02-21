@@ -7,14 +7,14 @@ import { formUrlQuery } from '@/utils/utils';
 const SelectCandidateQualification = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const experience = searchParams.get('experience');
-  const [active, setActive] = useState(experience || '');
+  const qualification = searchParams.get('qualification');
+  const [active, setActive] = useState(qualification || '');
   const handleQualification = (item: { value: string; label: string }) => {
     if (active === item.value) {
       setActive('');
       const newUrl = formUrlQuery({
         params: searchParams.toString(),
-        key: 'experience',
+        key: 'qualification',
         value: null
       });
 
@@ -24,7 +24,7 @@ const SelectCandidateQualification = () => {
 
       const newUrl = formUrlQuery({
         params: searchParams.toString(),
-        key: 'experience',
+        key: 'qualification',
         value: item.value.toLowerCase()
       });
 
