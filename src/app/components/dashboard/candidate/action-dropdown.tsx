@@ -11,7 +11,7 @@ import { deleteUserById } from '@/lib/actions/user.action';
 
 interface IProps {
   id: string;
-  resumeId: string | undefined;
+  resumeId?: string | undefined;
 }
 
 const ActionDropdown = ({ id, resumeId }: IProps) => {
