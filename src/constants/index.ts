@@ -1,6 +1,8 @@
 export const skills = [
   'Design',
   'UI',
+  'React',
+  'Nextjs',
   'Digital',
   'Graphics',
   'Developer',

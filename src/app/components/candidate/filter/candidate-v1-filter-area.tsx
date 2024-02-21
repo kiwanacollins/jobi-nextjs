@@ -7,6 +7,8 @@ import JobPrices from '../../jobs/filter/job-prices';
 import FilterEnglishFluency from './filter-english-fluency';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
+import SelectCandidateQualification from './select-qualification';
+import SelectCandidateType from './select-gender';
 
 const CandidateV1FilterArea = () => {
   const [priceValue, setPriceValue] = useState<number[]>([0, 50000]);
@@ -144,20 +146,7 @@ const CandidateV1FilterArea = () => {
           </a>
           <div className="collapse" id="collapseQualification">
             <div className="main-body">
-              <ul className="style-none filter-input">
-                <li>
-                  <input type="checkbox" name="Qualification" />
-                  <label>Master’s Degree</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="Qualification" />
-                  <label>Bachelor Degree</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="Qualification" />
-                  <label>None</label>
-                </li>
-              </ul>
+              <SelectCandidateQualification />
             </div>
           </div>
         </div>
@@ -174,16 +163,7 @@ const CandidateV1FilterArea = () => {
           </a>
           <div className="collapse" id="collapseCType">
             <div className="main-body">
-              <ul className="style-none filter-input">
-                <li>
-                  <input type="checkbox" name="Gender" />
-                  <label>Male</label>
-                </li>
-                <li>
-                  <input type="checkbox" name="Gender" />
-                  <label>Female</label>
-                </li>
-              </ul>
+              <SelectCandidateType />
             </div>
           </div>
         </div>

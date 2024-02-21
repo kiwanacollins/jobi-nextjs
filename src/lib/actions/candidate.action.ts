@@ -186,25 +186,46 @@ export async function getAllCandidates(params: getCandidatesParams) {
   try {
     await connectToDatabase();
 
-    const { keyword, skill } = params;
+    const { keyword, skill, qualification, gender } = params;
+    console.log('getAllCandidates  gender:', gender);
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
-    if (keyword || skill) {
-      query.$or = [];
 
+    console.log('getAllCandidates  query:', query);
+    if (keyword || skill || qualification || gender) {
       if (keyword) {
+        query.$or = [];
         query.$or.push(
           { name: { $regex: new RegExp(keyword as string, 'i') } },
-          { post: { $regex: new RegExp(keyword as string, 'i') } }
+          { post: { $regex: new RegExp(keyword as string, 'i') } },
+          {
+            qualification: { $regex: new RegExp(keyword as string, 'i') }
+          },
+          {
+            gender: { $regex: new RegExp(keyword as string, 'i') }
+          }
         );
+
+        // if (skill) {
+        //   query.$or.push({
+        //     skills: { $in: { $regex: new RegExp(skill as string, 'i') } }
+        //   });
+        // }
       }
 
+      if (qualification) {
+        query.qualification = { $regex: new RegExp(qualification, 'i') };
+      }
       if (skill) {
-        query.$or.push({
-          skills: { $elemMatch: { $regex: new RegExp(skill as string, 'i') } }
-        });
+        query.skills = { $elemMatch: { $regex: new RegExp(skill, 'i') } };
+      }
+
+      if (gender) {
+        query.gender = { $regex: new RegExp(gender, 'i') };
       }
     }
+    console.log('getAllCandidates  query:', query);
+
     const candidates = await User.find(query).sort({
       createdAt: -1
     });

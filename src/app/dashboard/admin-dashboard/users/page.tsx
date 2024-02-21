@@ -7,8 +7,8 @@ import { IUser } from '@/database/user.model';
 
 const UsersPage = async () => {
   // const candidate_items = candidate_data.slice(0, 4);
-  const candidates = await getAllCandidates();
-  console.log('UsersPage  candidates:', candidates);
+  const candidates = await getAllCandidates({});
+
   return (
     <div className="position-relative">
       <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">

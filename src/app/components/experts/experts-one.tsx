@@ -1,14 +1,14 @@
-"use client"
-import React, { useRef } from "react";
-import Image from "next/image";
-import Slider from "react-slick";
-import { StaticImageData } from "next/image";
-import shape from "@/assets/images/shape/shape_04.svg";
-import user_1 from "@/assets/images/assets/img_05.jpg";
-import user_2 from "@/assets/images/assets/img_06.jpg";
-import user_3 from "@/assets/images/assets/img_07.jpg";
-import user_4 from "@/assets/images/assets/img_08.jpg";
-import user_5 from "@/assets/images/assets/team_06.jpg";
+'use client';
+import React, { useRef } from 'react';
+import Image, { StaticImageData } from 'next/image';
+import Slider from 'react-slick';
+
+import shape from '@/assets/images/shape/shape_04.svg';
+import user_1 from '@/assets/images/assets/img_05.jpg';
+import user_2 from '@/assets/images/assets/img_06.jpg';
+import user_3 from '@/assets/images/assets/img_07.jpg';
+import user_4 from '@/assets/images/assets/img_08.jpg';
+import user_5 from '@/assets/images/assets/team_06.jpg';
 
 // expert_data
 const expert_data: {
@@ -20,41 +20,41 @@ const expert_data: {
   {
     id: 1,
     user: user_1,
-    name: "Julie Ake",
-    title: "Product Designer",
+    name: 'Julie Ake',
+    title: 'Product Designer'
   },
   {
     id: 2,
     user: user_2,
-    name: "Juan Marko",
-    title: "Java Developer",
+    name: 'Juan Marko',
+    title: 'Java Developer'
   },
   {
     id: 3,
     user: user_3,
-    name: "Elizabeth Foster",
-    title: "UI/UX Designer",
+    name: 'Elizabeth Foster',
+    title: 'UI/UX Designer'
   },
   {
     id: 4,
     user: user_4,
-    name: "John Doe",
-    title: "Marketing Expert",
+    name: 'John Doe',
+    title: 'Marketing Expert'
   },
   {
     id: 5,
     user: user_5,
-    name: "Elizabeth Foster",
-    title: "UI/UX Designer",
-  },
+    name: 'Elizabeth Foster',
+    title: 'UI/UX Designer'
+  }
 ];
 
 // slick slider setting
 const slider_setting = {
   dots: false,
   arrows: false,
-  centerPadding: "0px",
-  centerMode:false,
+  centerPadding: '0px',
+  centerMode: false,
   slidesToShow: 4,
   slidesToScroll: 1,
   autoplay: false,
@@ -63,16 +63,16 @@ const slider_setting = {
     {
       breakpoint: 1200,
       settings: {
-        slidesToShow: 3,
-      },
+        slidesToShow: 3
+      }
     },
     {
       breakpoint: 768,
       settings: {
-        slidesToShow: 2,
-      },
-    },
-  ],
+        slidesToShow: 2
+      }
+    }
+  ]
 };
 
 const ExpertsOne = () => {
@@ -90,17 +90,20 @@ const ExpertsOne = () => {
       <div className="container position-relative">
         <div className="row">
           <div className="col-md-7">
-            <div className="title-one text-center text-md-start mb-65 md-mb-50 wow fadeInUp" data-wow-delay="0.3s">
+            <div
+              className="title-one text-center text-md-start mb-65 md-mb-50 wow fadeInUp"
+              data-wow-delay="0.3s"
+            >
               <h2>
-                Find the best{" "}
+                Find the best{' '}
                 <span className="position-relative">
-                  talented{" "}
+                  talented{' '}
                   <Image
                     src={shape}
                     alt="shape"
                     className="lazy-img shapes shapes"
                   />
-                </span>{" "}
+                </span>{' '}
                 expert in jobi.
               </h2>
             </div>
@@ -116,7 +119,12 @@ const ExpertsOne = () => {
             <div key={item.id} className="item">
               <div className="card-style-three text-center">
                 <div className="img-meta mb-40 lg-mb-20">
-                  <Image src={item.user} alt="user-img" className="m-auto" style={{height:'auto'}} />
+                  <Image
+                    src={item.user}
+                    alt="user-img"
+                    className="m-auto"
+                    style={{ height: 'auto' }}
+                  />
                 </div>
                 <a href="#" className="name text-md fw-500 text-dark">
                   {item.name}

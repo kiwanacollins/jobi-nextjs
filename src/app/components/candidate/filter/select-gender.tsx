@@ -1,13 +1,41 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import NiceSelect from '@/ui/nice-select';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery } from '@/utils/utils';
 
 const SelectCandidateType = () => {
-  const handleCandidateType = (item: { value: string; label: string }) => {};
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const gender = searchParams.get('gender');
+  const [active, setActive] = useState(gender || '');
+  const handleCandidateType = (item: { value: string; label: string }) => {
+    if (active === item.value) {
+      setActive('');
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'gender',
+        value: null
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      setActive(item.value);
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'gender',
+        value: item.value.toLowerCase()
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
+  };
   return (
     <NiceSelect
       options={[
-        {value:'Male',label:'Male'},
-        {value:'Female',label:'Female'},
+        { value: 'Male', label: 'Male' },
+        { value: 'Female', label: 'Female' }
       ]}
       defaultCurrent={0}
       onChange={(item) => handleCandidateType(item)}

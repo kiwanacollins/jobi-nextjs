@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import candidate_data from "@/data/candidate-data";
+import React, { useState } from 'react';
+import candidate_data from '@/data/candidate-data';
 
 const FilterCandidateExperience = () => {
   const uniqueExperiences = [
-    ...new Set(candidate_data.map((c) => c.experience)),
+    ...new Set(candidate_data.map((c) => c.experience))
   ];
   const [experience, setExperience] = useState<string[]>([]);
   // handle Experience
   const handleExperience = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newExperience = e.target.value;
-    if(experience.includes(newExperience)){
-      const remaining = experience.filter(e => e !== newExperience)
-      setExperience(remaining)
-    }
-    else {
-      setExperience(prevExperience => [...prevExperience, newExperience]);
+    if (experience.includes(newExperience)) {
+      const remaining = experience.filter((e) => e !== newExperience);
+      setExperience(remaining);
+    } else {
+      setExperience((prevExperience) => [...prevExperience, newExperience]);
     }
   };
   return (
