@@ -12,7 +12,7 @@ const AddResumePage = async ({ params }: ParamsProps) => {
   const mongoUser = await getUserByMongoId({ id: params.id });
   let currentResume = null;
   if (mongoUser.resumeId) {
-    currentResume = await getResumeById(mongoUser.resumeId);
+    currentResume = await getResumeById(mongoUser?.resumeId);
   }
 
   return (

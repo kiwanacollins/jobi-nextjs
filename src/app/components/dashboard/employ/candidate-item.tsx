@@ -3,6 +3,7 @@ import ActionDropdown from '../candidate/action-dropdown';
 // import { ICandidate } from "@/data/candidate-data";
 import Image from 'next/image';
 import { IUser } from '@/database/user.model';
+import Link from 'next/link';
 
 const CandidateItem = ({ item }: { item: IUser }) => {
   return (
@@ -24,9 +25,12 @@ const CandidateItem = ({ item }: { item: IUser }) => {
             <div className="col-xl-3">
               <div className="position-relative">
                 <h4 className="candidate-name mb-0">
-                  <a href="#" className="tran3s">
-                    {item.name}
-                  </a>
+                  <Link
+                    href={`/candidate-profile/${item?.resumeId}`}
+                    className="tran3s"
+                  >
+                    {item?.name}
+                  </Link>
                 </h4>
                 <div className="candidate-post">{item?.post}</div>
                 <ul className="cadidate-skills style-none d-flex align-items-center">
@@ -53,12 +57,12 @@ const CandidateItem = ({ item }: { item: IUser }) => {
             </div>
             <div className="col-xl-3 col-md-4">
               <div className="d-flex justify-content-md-end align-items-center">
-                <a
-                  href="#"
+                <Link
+                  href={`/candidate-profile/${item?.resumeId}`}
                   className="save-btn text-center rounded-circle tran3s mt-10 fw-normal"
                 >
                   <i className="bi bi-eye"></i>
-                </a>
+                </Link>
                 <div className="action-dots float-end mt-10 ms-2">
                   <button
                     className="action-btn dropdown-toggle"
@@ -68,7 +72,10 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                   >
                     <span></span>
                   </button>
-                  <ActionDropdown id={item._id} />
+                  <ActionDropdown
+                    id={item?._id}
+                    resumeId={item?.resumeId as string | undefined}
+                  />
                 </div>
               </div>
             </div>

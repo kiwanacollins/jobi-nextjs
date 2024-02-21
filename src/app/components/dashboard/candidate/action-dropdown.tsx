@@ -11,9 +11,10 @@ import { deleteUserById } from '@/lib/actions/user.action';
 
 interface IProps {
   id: string;
+  resumeId: string | undefined;
 }
 
-const ActionDropdown = ({ id }: IProps) => {
+const ActionDropdown = ({ id, resumeId }: IProps) => {
   const pathname = usePathname();
 
   const handleDeleteUser = async (userId: string) => {
@@ -25,9 +26,9 @@ const ActionDropdown = ({ id }: IProps) => {
   return (
     <ul className="dropdown-menu dropdown-menu-end">
       <li>
-        <a className="dropdown-item" href="#">
+        <Link href={`/candidate-profile/${resumeId}`} className="dropdown-item">
           <Image src={view} alt="icon" className="lazy-img" /> View
-        </a>
+        </Link>
       </li>
       <li>
         <a className="dropdown-item" href="#">
