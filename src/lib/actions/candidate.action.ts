@@ -186,14 +186,24 @@ export async function getAllCandidates(params: getCandidatesParams) {
   try {
     await connectToDatabase();
 
-    const { keyword } = params;
+    const { keyword, skill } = params;
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
-    if (keyword) {
-      query.$or = [
-        { name: { $regex: new RegExp(keyword, 'i') } },
-        { post: { $regex: new RegExp(keyword, 'i') } }
-      ];
+    if (keyword || skill) {
+      query.$or = [];
+
+      if (keyword) {
+        query.$or.push(
+          { name: { $regex: new RegExp(keyword as string, 'i') } },
+          { post: { $regex: new RegExp(keyword as string, 'i') } }
+        );
+      }
+
+      if (skill) {
+        query.$or.push({
+          skills: { $elemMatch: { $regex: new RegExp(skill as string, 'i') } }
+        });
+      }
     }
     const candidates = await User.find(query).sort({
       createdAt: -1

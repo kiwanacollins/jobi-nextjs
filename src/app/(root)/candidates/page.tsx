@@ -15,7 +15,8 @@ export const metadata: Metadata = {
 
 const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
   const candidates = await getAllCandidates({
-    keyword: searchParams.keyword
+    keyword: searchParams.keyword,
+    skill: searchParams.skill
   });
 
   return (
