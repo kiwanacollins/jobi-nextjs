@@ -2,12 +2,16 @@
 import React from 'react';
 import Image from 'next/image';
 import Slider from 'react-slick';
-import port_1 from '@/assets/images/candidates/CP_01.jpg';
-import port_2 from '@/assets/images/candidates/CP_02.jpg';
-import port_3 from '@/assets/images/candidates/CP_03.jpg';
-import port_4 from '@/assets/images/candidates/CP_02.jpg';
 
-const CandidateProfileSlider = () => {
+import { Iportfolio } from '@/database/resume.model';
+
+interface CandidateProfileSliderProps {
+  portfolios: Iportfolio[];
+}
+
+const CandidateProfileSlider = ({
+  portfolios
+}: CandidateProfileSliderProps) => {
   // slider setting
   const slider_setting = {
     dots: true,
@@ -33,20 +37,20 @@ const CandidateProfileSlider = () => {
     ]
   };
 
-  // portfolio data
-  const portfolio_data = [port_1, port_2, port_3, port_4];
   return (
     <Slider {...slider_setting} className="candidate-portfolio-slider">
-      {portfolio_data.map((img, i) => (
-        <div className="item" key={i}>
-          <a href="#" className="w-100 d-blok">
+      {portfolios.map((img, i) => (
+        <div className="item" key={img?.public_id || i}>
+          <button className="w-100 d-blok">
             <Image
-              src={img}
-              alt=""
+              src={img?.imageUrl}
+              alt={img?.public_id as string}
               className="w-100"
+              width={350}
+              height={500}
               style={{ width: '100%', height: 'auto' }}
             />
-          </a>
+          </button>
         </div>
       ))}
     </Slider>

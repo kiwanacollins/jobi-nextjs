@@ -29,7 +29,7 @@ const CandidateDetailsArea = ({
   candidateDetials
 }: ICandidateDetailsAreaProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const { overview, user, education, experience, skills, videos } =
+  const { overview, user, education, experience, skills, videos, portfolio } =
     candidateDetials;
   const [videoId, setVideoId] = useState<string>(videos[0]?.videoId);
   const [thumbnail, setThumbnail] = useState<string>(videos[0]?.videoId);
@@ -132,7 +132,7 @@ const CandidateDetailsArea = ({
                 </div>
                 <h3 className="title">Portfolio</h3>
                 {/* Candidate Profile Slider */}
-                <CandidateProfileSlider />
+                <CandidateProfileSlider portfolios={portfolio} />
                 {/* Candidate Profile Slider */}
               </div>
             </div>
