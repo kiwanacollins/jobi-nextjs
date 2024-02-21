@@ -56,6 +56,7 @@ export async function getResumeById(resumeId: string) {
 export async function createResume(resumeData: resumeDataParams) {
   try {
     await connectToDatabase();
+    await connectToCloudinary();
     const {
       education,
       experience,
@@ -64,8 +65,25 @@ export async function createResume(resumeData: resumeDataParams) {
       user,
       maxSalary,
       minSalary,
+      portfolio,
       videos
     } = resumeData;
+
+    for (const image of portfolio) {
+      try {
+        const result = await cloudinary.v2.uploader.upload(image?.imageUrl, {
+          folder: 'portfolios',
+          unique_filename: false,
+          use_filename: true
+        });
+
+        image.imageUrl = result.secure_url;
+        image.public_id = result.public_id;
+      } catch (error: any) {
+        console.log('error ', error);
+        return;
+      }
+    }
 
     const newResume = await Resume.create({
       user,
@@ -75,6 +93,7 @@ export async function createResume(resumeData: resumeDataParams) {
       skills,
       minSalary,
       maxSalary,
+      portfolio,
       overview
     });
 

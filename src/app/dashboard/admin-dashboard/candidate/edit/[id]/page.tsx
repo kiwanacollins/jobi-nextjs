@@ -252,7 +252,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   href={`/dashboard/admin-dashboard/candidate/addresume/${mongoUser._id}`}
                   className="btn btn-primary mb-3"
                 >
-                  Add resume
+                  {mongoUser?.resumeId ? 'Update Resume' : 'Add Resume'}
                 </Link>
               )}
             </div>
