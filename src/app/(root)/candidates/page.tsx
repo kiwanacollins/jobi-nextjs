@@ -6,6 +6,7 @@ import CandidateV1Area from '../../components/candidate/candidate-v1-area';
 
 import { getAllCandidates } from '@/lib/actions/candidate.action';
 import { SearchParamsProps } from '@/types';
+import Loading from './loading';
 
 export const metadata: Metadata = {
   title: 'Candidates',
@@ -20,6 +21,11 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     qualification: searchParams.qualification,
     gender: searchParams.gender
   });
+
+  const loading = true;
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div>

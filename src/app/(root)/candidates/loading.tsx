@@ -1,7 +1,8 @@
 import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
-import CandidateV1FilterArea from '@/app/components/candidate/filter/candidate-v1-filter-area';
+
 import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkeletonLoading';
+import FilterSkeleton from '@/app/components/skaletons/FilterSkeleton';
 
 const Loading = () => {
   return (
@@ -18,17 +19,8 @@ const Loading = () => {
         <div className="container">
           <div className="row">
             <div className="col-xl-3 col-lg-4">
-              <button
-                type="button"
-                className="filter-btn w-100 pt-2 pb-2 h-auto fw-500 tran3s d-lg-none mb-40"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#filteroffcanvas"
-              >
-                <i className="bi bi-funnel"></i>
-                Filter
-              </button>
               {/* filter area start */}
-              <CandidateV1FilterArea />
+              <FilterSkeleton />
               {/* filter area end */}
             </div>
 

@@ -7,7 +7,7 @@ const CandidateSkeletonLoading = () => {
     >
       <div className="d-flex">
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
-          <div className="rounded-circle">
+          <div className="rounded-circle placeholder-wave col-12 bg-success">
             <div
               style={{ width: '80px', height: '80px' }}
               className="lazy-img rounded-circle placeholder col-12 bg-success"
