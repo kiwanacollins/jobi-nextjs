@@ -1,10 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 // import candidate_data from '@/data/candidate-data';
 import CandidateGridItem from './candidate-grid-item';
 import CandidateListItem from './candidate-list-item';
 import CandidateV1FilterArea from './filter/candidate-v1-filter-area';
 import ShortSelect from '../common/short-select';
+import CandidateSkeletonLoading from '../skaletons/CandidateSkeletonLoading';
 // import { IResumeType } from '@/database/resume.model';
 
 interface IProps {
@@ -14,6 +15,7 @@ interface IProps {
 
 const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
   const [jobType, setJobType] = useState<string>(style_2 ? 'list' : 'grid');
+
   return (
     <>
       <section className="candidates-profile pt-110 lg-pt-80 pb-160 xl-pb-150 lg-pb-80">
@@ -72,7 +74,9 @@ const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
                   <div className="row">
                     {candidates?.map((item) => (
                       <div key={item._id} className="col-xxl-4 col-sm-6 d-flex">
-                        <CandidateGridItem item={item} />
+                        <Suspense fallback={<CandidateSkeletonLoading />}>
+                          <CandidateGridItem item={item} />
+                        </Suspense>
                       </div>
                     ))}
                   </div>

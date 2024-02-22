@@ -34,8 +34,8 @@ const SelectCandidateType = () => {
   return (
     <NiceSelect
       options={[
-        { value: 'Male', label: 'Male' },
-        { value: 'Female', label: 'Female' }
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' }
       ]}
       defaultCurrent={0}
       onChange={(item) => handleCandidateType(item)}

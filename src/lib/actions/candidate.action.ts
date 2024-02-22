@@ -202,7 +202,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
             qualification: { $regex: new RegExp(keyword as string, 'i') }
           },
           {
-            gender: { $regex: new RegExp(keyword as string, 'i') }
+            gender: { $eq: keyword }
           }
         );
 
@@ -221,7 +221,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
       }
 
       if (gender) {
-        query.gender = { $regex: new RegExp(gender, 'i') };
+        query.gender = { $eq: gender };
       }
     }
     console.log('getAllCandidates  query:', query);
