@@ -1,7 +1,6 @@
 import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import CandidateV1FilterArea from '@/app/components/candidate/filter/candidate-v1-filter-area';
-
 import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkeletonLoading';
 
 const Loading = () => {
