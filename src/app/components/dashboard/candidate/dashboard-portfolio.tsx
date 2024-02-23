@@ -50,7 +50,7 @@ export function PortfolioItem({
 interface IDashboardPortfolio {
   className: string;
   setValue: UseFormSetValue<any>;
-  portfolios: Iportfolio[];
+  portfolios: Iportfolio[] | undefined;
 }
 
 const DashboardPortfolio = ({
@@ -150,9 +150,11 @@ const DashboardPortfolio = ({
       </div>
 
       {/* Accepted files */}
-      <h3 className="title fs-lg font-weight-bold text-neutral-600 mt-10 border-b pb-3">
-        Accepted Files
-      </h3>
+      {files.length > 0 && (
+        <h3 className="title fs-lg font-weight-bold text-neutral-600 mt-10 border-b pb-3">
+          Accepted Files
+        </h3>
+      )}
       <div className="row">
         {files?.map((file, index) => (
           <div
@@ -187,54 +189,50 @@ const DashboardPortfolio = ({
         ))}
       </div>
       {/* Rejected Files */}
-      <h3 className="title fs-lg font-weight-bold text-neutral-600 mt-24 border-b pb-3">
-        Rejected Files
-      </h3>
-      <ul className="mt-6 d-flex flex-column">
-        {rejected?.map(({ file, errors }: { file: never; error: any }) => (
-          <li key={file?.name} className="d-flex justify-content-between">
-            <div>
-              <p className="mt-2 text-neutral-500 text-sm font-medium">
-                {file?.name}
-              </p>
-              <ul className="text-sm text-danger">
-                {errors.map((error: any) => (
-                  <li key={error.code}>{error.message}</li>
-                ))}
-              </ul>
-            </div>
+      {rejected?.length > 0 && (
+        <>
+          <h3 className="title fs-lg font-weight-bold text-neutral-600 mt-24 border-b pb-3">
+            Rejected Files
+          </h3>
+          <ul className="mt-6 d-flex flex-column">
+            {rejected?.map(({ file, errors }: { file: never; error: any }) => (
+              <li key={file?.name} className="d-flex justify-content-between">
+                <div>
+                  <p className="mt-2 text-neutral-500 text-sm font-medium">
+                    {file?.name}
+                  </p>
+                  <ul className="text-sm text-danger">
+                    {errors.map((error: any) => (
+                      <li key={error.code}>{error.message}</li>
+                    ))}
+                  </ul>
+                </div>
+                <button
+                  type="button"
+                  className="mt-1 py-1 btn btn-danger text-uppercase fw-bold border  rounded-md px-3"
+                  onClick={() => removeRejected(file?.name)}
+                >
+                  remove
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {/* Preview */}
+      {files?.length > 0 && (
+        <section className="mt-10 mb-10">
+          <div className="d-flex gap-4">
             <button
               type="button"
-              className="mt-1 py-1 text-sm text-uppercase fw-bold text-secondary border border-secondary rounded-md px-3 hover-bg-secondary hover-text-white transition-colors"
-              onClick={() => removeRejected(file?.name)}
+              onClick={removeAll}
+              className="mt-1 text-sm text-uppercase fw-bold  rounded-md px-3 btn btn-danger py-3"
             >
-              remove
+              Remove all files
             </button>
-          </li>
-        ))}
-      </ul>
-      {/* Preview */}
-      <section className="mt-10 mb-10">
-        <div className="d-flex gap-4">
-          <h2 className="title fs-3 font-weight-bold">Preview</h2>
-          <button
-            type="button"
-            onClick={removeAll}
-            className="mt-1 text-sm text-uppercase fw-bold text-secondary border border-secondary rounded-md px-3 hover-bg-secondary hover-text-white transition-colors"
-          >
-            Remove all files
-          </button>
-          <button
-            type="submit"
-            className="ms-auto mt-1 text-sm text-uppercase fw-bold text-secondary border border-purple rounded-md px-3 hover-bg-purple hover-text-white transition-colors"
-          >
-            Upload to Cloudinary
-          </button>
-        </div>
-      </section>
-      <a href="#" className="dash-btn-one">
-        <i className="bi bi-plus"></i> Add more
-      </a>
+          </div>
+        </section>
+      )}
     </div>
   );
 };

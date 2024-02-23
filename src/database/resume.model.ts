@@ -19,13 +19,13 @@ export interface IExperience {
 }
 
 export interface IVideos {
-  title: string;
-  videoId: string;
+  title?: string;
+  videoId?: string;
 }
 
 export interface Iportfolio {
-  imageUrl: string;
-  public_id?: string;
+  imageUrl: string | undefined;
+  public_id?: string | undefined;
 }
 
 export interface IResumeType extends Document {
@@ -33,11 +33,11 @@ export interface IResumeType extends Document {
   overview: string;
   minSalary: number;
   maxSalary: number;
-  videos: IVideos[];
+  videos?: IVideos[] | undefined;
   education: IEducation[];
   skills: string[];
   experience: IExperience[];
-  portfolio: Iportfolio[];
+  portfolio?: Iportfolio[] | undefined;
 }
 
 const educationSchema = new Schema({

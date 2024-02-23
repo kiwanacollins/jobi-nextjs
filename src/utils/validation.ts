@@ -19,8 +19,8 @@ const experienceSchema = z.object({
 });
 
 const videoSchema = z.object({
-  title: z.string().min(1).max(100),
-  videoId: z.string().min(1).max(100)
+  title: z.string().max(100).optional(),
+  videoId: z.string().max(100).optional()
 });
 
 export const portfolioSchema = z.object({
@@ -31,13 +31,13 @@ export const portfolioSchema = z.object({
 export const resumeSchema = z.object({
   // pdf: pdfSchema,
   overview: z.string(),
-  videos: z.array(videoSchema),
+  videos: z.array(videoSchema).optional(),
   minSalary: z.number(),
   maxSalary: z.number(),
-  education: z.array(educationSchema),
+  education: z.array(educationSchema).optional(),
   skills: z.array(z.string()),
   experience: z.array(experienceSchema),
-  portfolio: z.array(portfolioSchema)
+  portfolio: z.array(portfolioSchema).optional()
 });
 
 const linksSchema = z.object({

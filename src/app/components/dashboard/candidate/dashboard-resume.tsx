@@ -29,11 +29,15 @@ interface IProps {
 const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const pathname = usePathname();
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const [skillsTag, setSkillsTag] = useState<string[]>(resume?.skills || []);
+  const [skillsTag, setSkillsTag] = useState<string[]>(
+    resume?.skills || mongoUser?.skills || []
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [videoId, setVideoId] = useState<string>(resume?.videos[0]?.videoId);
-  const [thumbnail, setThumbnail] = useState<string>(
-    resume?.videos[0]?.videoId
+  const [videoId, setVideoId] = useState<string | undefined>(
+    resume?.videos?.[0]?.videoId ?? undefined
+  );
+  const [thumbnail, setThumbnail] = useState<string | undefined>(
+    resume?.videos?.[0]?.videoId ?? undefined
   );
 
   const videoThumanail = `https://img.youtube.com/vi/${thumbnail}/0.jpg`;
@@ -80,7 +84,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const methods = useForm<resumeSchemaType>({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
-      skills: resume?.skills || mongoUser.bio || [],
+      skills: resume?.skills || mongoUser?.skills || [],
       overview: resume?.overview || mongoUser.bio || '',
       minSalary: resume?.minSalary || mongoUser?.minSalary || 0,
       maxSalary: resume?.maxSalary || mongoUser?.maxSalary || 0,
@@ -112,7 +116,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       videos: groupedVideos || [
         {
           title: '',
-          videoId
+          videoId: ''
         }
       ]
     }
@@ -297,7 +301,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     });
   };
 
-  const handleVideoClick = (videoId: string, thumbnail: string) => {
+  const handleVideoClick = (
+    videoId: string | undefined,
+    thumbnail: string | undefined
+  ) => {
     setVideoId(videoId);
     setThumbnail(thumbnail);
   };
@@ -409,10 +416,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                 <div className="mb-4 p-4">
                   <h3 className="title">videos </h3>
                   <div className="d-flex flex-wrap gap-4">
-                    {resume?.videos?.map((video, index) => {
+                    {resume?.videos?.map((video: IVideos, index) => {
                       return (
                         <div
-                          key={video.title + index}
+                          key={index}
                           className="bg-primary  p-3   text-white rounded-3 cursor-pointer"
                           onClick={(e) => {
                             e.preventDefault();
@@ -650,10 +657,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                     placeholder="Add skills..."
                     onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
                   />
-                  <ErrorMsg msg={errors.skills?.message} />
+                  <ErrorMsg msg={errors?.skills?.message} />
                 </div>
                 <ul className="style-none d-flex flex-wrap align-items-center">
-                  {skillsTag.map((item: any, index) => {
+                  {skillsTag?.map((item: any, index) => {
                     return (
                       <li className="is_tag" key={index}>
                         <button>
