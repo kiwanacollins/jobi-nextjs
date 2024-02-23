@@ -3,7 +3,7 @@ import React from 'react';
 const CandidateSkeletonLoading = () => {
   return (
     <div
-      className={`candidate-profile-card favourite border-0 list-layout h-75   col-12  mb-25`}
+      className={`candidate-profile-card  border-0 list-layout h-75   col-12  mb-25`}
     >
       <div className="d-flex">
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
