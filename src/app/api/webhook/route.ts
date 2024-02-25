@@ -62,15 +62,8 @@ export async function POST(req: Request) {
 
   // Todo: create a user in your database
   if (eventType === 'user.created') {
-    const {
-      id,
-      email_addresses,
-      image_url,
-      username,
-      first_name,
-      last_name,
-      unsafe_metadata
-    } = evt.data;
+    const { id, email_addresses, image_url, username, first_name, last_name } =
+      evt.data;
 
     // Create a new user in your database
     const mongoUser = await createUser({
@@ -78,8 +71,7 @@ export async function POST(req: Request) {
       name: `${first_name}${last_name ? ` ${last_name}` : ''}`,
       username: username!,
       email: email_addresses[0].email_address,
-      picture: image_url,
-      role: unsafe_metadata?.userRole as string
+      picture: image_url
     });
 
     return NextResponse.json({ message: 'OK', user: mongoUser });
@@ -89,7 +81,7 @@ export async function POST(req: Request) {
     // Todo: update the user in your database
     const { id, username, first_name, last_name, email_addresses, image_url } =
       evt.data;
-    
+
     try {
       // Create a new user in your database
       const mongoUser = await clekUserUpdate({

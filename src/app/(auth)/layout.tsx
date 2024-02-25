@@ -1,17 +1,11 @@
-import { redirect } from 'next/navigation';
-import { currentUser } from '@clerk/nextjs';
 import React from 'react';
 
-export default async function ProtectedAuthLayout({
-  children
-}: {
-  children: React.ReactNode;
-}) {
-  const user = await currentUser();
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <main className="d-flex align-items-center justify-content-center vh-100  w-full ">
+      {children}
+    </main>
+  );
+};
 
-  if (user) {
-    redirect('/');
-  }
-
-  return <>{children}</>;
-}
+export default Layout;
