@@ -35,10 +35,10 @@ const CandidateListItem = ({
           <div className="row gx-1 align-items-center">
             <div className="col-xl-3">
               <div className="position-relative">
-                <h4 className="candidate-name mb-0">
+                <h4 className="candidate-name text-decoration-none  tran3s mb-0">
                   <Link
                     href={`/candidate-profile/${item?.resumeId}`}
-                    className="tran3s"
+                    className="tran3s candidate-name"
                   >
                     {item?.name}
                   </Link>

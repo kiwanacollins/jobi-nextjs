@@ -33,11 +33,11 @@ export interface IResumeType extends Document {
   overview: string;
   minSalary: number;
   maxSalary: number;
-  videos?: IVideos[] | undefined;
+  videos?: IVideos[];
   education: IEducation[];
   skills: string[];
   experience: IExperience[];
-  portfolio?: Iportfolio[] | undefined;
+  portfolio?: Iportfolio[];
 }
 
 const educationSchema = new Schema({

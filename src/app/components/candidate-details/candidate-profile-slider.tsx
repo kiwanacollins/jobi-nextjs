@@ -6,7 +6,7 @@ import Slider from 'react-slick';
 import { Iportfolio } from '@/database/resume.model';
 
 interface CandidateProfileSliderProps {
-  portfolios: Iportfolio[];
+  portfolios: Iportfolio[] | undefined;
 }
 
 const CandidateProfileSlider = ({
@@ -39,11 +39,11 @@ const CandidateProfileSlider = ({
 
   return (
     <Slider {...slider_setting} className="candidate-portfolio-slider">
-      {portfolios.map((img, i) => (
+      {portfolios?.map((img, i) => (
         <div className="item" key={img?.public_id || i}>
           <button className="w-100 d-blok">
             <Image
-              src={img?.imageUrl}
+              src={img?.imageUrl as string}
               alt={img?.public_id as string}
               className="w-100"
               width={350}

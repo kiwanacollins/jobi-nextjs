@@ -31,8 +31,12 @@ const CandidateDetailsArea = ({
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   const { overview, user, education, experience, skills, videos, portfolio } =
     candidateDetials;
-  const [videoId, setVideoId] = useState<string>(videos[0]?.videoId);
-  const [thumbnail, setThumbnail] = useState<string>(videos[0]?.videoId);
+  const [videoId, setVideoId] = useState<string | undefined>(
+    videos?.[0]?.videoId ?? ''
+  );
+  const [thumbnail, setThumbnail] = useState<string | undefined>(
+    videos?.[0]?.videoId ?? ''
+  );
 
   const videoThumanail = `https://img.youtube.com/vi/${thumbnail}/0.jpg`;
 
@@ -71,15 +75,18 @@ const CandidateDetailsArea = ({
                     {candidateDetials?.videos?.map((video, index) => {
                       return (
                         <div
-                          key={video.title + index}
+                          key={video?.title ?? '' + index}
                           className="bg-primary  p-3   text-white rounded-3 cursor-pointer"
                           onClick={() =>
-                            handleVideoClick(video?.videoId, video?.videoId)
+                            handleVideoClick(
+                              video?.videoId ?? '',
+                              video?.videoId ?? ''
+                            )
                           }
                         >
                           <div className="card-body ">
                             <h5 className="card-title fw-bold ">
-                              {video?.title}{' '}
+                              {video?.title ?? ''}{' '}
                             </h5>
                           </div>
                         </div>
