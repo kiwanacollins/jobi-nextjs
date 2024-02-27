@@ -12,7 +12,8 @@ const ListItemThree = ({ item }: { item: IJobData }) => {
   const {
     _id,
     duration,
-    salary,
+    minSalary,
+    maxSalary,
     salary_duration,
     location,
     experience,
@@ -54,7 +55,7 @@ const ListItemThree = ({ item }: { item: IJobData }) => {
             </Link>
             <ul className="style-none d-flex flex-wrap info-data">
               <li>
-                ${salary}/{salary_duration}
+                ${minSalary}-${maxSalary}k/{salary_duration}
               </li>
               <li>{experience}</li>
               <li>{location} </li>

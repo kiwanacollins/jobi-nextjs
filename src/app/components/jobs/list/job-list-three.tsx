@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import slugify from 'slugify';
 import FilterArea from '../filter/filter-area';
 import ListItemTwo from './list-item-2';
-// import { IJobType } from '@/types/job-data-type';
 import Pagination from '@/ui/pagination';
 import JobGridItem from '../grid/job-grid-item';
 import { useAppSelector } from '@/redux/hook';
