@@ -8,8 +8,8 @@ import { getJobPosts } from '@/lib/actions/job.action';
 
 const JobTags = () => {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
-  const uniqueTags = [...new Set(allJobData.flatMap((job) => job.tags))];
-  const { tags } = useAppSelector((state) => state.filter);
+  const uniqueTags = [...new Set(allJobData.flatMap((job) => job.skills))];
+  const { skills } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getAllJobs = async () => {
@@ -29,7 +29,7 @@ const JobTags = () => {
               type="checkbox"
               name="tags"
               defaultValue={t}
-              checked={tags.includes(t as string)}
+              checked={skills.includes(t as string)}
             />
             <label>{t}</label>
           </li>
