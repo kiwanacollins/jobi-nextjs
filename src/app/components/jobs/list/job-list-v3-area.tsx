@@ -1,7 +1,5 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import job_data from '@/data/job-data';
-// import { IJobType } from '@/types/job-data-type';
 import Pagination from '@/ui/pagination';
 import { useAppSelector } from '@/redux/hook';
 import slugify from 'slugify';
@@ -14,8 +12,8 @@ import { getJobPosts } from '@/lib/actions/job.action';
 const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const all_jobs = allJobData;
-  const maxPrice = job_data.reduce((max, job) => {
-    return job.salary > max ? job.salary : max;
+  const maxPrice = all_jobs.reduce((max, job) => {
+    return job.maxSalary > max ? job.maxSalary : max;
   }, 0);
   const {
     category,
@@ -73,18 +71,20 @@ const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
             location
           : true
       )
-      .filter((j) => j.salary >= priceValue[0] && j.salary <= priceValue[1]);
+      .filter(
+        (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+      );
 
     if (shortValue === 'price-low-to-high') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(a.salary) - Number(b.salary));
+        .sort((a, b) => Number(a.minSalary) - Number(b.minSalary));
     }
 
     if (shortValue === 'price-high-to-low') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(b.salary) - Number(a.salary));
+        .sort((a, b) => Number(b.maxSalary) - Number(a.maxSalary));
     }
 
     const endOffset = itemOffset + itemsPerPage;
