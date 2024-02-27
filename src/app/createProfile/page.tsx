@@ -14,8 +14,8 @@ import ErrorMsg from '../components/common/error-msg';
 import { Country } from 'country-state-city';
 import { createEmployeeProfileByUpdating } from '@/lib/actions/employee.action';
 import { usePathname, useRouter } from 'next/navigation';
-import { notifySuccess } from '@/utils/toast';
 import { IServerResponse } from '@/types';
+import { notifySuccess } from '@/utils/toast';
 
 const Page = () => {
   const { userId } = useAuth();
@@ -111,7 +111,7 @@ const Page = () => {
       console.log('response', response);
 
       if (response.status === 'ok') {
-        notifySuccess(response.message);
+        notifySuccess('Employee profile created successfully');
         router.push('/');
       }
     } catch (error) {
