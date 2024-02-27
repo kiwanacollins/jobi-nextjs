@@ -15,7 +15,7 @@ import { Country } from 'country-state-city';
 import { createEmployeeProfileByUpdating } from '@/lib/actions/employee.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { IServerResponse } from '@/types';
-import { notifySuccess } from '@/utils/toast';
+import { notifyError, notifySuccess } from '@/utils/toast';
 
 const Page = () => {
   const { userId } = useAuth();
@@ -107,7 +107,6 @@ const Page = () => {
         updateData,
         path: pathname
       });
-
       console.log('response', response);
 
       if (response.status === 'ok') {
@@ -116,6 +115,7 @@ const Page = () => {
       }
     } catch (error) {
       console.log('error', error);
+      notifyError('Failed to create employee profile');
     } finally {
       setIsSubmitting(false);
     }

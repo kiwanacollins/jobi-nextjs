@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   const user = await currentUser();
-  if (!user) {
+  if (!user || user.privateMetadata.role === 'employee') {
     return redirect('/');
   }
   return (
