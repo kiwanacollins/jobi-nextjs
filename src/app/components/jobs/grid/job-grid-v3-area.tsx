@@ -32,7 +32,7 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
   const [shortValue, setShortValue] = useState('');
 
   const maxPrice = allJobData?.reduce((max, job) => {
-    return job.salary > max ? job.salary : max;
+    return job.maxSalary > max ? job.maxSalary : max;
   }, 0);
 
   const [priceValue, setPriceValue] = useState([0, maxPrice]);
@@ -91,18 +91,20 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
             location
           : true
       )
-      .filter((j) => j.salary >= priceValue[0] && j.salary <= priceValue[1]);
+      .filter(
+        (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+      );
 
     if (shortValue === 'price-low-to-high') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(a.salary) - Number(b.salary));
+        .sort((a, b) => Number(a.minSalary) - Number(b.minSalary));
     }
 
     if (shortValue === 'price-high-to-low') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(b.salary) - Number(a.salary));
+        .sort((a, b) => Number(b.maxSalary) - Number(a.maxSalary));
     }
 
     const endOffset = itemOffset + itemsPerPage;
