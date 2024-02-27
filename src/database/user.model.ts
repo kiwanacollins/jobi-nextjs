@@ -37,6 +37,7 @@ export interface IUser extends Document {
   mapLocation?: string;
   saved?: Schema.Types.ObjectId[];
   resumeId?: Schema.Types.ObjectId | string;
+  jobPosts?: Schema.Types.ObjectId[];
   joinedAt?: Date;
 }
 
@@ -75,6 +76,7 @@ const UserSchema = new Schema({
   mapLocation: { type: String },
   saved: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   resumeId: { type: Schema.Types.ObjectId, ref: 'Resume' },
+  jobPosts: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   joinedAt: { type: Date, default: Date.now }
 });
 

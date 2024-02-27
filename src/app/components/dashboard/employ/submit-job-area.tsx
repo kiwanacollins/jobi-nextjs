@@ -6,7 +6,7 @@ import EmployExperience from './employ-experience';
 import { Controller, useForm } from 'react-hook-form';
 import { skills } from '@/constants';
 import { creatJobPost } from '@/lib/actions/job.action';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { Country } from 'country-state-city';
@@ -59,7 +59,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     {} as any
   );
   const { userId } = useAuth();
-  const router = useRouter();
+
   const pathname = usePathname();
   const type = 'add';
 
@@ -161,13 +161,12 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
         });
 
         notifySuccess('Job post created successfully!');
-        reset();
-        router.push('/jobs');
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
       notifyError(error);
     } finally {
+      reset();
       setIsSubmitting(false);
     }
   };
