@@ -13,6 +13,7 @@ import { creatJobPost } from '@/lib/actions/job.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import { Country } from 'country-state-city';
 
 // props type
 type IProps = {
@@ -63,10 +64,6 @@ const resolver: Resolver<IFormJobData> = async (values) => {
           duration: { type: 'required', message: 'Duration is required.' },
           salary_duration: { type: 'required', message: 'Salary is required.' },
           salary: { type: 'required', message: 'Salary is required.' },
-
-          // minSalary: { type: 'required', message: 'Min is required.' },
-          // maxSalary: { type: 'required', message: 'Max is required.' },
-          // salaryRange: { type: 'required', message: 'Salary Range is required.' },
           skills: { type: 'required', message: 'Skills is required.' },
           experience: { type: 'required', message: 'Experience is required.' },
           industry: { type: 'required', message: 'Industry is required.' },
@@ -84,6 +81,9 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   const [skillTags, setSkillTags] = useState<string[]>(skills);
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
+    {} as any
+  );
   const { userId } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -107,10 +107,20 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     register,
     setValue,
     handleSubmit,
+    watch,
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
+
+  const selectedCountryName = watch('country');
+
+  useEffect(() => {
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectedCountryDetails(selectedCountry);
+  }, [selectedCountryName]);
 
   const handleSkillButton = (value: string) => {
     const index = skillTags.indexOf(value);
@@ -396,19 +406,22 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             <div className="col-lg-4">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">Country*</label>
-                <CountrySelect setValue={setValue} />
+                <CountrySelect register={register} />
               </div>
             </div>
             <div className="col-lg-4">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">City*</label>
-                <CitySelect setValue={setValue} />
+                <CitySelect
+                  register={register}
+                  countryCode={selectedCountryDetails?.isoCode || ''}
+                />
               </div>
             </div>
             <div className="col-lg-4">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">State*</label>
-                <StateSelect setValue={setValue} />
+                <StateSelect register={register} />
               </div>
             </div>
             <div className="col-12">
