@@ -18,9 +18,6 @@ const CountrySelect = ({ register }: ICountrySelect) => {
       className="form-select"
       aria-label="Default select example"
       {...register('country', { required: true })}
-      // onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-      //   handleCountry(e.target.value)
-      // }
     >
       <option value="" disabled>
         select country
@@ -33,12 +30,6 @@ const CountrySelect = ({ register }: ICountrySelect) => {
         );
       })}
     </select>
-    // <NiceSelect
-    //   options={countries}
-    //   defaultCurrent={0}
-    //   onChange={(item) => handleCountry(item)}
-    //   name="country"
-    // />
   );
 };
 

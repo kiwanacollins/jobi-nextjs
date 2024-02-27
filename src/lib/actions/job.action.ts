@@ -14,19 +14,16 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       category,
       english_fluency,
       overview,
-      salaryRange,
       salary_duration,
       experience,
-      tags,
+      skills,
       duration,
       location,
       address,
       city,
-      state,
       country,
       minSalary,
       maxSalary,
-      salary,
       industry
     } = data;
 
@@ -37,19 +34,16 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       category,
       english_fluency,
       overview,
-      salaryRange,
       salary_duration,
       experience,
       duration,
-      tags,
+      skills,
       location,
       address,
       city,
-      state,
       country,
       minSalary,
       maxSalary,
-      salary,
       industry
     });
 

@@ -116,3 +116,25 @@ export const employeeProfileSchema = z.object({
   zip: z.string().min(1, { message: 'Zip code is required' }),
   state: z.string().optional()
 });
+
+export const formJobDataSchema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  overview: z.string().min(1, { message: 'Overview is required' }),
+  duration: z.string().min(1, { message: 'Duration is required' }),
+  salary_duration: z.string().min(1, { message: 'salary is required' }),
+  category: z.string().min(1, { message: 'category is required' }),
+  location: z.string().min(1, { message: 'Location is required' }),
+  address: z.string().min(1, { message: 'Address is required' }),
+  country: z.z.string().min(1, { message: 'Country is required' }),
+  city: z.string().min(1, { message: 'city is required' }),
+  skills: z
+    .array(z.string().min(1, { message: 'skills is required' }))
+    .refine((val) => val.length > 0, {
+      message: 'Please select at least one skill.'
+    }),
+  experience: z.string().min(1, { message: 'Experience salary is required' }),
+  minSalary: z.string().min(1, { message: 'Minimum salary is required' }),
+  maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
+  industry: z.string().min(1, { message: 'Industry salary is required' }),
+  english_fluency: z.string()
+});

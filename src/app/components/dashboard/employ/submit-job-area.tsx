@@ -1,20 +1,23 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import StateSelect from '../candidate/state-select';
 import CitySelect from '../candidate/city-select';
 import CountrySelect from '../candidate/country-select';
 import EmployExperience from './employ-experience';
-import icon from '@/assets/dashboard/images/icon/icon_16.svg';
-import NiceSelect from '@/ui/nice-select';
-import { Resolver, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { skills } from '@/constants';
 import { creatJobPost } from '@/lib/actions/job.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { Country } from 'country-state-city';
-
+import { formJobDataSchema } from '@/utils/validation';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import ErrorMsg from '../../common/error-msg';
+import JobCategorySelect from './jobcategory-select';
+import JobTypeSelect from './jobType-select';
+import SalaryDurationSelect from './salary-duration-select';
+import Select from 'react-select';
 // props type
 type IProps = {
   mongoUserId: string | undefined;
@@ -48,38 +51,9 @@ export interface IFormJobData {
   english_fluency: string;
 }
 
-// interface ISkills {
-//   value: string;
-// }
-
-// resolver
-const resolver: Resolver<IFormJobData> = async (values) => {
-  return {
-    values: values.title ? values : {},
-    errors: !values.title
-      ? {
-          title: { type: 'required', message: 'Title is required.' },
-          overview: { type: 'required', message: 'Overview is required.' },
-          category: { type: 'required', message: 'Category is required.' },
-          duration: { type: 'required', message: 'Duration is required.' },
-          salary_duration: { type: 'required', message: 'Salary is required.' },
-          salary: { type: 'required', message: 'Salary is required.' },
-          skills: { type: 'required', message: 'Skills is required.' },
-          experience: { type: 'required', message: 'Experience is required.' },
-          industry: { type: 'required', message: 'Industry is required.' },
-          address: { type: 'required', message: 'Address is required.' },
-          country: { type: 'required', message: 'Country is required.' },
-          city: { type: 'required', message: 'City is required.' },
-          state: { type: 'required', message: 'State is required.' },
-          location: { type: 'required', message: 'Location is required.' }
-        }
-      : {}
-  };
-};
-
 const SubmitJobArea = ({ mongoUserId }: IProps) => {
-  const [skillTags, setSkillTags] = useState<string[]>(skills);
-  const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  // const [skillTags, setSkillTags] = useState<string[]>(skills || []);
+  // const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
@@ -88,30 +62,42 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const type = 'add';
-  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    console.log(count);
-  }, [count]);
+  type IJobDataSchemaType = z.infer<typeof formJobDataSchema>;
 
   // react hook form
-  const methods = useForm({
-    resolver,
+  const methods = useForm<IJobDataSchemaType>({
+    resolver: zodResolver(formJobDataSchema),
     defaultValues: {
-      tags: skillTags
+      title: '',
+      overview: '',
+      duration: '',
+      salary_duration: '',
+      category: '',
+      location: '',
+      country: '',
+      city: '',
+      experience: '',
+      minSalary: '',
+      maxSalary: '',
+      industry: '',
+      english_fluency: ''
     }
   });
-
-  // react hook form
   const {
+    handleSubmit,
     register,
     setValue,
-    handleSubmit,
+    reset,
+    control,
     watch,
-    // eslint-disable-next-line no-unused-vars
-    formState: { errors },
-    reset
+    formState: { errors }
   } = methods;
+
+  console.log('skills', watch('skills'));
+  console.log('experience', watch('experience'));
+
+  console.log('errors', errors);
 
   const selectedCountryName = watch('country');
 
@@ -122,37 +108,12 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     setSelectedCountryDetails(selectedCountry);
   }, [selectedCountryName]);
 
-  const handleSkillButton = (value: string) => {
-    const index = skillTags.indexOf(value);
-    if (index !== -1) {
-      skillTags.splice(index, 1); // Remove the skill
-      setSkillTags([...skillTags]); // Trigger re-render
-    }
-
-    // Add to selected skills only if not already present
-    if (!selectedSkills.includes(value)) {
-      setSelectedSkills([...selectedSkills, value]);
-      setValue('tags', [...selectedSkills]);
-    }
-  };
-
-  const handleCategory = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('category', value);
-  };
-  const handleJobType = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('duration', value);
-  };
-  const handleSalary = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('salary_duration', value);
-  };
+  const options = skills.map((skill) => ({ value: skill, label: skill }));
 
   // on submit
-  const onSubmit = async (data: IFormJobData) => {
+  const onSubmit = async (data: IJobDataSchemaType) => {
+    console.log('data', data);
     setIsSubmitting(true);
-
     const {
       title,
       category,
@@ -160,56 +121,38 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
       overview,
       minSalary,
       maxSalary,
-      salaryRange,
       salary_duration,
-      tags,
+      skills,
       duration,
       location,
       experience,
       industry,
       address,
       country,
-      state,
-      salary,
+
       city
     } = data;
-
-    if (minSalary && maxSalary) {
-      data.salaryRange = `${minSalary} - ${maxSalary}`;
-    }
-    // if (address?.address && country && state && city) {
-    //   setValue('address', {
-    //     address: address?.address,
-    //     country,
-    //     state,
-    //     city
-    //   });
-    // }
 
     const mongoData = {
       title,
       category,
       english_fluency,
       overview,
-      salaryRange,
       salary_duration,
       experience,
-      tags,
+      skills,
       duration,
       location,
       address,
       minSalary,
       maxSalary,
-      salary,
       country,
       city,
-      state,
       industry
     };
 
     try {
       if (type === 'add') {
-        setCount(count + 1);
         // !Error: this function is calling two times
         await creatJobPost({
           data: mongoData,
@@ -233,10 +176,8 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   return (
     <div className="position-relative">
       {/* form start */}
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <h2 className="main-title">Post a New Job</h2>
-
         <div className="bg-white card-box border-20">
           <h4 className="dash-title-three">Job Details</h4>
           <div className="dash-input-wrapper mb-30">
@@ -247,6 +188,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
               {...register('title', { required: `Title is required!` })}
               name="title"
             />
+            {errors?.title && <ErrorMsg msg={errors?.title.message} />}
           </div>
           <div className="dash-input-wrapper mb-30">
             <label htmlFor="">Job Description*</label>
@@ -258,69 +200,37 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
               })}
               name="overview"
             ></textarea>
+            {errors?.overview && <ErrorMsg msg={errors?.overview.message} />}
           </div>
           <div className="row align-items-end">
             <div className="col-md-6">
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Job Category</label>
-                <NiceSelect
-                  options={[
-                    { value: 'Designer', label: 'Designer' },
-                    {
-                      value: 'It & Development',
-                      label: 'It & Development'
-                    },
-                    {
-                      value: 'Web & Mobile Dev',
-                      label: 'Web & Mobile Dev'
-                    },
-                    { value: 'Writing', label: 'Writing' }
-                  ]}
-                  defaultCurrent={0}
-                  onChange={(item) => handleCategory(item)}
-                  name="category"
-                />
+                <JobCategorySelect register={register} />
+                {errors?.category && (
+                  <ErrorMsg msg={errors?.category?.message} />
+                )}
               </div>
             </div>
             <div className="col-md-6">
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Job Type</label>
-                <NiceSelect
-                  options={[
-                    { value: 'Full time', label: 'Full time' },
-                    { value: 'Part time', label: 'Part time' },
-                    { value: 'Hourly-Contract', label: 'Hourly-Contract' },
-                    { value: 'Fixed-Price', label: 'Fixed-Price' }
-                  ]}
-                  defaultCurrent={0}
-                  onChange={(item) => handleJobType(item)}
-                  name="duration"
-                />
+                <JobTypeSelect register={register} />
+                {errors?.duration && (
+                  <ErrorMsg msg={errors?.duration.message} />
+                )}
               </div>
             </div>
             <div className="col-md-6">
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Salary*</label>
-                <NiceSelect
-                  options={[
-                    { value: 'Monthly', label: 'Monthly' },
-                    { value: 'Weekly', label: 'Weekly' }
-                  ]}
-                  defaultCurrent={0}
-                  onChange={(item: any) => handleSalary(item)}
-                  name="salary_duration"
-                />
+                <SalaryDurationSelect register={register} />
+                {errors?.salary_duration && (
+                  <ErrorMsg msg={errors?.salary_duration.message} />
+                )}
               </div>
             </div>
             <div className="col-md-3">
-              <div className="dash-input-wrapper mb-30">
-                <input
-                  type="text"
-                  placeholder="salary"
-                  {...register('salary')}
-                  name="salary"
-                />
-              </div>
               <div className="dash-input-wrapper mb-30">
                 <input
                   type="text"
@@ -328,16 +238,22 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                   {...register('minSalary')}
                   name="minSalary"
                 />
+                {errors?.minSalary && (
+                  <ErrorMsg msg={errors?.minSalary.message} />
+                )}
               </div>
             </div>
             <div className="col-md-3">
               <div className="dash-input-wrapper mb-30">
                 <input
                   type="text"
-                  placeholder="Max"
+                  placeholder="Max salary"
                   {...register('maxSalary')}
                   name="maxSalary"
                 />
+                {errors?.maxSalary && (
+                  <ErrorMsg msg={errors?.maxSalary.message} />
+                )}
               </div>
             </div>
           </div>
@@ -345,30 +261,43 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           <h4 className="dash-title-three pt-50 lg-pt-30">
             Skills & Experience
           </h4>
-          <div className="dash-input-wrapper mb-30">
-            <label htmlFor="">Skills*</label>
-            <input
-              type="text"
-              placeholder="Add Skills"
-              {...register('tags', { required: `Skills is required!` })}
-              name="tags"
-              value={selectedSkills.join(', ')}
-              defaultValue={skillTags}
+          <div className=" mb-30">
+            <label className="fw-semibold  mb-3 " htmlFor="">
+              Skills*
+            </label>
+            <Controller
+              name="skills"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  isMulti
+                  {...field}
+                  //@ts-ignore
+                  options={options}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                  onChange={(selectedOption) =>
+                    field.onChange(
+                      selectedOption?.map(
+                        (option) => option?.value as string | null
+                      )
+                    )
+                  }
+                  value={field.value?.map((val) =>
+                    val ? { value: val, label: val } : null
+                  )}
+                />
+              )}
             />
-            <div className="skill-input-data d-flex align-items-center flex-wrap">
-              {skillTags.map((skill, index) => (
-                <button
-                  key={skill + index}
-                  onClick={() => handleSkillButton(skill)}
-                >
-                  {skill}
-                </button>
-              ))}
-            </div>
+            {errors?.skills && <ErrorMsg msg={errors?.skills.message} />}
           </div>
 
           {/* employ experience start */}
-          <EmployExperience setValue={setValue} />
+          <EmployExperience
+            control={control}
+            errors={errors}
+            setValue={setValue}
+          />
           {/* employ experience end */}
           <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
           <div className="dash-input-wrapper mb-20">
@@ -383,7 +312,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           <div className="dash-btn-one d-inline-block position-relative me-3">
             <i className="bi bi-plus"></i>
             Upload File
-            <input type="file" id="uploadCV" name="uploadCV" placeholder="" />
+            <div id="uploadCV"></div>
           </div>
           <small>Upload file .pdf, .doc, .docx</small>
           <h4 className="dash-title-three pt-50 lg-pt-30">
@@ -401,12 +330,14 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                   })}
                   name="address"
                 />
+                {errors?.address && <ErrorMsg msg={errors?.address.message} />}
               </div>
             </div>
             <div className="col-lg-4">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">Country*</label>
                 <CountrySelect register={register} />
+                {errors?.country && <ErrorMsg msg={errors?.country.message} />}
               </div>
             </div>
             <div className="col-lg-4">
@@ -416,36 +347,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                   register={register}
                   countryCode={selectedCountryDetails?.isoCode || ''}
                 />
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">State*</label>
-                <StateSelect register={register} />
-              </div>
-            </div>
-            <div className="col-12">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">Map Location*</label>
-                <div className="position-relative">
-                  <input
-                    type="text"
-                    placeholder="XC23+6XC, Moiran, N105"
-                    {...register('mapLocation')}
-                    name="mapLocation"
-                  />
-                  <button className="location-pin tran3s">
-                    <Image src={icon} alt="icon" className="lazy-img m-auto" />
-                  </button>
-                </div>
-                <div className="map-frame mt-30">
-                  <div className="gmap_canvas h-100 w-100">
-                    <iframe
-                      className="gmap_iframe h-100 w-100"
-                      src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bass hill plaza medical centre&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                    ></iframe>
-                  </div>
-                </div>
+                {errors?.city && <ErrorMsg msg={errors?.city.message} />}
               </div>
             </div>
           </div>

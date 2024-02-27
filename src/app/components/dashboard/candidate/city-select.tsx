@@ -9,7 +9,6 @@ interface ICitySelect {
 }
 
 const CitySelect = ({ register, countryCode }: ICitySelect) => {
-  console.log('countryCode', countryCode);
   let cities: ICity[] | undefined = [];
 
   if (countryCode) {
