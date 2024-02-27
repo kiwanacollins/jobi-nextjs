@@ -13,13 +13,15 @@ import { employeeProfileSchema } from '@/utils/validation';
 import ErrorMsg from '../components/common/error-msg';
 import { Country } from 'country-state-city';
 import { createEmployeeProfileByUpdating } from '@/lib/actions/employee.action';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { notifySuccess } from '@/utils/toast';
+import { IServerResponse } from '@/types';
 
 const Page = () => {
   const { userId } = useAuth();
   const [mongoUser, setMongoUser] = useState({} as any);
   const pathname = usePathname();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
@@ -57,6 +59,27 @@ const Page = () => {
     watch,
     formState: { errors }
   } = methods;
+
+  console.log('validation errors', errors);
+
+  const selectedCountryName = watch('country');
+
+  useEffect(() => {
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectedCountryDetails(selectedCountry);
+  }, [selectedCountryName]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUserById({ userId });
+      setMongoUser(user);
+      reset(user);
+    };
+    fetchUser();
+  }, [userId, reset]);
+
   const onSubmit = async (value: any) => {
     setIsSubmitting(true);
     const updateData = {
@@ -79,39 +102,24 @@ const Page = () => {
     };
 
     try {
-      await createEmployeeProfileByUpdating({
+      const response: IServerResponse = await createEmployeeProfileByUpdating({
         clerkId: userId,
         updateData,
         path: pathname
       });
-      notifySuccess('Employee Profile created successfully!');
+
+      console.log('response', response);
+
+      if (response.status === 'ok') {
+        notifySuccess(response.message);
+        router.push('/');
+      }
     } catch (error) {
-      console.log(error);
+      console.log('error', error);
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  console.log('country watching', watch('country'));
-  console.log('validation errors', errors);
-
-  const selectedCountryName = watch('country');
-
-  useEffect(() => {
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === selectedCountryName
-    );
-    setSelectedCountryDetails(selectedCountry);
-  }, [selectedCountryName]);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await getUserById({ userId });
-      setMongoUser(user);
-      reset(user);
-    };
-    fetchUser();
-  }, [userId, reset]);
 
   return (
     <div className="">

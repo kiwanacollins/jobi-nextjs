@@ -27,6 +27,14 @@ export async function createEmployeeProfileByUpdating(
       throw new Error(`User with clerkId ${clerkId} not found`);
     }
     revalidatePath(path);
+
+    return JSON.parse(
+      JSON.stringify({
+        status: 'ok',
+        message: 'User updated successfully',
+        data: updatedUser
+      })
+    );
   } catch (error) {
     console.log(error);
     throw error;
