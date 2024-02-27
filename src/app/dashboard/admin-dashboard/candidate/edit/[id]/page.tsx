@@ -17,6 +17,7 @@ import NiceSelect from '@/ui/nice-select';
 import { IUser } from '@/database/user.model';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { Country } from 'country-state-city';
 
 interface ParamsProps {
   params: {
@@ -33,6 +34,9 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const pathname = usePathname();
+  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
+    {} as any
+  );
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -40,7 +44,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
     resolver: zodResolver(userSchema),
     defaultValues: {
       name: mongoUser?.name || '',
-      username: mongoUser?.username || '',
       phone: mongoUser?.phone || '',
       post: mongoUser?.post || '',
       email: mongoUser?.email || '',
@@ -49,16 +52,14 @@ const UpdateUser = ({ params }: ParamsProps) => {
       qualification: mongoUser?.qualification,
       bio: mongoUser?.bio,
       mediaLinks: {
-        linkedin: mongoUser?.mediaLinks?.linkedin,
-        github: mongoUser?.mediaLinks?.github
+        linkedin: mongoUser?.mediaLinks?.linkedin || '',
+        github: mongoUser?.mediaLinks?.github || ''
       },
-      address: mongoUser?.address,
-      country: mongoUser?.country,
+      address: mongoUser?.address || '',
+      country: mongoUser?.country || '',
       city: mongoUser?.city,
-      zip: mongoUser?.zip,
-      state: mongoUser?.state,
-      mapLocation: mongoUser?.mapLocation,
-      location: mongoUser?.location
+      zip: mongoUser?.zip || '',
+      state: mongoUser?.state
     }
   });
 
@@ -69,8 +70,18 @@ const UpdateUser = ({ params }: ParamsProps) => {
     setError,
     clearErrors,
     handleSubmit,
+    watch,
     formState: { errors }
   } = methods;
+
+  const selectedCountryName = watch('country');
+
+  useEffect(() => {
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectedCountryDetails(selectedCountry);
+  }, [selectedCountryName]);
 
   // fetchUser by id
   useEffect(() => {
@@ -177,7 +188,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
           name: value?.name,
           email: value.email,
           post: value.post,
-          username: value.username,
           role: value.role,
           bio: value.bio,
           salary_duration: value.salary_duration,
@@ -268,17 +278,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
               />
               <ErrorMsg msg={errors?.name?.message as string} />
             </div>
-            <div className="dash-input-wrapper mb-30">
-              <label htmlFor="">username*</label>
-              <input
-                type="text"
-                placeholder="username"
-                {...register('username')}
-                defaultValue={mongoUser?.username}
-                name="username"
-              />
-              <ErrorMsg msg={errors?.username?.message as string} />
-            </div>
+
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Email*</label>
               <input
@@ -526,13 +526,16 @@ const UpdateUser = ({ params }: ParamsProps) => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">Country*</label>
-                  <CountrySelect setValue={setValue} />
+                  <CountrySelect register={register} />
                 </div>
               </div>
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">City*</label>
-                  <CitySelect setValue={setValue} />
+                  <CitySelect
+                    register={register}
+                    countryCode={selectedCountryDetails?.isoCode || ''}
+                  />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -550,7 +553,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">State*</label>
-                  <StateSelect setValue={setValue} />
+                  <StateSelect register={register} />
                 </div>
               </div>
               <div className="col-12">

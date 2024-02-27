@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -14,6 +14,7 @@ import ErrorMsg from '@/app/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import NiceSelect from '@/ui/nice-select';
+import { Country } from 'country-state-city';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,6 +23,9 @@ const NewUser = () => {
   const [role, setRole] = useState('candidate');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   const [skillsTag, setSkillsTag] = useState<string[]>([]);
+  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
+    {} as any
+  );
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -62,6 +66,14 @@ const NewUser = () => {
   } = methods;
 
   console.log('createUser', watch());
+  const selectedCountryName = watch('country');
+
+  useEffect(() => {
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectedCountryDetails(selectedCountry);
+  }, [selectedCountryName]);
 
   // handle file pdf upload
   const handleFileChange = async (
@@ -150,7 +162,6 @@ const NewUser = () => {
         name: value?.name,
         email: value.email,
         post: value.post,
-        username: value.username,
         role: value.role,
         bio: value.bio,
         salary_duration: value.salary_duration,
@@ -164,13 +175,13 @@ const NewUser = () => {
         minSalary: value.minSalary,
         maxSalary: value.maxSalary,
         mediaLinks: {
-          linkedin: value.mediaLinks?.linkedin,
-          github: value.mediaLinks?.github
+          linkedin: value.mediaLinks?.linkedin || '',
+          github: value.mediaLinks?.github || ''
         },
-        address: value.address,
-        country: value.country,
+        address: value.address || '',
+        country: value.country || '',
         city: value.city,
-        zip: value.zip,
+        zip: value.zip || '',
         state: value.state,
         mapLocation: value.mapLocation,
         location: value.location
@@ -229,16 +240,7 @@ const NewUser = () => {
               />
               <ErrorMsg msg={errors?.name?.message as string} />
             </div>
-            <div className="dash-input-wrapper mb-30">
-              <label htmlFor="">username</label>
-              <input
-                type="text"
-                placeholder="username"
-                {...register('username')}
-                name="username"
-              />
-              <ErrorMsg msg={errors?.username?.message as string} />
-            </div>
+
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Email*</label>
               <input
@@ -476,13 +478,16 @@ const NewUser = () => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">Country*</label>
-                  <CountrySelect setValue={setValue} />
+                  <CountrySelect register={register} />
                 </div>
               </div>
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">City*</label>
-                  <CitySelect setValue={setValue} />
+                  <CitySelect
+                    register={register}
+                    countryCode={selectedCountryDetails?.isoCode || ''}
+                  />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -499,7 +504,7 @@ const NewUser = () => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">State*</label>
-                  <StateSelect setValue={setValue} />
+                  <StateSelect register={register} />
                 </div>
               </div>
               <div className="col-12">

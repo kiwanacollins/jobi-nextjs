@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import avatar from '@/assets/dashboard/images/avatar_04.jpg';
 import icon from '@/assets/dashboard/images/icon/icon_16.svg';
@@ -7,14 +7,29 @@ import CountrySelect from '../candidate/country-select';
 import CitySelect from '../candidate/city-select';
 import StateSelect from '../candidate/state-select';
 import { useForm } from 'react-hook-form';
+import { Country } from 'country-state-city';
 
 const EmployProfileArea = () => {
+  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
+    {} as any
+  );
   const methods = useForm();
   const {
     handleSubmit,
-    setValue
+    register,
+    watch
     // formState: {}
   } = methods;
+
+  const selectedCountryName = watch('country');
+
+  useEffect(() => {
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectedCountryDetails(selectedCountry);
+  }, [selectedCountryName]);
+
   const onSubmit = async (value: any) => {
     console.log(value);
   };
@@ -120,13 +135,16 @@ const EmployProfileArea = () => {
             <div className="col-lg-3">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">Country*</label>
-                <CountrySelect setValue={setValue} />
+                <CountrySelect register={register} />
               </div>
             </div>
             <div className="col-lg-3">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">City*</label>
-                <CitySelect setValue={setValue} />
+                <CitySelect
+                  register={register}
+                  countryCode={selectedCountryDetails?.isoCode || ''}
+                />
               </div>
             </div>
             <div className="col-lg-3">
@@ -138,7 +156,7 @@ const EmployProfileArea = () => {
             <div className="col-lg-3">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">State*</label>
-                <StateSelect setValue={setValue} />
+                <StateSelect register={register} />
               </div>
             </div>
             <div className="col-12">
