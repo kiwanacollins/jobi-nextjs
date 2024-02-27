@@ -41,15 +41,20 @@ export const resumeSchema = z.object({
 });
 
 const linksSchema = z.object({
-  linkedin: z.string().max(255).optional(),
-  github: z.string().max(255).optional()
+  linkedin: z
+    .string()
+    .min(1, { message: 'linkedin is required' })
+    .url('Invalid URL'),
+  github: z
+    .string()
+    .min(1, { message: 'github is required' })
+    .url('Invalid URL')
 });
 
 // Define the Zod schema for the IUser interface
 export const userSchema = z.object({
   clerkId: z.string().optional(),
-  name: z.string().max(255),
-  username: z.string().min(1).max(255),
+  name: z.string().min(1, { message: 'Name is required' }).max(255),
   age: z.number().optional(),
   email: z.string().max(100).email('Invalid email'),
   post: z.string().max(100),
@@ -67,10 +72,47 @@ export const userSchema = z.object({
   location: z.string().optional(),
   mediaLinks: linksSchema.optional(),
   address: z.string().optional(),
-  country: z.string().optional(),
+  country: z.string().min(1, { message: 'Country is required' }),
   city: z.string().optional(),
   street: z.string().optional(),
   zip: z.string().optional(),
   state: z.string().optional(),
   mapLocation: z.string().optional()
+});
+
+export const employeeProfileSchema = z.object({
+  clerkId: z.string().optional(),
+  name: z.string().min(1, { message: 'Name is required' }).max(255),
+  email: z.string().max(100).email('Invalid email').readonly(),
+  website: z
+    .string()
+    .min(1, { message: 'Website is required' })
+    .url('Invalid URL'),
+  established: z
+    .string()
+    .transform((str) => (str ? new Date(str) : null)) // Convert string to Date or null if string is empty
+    .refine(
+      (date) => date === null || (!isNaN(date.getTime()) && date <= new Date()),
+      {
+        message: 'Invalid date'
+      }
+    )
+    .refine((date) => date !== null, {
+      message: 'Date is required.'
+    }),
+  bio: z.string().min(1, { message: 'required' }),
+  categories: z
+    .string()
+    .min(1, { message: 'Categories is required' })
+    .max(50, { message: 'Can not contain 50 characters or less.' })
+    .transform((str) => str.split(',').map((name) => name.trim())),
+  companySize: z.number().min(1, { message: 'Field is required' }),
+  phone: z.string().min(1, { message: 'Phone number is required' }).optional(),
+  mediaLinks: linksSchema.optional(),
+  address: z.string().min(1, { message: 'Address is required' }),
+  country: z.string().min(1, { message: 'Country is required' }),
+  city: z.string().min(1, { message: 'city is required' }),
+  street: z.string().optional(),
+  zip: z.string().min(1, { message: 'Zip code is required' }),
+  state: z.string().optional()
 });

@@ -25,7 +25,7 @@ export interface CreateJobParams {
 }
 
 export interface UpdateUserParams {
-  clerkId: string;
+  clerkId: string | null | undefined;
   updateData: Partial<IUser>;
   path: string;
 }

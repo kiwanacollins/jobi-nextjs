@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import CountrySelect from './country-select';
@@ -12,6 +12,7 @@ import { IUser } from '@/database/user.model';
 import ErrorMsg from '../../common/error-msg';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import QualicationSelect from './QualicationSelect';
+import { Country } from 'country-state-city';
 
 // props type
 type IProps = {
@@ -23,6 +24,9 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
   const pathname = usePathname();
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState(mongoUser?.gender || 'male');
+  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
+    {} as any
+  );
 
   // resolver
   const resolver: Resolver = async (values) => {
@@ -30,7 +34,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
       values: values.name ? values : '',
       defaultValues: {
         name: mongoUser?.name || '',
-        username: mongoUser?.username || '  ',
         age: mongoUser?.age || '',
         phone: mongoUser?.phone || '',
         qualification: mongoUser?.qualification || '',
@@ -97,9 +100,18 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
     register,
     reset,
     setValue,
+    watch,
     handleSubmit,
     formState: { errors }
   } = methods;
+  const selectedCountryName = watch('country');
+
+  useEffect(() => {
+    const selectedCountry = Country.getAllCountries().find(
+      (country) => country.name === selectedCountryName
+    );
+    setSelectedCountryDetails(selectedCountry);
+  }, [selectedCountryName]);
 
   // handle file pdf upload
   const handleFileChange = async (
@@ -200,17 +212,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               />
               <ErrorMsg msg={errors?.name?.message as string} />
             </div>
-            <div className="dash-input-wrapper mb-30">
-              <label htmlFor="">username</label>
-              <input
-                defaultValue={mongoUser?.username}
-                type="text"
-                placeholder="username"
-                {...register('username')}
-                name="username"
-              />
-              <ErrorMsg msg={errors?.username?.message as string} />
-            </div>
+
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Phone</label>
               <input
@@ -374,13 +376,16 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">Country*</label>
-                  <CountrySelect setValue={setValue} />
+                  <CountrySelect register={register} />
                 </div>
               </div>
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">City*</label>
-                  <CitySelect setValue={setValue} />
+                  <CitySelect
+                    register={register}
+                    countryCode={selectedCountryDetails?.isoCode || ''}
+                  />
                 </div>
               </div>
               <div className="col-lg-3">
@@ -398,7 +403,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
               <div className="col-lg-3">
                 <div className="dash-input-wrapper mb-25">
                   <label htmlFor="">State*</label>
-                  <StateSelect setValue={setValue} />
+                  <StateSelect register={register} />
                 </div>
               </div>
               <div className="col-12">

@@ -21,7 +21,6 @@ const EmployProfileArea = () => {
   return (
     <div className="position-relative">
       <h2 className="main-title">Profile</h2>
-
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="bg-white card-box border-20">
           <div className="user-avatar-setting d-flex align-items-center mb-30">

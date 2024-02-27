@@ -8,12 +8,15 @@ interface I_Links {
 export interface IUser extends Document {
   clerkId?: string | undefined;
   name: string;
-  username: string;
   age?: number;
   email: string;
+  companySize?: number;
+  established: Date;
+  categories?: string[];
   post?: string;
   bio?: string;
   gender?: string;
+  website?: string;
   qualification?: string;
   minSalary: number;
   maxSalary: number;
@@ -40,8 +43,11 @@ export interface IUser extends Document {
 const UserSchema = new Schema({
   clerkId: { type: String },
   name: { type: String, required: true },
-  username: { type: String, require: true, unique: true },
   email: { type: String, required: true, unique: true },
+  website: { type: String },
+  companySize: { type: Number },
+  established: { type: Date },
+  categories: [{ type: String }],
   bio: { type: String },
   post: { type: String },
   age: { type: Number },

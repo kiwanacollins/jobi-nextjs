@@ -1,26 +1,38 @@
-import NiceSelect from '@/ui/nice-select';
-import React from 'react';
-import { UseFormSetValue } from 'react-hook-form';
+import { City, ICity } from 'country-state-city';
 
-const CitySelect = ({ setValue }: { setValue: UseFormSetValue<any> }) => {
-  const handleCity = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('city', value);
-  };
+import React from 'react';
+import { UseFormRegister } from 'react-hook-form';
+
+interface ICitySelect {
+  register: UseFormRegister<any>;
+  countryCode: string | undefined;
+}
+
+const CitySelect = ({ register, countryCode }: ICitySelect) => {
+  console.log('countryCode', countryCode);
+  let cities: ICity[] | undefined = [];
+
+  if (countryCode) {
+    cities = City.getCitiesOfCountry(countryCode);
+  }
+
   return (
-    <NiceSelect
-      options={[
-        { value: 'Sydney', label: 'Sydney' },
-        { value: 'Tokyo', label: 'Tokyo' },
-        { value: 'Delhi', label: 'Delhi' },
-        { value: 'Shanghai', label: 'Shanghai' },
-        { value: 'Mumbai', label: 'Mumbai' },
-        { value: 'Bangalore', label: 'Bangalore' }
-      ]}
-      defaultCurrent={0}
-      onChange={(item) => handleCity(item)}
-      name="city"
-    />
+    <select
+      className="form-select"
+      aria-label="Default select example"
+      {...register('city', { required: true })}
+    >
+      <option value="" disabled>
+        select city
+      </option>
+      {cities?.map((city, i) => {
+        return (
+          <option key={i} value={city.name}>
+            {city.name}
+          </option>
+        );
+      })}
+    </select>
   );
 };
 
