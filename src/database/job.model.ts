@@ -10,10 +10,10 @@ export interface IJobData extends Document {
   location: string;
   country: string;
   city: string;
-  skills?: string[];
+  skills: string[];
   experience: string;
-  minSalary?: string;
-  maxSalary?: string;
+  minSalary: number;
+  maxSalary: number;
   industry: string;
   english_fluency: string;
   createdBy?: Schema.Types.ObjectId | string;

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import slugify from 'slugify';
 import FilterArea from '../filter/filter-area';
-import job_data from '@/data/job-data';
 import ListItemTwo from './list-item-2';
 // import { IJobType } from '@/types/job-data-type';
 import Pagination from '@/ui/pagination';
@@ -21,10 +20,10 @@ const JobListThree = ({
   allJobs: IJobData[];
 }) => {
   const all_jobs = allJobs;
-  const maxPrice = job_data.reduce((max, job) => {
-    return job.salary > max ? job.salary : max;
+  const maxPrice = all_jobs.reduce((max, job) => {
+    return job.maxSalary > max ? job.maxSalary : max;
   }, 0);
-  const { category, experience, job_type, location, tags } = useAppSelector(
+  const { category, experience, job_type, location, skills } = useAppSelector(
     (state) => state.filter
   );
   const [currentItems, setCurrentItems] = useState<IJobData[] | null>(null);
@@ -59,20 +58,24 @@ const JobListThree = ({
           : true
       )
       .filter((item) =>
-        tags.length !== 0 ? tags.some((t) => item?.tags?.includes(t)) : true
+        skills.length !== 0
+          ? skills.some((t) => item?.skills?.includes(t))
+          : true
       )
-      .filter((j) => j.salary >= priceValue[0] && j.salary <= priceValue[1]);
+      .filter(
+        (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+      );
 
     if (shortValue === 'price-low-to-high') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(a.salary) - Number(b.salary));
+        .sort((a, b) => Number(a.minSalary) - Number(b.minSalary));
     }
 
     if (shortValue === 'price-high-to-low') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(b.salary) - Number(a.salary));
+        .sort((a, b) => Number(b.maxSalary) - Number(a.maxSalary));
     }
     const endOffset = itemOffset + itemsPerPage;
     setFilterItems(filteredData);
@@ -85,7 +88,7 @@ const JobListThree = ({
     experience,
     job_type,
     location,
-    tags,
+    skills,
     priceValue,
     shortValue,
     all_jobs

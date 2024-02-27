@@ -9,7 +9,7 @@ interface IFilterState {
   english_fluency: string;
   experience: string[];
   category: string[];
-  tags: string[];
+  skills: string[];
 }
 
 // Define the initial state using that type
@@ -20,7 +20,7 @@ const initialState: IFilterState = {
   english_fluency: '',
   experience: [],
   category: [],
-  tags: []
+  skills: []
 };
 
 export const filterSlice = createSlice({
@@ -66,10 +66,10 @@ export const filterSlice = createSlice({
       }
     },
     setTags: (state, action: PayloadAction<string>) => {
-      if (state.tags.includes(action.payload)) {
-        state.tags = state.tags.filter((t) => t !== action.payload);
+      if (state.skills.includes(action.payload)) {
+        state.skills = state.skills.filter((t) => t !== action.payload);
       } else {
-        state.tags.push(action.payload);
+        state.skills.push(action.payload);
       }
     },
     resetFilter: (state) => {
@@ -77,7 +77,7 @@ export const filterSlice = createSlice({
       state.job_type = '';
       state.english_fluency = '';
       state.category = [];
-      state.tags = [];
+      state.skills = [];
       state.experience = [];
     }
   }

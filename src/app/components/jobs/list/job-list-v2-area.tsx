@@ -22,7 +22,7 @@ const JobListV2Area = ({
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const all_jobs = allJobData;
   const maxPrice = all_jobs.reduce((max, job) => {
-    return job.salary > max ? job.salary : max;
+    return job.maxSalary > max ? job.maxSalary : max;
   }, 0);
   const {
     category,
@@ -81,18 +81,20 @@ const JobListV2Area = ({
             location
           : true
       )
-      .filter((j) => j.salary >= priceValue[0] && j.salary <= priceValue[1]);
+      .filter(
+        (j) => j.maxSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+      );
 
     if (shortValue === 'price-low-to-high') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(a.salary) - Number(b.salary));
+        .sort((a, b) => Number(a.minSalary) - Number(b.minSalary));
     }
 
     if (shortValue === 'price-high-to-low') {
       filteredData = filteredData
         .slice()
-        .sort((a, b) => Number(b.salary) - Number(a.salary));
+        .sort((a, b) => Number(b.maxSalary) - Number(a.maxSalary));
     }
 
     const endOffset = itemOffset + itemsPerPage;

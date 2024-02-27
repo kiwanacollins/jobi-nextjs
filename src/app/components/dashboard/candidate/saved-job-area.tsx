@@ -53,8 +53,10 @@ const SavedJobArea = () => {
                   {j.duration}
                 </Link>
                 <div className="job-salary">
-                  <span className="fw-500 text-dark">${j.salary}</span> /{' '}
-                  {j.salary_duration} . {j.experience}
+                  <span className="fw-500 text-dark">
+                    ${j.minSalary}- ${j.maxSalary}
+                  </span>{' '}
+                  / {j.salary_duration} . {j.experience}
                 </div>
               </div>
               <div className="col-xxl-2 col-lg-3 col-md-4 col-sm-6 ms-auto xs-mt-10">
