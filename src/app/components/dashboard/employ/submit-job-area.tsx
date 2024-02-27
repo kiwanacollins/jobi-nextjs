@@ -129,7 +129,6 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
       industry,
       address,
       country,
-
       city
     } = data;
 

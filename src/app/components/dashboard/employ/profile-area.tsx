@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import avatar from '@/assets/dashboard/images/avatar_04.jpg';
 import icon from '@/assets/dashboard/images/icon/icon_16.svg';
-import CountrySelect from '../candidate/country-select';
+
 import CitySelect from '../candidate/city-select';
 import StateSelect from '../candidate/state-select';
 import { useForm } from 'react-hook-form';
@@ -135,7 +135,7 @@ const EmployProfileArea = () => {
             <div className="col-lg-3">
               <div className="dash-input-wrapper mb-25">
                 <label htmlFor="">Country*</label>
-                <CountrySelect register={register} />
+                {/* <CountrySelect register={register} /> */}
               </div>
             </div>
             <div className="col-lg-3">

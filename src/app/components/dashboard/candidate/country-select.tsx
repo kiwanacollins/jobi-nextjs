@@ -9,10 +9,6 @@ interface ICountrySelect {
 export const countries: ICountry[] = Country.getAllCountries();
 
 const CountrySelect = ({ register }: ICountrySelect) => {
-  // const handleCountry = (item: string) => {
-  //   console.log('handleCountry  item:', item);
-  //   setSelectedCountry(item);
-  // };
   return (
     <select
       className="form-select"
