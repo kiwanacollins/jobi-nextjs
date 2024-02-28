@@ -111,7 +111,6 @@ const Page = () => {
         path: pathname
       });
       console.log('response', response);
-
       if (response.status === 'ok') {
         notifySuccess('Employee profile created successfully');
         router.push('/');
@@ -255,7 +254,7 @@ const Page = () => {
                               )
                             )
                           }
-                          value={field.value?.map((val) =>
+                          value={field.value?.map((val: string) =>
                             val ? { value: val, label: val } : null
                           )}
                         />

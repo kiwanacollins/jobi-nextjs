@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { createUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
@@ -13,6 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Country } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
 import SalaryDurationSelect from '@/app/components/dashboard/employ/salary-duration-select';
+import Select from 'react-select';
+import { skills } from '@/constants';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -54,14 +56,13 @@ const NewUser = () => {
     register,
     reset,
     setValue,
-    setError,
     watch,
-    clearErrors,
+    control,
     handleSubmit,
     formState: { errors }
   } = methods;
 
-  // console.log('new user', watch());
+  console.log('skills', watch('skills'));
   console.log('errors', errors);
   const selectedCountryName = watch('country');
 
@@ -101,35 +102,35 @@ const NewUser = () => {
   };
 
   // add skills
-  const handleInputKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
-  ) => {
-    if (e.key === 'Enter' && field === 'skills') {
-      e.preventDefault();
+  // const handleInputKeyDown = (
+  //   e: React.KeyboardEvent<HTMLInputElement>,
+  //   field: any
+  // ) => {
+  //   if (e.key === 'Enter' && field === 'skills') {
+  //     e.preventDefault();
 
-      const tagInput = e.target as HTMLInputElement;
-      const tagValue = tagInput.value;
+  //     const tagInput = e.target as HTMLInputElement;
+  //     const tagValue = tagInput.value;
 
-      if (tagValue !== '') {
-        if (tagValue.length > 15) {
-          return setError('skills', {
-            type: 'required',
-            message: 'Tag must be less than 15 characters.'
-          });
-        }
-        // Retrieve current skills array
-        const currentSkills = skillsTag || [];
+  //     if (tagValue !== '') {
+  //       if (tagValue.length > 15) {
+  //         return setError('skills', {
+  //           type: 'required',
+  //           message: 'Tag must be less than 15 characters.'
+  //         });
+  //       }
+  //       // Retrieve current skills array
+  //       const currentSkills = skillsTag || [];
 
-        if (!skillsTag.includes(tagValue as never)) {
-          setValue('skills', [...currentSkills, tagValue]);
-          setSkillsTag([...currentSkills, tagValue]);
-          tagInput.value = '';
-          clearErrors('skills');
-        }
-      }
-    }
-  };
+  //       if (!skillsTag.includes(tagValue as never)) {
+  //         setValue('skills', [...currentSkills, tagValue]);
+  //         setSkillsTag([...currentSkills, tagValue]);
+  //         tagInput.value = '';
+  //         clearErrors('skills');
+  //       }
+  //     }
+  //   }
+  // };
 
   // remove skill
   const handleTagRemove = (tag: string, e: any) => {
@@ -182,6 +183,11 @@ const NewUser = () => {
       setFilename('');
     }
   };
+
+  const skillsOptions = skills.map((skill) => ({
+    value: skill,
+    label: skill
+  }));
 
   return (
     <>
@@ -330,12 +336,34 @@ const NewUser = () => {
               <label htmlFor="">Skills*</label>
               <div className="skills-wrapper">
                 <div className="dash-input-wrapper mb-30">
-                  <input
-                    type="text"
-                    placeholder="Add skills..."
-                    onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
+                  <Controller
+                    name="skills"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        isMulti
+                        {...field}
+                        //@ts-ignore
+
+                        options={skillsOptions || []}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) =>
+                          field.onChange(
+                            selectedOption?.map(
+                              (option) => option?.value as string | null
+                            )
+                          )
+                        }
+                        value={field.value?.map((val) =>
+                          val ? { value: val, label: val } : null
+                        )}
+                      />
+                    )}
                   />
-                  <ErrorMsg msg={errors.skills?.message} />
+                  {errors?.skills && (
+                    <ErrorMsg msg={errors?.skills?.message as string} />
+                  )}
                 </div>
                 <ul className="style-none d-flex flex-wrap align-items-center">
                   {skillsTag.map((item: any, index) => {

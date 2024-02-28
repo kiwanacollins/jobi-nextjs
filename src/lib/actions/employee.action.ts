@@ -22,6 +22,7 @@ export async function createEmployeeProfileByUpdating(
     const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true
     });
+
     console.log('updatedUser', updateUser);
 
     const clerkUser = await clerkClient.users.getUser(clerkId as string);

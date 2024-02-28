@@ -65,7 +65,11 @@ export const userSchema = z.object({
   maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
   salary_duration: z.string().optional(),
   experience: z.string().min(1, { message: 'experience is required' }),
-  skills: z.array(z.string().max(50)),
+  skills: z
+    .array(z.string().min(1, { message: 'skills is required' }))
+    .refine((val) => val.length > 0, {
+      message: 'Please select at least one skill.'
+    }),
   phone: z.string().min(1, { message: 'post is required' }).max(11).optional(),
   picture: z.string().optional(),
   location: z.string().optional(),
