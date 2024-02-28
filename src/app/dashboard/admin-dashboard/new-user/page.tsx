@@ -21,7 +21,7 @@ const NewUser = () => {
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
-  const [skillsTag, setSkillsTag] = useState<string[]>([]);
+  // const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
   );
@@ -33,7 +33,6 @@ const NewUser = () => {
     defaultValues: {
       name: '',
       email: '',
-      age: '',
       phone: '',
       post: '',
       skills: [],
@@ -133,12 +132,12 @@ const NewUser = () => {
   // };
 
   // remove skill
-  const handleTagRemove = (tag: string, e: any) => {
-    e.preventDefault();
-    const newTags = skillsTag.filter((t: string) => t !== tag);
-    setSkillsTag(newTags);
-    setValue('skills', newTags);
-  };
+  // const handleTagRemove = (tag: string, e: any) => {
+  //   e.preventDefault();
+  //   const newTags = skillsTag.filter((t: string) => t !== tag);
+  //   setSkillsTag(newTags);
+  //   setValue('skills', newTags);
+  // };
 
   const onSubmit = async (value: userSchemaType) => {
     setIsSubmitting(true);
@@ -178,7 +177,7 @@ const NewUser = () => {
     } finally {
       setIsSubmitting(false);
       reset();
-      setSkillsTag([]);
+      // setSkillsTag([]);
       setImagePreview(undefined);
       setFilename('');
     }
@@ -249,7 +248,9 @@ const NewUser = () => {
                 {...register('post', { required: true })}
                 name="post"
               />
-              <ErrorMsg msg={errors?.post?.message as string} />
+              {errors?.post && (
+                <ErrorMsg msg={errors?.post?.message as string} />
+              )}
             </div>
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Phone</label>
@@ -365,7 +366,7 @@ const NewUser = () => {
                     <ErrorMsg msg={errors?.skills?.message as string} />
                   )}
                 </div>
-                <ul className="style-none d-flex flex-wrap align-items-center">
+                {/* <ul className="style-none d-flex flex-wrap align-items-center">
                   {skillsTag.map((item: any, index) => {
                     return (
                       <li className="is_tag" key={index}>
@@ -379,7 +380,7 @@ const NewUser = () => {
                       </li>
                     );
                   })}
-                </ul>
+                </ul> */}
               </div>
             </div>
 

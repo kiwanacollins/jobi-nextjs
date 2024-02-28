@@ -1,9 +1,10 @@
+'use client';
 import React from 'react';
-import ActionDropdown from '../candidate/action-dropdown';
 // import { ICandidate } from "@/data/candidate-data";
 import Image from 'next/image';
 import { IUser } from '@/database/user.model';
 import Link from 'next/link';
+import ActionDropdown from '../candidate/action-dropdown';
 
 const CandidateItem = ({ item }: { item: IUser }) => {
   return (
@@ -27,7 +28,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                 <h4 className="candidate-name mb-0">
                   <Link
                     href={`/candidate-profile/${item?.resumeId}`}
-                    className="tran3s"
+                    className="tran3s text-decoration-none  "
                   >
                     {item?.name}
                   </Link>

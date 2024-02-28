@@ -3,6 +3,7 @@ import CandidateAside from '@/app/components/dashboard/candidate/aside';
 import DashboardHeader from '@/app/components/dashboard/candidate/dashboard-header';
 import Wrapper from '@/layouts/wrapper';
 import React, { useState } from 'react';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const CandidateDashboardLayout = ({
   children

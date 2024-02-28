@@ -55,14 +55,14 @@ const linksSchema = z.object({
 export const userSchema = z.object({
   clerkId: z.string().optional(),
   name: z.string().min(1, { message: 'Name is required' }).max(255),
-  age: z.string().min(1, { message: 'age is required' }),
+  age: z.number(),
   email: z.string().max(100).email('Invalid email'),
   post: z.string().min(1, { message: 'post is required' }).max(100),
   bio: z.string().min(1, { message: 'post is required' }),
   gender: z.string().optional(),
   qualification: z.string().min(1, { message: 'experience is required' }),
-  minSalary: z.string().min(1, { message: 'Minimum salary is required' }),
-  maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
+  minSalary: z.number().min(1, { message: 'Minimum salary is required' }),
+  maxSalary: z.number().min(1, { message: 'Maximum salary is required' }),
   salary_duration: z.string().optional(),
   experience: z.string().min(1, { message: 'experience is required' }),
   skills: z

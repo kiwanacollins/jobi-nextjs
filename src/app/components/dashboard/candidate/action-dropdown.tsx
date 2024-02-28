@@ -25,17 +25,17 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
   };
   return (
     <ul className="dropdown-menu dropdown-menu-end">
-      <li>
+      <li className="dropdown-item">
         <Link href={`/candidate-profile/${resumeId}`} className="dropdown-item">
           <Image src={view} alt="icon" className="lazy-img" /> View
         </Link>
       </li>
-      <li>
+      <li className="dropdown-item">
         <a className="dropdown-item" href="#">
           <Image src={share} alt="icon" className="lazy-img" /> Share
         </a>
       </li>
-      <li>
+      <li className="dropdown-item">
         <Link
           className="dropdown-item"
           href={`/dashboard/admin-dashboard/candidate/edit/${id}`}
@@ -43,7 +43,7 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
           <Image src={edit} alt="icon" className="lazy-img" /> Edit
         </Link>
       </li>
-      <li>
+      <li className="dropdown-item">
         <button onClick={() => handleDeleteUser(id)} className="dropdown-item">
           <Image src={delete_icon} alt="icon" className="lazy-img" /> Delete
         </button>

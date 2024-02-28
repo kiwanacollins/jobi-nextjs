@@ -1,21 +1,23 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { getUserByMongoId, updateUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import CountrySelect from '@/app/components/dashboard/candidate/country-select';
 import CitySelect from '@/app/components/dashboard/candidate/city-select';
-import QualicationSelect from '@/app/components/dashboard/candidate/QualicationSelect';
 import ErrorMsg from '@/app/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import NiceSelect from '@/ui/nice-select';
 import { IUser } from '@/database/user.model';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Country } from 'country-state-city';
+import OptionSelect from '@/app/components/common/OptionSelect';
+import Select from 'react-select';
+import { skills } from '@/constants';
+import SalaryDurationSelect from '@/app/components/dashboard/employ/salary-duration-select';
 
 interface ParamsProps {
   params: {
@@ -29,7 +31,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
-  const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const pathname = usePathname();
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
@@ -63,8 +64,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
     register,
     reset,
     setValue,
-    setError,
-    clearErrors,
+    control,
     handleSubmit,
     watch,
     formState: { errors }
@@ -86,7 +86,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
         const user = await getUserByMongoId({ id: params.id });
         setMongoUser(user);
         setGender(user?.gender);
-        setSkillsTag(user?.skills || []);
         reset(user);
       } catch (error: any) {
         notifyError(error as string);
@@ -123,53 +122,38 @@ const UpdateUser = ({ params }: ParamsProps) => {
     setGender(event.target.value);
   };
 
-  const handleSalary = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('salary_duration', value);
-  };
-  const handleExperience = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('experience', value);
-  };
-
   // add skills
-  const handleInputKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
-  ) => {
-    if (e.key === 'Enter' && field === 'skills') {
-      e.preventDefault();
+  // const handleInputKeyDown = (
+  //   e: React.KeyboardEvent<HTMLInputElement>,
+  //   field: any
+  // ) => {
+  //   if (e.key === 'Enter' && field === 'skills') {
+  //     e.preventDefault();
 
-      const tagInput = e.target as HTMLInputElement;
-      const tagValue = tagInput.value;
+  //     const tagInput = e.target as HTMLInputElement;
+  //     const tagValue = tagInput.value;
 
-      if (tagValue !== '') {
-        if (tagValue.length > 15) {
-          return setError('skills', {
-            type: 'required',
-            message: 'Tag must be less than 15 characters.'
-          });
-        }
-        // Retrieve current skills array
-        const currentSkills = skillsTag || [];
+  //     if (tagValue !== '') {
+  //       if (tagValue.length > 15) {
+  //         return setError('skills', {
+  //           type: 'required',
+  //           message: 'Tag must be less than 15 characters.'
+  //         });
+  //       }
+  //       // Retrieve current skills array
+  //       const currentSkills = skillsTag || [];
 
-        if (!skillsTag.includes(tagValue as never)) {
-          setValue('skills', [...currentSkills, tagValue]);
-          setSkillsTag([...currentSkills, tagValue]);
-          tagInput.value = '';
-          clearErrors('skills');
-        }
-      }
-    }
-  };
+  //       if (!skillsTag.includes(tagValue as never)) {
+  //         setValue('skills', [...currentSkills, tagValue]);
+  //         setSkillsTag([...currentSkills, tagValue]);
+  //         tagInput.value = '';
+  //         clearErrors('skills');
+  //       }
+  //     }
+  //   }
+  // };
 
   // remove skill
-  const handleTagRemove = (tag: string, e: any) => {
-    e.preventDefault();
-    const newTags = skillsTag.filter((t: string) => t !== tag);
-    setSkillsTag(newTags);
-    setValue('skills', newTags);
-  };
 
   const onSubmit = async (value: userSchemaType) => {
     setIsSubmitting(true);
@@ -210,6 +194,15 @@ const UpdateUser = ({ params }: ParamsProps) => {
       setIsSubmitting(false);
     }
   };
+
+  const userSkills = mongoUser?.skills?.map((skill) => ({
+    value: skill,
+    label: skill
+  }));
+  const skillsOptions = skills.map((skill) => ({
+    value: skill,
+    label: skill
+  }));
 
   return (
     <>
@@ -307,13 +300,12 @@ const UpdateUser = ({ params }: ParamsProps) => {
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">age</label>
               <input
-                type="number"
+                type="text"
                 placeholder="your age"
-                {...register('age', { valueAsNumber: true })}
-                defaultValue={mongoUser?.age}
+                {...register('age')}
                 name="age"
               />
-              <ErrorMsg msg={errors?.age?.message as string} />
+              {errors.age && <ErrorMsg msg={errors?.age?.message as string} />}
             </div>
             {/* age end */}
 
@@ -355,7 +347,20 @@ const UpdateUser = ({ params }: ParamsProps) => {
             {/* Qualification Start */}
             <div className="dash-input-wrapper mb-25">
               <label htmlFor="">Qualification*</label>
-              <QualicationSelect setValue={setValue} />
+              <OptionSelect
+                register={register}
+                name="qualification"
+                options={[
+                  { value: `master's degree`, label: `Master's Degree` },
+                  { value: `bachelor degree`, label: `Bachelor Degree` },
+                  { value: `Higher Secondary`, label: `Higher Secondary` },
+                  { value: `Secondary School`, label: `Secondary School` }
+                ]}
+              />
+
+              {errors?.qualification && (
+                <ErrorMsg msg={errors?.qualification?.message as string} />
+              )}
             </div>
             {/* Qualification End */}
 
@@ -364,28 +369,35 @@ const UpdateUser = ({ params }: ParamsProps) => {
               <label htmlFor="">Skills*</label>
               <div className="skills-wrapper">
                 <div className="dash-input-wrapper mb-30">
-                  <input
-                    type="text"
-                    placeholder="Add skills..."
-                    onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
+                  <Controller
+                    name="skills"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        isMulti
+                        {...field}
+                        //@ts-ignore
+                        defaultInputValue={userSkills || []}
+                        options={skillsOptions || []}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) =>
+                          field.onChange(
+                            selectedOption?.map(
+                              (option) => option?.value as string | null
+                            )
+                          )
+                        }
+                        value={field.value?.map((val) =>
+                          val ? { value: val, label: val } : null
+                        )}
+                      />
+                    )}
                   />
-                  <ErrorMsg msg={errors.skills?.message} />
+                  {errors?.skills && (
+                    <ErrorMsg msg={errors?.skills?.message as string} />
+                  )}
                 </div>
-                <ul className="style-none d-flex flex-wrap align-items-center">
-                  {skillsTag?.map((item: any, index) => {
-                    return (
-                      <li className="is_tag" key={index}>
-                        <button>
-                          {item}{' '}
-                          <i
-                            className="bi bi-x"
-                            onClick={(e) => handleTagRemove(item, e)}
-                          ></i>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
               </div>
             </div>
 
@@ -395,59 +407,59 @@ const UpdateUser = ({ params }: ParamsProps) => {
 
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Experience*</label>
-              <NiceSelect
+              <OptionSelect
+                register={register}
+                name="experience"
                 options={[
                   { value: 'Intermediate', label: 'Intermediate' },
                   { value: 'No-Experience', label: 'No-Experience' },
                   { value: 'Expert', label: 'Expert' }
                 ]}
-                defaultCurrent={0}
-                onChange={(item) => handleExperience(item)}
-                name="experience"
               />
+
+              {errors?.experience && (
+                <ErrorMsg msg={errors?.experience?.message as string} />
+              )}
             </div>
 
             {/* Experience end */}
 
             {/* Salary start */}
-            <div className="d-flex align-items-center mb-3 mt-30">
-              <label htmlFor="salaryStart" className="form-label me-4">
-                Salary Range *
-              </label>
-              <div className="d-flex dash-input-wrapper gap-3">
-                <input
-                  type="number"
-                  placeholder="min salary"
-                  {...register('minSalary', {
-                    valueAsNumber: true
-                  })}
-                  defaultValue={mongoUser?.minSalary}
-                  name="minSalary"
-                />
-                {errors?.minSalary && (
-                  <ErrorMsg msg={errors?.minSalary?.message as string} />
-                )}
-                <input
-                  type="number"
-                  placeholder="max salary"
-                  {...register('maxSalary', {
-                    valueAsNumber: true
-                  })}
-                  defaultValue={mongoUser?.maxSalary}
-                  name="maxSalary"
-                />
-                <NiceSelect
-                  options={[
-                    { value: 'Monthly', label: 'Monthly' },
-                    { value: 'Weekly', label: 'Weekly' }
-                  ]}
-                  defaultCurrent={0}
-                  onChange={(item: any) => handleSalary(item)}
-                  name="salary_duration"
-                />
-                {errors?.maxSalary?.message && (
-                  <ErrorMsg msg={errors?.maxSalary?.message as string} />
-                )}
+            <div className="row">
+              <div className="col-md-6">
+                <div className="dash-input-wrapper">
+                  <label htmlFor="">Salary*</label>
+                  <SalaryDurationSelect register={register} />
+                  {errors?.salary_duration && (
+                    <ErrorMsg msg={errors?.salary_duration.message} />
+                  )}
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="dash-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Min Salary"
+                    {...register('minSalary')}
+                    name="minSalary"
+                  />
+                  {errors?.minSalary && (
+                    <ErrorMsg msg={errors?.minSalary.message} />
+                  )}
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="dash-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Max salary"
+                    {...register('maxSalary')}
+                    name="maxSalary"
+                  />
+                  {errors?.maxSalary && (
+                    <ErrorMsg msg={errors?.maxSalary.message} />
+                  )}
+                </div>
               </div>
             </div>
             {/* Salary end */}
