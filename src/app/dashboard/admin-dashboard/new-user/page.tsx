@@ -490,9 +490,9 @@ const NewUser = () => {
                 <ErrorMsg msg={errors.mediaLinks?.github?.message as string} />
               )}
             </div>
-            <a href="#/" className="dash-btn-one">
+            {/* <button disabled className="dash-btn-one">
               <i className="bi bi-plus"></i> Add more link
-            </a>
+            </button> */}
           </div>
 
           <div className="bg-white card-box border-20 mt-40">
