@@ -1,26 +1,32 @@
 import * as z from 'zod';
 
 const educationSchema = z.object({
-  title: z.string().max(100),
-  academy: z.string().max(100),
+  title: z.string().min(1, { message: 'title is required' }).max(100),
+  academy: z.string().min(1, { message: 'academy is required' }).max(100),
   yearStart: z.number(),
   yearEnd: z.number().optional(),
   year: z.string().optional(),
-  description: z.string()
+  description: z
+    .string()
+    .min(1, { message: 'description is required' })
+    .max(500)
 });
 
 const experienceSchema = z.object({
-  title: z.string().max(100),
-  company: z.string().max(100),
+  title: z.string().min(1, { message: 'title is required' }).max(100),
+  company: z.string().min(1, { message: 'company is required' }).max(100),
   yearStart: z.number(),
   yearEnd: z.number().optional(),
   year: z.string().optional(),
-  description: z.string()
+  description: z
+    .string()
+    .min(1, { message: 'description is required' })
+    .max(500)
 });
 
 const videoSchema = z.object({
-  title: z.string().max(100).optional(),
-  videoId: z.string().max(100).optional()
+  title: z.string().min(1, { message: 'title is required' }).max(100),
+  videoId: z.string().min(1, { message: 'video id is required' }).max(100)
 });
 
 export const portfolioSchema = z.object({
@@ -29,12 +35,11 @@ export const portfolioSchema = z.object({
 });
 
 export const resumeSchema = z.object({
-  // pdf: pdfSchema,
-  overview: z.string(),
-  videos: z.array(videoSchema).optional(),
-  education: z.array(educationSchema).optional(),
+  overview: z.string().min(1, { message: 'overview is required' }).max(500),
+  videos: z.array(videoSchema),
+  education: z.array(educationSchema),
   experience: z.array(experienceSchema),
-  portfolio: z.array(portfolioSchema).optional()
+  portfolio: z.array(portfolioSchema)
 });
 
 const linksSchema = z.object({

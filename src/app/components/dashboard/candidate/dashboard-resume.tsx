@@ -121,27 +121,29 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     control,
     setValue,
     handleSubmit,
-    watch,
-    // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
 
-  console.log('watching', watch());
-
   console.log('errors', errors);
 
-  const { fields: educationArrayFields, append: educationAppend } =
-    useFieldArray({
-      control,
-      name: 'education'
-    });
+  const {
+    fields: educationArrayFields,
+    append: educationAppend,
+    remove: educationRemove
+  } = useFieldArray({
+    control,
+    name: 'education'
+  });
 
-  const { fields: experienceArrayFields, append: experienceAppend } =
-    useFieldArray({
-      control,
-      name: 'experience'
-    });
+  const {
+    fields: experienceArrayFields,
+    append: experienceAppend,
+    remove: experienceRemove
+  } = useFieldArray({
+    control,
+    name: 'experience'
+  });
   const { fields: videosArrayFields, append: videoAppend } = useFieldArray({
     control,
     name: 'videos'
@@ -306,6 +308,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                 {...register('overview')}
                 name="overview"
               ></textarea>
+
               <div className="alert-text">
                 Brief description for your resume. URLs are hyperlinked.
               </div>
@@ -328,7 +331,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                   </button>
                 </div>
                 <div className="mb-4 p-4">
-                  <h3 className="title">videos </h3>
+                  <h3 className="title">Video Lists </h3>
                   <div className="d-flex flex-wrap gap-4">
                     {resume?.videos?.map((video: IVideos, index) => {
                       return (
@@ -370,7 +373,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                               {...register(`videos.${index}.title`)}
                               name={`videos.${index}.title`}
                             />
-                            <ErrorMsg msg={errors?.videos?.message} />
+                            {errors?.videos?.[index]?.title && (
+                              <ErrorMsg
+                                msg={errors?.videos?.[index]?.title?.message}
+                              />
+                            )}
                           </div>
                         </div>
                         <div className="d-flex justify-content-center align-items-center gap-4">
@@ -384,7 +391,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                               {...register(`videos.${index}.videoId`)}
                               name={`videos.${index}.videoId`}
                             />
-                            <ErrorMsg msg={errors?.videos?.message} />
+                            {errors?.videos?.[index]?.videoId && (
+                              <ErrorMsg
+                                msg={errors?.videos?.[index]?.videoId?.message}
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
@@ -448,9 +459,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 {...register(`education.${index}.title`)}
                                 name={`education.${index}.title`}
                               />
-                              <ErrorMsg
-                                msg={errors.education?.[index]?.title?.message}
-                              />
+                              {errors.education?.[index]?.title && (
+                                <ErrorMsg
+                                  msg={
+                                    errors.education?.[index]?.title?.message
+                                  }
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
@@ -468,11 +483,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 {...register(`education.${index}.academy`)}
                                 name={`education.${index}.academy`}
                               />
-                              <ErrorMsg
-                                msg={
-                                  errors.education?.[index]?.academy?.message
-                                }
-                              />
+                              {errors.education?.[index]?.academy && (
+                                <ErrorMsg
+                                  msg={
+                                    errors.education?.[index]?.academy?.message
+                                  }
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
@@ -494,12 +511,14 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                       { valueAsNumber: true }
                                     )}
                                   />
-                                  <ErrorMsg
-                                    msg={
-                                      errors.education?.[index]?.yearStart
-                                        ?.message
-                                    }
-                                  />
+                                  {errors.education?.[index]?.yearStart && (
+                                    <ErrorMsg
+                                      msg={
+                                        errors.education?.[index]?.yearStart
+                                          ?.message
+                                      }
+                                    />
+                                  )}
                                 </div>
                               </div>
                               <div className="col-sm-6">
@@ -511,12 +530,14 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                       valueAsNumber: true
                                     })}
                                   />
-                                  <ErrorMsg
-                                    msg={
-                                      errors.education?.[index]?.yearEnd
-                                        ?.message
-                                    }
-                                  />
+                                  {errors.education?.[index]?.yearEnd && (
+                                    <ErrorMsg
+                                      msg={
+                                        errors.education?.[index]?.yearEnd
+                                          ?.message
+                                      }
+                                    />
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -535,14 +556,22 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 placeholder="Morbi ornare ipsum sed sem condimentum, et pulvinar tortor luctus. Suspendisse condimentum lorem ut elementum aliquam et pulvinar tortor luctus."
                                 {...register(`education.${index}.description`)}
                               ></textarea>
-                              <ErrorMsg
-                                msg={
-                                  errors.education?.[index]?.description
-                                    ?.message
-                                }
-                              />
+                              {errors.education?.[index]?.description && (
+                                <ErrorMsg
+                                  msg={
+                                    errors.education?.[index]?.description
+                                      ?.message
+                                  }
+                                />
+                              )}
                             </div>
                           </div>
+                          <button
+                            onClick={() => educationRemove(index)}
+                            className="btn btn-danger w-auto  m-2"
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -606,9 +635,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 {...register(`experience.${index}.title`)}
                                 name={`experience.${index}.title`}
                               />
-                              <ErrorMsg
-                                msg={errors.experience?.[index]?.title?.message}
-                              />
+                              {errors.experience?.[index]?.title?.message && (
+                                <ErrorMsg
+                                  msg={
+                                    errors.experience?.[index]?.title?.message
+                                  }
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
@@ -626,11 +659,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 {...register(`experience.${index}.company`)}
                                 name={`experience.${index}.company`}
                               />
-                              <ErrorMsg
-                                msg={
-                                  errors.experience?.[index]?.company?.message
-                                }
-                              />
+                              {errors.experience?.[index]?.company?.message && (
+                                <ErrorMsg
+                                  msg={
+                                    errors.experience?.[index]?.company?.message
+                                  }
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
@@ -652,12 +687,15 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                       { valueAsNumber: true }
                                     )}
                                   />
-                                  <ErrorMsg
-                                    msg={
-                                      errors.experience?.[index]?.yearStart
-                                        ?.message
-                                    }
-                                  />
+                                  {errors.experience?.[index]?.yearStart
+                                    ?.message && (
+                                    <ErrorMsg
+                                      msg={
+                                        errors.experience?.[index]?.yearStart
+                                          ?.message
+                                      }
+                                    />
+                                  )}
                                 </div>
                               </div>
                               <div className="col-sm-6">
@@ -670,12 +708,15 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                       { valueAsNumber: true }
                                     )}
                                   />
-                                  <ErrorMsg
-                                    msg={
-                                      errors.experience?.[index]?.yearEnd
-                                        ?.message
-                                    }
-                                  />
+                                  {errors.experience?.[index]?.yearEnd
+                                    ?.message && (
+                                    <ErrorMsg
+                                      msg={
+                                        errors.experience?.[index]?.yearEnd
+                                          ?.message
+                                      }
+                                    />
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -695,14 +736,23 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 {...register(`experience.${index}.description`)}
                                 name={`experience.${index}.description`}
                               ></textarea>
-                              <ErrorMsg
-                                msg={
-                                  errors.experience?.[index]?.description
-                                    ?.message
-                                }
-                              />
+                              {errors.experience?.[index]?.description
+                                ?.message && (
+                                <ErrorMsg
+                                  msg={
+                                    errors.experience?.[index]?.description
+                                      ?.message
+                                  }
+                                />
+                              )}
                             </div>
                           </div>
+                          <button
+                            onClick={() => experienceRemove(index)}
+                            className="btn btn-danger w-auto  m-2"
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
                     </div>
