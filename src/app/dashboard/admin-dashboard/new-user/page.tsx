@@ -443,7 +443,11 @@ const NewUser = () => {
                 placeholder="Ex. linkedin.com/in/jamesbrower"
                 {...register('mediaLinks.linkedin')}
               />
-              <ErrorMsg msg={errors.mediaLinks?.message as string} />
+              {errors.mediaLinks?.linkedin && (
+                <ErrorMsg
+                  msg={errors.mediaLinks?.linkedin?.message as string}
+                />
+              )}
             </div>
 
             <div className="dash-input-wrapper mb-20">
@@ -453,7 +457,9 @@ const NewUser = () => {
                 placeholder="ex. github.com/jamesbrower"
                 {...register('mediaLinks.github')}
               />
-              <ErrorMsg msg={errors.mediaLinks?.message as string} />
+              {errors.mediaLinks?.github && (
+                <ErrorMsg msg={errors.mediaLinks?.github?.message as string} />
+              )}
             </div>
             <a href="#/" className="dash-btn-one">
               <i className="bi bi-plus"></i> Add more link
