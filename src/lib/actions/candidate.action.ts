@@ -57,17 +57,8 @@ export async function createResume(resumeData: resumeDataParams) {
   try {
     await connectToDatabase();
     await connectToCloudinary();
-    const {
-      education,
-      experience,
-      skills,
-      overview,
-      user,
-      maxSalary,
-      minSalary,
-      portfolio,
-      videos
-    } = resumeData;
+    const { education, experience, overview, user, portfolio, videos } =
+      resumeData;
 
     for (const image of portfolio) {
       try {
@@ -90,9 +81,6 @@ export async function createResume(resumeData: resumeDataParams) {
       education,
       experience,
       videos,
-      skills,
-      minSalary,
-      maxSalary,
       portfolio,
       overview
     });

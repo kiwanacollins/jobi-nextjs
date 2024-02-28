@@ -1,4 +1,5 @@
 import { Schema, models, model, Document } from 'mongoose';
+import User from './user.model';
 
 export interface IEducation {
   title: string;
@@ -31,11 +32,8 @@ export interface Iportfolio {
 export interface IResumeType extends Document {
   user: Schema.Types.ObjectId | string;
   overview: string;
-  minSalary: string;
-  maxSalary: string;
   videos?: IVideos[];
   education: IEducation[];
-  skills: string[];
   experience: IExperience[];
   portfolio?: Iportfolio[];
 }
@@ -63,12 +61,30 @@ const resumeSchema = new Schema({
   overview: String,
   videos: [{ title: String, videoId: String }],
   education: [educationSchema],
-  skills: [String],
-  minSalary: { type: Number, reuired: true },
-  maxSalary: { type: Number, required: true },
+  skills: [{ type: String }],
+  minSalary: { type: Number },
+  maxSalary: { type: Number },
   experience: [experienceSchema],
   portfolio: [{ imageUrl: String, public_id: String }],
   createdAt: { type: Date, default: Date.now }
+});
+
+// Define a pre-save hook on the resume model
+resumeSchema.pre('save', function (next) {
+  const resume = this; // This refers to the current resume document
+  // Find the associated user using the userId reference
+  User.findById(resume.user)
+    .then((user) => {
+      if (!user) {
+        return next(new Error('Associated user not found'));
+      }
+      // Copy minSalary and maxSalary from the user to the resume
+      resume.minSalary = user.minSalary;
+      resume.maxSalary = user.maxSalary;
+      resume.skills = user.skills;
+      next(); // Proceed with saving the resume
+    })
+    .catch((error) => next(error));
 });
 
 const Resume = models.Resume || model<IResumeType>('Resume', resumeSchema);

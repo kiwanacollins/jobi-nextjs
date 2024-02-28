@@ -32,10 +32,7 @@ export const resumeSchema = z.object({
   // pdf: pdfSchema,
   overview: z.string(),
   videos: z.array(videoSchema).optional(),
-  minSalary: z.string().min(1, { message: 'Minimum salary is required' }),
-  maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
   education: z.array(educationSchema).optional(),
-  skills: z.array(z.string()),
   experience: z.array(experienceSchema),
   portfolio: z.array(portfolioSchema).optional()
 });

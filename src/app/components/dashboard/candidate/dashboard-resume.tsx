@@ -9,7 +9,6 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { resumeSchema } from '@/utils/validation';
 import ErrorMsg from '../../common/error-msg';
 import { createResume, updateResume } from '@/lib/actions/candidate.action';
-
 import { notifyError, notifySuccess } from '@/utils/toast';
 import {
   IEducation,
@@ -29,9 +28,6 @@ interface IProps {
 const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const pathname = usePathname();
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
-  const [skillsTag, setSkillsTag] = useState<string[]>(
-    resume?.skills || mongoUser?.skills || []
-  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [videoId, setVideoId] = useState<string | undefined>(
     resume?.videos?.[0]?.videoId ?? undefined
@@ -84,10 +80,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const methods = useForm<resumeSchemaType>({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
-      skills: resume?.skills || mongoUser?.skills || [],
       overview: resume?.overview || mongoUser.bio || '',
-      minSalary: resume?.minSalary || mongoUser?.minSalary || '',
-      maxSalary: resume?.maxSalary || mongoUser?.maxSalary || '',
       portfolio: groupedPortfolio || [
         {
           imageUrl: ''
@@ -127,15 +120,16 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     register,
     control,
     setValue,
-    clearErrors,
-    setError,
-    trigger,
     handleSubmit,
-
+    watch,
     // eslint-disable-next-line no-unused-vars
     formState: { errors },
     reset
   } = methods;
+
+  console.log('watching', watch());
+
+  console.log('errors', errors);
 
   const { fields: educationArrayFields, append: educationAppend } =
     useFieldArray({
@@ -156,7 +150,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   // 2. Handle your form submission.
   const onSubmit = async (data: resumeSchemaType) => {
     setIsSubmitting(true);
-
     console.log('submtted data', data);
     const experience = data?.experience?.map((item: IExperience) => {
       const year = item?.yearStart + '-' + item?.yearEnd;
@@ -196,11 +189,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     try {
       const resumeData: any = {
         user: mongoUser._id,
-        skills: data.skills,
         overview: data.overview,
         experience,
-        minSalary: data.minSalary,
-        maxSalary: data.maxSalary,
         education,
         portfolio,
         videos
@@ -228,46 +218,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   useEffect(() => {
     reset();
   }, [reset]);
-
-  // add skills
-  const handleInputKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    field: any
-  ) => {
-    if (e.key === 'Enter' && field === 'skills') {
-      e.preventDefault();
-
-      const tagInput = e.target as HTMLInputElement;
-      const tagValue = tagInput.value;
-
-      if (tagValue !== '') {
-        if (tagValue.length > 15) {
-          return setError('skills', {
-            type: 'required',
-            message: 'Tag must be less than 15 characters.'
-          });
-        }
-        // Retrieve current skills array
-        const currentSkills = skillsTag || [];
-
-        if (!skillsTag.includes(tagValue as never)) {
-          setValue('skills', [...currentSkills, tagValue]);
-          setSkillsTag([...currentSkills, tagValue]);
-          tagInput.value = '';
-          clearErrors('skills');
-        }
-      } else {
-        trigger();
-      }
-    }
-  };
-
-  const handleTagRemove = (tag: string, e: any) => {
-    e.preventDefault();
-    const newTags = skillsTag.filter((t: string) => t !== tag);
-    setSkillsTag(newTags);
-    setValue('skills', newTags);
-  };
 
   const handleAddEducation = (e: any) => {
     e.preventDefault(); // Prevent form submission
@@ -362,42 +312,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
               {errors.overview?.message && (
                 <ErrorMsg msg={errors.overview?.message} />
               )}
-
-              <div className="d-flex align-items-center mb-3 mt-30">
-                <label htmlFor="salaryStart" className="form-label me-4">
-                  Salary *
-                </label>
-                <div className="d-flex gap-3">
-                  <input
-                    type="text"
-                    defaultValue={resume?.minSalary}
-                    placeholder="min salary"
-                    {...register('minSalary', {
-                      required: true,
-                      valueAsNumber: true
-                    })}
-                    name="minSalary"
-                    className=" mb-30 mx-8"
-                  />
-                  {errors?.minSalary?.message && (
-                    <ErrorMsg msg={errors?.minSalary?.message} />
-                  )}
-                  <input
-                    type="text"
-                    defaultValue={resume?.maxSalary}
-                    placeholder="max salary"
-                    {...register('maxSalary', {
-                      required: true,
-                      valueAsNumber: true
-                    })}
-                    name="maxSalary"
-                    className=" mb-30"
-                  />
-                  {errors?.maxSalary?.message && (
-                    <ErrorMsg msg={errors?.maxSalary?.message} />
-                  )}
-                </div>
-              </div>
             </div>
 
             <div className="row">
@@ -647,39 +561,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
 
           <div className="bg-white card-box border-20 mt-40">
             <h4 className="dash-title-three">Skills & Experience</h4>
-            <div className="dash-input-wrapper mb-40">
-              <label htmlFor="">Add Skills*</label>
-
-              <div className="skills-wrapper">
-                <div className="dash-input-wrapper mb-30">
-                  <input
-                    type="text"
-                    placeholder="Add skills..."
-                    onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
-                  />
-                  <ErrorMsg msg={errors?.skills?.message} />
-                </div>
-                <ul className="style-none d-flex flex-wrap align-items-center">
-                  {skillsTag?.map((item: any, index) => {
-                    return (
-                      <li className="is_tag" key={index}>
-                        <button>
-                          {item}{' '}
-                          <i
-                            className="bi bi-x"
-                            onClick={(e) => handleTagRemove(item, e)}
-                          ></i>
-                        </button>
-                      </li>
-                    );
-                  })}
-
-                  {/* <li className="more_tag">
-                      <button>+</button>
-                    </li> */}
-                </ul>
-              </div>
-            </div>
 
             <div className="dash-input-wrapper mb-15">
               <label htmlFor="">Add Work Experience*</label>
