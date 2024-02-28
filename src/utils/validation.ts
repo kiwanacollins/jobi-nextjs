@@ -94,7 +94,7 @@ export const employeeProfileSchema = z.object({
     .refine(
       (date) => date === null || (!isNaN(date.getTime()) && date <= new Date()),
       {
-        message: 'Invalid date'
+        message: 'Date must be a valid date and cannot be in the future.'
       }
     )
     .refine((date) => date !== null, {
@@ -102,10 +102,10 @@ export const employeeProfileSchema = z.object({
     }),
   bio: z.string().min(1, { message: 'required' }),
   categories: z
-    .string()
-    .min(1, { message: 'Categories is required' })
-    .max(50, { message: 'Can not contain 50 characters or less.' })
-    .transform((str) => str.split(',').map((name) => name.trim())),
+    .array(z.string().min(1, { message: 'categories is required' }))
+    .refine((val) => val.length > 0, {
+      message: 'Please select at least one categories.'
+    }),
   companySize: z.number().min(1, { message: 'Field is required' }),
   phone: z.string().min(1, { message: 'Phone number is required' }).optional(),
   mediaLinks: linksSchema.optional(),
