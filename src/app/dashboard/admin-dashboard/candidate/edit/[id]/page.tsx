@@ -1,12 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import { useForm, FormProvider } from 'react-hook-form';
 import { getUserByMongoId, updateUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import StateSelect from '@/app/components/dashboard/candidate/state-select';
 import CountrySelect from '@/app/components/dashboard/candidate/country-select';
 import CitySelect from '@/app/components/dashboard/candidate/city-select';
 import QualicationSelect from '@/app/components/dashboard/candidate/QualicationSelect';
@@ -30,7 +28,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
-  const [role, setRole] = useState('candidate');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const pathname = usePathname();
@@ -58,8 +55,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
       address: mongoUser?.address || '',
       country: mongoUser?.country || '',
       city: mongoUser?.city,
-      zip: mongoUser?.zip || '',
-      state: mongoUser?.state
+      zip: mongoUser?.zip || ''
     }
   });
 
@@ -91,7 +87,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
         setMongoUser(user);
         setGender(user?.gender);
         setSkillsTag(user?.skills || []);
-        setRole(user.role);
         reset(user);
       } catch (error: any) {
         notifyError(error as string);
@@ -127,9 +122,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const handleGenderChange = (event: any) => {
     setGender(event.target.value);
   };
-  const handleRoleChange = (event: any) => {
-    setRole(event.target.value);
-  };
+
   const handleSalary = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('salary_duration', value);
@@ -188,7 +181,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
           name: value?.name,
           email: value.email,
           post: value.post,
-          role: value.role,
           bio: value.bio,
           salary_duration: value.salary_duration,
           experience: value.experience,
@@ -207,10 +199,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
           address: value.address,
           country: value.country,
           city: value.city,
-          zip: value.zip,
-          state: value.state,
-          mapLocation: value.mapLocation,
-          location: value.location
+          zip: value.zip
         },
         path: pathname
       });
@@ -548,77 +537,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
                     defaultValue={mongoUser?.zip}
                     name="zip"
                   />
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">State*</label>
-                  <StateSelect register={register} />
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">Map Location*</label>
-                  <div className="position-relative">
-                    <input
-                      type="text"
-                      placeholder="XC23+6XC, Moiran, N105"
-                      {...register('mapLocation')}
-                      defaultValue={mongoUser?.mapLocation}
-                      name="mapLocation"
-                    />
-                    <ErrorMsg msg={errors?.mapLocation?.message as string} />
-                    <button className="location-pin tran3s">
-                      <Image
-                        src={search}
-                        alt="icon"
-                        className="lazy-img m-auto"
-                      />
-                    </button>
-                  </div>
-                  <div className="map-frame mt-30">
-                    <div className="gmap_canvas h-100 w-100">
-                      <iframe
-                        className="gmap_iframe h-100 w-100"
-                        src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bass hill plaza medical centre&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                      ></iframe>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="mb-30">
-                  <label className="mb-20 fw-bold">User Role*</label>
-                  <div>
-                    <div>
-                      <input
-                        {...register('role', { required: true })}
-                        type="radio"
-                        id="candidate"
-                        value="candidate"
-                        className="me-2"
-                        checked={role === 'candidate'}
-                        onChange={handleRoleChange}
-                      />
-                      <label htmlFor="Candidate">Candidate</label>
-                    </div>
-
-                    <div>
-                      <input
-                        {...register('role', { required: true })}
-                        type="radio"
-                        id="employee"
-                        className="me-2"
-                        value="employee"
-                        checked={role === 'employee'}
-                        onChange={handleRoleChange}
-                      />
-                      <label htmlFor="employee">employee</label>
-                    </div>
-                  </div>
-                  {errors?.gender && (
-                    <ErrorMsg msg={errors?.gender?.message as string} />
-                  )}
                 </div>
               </div>
             </div>
