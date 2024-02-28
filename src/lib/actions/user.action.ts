@@ -157,14 +157,13 @@ export async function updateUser(params: UpdateUserParams) {
 export async function clekUserUpdate(params: ClerkUpdateUserParams) {
   try {
     connectToDatabase();
-    const { clerkId, name, email, picture, username, path } = params;
+    const { clerkId, name, email, picture, path } = params;
 
     const updateData = {
       clerkId,
       name,
       email,
-      picture,
-      username
+      picture
     };
     const updatedUser = await User.findOneAndUpdate({ clerkId }, updateData, {
       new: true

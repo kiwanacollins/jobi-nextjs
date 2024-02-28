@@ -4,14 +4,12 @@ import { Schema } from 'mongoose';
 export interface CreateUserParams {
   clerkId: string;
   name: string;
-  username: string | null;
   email: string;
   picture: string;
 }
 export interface ClerkUpdateUserParams {
   clerkId: string;
   name: string;
-  username: string | null;
   email: string;
   picture: string;
   path: string;
