@@ -44,7 +44,7 @@ interface IResumeProps {
   user: string | ObjectId;
   education: IEducation[];
   experience: IExperience[];
-  skills: string[];
+  skills: string[] | undefined;
 }
 
 const Resume = ({
