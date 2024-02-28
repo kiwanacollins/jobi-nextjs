@@ -17,6 +17,7 @@ import ErrorMsg from '../../common/error-msg';
 import CountrySelect from '../candidate/country-select';
 import CitySelect from '../candidate/city-select';
 import { IUser } from '@/database/user.model';
+import { skills } from '@/constants';
 
 interface IProps {
   mongoUser: IUser;
@@ -93,8 +94,8 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
       categories: value.categories,
       phone: value.phone,
       mediaLinks: {
-        linkedin: value.mediaLinks.linkedin,
-        github: value.mediaLinks.github
+        linkedin: value?.mediaLinks?.linkedin || '',
+        github: value?.mediaLinks?.github || ''
       },
       established: value.established,
       address: value.address,
@@ -123,6 +124,10 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
   };
 
   const options = mongoUser?.categories?.map((skill) => ({
+    value: skill,
+    label: skill
+  }));
+  const skillsOptions = skills.map((skill) => ({
     value: skill,
     label: skill
   }));
@@ -239,8 +244,8 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
                       isMulti
                       {...field}
                       //@ts-ignore
-                      defaultValue={options}
-                      options={options || []}
+                      defaultValue={options || []}
+                      options={skillsOptions || []}
                       className="basic-multi-select"
                       classNamePrefix="select"
                       onChange={(selectedOption) =>
@@ -283,7 +288,7 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
             <label htmlFor="">LinkedIn</label>
             <input
               type="text"
-              defaultValue={mongoUser?.mediaLinks?.linkedin}
+              defaultValue={mongoUser?.mediaLinks?.linkedin || ''}
               placeholder="Ex. linkedin.com/in/jamesbrower"
               {...register('mediaLinks.linkedin')}
             />
@@ -295,7 +300,7 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
             <label htmlFor="">Github</label>
             <input
               type="text"
-              defaultValue={mongoUser?.mediaLinks?.github}
+              defaultValue={mongoUser?.mediaLinks?.github || ''}
               placeholder="ex. github.com/jamesbrower"
               {...register('mediaLinks.github')}
             />

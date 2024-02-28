@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import avatar from '@/assets/dashboard/images/avatar_04.jpg';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import CitySelect from '../components/dashboard/candidate/city-select';
 import CountrySelect from '../components/dashboard/candidate/country-select';
 import { useAuth } from '@clerk/nextjs';
@@ -16,6 +16,8 @@ import { createEmployeeProfileByUpdating } from '@/lib/actions/employee.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { IServerResponse } from '@/types';
 import { notifyError, notifySuccess } from '@/utils/toast';
+import { skills } from '@/constants';
+import Select from 'react-select';
 
 const Page = () => {
   const { userId } = useAuth();
@@ -57,6 +59,7 @@ const Page = () => {
     register,
     reset,
     watch,
+    control,
     formState: { errors }
   } = methods;
 
@@ -120,6 +123,15 @@ const Page = () => {
       setIsSubmitting(false);
     }
   };
+
+  const options = mongoUser?.categories?.map((skill: string) => ({
+    value: skill,
+    label: skill
+  }));
+  const skillsOptions = skills.map((skill) => ({
+    value: skill,
+    label: skill
+  }));
 
   return (
     <div className="">
@@ -224,12 +236,30 @@ const Page = () => {
                 <div className="col-md-6">
                   <div className="dash-input-wrapper mb-30">
                     <label htmlFor="">Category*</label>
-                    <input
-                      type="text"
-                      placeholder="Account, Finance, Marketing"
-                      defaultValue={mongoUser?.categories || []}
-                      {...register('categories')}
+                    <Controller
                       name="categories"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          isMulti
+                          {...field}
+                          //@ts-ignore
+                          defaultValue={options}
+                          options={skillsOptions || []}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                          onChange={(selectedOption) =>
+                            field.onChange(
+                              selectedOption?.map(
+                                (option) => option?.value as string | null
+                              )
+                            )
+                          }
+                          value={field.value?.map((val) =>
+                            val ? { value: val, label: val } : null
+                          )}
+                        />
+                      )}
                     />
                     {errors?.categories && (
                       <ErrorMsg msg={errors?.categories?.message as string} />
