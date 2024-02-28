@@ -33,7 +33,7 @@ export interface IResumeType extends Document {
   user: Schema.Types.ObjectId | string;
   overview: string;
   videos?: IVideos[];
-  skills?: string[];
+  skills?: string[] | undefined;
   education: IEducation[];
   experience: IExperience[];
   portfolio?: Iportfolio[];
