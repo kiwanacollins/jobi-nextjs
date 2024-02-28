@@ -8,7 +8,7 @@ interface I_Links {
 export interface IUser extends Document {
   clerkId?: string | undefined;
   name: string;
-  age?: string;
+  age?: number;
   email: string;
   companySize?: number;
   established: Date;
@@ -18,8 +18,8 @@ export interface IUser extends Document {
   gender?: string;
   website?: string;
   qualification?: string;
-  minSalary: string;
-  maxSalary: string;
+  minSalary?: number;
+  maxSalary?: number;
   salary_duration?: string;
   experience?: string;
   skills?: string[];

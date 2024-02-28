@@ -28,6 +28,7 @@ interface ParamsProps {
 const UpdateUser = ({ params }: ParamsProps) => {
   const [mongoUser, setMongoUser] = useState<IUser>();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
@@ -44,9 +45,12 @@ const UpdateUser = ({ params }: ParamsProps) => {
       name: mongoUser?.name || '',
       phone: mongoUser?.phone || '',
       post: mongoUser?.post || '',
+      age: mongoUser?.age,
       email: mongoUser?.email || '',
       skills: mongoUser?.skills || [],
       salary_duration: mongoUser?.salary_duration,
+      maxSalary: mongoUser?.maxSalary,
+      minSalary: mongoUser?.minSalary,
       qualification: mongoUser?.qualification,
       bio: mongoUser?.bio,
       mediaLinks: {
@@ -155,8 +159,23 @@ const UpdateUser = ({ params }: ParamsProps) => {
 
   // remove skill
 
+  // Simulate progress function
+  const simulateProgress = () => {
+    let currentProgress = 0;
+
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+      }
+    }, 500); // Adjust the interval and steps based on your preference
+  };
+
   const onSubmit = async (value: userSchemaType) => {
     setIsSubmitting(true);
+    simulateProgress();
     console.log(value);
     try {
       await updateUserByAdmin({
@@ -188,10 +207,12 @@ const UpdateUser = ({ params }: ParamsProps) => {
         path: pathname
       });
       notifySuccess('User Updated Successfully');
+      setProgress(0);
     } catch (error: any) {
       notifyError(error.message as string);
     } finally {
       setIsSubmitting(false);
+      setProgress(0);
     }
   };
 
@@ -301,6 +322,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
               <label htmlFor="">age</label>
               <input
                 type="text"
+                defaultValue={mongoUser?.age?.toString() || ''}
                 placeholder="your age"
                 {...register('age')}
                 name="age"
@@ -439,8 +461,9 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 <div className="dash-input-wrapper">
                   <input
                     type="text"
+                    defaultValue={mongoUser?.minSalary || ''}
                     placeholder="Min Salary"
-                    {...register('minSalary')}
+                    {...register('minSalary', { valueAsNumber: true })}
                     name="minSalary"
                   />
                   {errors?.minSalary && (
@@ -452,8 +475,9 @@ const UpdateUser = ({ params }: ParamsProps) => {
                 <div className="dash-input-wrapper">
                   <input
                     type="text"
+                    defaultValue={mongoUser?.maxSalary || ''}
                     placeholder="Max salary"
-                    {...register('maxSalary')}
+                    {...register('maxSalary', { valueAsNumber: true })}
                     name="maxSalary"
                   />
                   {errors?.maxSalary && (
@@ -553,6 +577,22 @@ const UpdateUser = ({ params }: ParamsProps) => {
               </div>
             </div>
           </div>
+
+          {/* Progress bar */}
+          {isSubmitting && (
+            <div className="progress">
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{ width: `${progress}%` }}
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                {progress}%
+              </div>
+            </div>
+          )}
 
           <div className="button-group d-inline-flex align-items-center mt-30">
             <button
