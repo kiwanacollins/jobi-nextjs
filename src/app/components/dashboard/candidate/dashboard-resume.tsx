@@ -86,8 +86,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     defaultValues: {
       skills: resume?.skills || mongoUser?.skills || [],
       overview: resume?.overview || mongoUser.bio || '',
-      minSalary: resume?.minSalary || mongoUser?.minSalary || 0,
-      maxSalary: resume?.maxSalary || mongoUser?.maxSalary || 0,
+      minSalary: resume?.minSalary || mongoUser?.minSalary || '',
+      maxSalary: resume?.maxSalary || mongoUser?.maxSalary || '',
       portfolio: groupedPortfolio || [
         {
           imageUrl: ''
@@ -199,8 +199,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
         skills: data.skills,
         overview: data.overview,
         experience,
-        minSalary: data.minSalary as number,
-        maxSalary: data.maxSalary as number,
+        minSalary: data.minSalary,
+        maxSalary: data.maxSalary,
         education,
         portfolio,
         videos
