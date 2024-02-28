@@ -18,6 +18,7 @@ import { skills } from '@/constants';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
@@ -139,8 +140,21 @@ const NewUser = () => {
   //   setValue('skills', newTags);
   // };
 
+  const simulateProgress = () => {
+    let currentProgress = 0;
+
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+      }
+    }, 500); // Adjust the interval and steps based on your preference
+  };
   const onSubmit = async (value: userSchemaType) => {
     setIsSubmitting(true);
+    simulateProgress();
     console.log(value);
     try {
       console.count('submit');
@@ -171,13 +185,14 @@ const NewUser = () => {
         location: value.location
       });
       notifySuccess('User Created Successfully');
+      setProgress(0);
     } catch (error: any) {
       console.log('error', error);
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
       reset();
-      // setSkillsTag([]);
+      setProgress(0);
       setImagePreview(undefined);
       setFilename('');
     }
@@ -538,6 +553,22 @@ const NewUser = () => {
               </div>
             </div>
           </div>
+
+          {/* Progress bar */}
+          {isSubmitting && (
+            <div className="progress">
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{ width: `${progress}%` }}
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                {progress}%
+              </div>
+            </div>
+          )}
 
           <div className="button-group d-inline-flex align-items-center mt-30">
             <button

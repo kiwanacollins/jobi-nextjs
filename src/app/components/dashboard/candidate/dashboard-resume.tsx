@@ -28,6 +28,7 @@ interface IProps {
 const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const pathname = usePathname();
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
+  const [progress, setProgress] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [videoId, setVideoId] = useState<string | undefined>(
     resume?.videos?.[0]?.videoId ?? undefined
@@ -149,9 +150,23 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     name: 'videos'
   });
 
+  const simulateProgress = () => {
+    let currentProgress = 0;
+
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+      }
+    }, 500); // Adjust the interval and steps based on your preference
+  };
+
   // 2. Handle your form submission.
   const onSubmit = async (data: resumeSchemaType) => {
     setIsSubmitting(true);
+    simulateProgress();
     console.log('submtted data', data);
     const experience = data?.experience?.map((item: IExperience) => {
       const year = item?.yearStart + '-' + item?.yearEnd;
@@ -205,15 +220,19 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
           path: pathname
         });
         notifySuccess('Resume Updated successfully.');
+        setProgress(0);
       } else {
         await createResume(resumeData);
         notifySuccess('Resume Created successfully.');
+        setProgress(0);
       }
     } catch (error: any) {
       console.log(error);
+      setProgress(0);
       notifyError(error as string);
     } finally {
       setIsSubmitting(false);
+      setProgress(0);
     }
   };
 
@@ -774,6 +793,22 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
             portfolios={resume?.portfolio}
             className="mb-4 pt-6 px-6 border"
           />
+
+          {/* Progress bar */}
+          {isSubmitting && (
+            <div className="progress">
+              <div
+                className="progress-bar progress-bar-striped progress-bar-animated"
+                role="progressbar"
+                style={{ width: `${progress}%` }}
+                aria-valuenow={progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                {progress}%
+              </div>
+            </div>
+          )}
 
           <div className="button-group d-inline-flex align-items-center mt-30">
             <button
