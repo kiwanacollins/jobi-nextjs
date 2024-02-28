@@ -31,8 +31,8 @@ export interface Iportfolio {
 export interface IResumeType extends Document {
   user: Schema.Types.ObjectId | string;
   overview: string;
-  minSalary: number;
-  maxSalary: number;
+  minSalary: string;
+  maxSalary: string;
   videos?: IVideos[];
   education: IEducation[];
   skills: string[];
