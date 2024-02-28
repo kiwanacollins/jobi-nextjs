@@ -10,9 +10,9 @@ import CitySelect from '@/app/components/dashboard/candidate/city-select';
 import ErrorMsg from '@/app/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import NiceSelect from '@/ui/nice-select';
 import { Country } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
+import SalaryDurationSelect from '@/app/components/dashboard/employ/salary-duration-select';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +31,7 @@ const NewUser = () => {
     defaultValues: {
       name: '',
       email: '',
+      age: '',
       phone: '',
       post: '',
       skills: [],
@@ -45,8 +46,6 @@ const NewUser = () => {
       country: '',
       city: '',
       zip: '',
-      state: '',
-      mapLocation: '',
       location: ''
     }
   });
@@ -62,7 +61,8 @@ const NewUser = () => {
     formState: { errors }
   } = methods;
 
-  console.log('Qualification', watch('qualification'));
+  // console.log('new user', watch());
+  console.log('errors', errors);
   const selectedCountryName = watch('country');
 
   useEffect(() => {
@@ -98,10 +98,6 @@ const NewUser = () => {
 
   const handleGenderChange = (event: any) => {
     setGender(event.target.value);
-  };
-  const handleSalary = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('salary_duration', value);
   };
 
   // add skills
@@ -153,6 +149,7 @@ const NewUser = () => {
         email: value.email,
         post: value.post,
         bio: value.bio,
+        role: 'candidate',
         salary_duration: value.salary_duration,
         experience: value.experience,
         phone: value.phone,
@@ -266,10 +263,10 @@ const NewUser = () => {
               <input
                 type="text"
                 placeholder="your age"
-                {...register('age', { valueAsNumber: true })}
+                {...register('age')}
                 name="age"
               />
-              <ErrorMsg msg={errors?.age?.message as string} />
+              {errors.age && <ErrorMsg msg={errors?.age?.message as string} />}
             </div>
             {/* age end */}
 
@@ -382,44 +379,44 @@ const NewUser = () => {
             {/* Experience end */}
 
             {/* Salary start */}
-            <div className="d-flex align-items-center mb-3 mt-30">
-              <label htmlFor="salaryStart" className="form-label me-4">
-                Salary Range *
-              </label>
-              <div className="d-flex dash-input-wrapper gap-3">
-                <input
-                  type="text"
-                  placeholder="min salary"
-                  {...register('minSalary', {
-                    valueAsNumber: true
-                  })}
-                  name="minSalary"
-                />
-                {errors?.minSalary && (
-                  <ErrorMsg msg={errors?.minSalary?.message as string} />
-                )}
-                <input
-                  type="text"
-                  placeholder="max salary"
-                  {...register('maxSalary', {
-                    valueAsNumber: true
-                  })}
-                  name="maxSalary"
-                />
-                <NiceSelect
-                  options={[
-                    { value: 'Monthly', label: 'Monthly' },
-                    { value: 'Weekly', label: 'Weekly' }
-                  ]}
-                  defaultCurrent={0}
-                  onChange={(item: any) => handleSalary(item)}
-                  name="salary_duration"
-                />
-                {errors?.maxSalary?.message && (
-                  <ErrorMsg msg={errors?.maxSalary?.message as string} />
-                )}
+            <div className="row">
+              <div className="col-md-6">
+                <div className="dash-input-wrapper">
+                  <label htmlFor="">Salary*</label>
+                  <SalaryDurationSelect register={register} />
+                  {errors?.salary_duration && (
+                    <ErrorMsg msg={errors?.salary_duration.message} />
+                  )}
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="dash-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Min Salary"
+                    {...register('minSalary')}
+                    name="minSalary"
+                  />
+                  {errors?.minSalary && (
+                    <ErrorMsg msg={errors?.minSalary.message} />
+                  )}
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="dash-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Max salary"
+                    {...register('maxSalary')}
+                    name="maxSalary"
+                  />
+                  {errors?.maxSalary && (
+                    <ErrorMsg msg={errors?.maxSalary.message} />
+                  )}
+                </div>
               </div>
             </div>
+
             {/* Salary end */}
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>

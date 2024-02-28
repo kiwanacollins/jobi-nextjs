@@ -55,14 +55,14 @@ const linksSchema = z.object({
 export const userSchema = z.object({
   clerkId: z.string().optional(),
   name: z.string().min(1, { message: 'Name is required' }).max(255),
-  age: z.number().optional(),
+  age: z.string().min(1, { message: 'age is required' }),
   email: z.string().max(100).email('Invalid email'),
   post: z.string().min(1, { message: 'post is required' }).max(100),
   bio: z.string().min(1, { message: 'post is required' }),
   gender: z.string().optional(),
   qualification: z.string().min(1, { message: 'experience is required' }),
-  minSalary: z.number(),
-  maxSalary: z.number(),
+  minSalary: z.string().min(1, { message: 'Minimum salary is required' }),
+  maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
   salary_duration: z.string().optional(),
   experience: z.string().min(1, { message: 'experience is required' }),
   skills: z.array(z.string().max(50)),
@@ -70,13 +70,10 @@ export const userSchema = z.object({
   picture: z.string().optional(),
   location: z.string().optional(),
   mediaLinks: linksSchema.optional(),
-  address: z.string().optional(),
+  address: z.string().min(1, { message: 'Address is required' }),
   country: z.string().min(1, { message: 'Country is required' }),
-  city: z.string().optional(),
-  street: z.string().optional(),
-  zip: z.string().optional(),
-  state: z.string().optional(),
-  mapLocation: z.string().optional()
+  city: z.string().min(1, { message: 'city is required' }),
+  zip: z.string().min(1, { message: 'Zip code is required' })
 });
 
 export const employeeProfileSchema = z.object({

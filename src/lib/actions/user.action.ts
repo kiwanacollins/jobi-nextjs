@@ -13,8 +13,7 @@ import { revalidatePath } from 'next/cache';
 import Resume from '@/database/resume.model';
 import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
-import { userSchema } from '@/utils/validation';
-import * as z from 'zod';
+
 import { clerkClient } from '@clerk/nextjs';
 
 export async function getUserById(params: any) {
@@ -57,8 +56,8 @@ export async function createUser(userData: CreateUserParams) {
   }
 }
 
-type createUserByAdminParams = z.infer<typeof userSchema>;
-export async function createUserByAdmin(userData: createUserByAdminParams) {
+// type createUserByAdminParams = z.infer<typeof userSchema>;
+export async function createUserByAdmin(userData: any) {
   try {
     connectToDatabase();
     connectToCloudinary();
