@@ -9,7 +9,6 @@ import FeedbackFive from '@/app/components/feedBacks/feedback-five';
 import HeroBannerSix from '@/app/components/hero-banners/hero-banner-six';
 import { JobListItems } from '@/app/components/jobs/list/job-list-one';
 import PartnersSlider from '@/app/components/partners/partners-slider';
-
 import Link from 'next/link';
 
 export default function HomePage() {

@@ -1,26 +1,23 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import { useForm, FormProvider } from 'react-hook-form';
 import { createUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import StateSelect from '@/app/components/dashboard/candidate/state-select';
 import CountrySelect from '@/app/components/dashboard/candidate/country-select';
 import CitySelect from '@/app/components/dashboard/candidate/city-select';
-import QualicationSelect from '@/app/components/dashboard/candidate/QualicationSelect';
 import ErrorMsg from '@/app/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import NiceSelect from '@/ui/nice-select';
 import { Country } from 'country-state-city';
+import OptionSelect from '@/app/components/common/OptionSelect';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
-  const [role, setRole] = useState('candidate');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
@@ -30,28 +27,28 @@ const NewUser = () => {
   type userSchemaType = z.infer<typeof userSchema>;
 
   const methods = useForm<userSchemaType>({
-    resolver: zodResolver(userSchema)
-    // defaultValues: {
-    //   name: '',
-    //   username: '',
-    //   phone: '',
-    //   post: '',
-    //   skills: [],
-    //   salary_duration: '',
-    //   qualification: '',
-    //   bio: '',
-    //   mediaLinks: {
-    //     linkedin: '',
-    //     github: ''
-    //   },
-    //   address: '',
-    //   country: '',
-    //   city: '',
-    //   zip: '',
-    //   state: '',
-    //   mapLocation: '',
-    //   location: ''
-    // }
+    resolver: zodResolver(userSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      post: '',
+      skills: [],
+      salary_duration: '',
+      qualification: '',
+      bio: '',
+      mediaLinks: {
+        linkedin: '',
+        github: ''
+      },
+      address: '',
+      country: '',
+      city: '',
+      zip: '',
+      state: '',
+      mapLocation: '',
+      location: ''
+    }
   });
 
   const {
@@ -65,7 +62,7 @@ const NewUser = () => {
     formState: { errors }
   } = methods;
 
-  console.log('createUser', watch());
+  console.log('Qualification', watch('qualification'));
   const selectedCountryName = watch('country');
 
   useEffect(() => {
@@ -102,16 +99,9 @@ const NewUser = () => {
   const handleGenderChange = (event: any) => {
     setGender(event.target.value);
   };
-  const handleRoleChange = (event: any) => {
-    setRole(event.target.value);
-  };
   const handleSalary = (item: { value: string; label: string }) => {
     const { value } = item;
     setValue('salary_duration', value);
-  };
-  const handleExperience = (item: { value: string; label: string }) => {
-    const { value } = item;
-    setValue('experience', value);
   };
 
   // add skills
@@ -162,7 +152,6 @@ const NewUser = () => {
         name: value?.name,
         email: value.email,
         post: value.post,
-        role: value.role,
         bio: value.bio,
         salary_duration: value.salary_duration,
         experience: value.experience,
@@ -182,8 +171,6 @@ const NewUser = () => {
         country: value.country || '',
         city: value.city,
         zip: value.zip || '',
-        state: value.state,
-        mapLocation: value.mapLocation,
         location: value.location
       });
       notifySuccess('User Created Successfully');
@@ -324,7 +311,20 @@ const NewUser = () => {
             {/* Qualification Start */}
             <div className="dash-input-wrapper mb-25">
               <label htmlFor="">Qualification*</label>
-              <QualicationSelect setValue={setValue} />
+              <OptionSelect
+                register={register}
+                name="qualification"
+                options={[
+                  { value: `master's degree`, label: `Master's Degree` },
+                  { value: `bachelor degree`, label: `Bachelor Degree` },
+                  { value: `Higher Secondary`, label: `Higher Secondary` },
+                  { value: `Secondary School`, label: `Secondary School` }
+                ]}
+              />
+
+              {errors?.qualification && (
+                <ErrorMsg msg={errors?.qualification?.message as string} />
+              )}
             </div>
             {/* Qualification End */}
 
@@ -364,16 +364,19 @@ const NewUser = () => {
 
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Experience*</label>
-              <NiceSelect
+              <OptionSelect
+                register={register}
+                name="experience"
                 options={[
                   { value: 'Intermediate', label: 'Intermediate' },
                   { value: 'No-Experience', label: 'No-Experience' },
                   { value: 'Expert', label: 'Expert' }
                 ]}
-                defaultCurrent={0}
-                onChange={(item) => handleExperience(item)}
-                name="experience"
               />
+
+              {errors?.experience && (
+                <ErrorMsg msg={errors?.experience?.message as string} />
+              )}
             </div>
 
             {/* Experience end */}
@@ -499,76 +502,6 @@ const NewUser = () => {
                     placeholder="1708"
                     name="zip"
                   />
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">State*</label>
-                  <StateSelect register={register} />
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">Map Location*</label>
-                  <div className="position-relative">
-                    <input
-                      type="text"
-                      placeholder="XC23+6XC, Moiran, N105"
-                      {...register('mapLocation')}
-                      name="mapLocation"
-                    />
-                    <ErrorMsg msg={errors?.mapLocation?.message as string} />
-                    <button className="location-pin tran3s">
-                      <Image
-                        src={search}
-                        alt="icon"
-                        className="lazy-img m-auto"
-                      />
-                    </button>
-                  </div>
-                  <div className="map-frame mt-30">
-                    <div className="gmap_canvas h-100 w-100">
-                      <iframe
-                        className="gmap_iframe h-100 w-100"
-                        src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bass hill plaza medical centre&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                      ></iframe>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="mb-30">
-                  <label className="mb-20 fw-bold">User Role*</label>
-                  <div>
-                    <div>
-                      <input
-                        {...register('role', { required: true })}
-                        type="radio"
-                        id="candidate"
-                        value="candidate"
-                        className="me-2"
-                        checked={role === 'candidate'}
-                        onChange={handleRoleChange}
-                      />
-                      <label htmlFor="Candidate">Candidate</label>
-                    </div>
-
-                    <div>
-                      <input
-                        {...register('role', { required: true })}
-                        type="radio"
-                        id="employee"
-                        className="me-2"
-                        value="employee"
-                        checked={role === 'employee'}
-                        onChange={handleRoleChange}
-                      />
-                      <label htmlFor="employee">employee</label>
-                    </div>
-                  </div>
-                  {errors?.gender && (
-                    <ErrorMsg msg={errors?.gender?.message as string} />
-                  )}
                 </div>
               </div>
             </div>
