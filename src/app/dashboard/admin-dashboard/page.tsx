@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 const AdminDashboardPage = async () => {
   const user = await currentUser();
-  if (!user || user.privateMetadata.isAdmin !== 'true') {
+  if (!user || !user.privateMetadata.isAdmin) {
     return redirect('/');
   }
   return (
