@@ -184,8 +184,8 @@ const NewUser = () => {
         zip: value.zip || '',
         location: value.location
       });
+      setProgress(100);
       notifySuccess('User Created Successfully');
-      setProgress(0);
     } catch (error: any) {
       console.log('error', error);
       notifyError(error as string);

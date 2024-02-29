@@ -219,12 +219,12 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
           resumeData,
           path: pathname
         });
+        setProgress(100);
         notifySuccess('Resume Updated successfully.');
-        setProgress(0);
       } else {
         await createResume(resumeData);
+        setProgress(100);
         notifySuccess('Resume Created successfully.');
-        setProgress(0);
       }
     } catch (error: any) {
       console.log(error);

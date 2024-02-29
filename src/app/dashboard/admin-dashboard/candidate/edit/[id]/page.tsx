@@ -206,8 +206,8 @@ const UpdateUser = ({ params }: ParamsProps) => {
         },
         path: pathname
       });
+      setProgress(100);
       notifySuccess('User Updated Successfully');
-      setProgress(0);
     } catch (error: any) {
       notifyError(error.message as string);
     } finally {
