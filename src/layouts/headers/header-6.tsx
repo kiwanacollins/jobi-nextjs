@@ -56,43 +56,41 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   )}
 
                   <SignedIn>
-                    {(currentUser?.role === 'employee' ||
-                      currentUser?.isAdmin) && (
-                      <li className="nav-item dropdown Dashboard ">
-                        <a
-                          className="nav-link fw-bold me-3  text-white  dropdown-toggle"
-                          href="#"
-                          role="button"
-                          data-bs-toggle="dropdown"
-                          data-bs-auto-close="outside"
-                          aria-expanded="false"
-                        >
-                          Dashboard
-                        </a>
-                        <ul className="dropdown-menu p-3">
-                          {currentUser?.role === 'employee' && (
-                            <li>
-                              <Link
-                                href={'/dashboard/employ-dashboard'}
-                                className="dropdown-item"
-                              >
-                                <span>Employer Dashboard</span>
-                              </Link>
-                            </li>
-                          )}
-                          {currentUser?.isAdmin && (
-                            <li>
-                              <Link
-                                href={'/dashboard/admin-dashboard'}
-                                className="dropdown-item"
-                              >
-                                <span>Admin Dashboard</span>
-                              </Link>
-                            </li>
-                          )}
-                        </ul>
-                      </li>
-                    )}
+                    <li className="nav-item dropdown Dashboard ">
+                      <a
+                        className="nav-link fw-bold me-3  text-white  dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        data-bs-auto-close="outside"
+                        aria-expanded="false"
+                      >
+                        Dashboard
+                      </a>
+                      <ul className="dropdown-menu p-3">
+                        {currentUser?.role === 'employee' && (
+                          <li>
+                            <Link
+                              href={'/dashboard/employ-dashboard'}
+                              className="dropdown-item"
+                            >
+                              <span>Employer Dashboard</span>
+                            </Link>
+                          </li>
+                        )}
+                        {currentUser?.isAdmin && (
+                          <li>
+                            <Link
+                              href={'/dashboard/admin-dashboard'}
+                              className="dropdown-item"
+                            >
+                              <span>Admin Dashboard</span>
+                            </Link>
+                          </li>
+                        )}
+                      </ul>
+                    </li>
+
                     <UserButton
                       afterSignOutUrl="/"
                       appearance={{

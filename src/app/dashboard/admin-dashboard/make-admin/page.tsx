@@ -17,6 +17,7 @@ const Page = () => {
       await makeUserAdmin({
         email
       });
+
       setEmail('');
       notifySuccess('Admin created successfully');
       setIsSubmitting(false);

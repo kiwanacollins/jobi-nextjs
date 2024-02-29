@@ -46,7 +46,6 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
   if (user?.clerkId) {
     user.isAdmin = true;
     await user.save();
-
     const clerkUser = await clerkClient.users.getUser(user.clerkId as string);
     if (!clerkUser.privateMetadata.isAdmin) {
       await clerkClient.users.updateUserMetadata(user.clerkId as string, {
@@ -56,4 +55,5 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
       });
     }
   }
+  return JSON.parse(JSON.stringify(user));
 }
