@@ -56,5 +56,4 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
       });
     }
   }
-  console.log('user', user);
 }
