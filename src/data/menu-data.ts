@@ -87,17 +87,17 @@ const menu_data: IMenuData[] = [
     id: 5,
     link: '/contact',
     title: 'Contact'
-  },
-  {
-    id: 6,
-    link: '/dashboard/candidate-dashboard',
-    title: 'Dashboard',
-    sub_menus: [
-      { link: '/dashboard/candidate-dashboard', title: 'Candidate Dashboard' },
-      { link: '/dashboard/employ-dashboard', title: 'Employer Dashboard' },
-      { link: '/dashboard/admin-dashboard', title: 'Admin Dashboard' }
-    ]
   }
+  // {
+  //   id: 6,
+  //   link: '/dashboard/candidate-dashboard',
+  //   title: 'Dashboard',
+  //   sub_menus: [
+  //     { link: '/dashboard/candidate-dashboard', title: 'Candidate Dashboard' },
+  //     { link: '/dashboard/employ-dashboard', title: 'Employer Dashboard' },
+  //     { link: '/dashboard/admin-dashboard', title: 'Admin Dashboard' }
+  //   ]
+  // }
 ];
 
 export default menu_data;
