@@ -8,6 +8,7 @@ import delete_icon from '@/assets/dashboard/images/icon/icon_21.svg';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { deleteUserById } from '@/lib/actions/user.action';
+import Swal from 'sweetalert2';
 
 interface IProps {
   id: string;
@@ -18,9 +19,26 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
   const pathname = usePathname();
 
   const handleDeleteUser = async (userId: string) => {
-    await deleteUserById({
-      id: userId,
-      path: pathname
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteUserById({
+          id: userId,
+          path: pathname
+        });
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'User has been deleted.',
+          icon: 'success'
+        });
+      }
     });
   };
   return (
