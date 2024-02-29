@@ -40,6 +40,7 @@ export function SalaryRangeSlider({
       lte: val[1]
     });
   };
+
   return (
     <div className="salary-slider">
       <div className="price-input d-flex align-items-center pt-5">

@@ -7,9 +7,9 @@ import { usePathname } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-// if (typeof window !== 'undefined') {
-//   require('bootstrap/dist/js/bootstrap');
-// }
+if (typeof window !== 'undefined') {
+  require('bootstrap/dist/js/bootstrap');
+}
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();

@@ -37,7 +37,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
       <div className="light-bg border-20 ps-4 pe-4 pt-25 pb-30 mt-20">
         <div className="filter-block bottom-line pb-25">
           <a
-            className="filter-title fw-500 text-dark"
+            className="filter-title fw-500 text-decoration-none  text-dark"
             data-bs-toggle="collapse"
             href="#collapseLocation"
             role="button"
@@ -54,7 +54,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
-            className="filter-title fw-500 text-dark"
+            className="filter-title text-decoration-none fw-500 text-dark"
             data-bs-toggle="collapse"
             href="#collapseJobType"
             role="button"
@@ -69,7 +69,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
-            className="filter-title fw-500 text-dark"
+            className="filter-title text-decoration-none fw-500 text-dark"
             data-bs-toggle="collapse"
             href="#collapseExp"
             role="button"
@@ -84,7 +84,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
-            className="filter-title fw-500 text-dark"
+            className="filter-title text-decoration-none fw-500 text-dark"
             data-bs-toggle="collapse"
             href="#collapseSalary"
             role="button"
@@ -103,7 +103,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
-            className="filter-title fw-500 text-dark collapsed"
+            className="filter-title text-decoration-none fw-500 text-dark collapsed"
             data-bs-toggle="collapse"
             href="#collapseCategory"
             role="button"
@@ -118,7 +118,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
-            className="filter-title fw-500 text-dark collapsed"
+            className="filter-title text-decoration-none fw-500 text-dark collapsed"
             data-bs-toggle="collapse"
             href="#collapseTag"
             role="button"

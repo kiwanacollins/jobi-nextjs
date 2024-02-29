@@ -1,19 +1,33 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import slugify from 'slugify';
-import job_data from '@/data/job-data';
 import NiceSelect from '@/ui/nice-select';
-import { useAppDispatch } from "@/redux/hook";
+import { useAppDispatch } from '@/redux/hook';
 import { setLocation } from '@/redux/features/filterSlice';
+import { getJobPosts } from '@/lib/actions/job.action';
+import { IJobData } from '@/database/job.model';
 
 const JobLocations = () => {
-  const uniqueLocations = [...new Set(job_data.map(job => job.location))];
+  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
+  const uniqueLocations = [...new Set(allJobData.map((job) => job.location))];
   const dispatch = useAppDispatch();
-  const handleLocation = (item: { value: string; label: string }) => { 
-    dispatch(setLocation(item.value))
+  const handleLocation = (item: { value: string; label: string }) => {
+    console.log(item);
+    dispatch(setLocation(item.value));
   };
-  const options = uniqueLocations.map((l) => {
-    return {value:slugify(l.split(',').join('-').toLowerCase(),'-'),label:l}
-  })
+  const options: any = uniqueLocations.map((l) => {
+    return {
+      value: slugify(l.split(',').join('-').toLowerCase(), '-'),
+      label: l
+    };
+  });
+  useEffect(() => {
+    const getAllJobs = async () => {
+      const { jobs } = await getJobPosts();
+      setAllJobData(jobs);
+    };
+    getAllJobs();
+  }, []);
   return (
     <NiceSelect
       options={options}
