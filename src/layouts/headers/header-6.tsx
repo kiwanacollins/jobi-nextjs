@@ -149,11 +149,16 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                       role={currentUser?.role as string}
                     />
                     {/* menus end */}
-                    <li className="d-md-none mt-5">
-                      <Link href="/register" className="btn-five w-100">
-                        Post a job
-                      </Link>
-                    </li>
+                    {currentUser?.role === 'employee' && (
+                      <li className="d-md-none mt-5">
+                        <Link
+                          href="/dashboard/employ-dashboard/submit-job"
+                          className="btn-five w-100"
+                        >
+                          Post a job
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </nav>
