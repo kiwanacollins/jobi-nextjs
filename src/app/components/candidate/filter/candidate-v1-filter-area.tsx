@@ -85,7 +85,7 @@ const CandidateV1FilterArea = () => {
         </div>
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
-            className="filter-title fw-500 text-dark"
+            className="filter-title text-decoration-none  fw-500 text-dark"
             data-bs-toggle="collapse"
             href="#collapseCategory"
             role="button"

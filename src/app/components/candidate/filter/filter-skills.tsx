@@ -1,18 +1,17 @@
 'use client';
 import React, { useState } from 'react';
-import candidate_data from '@/data/candidate-data';
 import NiceSelect from '@/ui/nice-select';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery } from '@/utils/utils';
+import { skills } from '@/constants';
 
 const FilterSkills = () => {
-  const uniqueSkills = [...new Set(candidate_data.flatMap((c) => c.skills))];
+  const uniqueSkills = [...new Set(skills.flatMap((c) => c))];
   const options = uniqueSkills.map((c) => {
     return { value: c, label: c };
   });
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const skill = searchParams.get('skill');
   const [active, setActive] = useState(skill || '');
   const handleSkills = (item: { value: string; label: string }) => {
@@ -37,6 +36,7 @@ const FilterSkills = () => {
       router.push(newUrl, { scroll: false });
     }
   };
+
   return (
     <NiceSelect
       options={options}
