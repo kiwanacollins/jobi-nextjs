@@ -12,6 +12,7 @@ import { IResumeType } from '@/database/resume.model';
 import Resume from '@/app/components/resume/Resume';
 import ResumeModal from '../resume/ResumeModal';
 import dynamic from 'next/dynamic';
+import { Button, Card } from 'react-bootstrap';
 
 interface ICandidateDetailsAreaProps {
   candidateDetials: IResumeType;
@@ -70,26 +71,33 @@ const CandidateDetailsArea = ({
                   </button>
                 </div>
                 <div className="mb-4 p-4">
-                  <h3 className="title">videos </h3>
+                  <h3 className="title">Videos </h3>
                   <div className="d-flex flex-wrap gap-4">
                     {candidateDetials?.videos?.map((video, index) => {
                       return (
-                        <div
-                          key={video?.title ?? '' + index}
-                          className="bg-primary  p-3   text-white rounded-3 cursor-pointer"
-                          onClick={() =>
-                            handleVideoClick(
-                              video?.videoId ?? '',
-                              video?.videoId ?? ''
-                            )
-                          }
-                        >
-                          <div className="card-body ">
-                            <h5 className="card-title fw-bold ">
-                              {video?.title ?? ''}{' '}
-                            </h5>
-                          </div>
-                        </div>
+                        <Card key={index} style={{ width: '18rem' }}>
+                          <Card.Img
+                            variant="top"
+                            src={`https://img.youtube.com/vi/${video?.videoId}/0.jpg`}
+                          />
+                          <Card.Body>
+                            <Card.Title className="fw-bold">
+                              {video?.title}
+                            </Card.Title>
+                            <Button
+                              onClick={() =>
+                                handleVideoClick(
+                                  video.videoId ?? '',
+                                  video.videoId ?? ''
+                                )
+                              }
+                              className="px-3"
+                              variant="primary"
+                            >
+                              Watch
+                            </Button>
+                          </Card.Body>
+                        </Card>
                       );
                     })}
                   </div>
