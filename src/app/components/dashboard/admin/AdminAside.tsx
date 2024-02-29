@@ -53,34 +53,41 @@ const nav_data: {
   },
   {
     id: 3,
+    icon: nav_2,
+    icon_active: nav_2_active,
+    link: '/dashboard/admin-dashboard/utils',
+    title: 'Utils'
+  },
+  {
+    id: 4,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/users',
     title: 'Users'
   },
   {
-    id: 4,
+    id: 5,
     icon: nav_4,
     icon_active: nav_4_active,
     link: '/dashboard/candidate-dashboard/messages',
     title: 'Messages'
   },
   {
-    id: 5,
+    id: 6,
     icon: nav_5,
     icon_active: nav_5_active,
     link: '/dashboard/candidate-dashboard/job-alert',
     title: 'Job Alert'
   },
   {
-    id: 6,
+    id: 7,
     icon: nav_6,
     icon_active: nav_6_active,
     link: '/dashboard/candidate-dashboard/saved-job',
     title: 'Saved Job'
   },
   {
-    id: 7,
+    id: 8,
     icon: nav_7,
     icon_active: nav_7_active,
     link: '/dashboard/candidate-dashboard/setting',

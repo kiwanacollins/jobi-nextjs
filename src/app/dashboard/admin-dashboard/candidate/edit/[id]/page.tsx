@@ -220,6 +220,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
     value: skill,
     label: skill
   }));
+
   const skillsOptions = skills.map((skill) => ({
     value: skill,
     label: skill
