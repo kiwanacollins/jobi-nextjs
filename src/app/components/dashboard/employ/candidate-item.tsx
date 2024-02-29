@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { IUser } from '@/database/user.model';
 import Link from 'next/link';
 import ActionDropdown from '../candidate/action-dropdown';
+import 'bootstrap/dist/js/bootstrap';
 
 const CandidateItem = ({ item }: { item: IUser }) => {
   return (
@@ -27,7 +28,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
               <div className="position-relative">
                 <h4 className="candidate-name mb-0">
                   <Link
-                    href={`/candidate-profile/${item?.resumeId}`}
+                    href={`/candidate-profile/${item?._id}`}
                     className="tran3s text-decoration-none  "
                   >
                     {item?.name}
