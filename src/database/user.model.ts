@@ -22,20 +22,18 @@ export interface IUser extends Document {
   maxSalary?: number;
   salary_duration?: string;
   experience?: string;
+  english_fluency?: string;
   skills?: string[];
   phone?: string;
   picture?: string;
   role?: string;
   isAdmin?: boolean;
-  location?: string;
   mediaLinks?: I_Links;
   address?: string;
   country?: string;
   city?: string;
   street?: string;
   zip?: string;
-  state?: string;
-  mapLocation?: string;
   saved?: Schema.Types.ObjectId[];
   resumeId?: Schema.Types.ObjectId | string;
   jobPosts?: Schema.Types.ObjectId[];
@@ -56,6 +54,7 @@ const UserSchema = new Schema({
   phone: { type: String },
   gender: { type: String },
   qualification: { type: String },
+  english_fluency: { type: String },
   skills: [{ type: String }],
   minSalary: { type: Number },
   maxSalary: { type: Number },
@@ -63,8 +62,7 @@ const UserSchema = new Schema({
   experience: { type: String },
   picture: { type: String },
   role: { type: String },
-  isAdmin: { type: Boolean, default: false },
-  location: { type: String },
+  isAdmin: { type: Boolean },
   mediaLinks: {
     linkedin: { type: String },
     github: { type: String }
@@ -75,7 +73,6 @@ const UserSchema = new Schema({
   street: { type: String },
   zip: { type: String },
   state: { type: String },
-  mapLocation: { type: String },
   saved: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   resumeId: { type: Schema.Types.ObjectId, ref: 'Resume' },
   jobPosts: [{ type: Schema.Types.ObjectId, ref: 'Job' }],

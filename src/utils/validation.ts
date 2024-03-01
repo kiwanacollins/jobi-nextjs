@@ -76,12 +76,12 @@ export const userSchema = z.object({
     }),
   phone: z.string().min(1, { message: 'post is required' }).max(11).optional(),
   picture: z.string().optional(),
-  location: z.string().optional(),
   mediaLinks: linksSchema.optional(),
   address: z.string().min(1, { message: 'Address is required' }),
   country: z.string().min(1, { message: 'Country is required' }),
   city: z.string().min(1, { message: 'city is required' }),
-  zip: z.string().min(1, { message: 'Zip code is required' })
+  zip: z.string().min(1, { message: 'Zip code is required' }),
+  english_fluency: z.string().min(1, { message: 'English fluency is required' })
 });
 
 export const employeeProfileSchema = z.object({
@@ -140,5 +140,5 @@ export const formJobDataSchema = z.object({
   minSalary: z.string().min(1, { message: 'Minimum salary is required' }),
   maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
   industry: z.string().min(1, { message: 'Industry salary is required' }),
-  english_fluency: z.string()
+  english_fluency: z.string().min(1, { message: 'English fluency is required' })
 });

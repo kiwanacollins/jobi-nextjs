@@ -20,7 +20,8 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     qualification: searchParams.qualification,
     gender: searchParams.gender,
     location: searchParams.location,
-    experience: searchParams.experience
+    experience: searchParams.experience,
+    fluency: searchParams.fluency
   });
 
   return (

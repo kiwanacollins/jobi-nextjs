@@ -174,14 +174,29 @@ export async function getAllCandidates(params: getCandidatesParams) {
   try {
     await connectToDatabase();
 
-    const { keyword, skill, qualification, gender, location, experience } =
-      params;
+    const {
+      keyword,
+      skill,
+      qualification,
+      gender,
+      location,
+      experience,
+      fluency
+    } = params;
     console.log('getAllCandidates  gender:', gender);
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
 
     console.log('getAllCandidates  query:', query);
-    if (keyword || skill || qualification || gender || location || experience) {
+    if (
+      keyword ||
+      skill ||
+      qualification ||
+      gender ||
+      location ||
+      experience ||
+      fluency
+    ) {
       if (keyword) {
         query.$or = [];
         query.$or.push(
@@ -204,6 +219,9 @@ export async function getAllCandidates(params: getCandidatesParams) {
 
       if (qualification) {
         query.qualification = { $regex: new RegExp(qualification, 'i') };
+      }
+      if (fluency) {
+        query.english_fluency = { $regex: new RegExp(fluency, 'i') };
       }
       if (experience) {
         query.experience = { $regex: new RegExp(experience, 'i') };

@@ -48,7 +48,7 @@ const NewUser = () => {
       country: '',
       city: '',
       zip: '',
-      location: ''
+      english_fluency: ''
     }
   });
 
@@ -171,6 +171,7 @@ const NewUser = () => {
         picture: value.picture,
         gender: value.gender,
         qualification: value.qualification,
+        english_fluency: value.english_fluency,
         skills: value.skills,
         minSalary: value.minSalary,
         maxSalary: value.maxSalary,
@@ -181,8 +182,7 @@ const NewUser = () => {
         address: value.address || '',
         country: value.country || '',
         city: value.city,
-        zip: value.zip || '',
-        location: value.location
+        zip: value.zip || ''
       });
       setProgress(100);
       notifySuccess('User Created Successfully');
@@ -402,25 +402,65 @@ const NewUser = () => {
             {/* Skills end */}
 
             {/* Experience start */}
+            <div className="row align-items-end">
+              <div className="col-md-6">
+                <div className="dash-input-wrapper mb-30">
+                  <label htmlFor="">Experience*</label>
+                  <OptionSelect
+                    register={register}
+                    name="experience"
+                    options={[
+                      { value: 'Intermediate', label: 'Intermediate' },
+                      { value: 'No-Experience', label: 'No-Experience' },
+                      { value: 'Expert', label: 'Expert' }
+                    ]}
+                  />
 
-            <div className="dash-input-wrapper mb-30">
-              <label htmlFor="">Experience*</label>
-              <OptionSelect
-                register={register}
-                name="experience"
-                options={[
-                  { value: 'Intermediate', label: 'Intermediate' },
-                  { value: 'No-Experience', label: 'No-Experience' },
-                  { value: 'Expert', label: 'Expert' }
-                ]}
-              />
+                  {errors?.experience && (
+                    <ErrorMsg msg={errors?.experience?.message as string} />
+                  )}
+                </div>
+              </div>
 
-              {errors?.experience && (
-                <ErrorMsg msg={errors?.experience?.message as string} />
-              )}
+              {/* Experience end */}
+
+              {/* English Fluency start */}
+              <div className="col-md-6">
+                <div className=" mb-30">
+                  <label className="fw-semibold mb-2" htmlFor="">
+                    English Fluency
+                  </label>
+                  <Controller
+                    name="english_fluency"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={[
+                          { value: 'Basic', label: 'Basic' },
+                          { value: 'Conversational', label: 'Conversational' },
+                          { value: 'Fluent', label: 'Fluent' },
+                          { value: 'Native', label: 'Native' }
+                        ]}
+                        isSearchable={false}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) =>
+                          field.onChange(selectedOption?.value)
+                        }
+                        value={
+                          field.value
+                            ? { value: field.value, label: field.value }
+                            : null
+                        }
+                      />
+                    )}
+                  />
+                  <ErrorMsg msg={errors?.english_fluency?.message} />
+                </div>
+              </div>
+              {/* English Fluency End */}
             </div>
-
-            {/* Experience end */}
 
             {/* Salary start */}
             <div className="row">
