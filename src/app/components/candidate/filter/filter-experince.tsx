@@ -42,7 +42,7 @@ const FilterCandidateExperience = () => {
       {uniqueExperiences.map((e, index) => (
         <li key={index}>
           <input
-            onClick={(e) => handleExperience(e)}
+            onChange={(e) => handleExperience(e)}
             type="checkbox"
             name="experience"
             defaultValue={e}

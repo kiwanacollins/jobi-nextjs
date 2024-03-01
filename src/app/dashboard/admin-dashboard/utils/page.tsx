@@ -4,7 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { createCategory, getCategories } from '@/lib/actions/admin.action';
+import {
+  createCategory,
+  deleteSingleCategory,
+  getCategories
+} from '@/lib/actions/admin.action';
 import { usePathname } from 'next/navigation';
 import { notifySuccess } from '@/utils/toast';
 import CreatableSelect from 'react-select/creatable';
@@ -22,11 +26,12 @@ const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const groupedCategories = categories?.map((category) => category.value);
   type categorySchemaType = z.infer<typeof categorySchema>;
   const methods = useForm<categorySchemaType>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      skills: []
+      skills: groupedCategories || []
     }
   });
   const {
@@ -58,8 +63,6 @@ const Page = () => {
     }
   };
 
-  console.log(categories);
-
   useEffect(() => {
     const fetchCategories = async () => {
       const categories = await getCategories();
@@ -68,10 +71,26 @@ const Page = () => {
     fetchCategories();
   }, []);
 
-  const skillsOptions = categories?.map((skill) => ({
-    value: skill.value as string,
-    label: skill.value as string
+  const skillsOptions = groupedCategories?.map((skill) => ({
+    value: skill,
+    label: skill
   }));
+
+  const handleDeleteCategory = async (id: string) => {
+    try {
+      const response = await deleteSingleCategory({
+        mongoId: id,
+        path: pathname
+      });
+      if (response.success) {
+        notifySuccess(response.message);
+        const remianCategories = categories.filter((c) => c._id !== id);
+        setCategories(remianCategories);
+      }
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <div>
@@ -88,12 +107,13 @@ const Page = () => {
                   <Controller
                     name="skills"
                     control={control}
+                    defaultValue={groupedCategories || []}
                     render={({ field }) => (
                       <CreatableSelect
                         isMulti
                         {...field}
                         //@ts-ignore
-                        defaultInputValue={skillsOptions}
+                        defaultInputValue={groupedCategories}
                         options={skillsOptions || []}
                         className="basic-multi-select"
                         classNamePrefix="select"
@@ -116,7 +136,16 @@ const Page = () => {
                   {categories?.map((item: any, index) => {
                     return (
                       <li className="is_tag" key={index}>
-                        <button disabled>{item.value} </button>
+                        <button>
+                          {item.value}
+                          <i
+                            className="bi bi-x"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleDeleteCategory(item._id);
+                            }}
+                          ></i>{' '}
+                        </button>
                       </li>
                     );
                   })}

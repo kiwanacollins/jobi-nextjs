@@ -4,6 +4,7 @@ import Category from '@/database/categery.model';
 import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
+import { connectToDatabase } from '../mongoose';
 
 interface ICreateCategory {
   skills: string[];
@@ -28,8 +29,37 @@ export async function createCategory(params: ICreateCategory) {
 }
 
 export async function getCategories() {
-  const categories = await Category.find();
-  return JSON.parse(JSON.stringify(categories));
+  try {
+    await connectToDatabase();
+    const categories = await Category.find();
+    return JSON.parse(JSON.stringify(categories));
+  } catch (error) {
+    console.log('Error getting categories:', error);
+  }
+}
+
+export async function deleteSingleCategory(param: {
+  mongoId: string;
+  path: string;
+}) {
+  const { mongoId, path } = param;
+  try {
+    await connectToDatabase();
+    const result = await Category.findByIdAndDelete(mongoId);
+
+    if (result) {
+      revalidatePath(path);
+      return { success: true, message: 'Category deleted successfully' };
+    } else {
+      return {
+        success: false,
+        message: `Category with ID: ${mongoId} not found`
+      };
+    }
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    throw error; // Re-throw to allow for error handling in calling code
+  }
 }
 
 interface ImakeAdminProps {
