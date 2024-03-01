@@ -442,7 +442,6 @@ const NewUser = () => {
                           { value: 'Fluent', label: 'Fluent' },
                           { value: 'Native', label: 'Native' }
                         ]}
-                        isSearchable={false}
                         className="basic-multi-select"
                         classNamePrefix="select"
                         onChange={(selectedOption) =>

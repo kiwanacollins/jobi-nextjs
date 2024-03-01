@@ -37,7 +37,7 @@ const FilterEnglishFluency = () => {
         { value: 'Basic', label: 'Basic' },
         { value: 'Conversational', label: 'Conversational' },
         { value: 'Fluent', label: 'Fluent' },
-        { value: 'Native/Bilingual', label: 'Native/Bilingual' }
+        { value: 'Native', label: 'Native' }
       ]}
       defaultCurrent={0}
       onChange={(item) => handleEnglishFluency(item)}

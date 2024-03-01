@@ -1,10 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import search from '@/assets/dashboard/images/icon/icon_16.svg';
 import CountrySelect from './country-select';
 import CitySelect from './city-select';
-import StateSelect from './state-select';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { updateUser } from '@/lib/actions/user.action';
 import { usePathname } from 'next/navigation';
@@ -44,10 +42,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         address: mongoUser?.address || '',
         country: mongoUser?.country || '',
         city: mongoUser?.city || '',
-        zip: mongoUser?.zip || '',
-        state: mongoUser?.state || '',
-        mapLocation: mongoUser?.mapLocation || '',
-        location: mongoUser?.location || ''
+        zip: mongoUser?.zip || ''
       },
       errors: !values.name
         ? {
@@ -156,10 +151,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
           address: value.address,
           country: value.country,
           city: value.city,
-          zip: value.zip,
-          state: value.state,
-          mapLocation: value.mapLocation,
-          location: value.location
+          zip: value.zip
         },
         path: pathname
       });
@@ -398,42 +390,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                     defaultValue={mongoUser?.zip}
                     name="zip"
                   />
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">State*</label>
-                  <StateSelect register={register} />
-                </div>
-              </div>
-              <div className="col-12">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">Map Location*</label>
-                  <div className="position-relative">
-                    <input
-                      type="text"
-                      placeholder="XC23+6XC, Moiran, N105"
-                      {...register('mapLocation')}
-                      defaultValue={mongoUser?.mapLocation}
-                      name="mapLocation"
-                    />
-                    <ErrorMsg msg={errors?.mapLocation?.message as string} />
-                    <button className="location-pin tran3s">
-                      <Image
-                        src={search}
-                        alt="icon"
-                        className="lazy-img m-auto"
-                      />
-                    </button>
-                  </div>
-                  <div className="map-frame mt-30">
-                    <div className="gmap_canvas h-100 w-100">
-                      <iframe
-                        className="gmap_iframe h-100 w-100"
-                        src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bass hill plaza medical centre&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                      ></iframe>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
