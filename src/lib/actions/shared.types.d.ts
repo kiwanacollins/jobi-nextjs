@@ -43,6 +43,7 @@ export interface getCandidatesParams {
   location?: string;
   level?: string;
   qualification?: string;
+  experience?: string;
   gender?: string;
   fluency?: string;
 }

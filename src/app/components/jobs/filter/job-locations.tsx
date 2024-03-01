@@ -31,7 +31,7 @@ const JobLocations = () => {
   return (
     <NiceSelect
       options={options}
-      defaultCurrent={0}
+      defaultCurrent={1}
       onChange={(item) => handleLocation(item)}
       name="Location"
     />

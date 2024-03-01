@@ -1,35 +1,52 @@
 'use client';
 import React, { useState } from 'react';
 import candidate_data from '@/data/candidate-data';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery } from '@/utils/utils';
 
 const FilterCandidateExperience = () => {
   const uniqueExperiences = [
     ...new Set(candidate_data.map((c) => c.experience))
   ];
-  const [experience, setExperience] = useState<string[]>([]);
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const experience = searchParams.get('experience');
+  const [active, setActive] = useState(experience || '');
   // handle Experience
-  const handleExperience = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleExperience = (e: any) => {
     const newExperience = e.target.value;
-    if (experience.includes(newExperience)) {
-      const remaining = experience.filter((e) => e !== newExperience);
-      setExperience(remaining);
-      console.log('experience remaining', experience);
+    if (active === newExperience) {
+      setActive('');
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'experience',
+        value: null
+      });
+
+      router.push(newUrl, { scroll: false });
     } else {
-      setExperience((prevExperience) => [...prevExperience, newExperience]);
-      console.log('experience existing', experience);
+      setActive(newExperience);
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'experience',
+        value: newExperience.toLowerCase()
+      });
+
+      router.push(newUrl, { scroll: false });
     }
   };
+
   return (
     <ul className="style-none filter-input">
       {uniqueExperiences.map((e, index) => (
         <li key={index}>
           <input
-            onChange={(event) => handleExperience(event)}
+            onClick={(e) => handleExperience(e)}
             type="checkbox"
-            name={e}
+            name="experience"
             defaultValue={e}
-            checked={experience.includes(e)}
+            checked={active === e}
           />
           <label>{e}</label>
         </li>

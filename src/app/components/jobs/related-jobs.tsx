@@ -66,7 +66,7 @@ const RelatedJobs = ({ category }: { category: string[] }) => {
             ref={sliderRef}
             className="related-job-slider"
           >
-            {job_items.map((j) => (
+            {job_items?.map((j) => (
               <div key={j.id} className="item">
                 <JobGridItem item={j} />
               </div>
