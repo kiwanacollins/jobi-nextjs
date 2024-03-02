@@ -226,7 +226,9 @@ const UpdateJobArea = ({ job }: IProps) => {
                 <input
                   type="text"
                   placeholder="Min Salary"
-                  {...register('minSalary')}
+                  {...register('minSalary', {
+                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
+                  })}
                   name="minSalary"
                 />
                 {errors?.minSalary && (
@@ -239,7 +241,9 @@ const UpdateJobArea = ({ job }: IProps) => {
                 <input
                   type="text"
                   placeholder="Max salary"
-                  {...register('maxSalary')}
+                  {...register('maxSalary', {
+                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
+                  })}
                   name="maxSalary"
                 />
                 {errors?.maxSalary && (

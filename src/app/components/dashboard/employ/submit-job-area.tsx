@@ -241,9 +241,11 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
               <div className="dash-input-wrapper mb-30">
                 <input
                   type="number"
-                  defaultValue={0}
+                  // defaultValue={0}
                   placeholder="Min Salary"
-                  {...register('minSalary', { valueAsNumber: true })}
+                  {...register('minSalary', {
+                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
+                  })}
                   name="minSalary"
                 />
                 {errors?.minSalary && (
@@ -255,9 +257,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
               <div className="dash-input-wrapper mb-30">
                 <input
                   type="number"
-                  defaultValue={0}
                   placeholder="Max salary"
-                  {...register('maxSalary', { valueAsNumber: true })}
+                  {...register('maxSalary', {
+                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
+                  })}
                   name="maxSalary"
                 />
                 {errors?.maxSalary && (
