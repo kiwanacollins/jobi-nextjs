@@ -42,7 +42,7 @@ export interface IFormJobData {
   state: string;
   mapLocation?: string;
   salary: number;
-  tags?: string[];
+  skills?: string[];
   experience: string;
   minSalary?: string;
   maxSalary?: string;
@@ -55,6 +55,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   // const [skillTags, setSkillTags] = useState<string[]>(skills || []);
   // const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
   );
@@ -94,11 +95,6 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     formState: { errors }
   } = methods;
 
-  console.log('skills', watch('skills'));
-  console.log('experience', watch('experience'));
-
-  console.log('errors', errors);
-
   const selectedCountryName = watch('country');
 
   useEffect(() => {
@@ -110,10 +106,24 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
 
   const options = skills.map((skill) => ({ value: skill, label: skill }));
 
+  const simulateProgress = () => {
+    let currentProgress = 0;
+
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setProgress(currentProgress);
+
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+      }
+    }, 500); // Adjust the interval and steps based on your preference
+  };
+
   // on submit
   const onSubmit = async (data: IJobDataSchemaType) => {
     console.log('data', data);
     setIsSubmitting(true);
+    simulateProgress();
     const {
       title,
       category,
@@ -159,14 +169,16 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           createdBy: mongoUserId,
           path: pathname
         });
-
+        setProgress(100);
         notifySuccess('Job post created successfully!');
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
       notifyError(error);
+      setProgress(0);
     } finally {
       reset();
+      setProgress(0);
       setIsSubmitting(false);
     }
   };
@@ -350,6 +362,22 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             </div>
           </div>
         </div>
+
+        {/* Progress bar */}
+        {isSubmitting && (
+          <div className="progress">
+            <div
+              className="progress-bar progress-bar-striped progress-bar-animated"
+              role="progressbar"
+              style={{ width: `${progress}%` }}
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              {progress}%
+            </div>
+          </div>
+        )}
 
         <div className="button-group d-inline-flex align-items-center mt-30">
           <button
