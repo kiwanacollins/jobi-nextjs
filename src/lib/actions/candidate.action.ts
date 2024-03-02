@@ -182,6 +182,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
       location,
       experience,
       fluency,
+      duration,
       min,
       max
     } = params;
@@ -201,6 +202,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
       location ||
       experience ||
       fluency ||
+      duration ||
       min ||
       max
     ) {
@@ -216,12 +218,6 @@ export async function getAllCandidates(params: getCandidatesParams) {
             gender: { $eq: keyword }
           }
         );
-
-        // if (skill) {
-        //   query.$or.push({
-        //     skills: { $in: { $regex: new RegExp(skill as string, 'i') } }
-        //   });
-        // }
       }
 
       if (qualification) {
@@ -238,6 +234,9 @@ export async function getAllCandidates(params: getCandidatesParams) {
       }
       if (location) {
         query.city = { $regex: new RegExp(location, 'i') };
+      }
+      if (duration) {
+        query.salary_duration = { $regex: new RegExp(duration, 'i') };
       }
 
       if (gender) {

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import InputRange from '@/ui/input-range';
 import { useRouter, useSearchParams } from 'next/navigation';
 import qs from 'query-string';
+import { formUrlQuery } from '@/utils/utils';
 
 // prop type
 type IProps = {
@@ -77,6 +78,38 @@ export function SalaryRangeSlider({
 }
 
 const JobPrices = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const duration = searchParams.get('duration');
+  const [active, setActive] = useState(duration || '');
+  const durations = [
+    { value: 'Weekly', label: 'Weekly' },
+    { value: 'Monthly', label: 'Monthly' },
+    { value: 'Hourly', label: 'Hourly' },
+    { value: 'Yearly', label: 'Yearly' }
+  ];
+  const handleDurationChangle = (item: { value: string; label: string }) => {
+    if (active === item.value) {
+      setActive('');
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'duration',
+        value: null
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      setActive(item.value);
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'duration',
+        value: item.value.toLowerCase()
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
+  };
   return (
     <div className="main-body">
       <SalaryRangeSlider
@@ -85,18 +118,17 @@ const JobPrices = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         setPriceValue={setPriceValue}
       />
       <ul className="style-none d-flex flex-wrap justify-content-between radio-filter mb-5">
-        <li>
-          <input type="radio" name="jobDuration" defaultValue="01" />
-          <label>Weekly</label>
-        </li>
-        <li>
-          <input type="radio" name="jobDuration" defaultValue="02" />
-          <label>Monthly</label>
-        </li>
-        <li>
-          <input type="radio" name="jobDuration" defaultValue="03" />
-          <label>Hourly</label>
-        </li>
+        {durations?.map((duration, index) => (
+          <li key={index}>
+            <input
+              type="radio"
+              name="jobDuration"
+              onClick={() => handleDurationChangle(duration)}
+              checked={active === duration.value}
+            />
+            <label>{duration.label}</label>
+          </li>
+        ))}
       </ul>
     </div>
   );

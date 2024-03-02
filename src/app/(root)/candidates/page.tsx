@@ -22,6 +22,7 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     location: searchParams.location,
     experience: searchParams.experience,
     fluency: searchParams.fluency,
+    duration: searchParams.duration,
     min: searchParams.min,
     max: searchParams.max
   });

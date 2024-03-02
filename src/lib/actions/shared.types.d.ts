@@ -47,4 +47,5 @@ export interface getCandidatesParams {
   experience?: string;
   gender?: string;
   fluency?: string;
+  duration?: string;
 }
