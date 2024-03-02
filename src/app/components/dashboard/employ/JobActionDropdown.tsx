@@ -58,7 +58,7 @@ const JobActionDropdown = ({ jobId }: IProps) => {
       <li className="dropdown-item">
         <Link
           className="dropdown-item"
-          href={`/dashboard/admin-dashboard/candidate/edit/${jobId}`}
+          href={`/dashboard/employ-dashboard/job/edit/${jobId}`}
         >
           <Image src={edit} alt="icon" className="lazy-img" /> Edit
         </Link>

@@ -11,9 +11,10 @@ export interface IJobData extends Document {
   country: string;
   city: string;
   skills: string[];
+  address?: string;
   experience: string;
-  minSalary: number;
-  maxSalary: number;
+  minSalary: string;
+  maxSalary: string;
   industry: string;
   english_fluency: string;
   createdBy?: Schema.Types.ObjectId | string;
@@ -26,8 +27,9 @@ const jobSchema = new Schema({
   overview: { type: String, required: true },
   duration: { type: String, required: true },
   salary_duration: { type: String, required: true }, // Assuming salary is a number
-  category: { type: [String], required: true },
+  category: { type: String, required: true },
   location: { type: String, required: true },
+  address: { type: String },
   country: { type: String },
   city: { type: String },
   skills: { type: [String] },

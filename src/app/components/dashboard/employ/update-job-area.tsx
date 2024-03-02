@@ -5,9 +5,6 @@ import CountrySelect from '../candidate/country-select';
 import EmployExperience from './employ-experience';
 import { Controller, useForm } from 'react-hook-form';
 import { skills } from '@/constants';
-import { creatJobPost } from '@/lib/actions/job.action';
-import { usePathname } from 'next/navigation';
-import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { Country } from 'country-state-city';
 import { formJobDataSchema } from '@/utils/validation';
@@ -18,10 +15,9 @@ import JobCategorySelect from './jobcategory-select';
 import JobTypeSelect from './jobType-select';
 import SalaryDurationSelect from './salary-duration-select';
 import Select from 'react-select';
-// props type
-type IProps = {
-  mongoUserId: string | undefined;
-};
+import { IJobData } from '@/database/job.model';
+import { updateJobById } from '@/lib/actions/job.action';
+import { usePathname } from 'next/navigation';
 
 export interface IFormJobData {
   title: string;
@@ -51,18 +47,19 @@ export interface IFormJobData {
   english_fluency: string;
 }
 
-const SubmitJobArea = ({ mongoUserId }: IProps) => {
+interface IProps {
+  job: IJobData;
+}
+
+const UpdateJobArea = ({ job }: IProps) => {
   // const [skillTags, setSkillTags] = useState<string[]>(skills || []);
   // const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+  const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
   );
-  const { userId } = useAuth();
-
-  const pathname = usePathname();
-  const type = 'add';
 
   type IJobDataSchemaType = z.infer<typeof formJobDataSchema>;
 
@@ -70,19 +67,21 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   const methods = useForm<IJobDataSchemaType>({
     resolver: zodResolver(formJobDataSchema),
     defaultValues: {
-      title: '',
-      overview: '',
-      duration: '',
-      salary_duration: '',
-      category: '',
-      location: '',
-      country: '',
-      city: '',
-      experience: '',
-      minSalary: '',
-      maxSalary: '',
-      industry: '',
-      english_fluency: ''
+      title: job?.title || '',
+      overview: job?.overview || '',
+      duration: job?.duration || '',
+      skills: job?.skills || [],
+      salary_duration: job?.salary_duration || '',
+      category: job?.category || '',
+      location: job?.location || '',
+      address: job?.address || '',
+      country: job?.country || '',
+      city: job?.city || '',
+      experience: job?.experience || '',
+      minSalary: job?.minSalary.toString() || '',
+      maxSalary: job?.maxSalary.toString() || '',
+      industry: job?.industry || '',
+      english_fluency: job?.experience || ''
     }
   });
   const {
@@ -93,6 +92,8 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     watch,
     formState: { errors }
   } = methods;
+  console.log('watch', watch());
+  console.log('errors', errors);
 
   const selectedCountryName = watch('country');
 
@@ -123,54 +124,33 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     console.log('data', data);
     setIsSubmitting(true);
     simulateProgress();
-    const {
-      title,
-      category,
-      english_fluency,
-      overview,
-      minSalary,
-      maxSalary,
-      salary_duration,
-      skills,
-      duration,
-      location,
-      experience,
-      industry,
-      address,
-      country,
-      city
-    } = data;
-
-    const mongoData = {
-      title,
-      category,
-      english_fluency,
-      overview,
-      salary_duration,
-      experience,
-      skills,
-      duration,
-      location,
-      address,
-      minSalary,
-      maxSalary,
-      country,
-      city,
-      industry
-    };
 
     try {
-      if (type === 'add') {
-        // !Error: this function is calling two times
-        await creatJobPost({
-          data: mongoData,
-          clerkId: userId,
-          createdBy: mongoUserId,
-          path: pathname
-        });
-        setProgress(100);
-        notifySuccess('Job post created successfully!');
-      }
+      // todo: update job data
+
+      await updateJobById({
+        jobId: job._id,
+        updateData: {
+          title: data.title,
+          overview: data.overview,
+          duration: data.duration,
+          category: data.category,
+          salary_duration: data.salary_duration,
+          location: data.location,
+          address: data.address,
+          country: data.country,
+          city: data.city,
+          experience: data.experience,
+          minSalary: data.minSalary.toString(),
+          maxSalary: data.maxSalary.toString(),
+          industry: data.industry,
+          english_fluency: data.english_fluency,
+          skills: data.skills
+        },
+        path: pathname
+      });
+      setProgress(100);
+      notifySuccess('Job post created successfully!');
     } catch (error: any) {
       console.log('onSubmit  error:', error);
       notifyError(error);
@@ -194,6 +174,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             <input
               type="text"
               placeholder="Ex: Product Designer"
+              defaultValue={job.title || ''}
               {...register('title', { required: `Title is required!` })}
               name="title"
             />
@@ -203,6 +184,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             <label htmlFor="">Job Description*</label>
             <textarea
               className="size-lg"
+              defaultValue={job.overview || ''}
               placeholder="Write about the job in details..."
               {...register('overview', {
                 required: `Description is required!`
@@ -282,7 +264,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                   isMulti
                   {...field}
                   //@ts-ignore
-                  options={options}
+                  options={options || []}
                   className="basic-multi-select"
                   classNamePrefix="select"
                   onChange={(selectedOption) =>
@@ -329,6 +311,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                 <label htmlFor="">Address*</label>
                 <input
                   type="text"
+                  defaultValue={job.address || ''}
                   placeholder="Cowrasta, Chandana, Gazipur Sadar"
                   {...register('address', {
                     required: `Address is required!`
@@ -393,4 +376,4 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   );
 };
 
-export default SubmitJobArea;
+export default UpdateJobArea;

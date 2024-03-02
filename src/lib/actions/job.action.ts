@@ -3,7 +3,7 @@
 import User from '@/database/user.model';
 import { connectToDatabase } from '../mongoose';
 import { CreateJobParams } from './shared.types';
-import Job from '@/database/job.model';
+import Job, { IJobData } from '@/database/job.model';
 import { revalidatePath } from 'next/cache';
 
 export const creatJobPost = async (jobDataParams: CreateJobParams) => {
@@ -62,6 +62,44 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
   }
 };
 
+// Update a single job by MongoDB ID
+interface IUpdateJobParams {
+  jobId: string;
+  updateData: Partial<IJobData>;
+  path: string;
+}
+
+export const updateJobById = async (params: IUpdateJobParams) => {
+  const { jobId, updateData, path } = params;
+  try {
+    await connectToDatabase();
+    // Update the job
+    const updatedJob = await Job.findByIdAndUpdate(
+      jobId,
+      { $set: updateData },
+      { new: true } // To return the updated document
+    );
+
+    if (!updatedJob) {
+      return { status: 'error', message: 'Job not found' };
+    }
+
+    // Assuming createdBy field in Job model represents the user who created the job
+    const { createdBy } = updatedJob;
+
+    await User.findByIdAndUpdate(createdBy, {
+      $push: { jobPosts: updatedJob._id }
+    });
+
+    revalidatePath(path);
+
+    return { status: 'ok', updatedJob };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
 // get all job posts
 export const getJobPosts = async () => {
   try {
@@ -71,6 +109,26 @@ export const getJobPosts = async () => {
       .sort({ createAt: -1 })
       .exec();
     return { status: 'ok', jobs: JSON.parse(JSON.stringify(jobs)) };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+// get jobs by mongoId
+// Get a single job by MongoDB ID
+export const getJobById = async (jobId: string) => {
+  try {
+    await connectToDatabase();
+    const job = await Job.findById(jobId)
+      .populate('createdBy', 'name picture')
+      .exec();
+
+    if (!job) {
+      return { status: 'error', message: 'Job not found' };
+    }
+
+    return { status: 'ok', job: JSON.parse(JSON.stringify(job)) };
   } catch (error) {
     console.log(error);
     throw error;

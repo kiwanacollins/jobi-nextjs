@@ -1,15 +1,14 @@
 import React from 'react';
-import { Controller, UseFormSetValue } from 'react-hook-form';
+import { Controller, UseControllerProps } from 'react-hook-form';
 import Select from 'react-select';
 import ErrorMsg from '../../common/error-msg';
 
 interface IExprienceType {
-  setValue: UseFormSetValue<any>;
   errors: any;
-  control: any;
+  control: UseControllerProps<any>['control'];
 }
 
-const EmployExperience = ({ setValue, errors, control }: IExprienceType) => {
+const EmployExperience = ({ errors, control }: IExprienceType) => {
   return (
     <div className="row align-items-end">
       <div className="col-md-6">
@@ -37,7 +36,6 @@ const EmployExperience = ({ setValue, errors, control }: IExprienceType) => {
                     ? { value: field.value, label: field.value }
                     : null
                 }
-                // onChange={(value) => handleExperience(value?.value as string)}
               />
             )}
           />
