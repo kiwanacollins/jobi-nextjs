@@ -79,8 +79,6 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
       country: '',
       city: '',
       experience: '',
-      minSalary: '',
-      maxSalary: '',
       industry: '',
       english_fluency: ''
     }
@@ -242,9 +240,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             <div className="col-md-3">
               <div className="dash-input-wrapper mb-30">
                 <input
-                  type="text"
+                  type="number"
+                  defaultValue={0}
                   placeholder="Min Salary"
-                  {...register('minSalary')}
+                  {...register('minSalary', { valueAsNumber: true })}
                   name="minSalary"
                 />
                 {errors?.minSalary && (
@@ -255,9 +254,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             <div className="col-md-3">
               <div className="dash-input-wrapper mb-30">
                 <input
-                  type="text"
+                  type="number"
+                  defaultValue={0}
                   placeholder="Max salary"
-                  {...register('maxSalary')}
+                  {...register('maxSalary', { valueAsNumber: true })}
                   name="maxSalary"
                 />
                 {errors?.maxSalary && (
