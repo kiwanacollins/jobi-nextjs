@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import job_data from '@/data/job-data';
 import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
 import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
 import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
@@ -9,11 +8,16 @@ import icon_4 from '@/assets/dashboard/images/icon/icon_15.svg';
 import main_graph from '@/assets/dashboard/images/main-graph.png';
 import { CardItem } from '../candidate/dashboard-area';
 import NiceSelect from '@/ui/nice-select';
+import { IJobData } from '@/database/job.model';
 
 // props type
 
-const EmployDashboardArea = () => {
-  const job_items = [...job_data.reverse().slice(0, 6)];
+interface IEmployDashboardProps {
+  jobs: IJobData[];
+  totalJob: number;
+}
+
+const EmployDashboardArea = ({ jobs, totalJob }: IEmployDashboardProps) => {
   const handleJobs = (item: { value: string; label: string }) => {};
   return (
     <>
@@ -62,16 +66,20 @@ const EmployDashboardArea = () => {
         </div>
         <div className="col-xl-5 col-lg-6 d-flex">
           <div className="recent-job-tab bg-white border-20 mt-30 w-100">
-            <h4 className="dash-title-two">Posted Job</h4>
+            <h4 className="dash-title-two">Posted Job - {totalJob}</h4>
             <div className="wrapper">
-              {job_items.map((j) => (
+              {jobs?.map((j) => (
                 <div
-                  key={j.id}
+                  key={j._id}
                   className="job-item-list d-flex align-items-center"
                 >
                   <div>
                     <Image
-                      src={j.logo}
+                      src={
+                        //@ts-ignore
+                        (j?.createdBy?.picture as string) ||
+                        '/assets/images/logo/media_22.png'
+                      }
                       alt="logo"
                       width={40}
                       height={40}
@@ -83,7 +91,7 @@ const EmployDashboardArea = () => {
                       <a href="#">{j.duration}</a>
                     </h6>
                     <div className="meta">
-                      <span>Fulltime</span> . <span>{j.location}</span>
+                      <span>{j.duration}</span> . <span>{j.city}</span>
                     </div>
                   </div>
                   <div className="job-action">

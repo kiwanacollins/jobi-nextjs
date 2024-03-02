@@ -24,7 +24,11 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
           <div className="job-title d-flex align-items-center">
             <Link href={`/job-details-v1/${item._id}`} className="logo">
               <Image
-                src={'/assets/images/logo/media_22.png'}
+                src={
+                  //@ts-ignore
+                  (item?.createdBy?.picture as string) ||
+                  '/assets/images/logo/media_22.png'
+                }
                 alt="logo"
                 width={60}
                 height={60}

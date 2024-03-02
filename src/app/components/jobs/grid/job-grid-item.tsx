@@ -29,7 +29,11 @@ const JobGridItem = ({
     >
       <Link href={`/job-details-v1/${id}`} className="logo">
         <Image
-          src={'/public/assets/images/candidates/img_02.jpg'}
+          src={
+            //@ts-ignore
+            (item?.createdBy?.picture as string) ||
+            '/assets/images/logo/media_22.png'
+          }
           alt="logo"
           height={60}
           width={60}

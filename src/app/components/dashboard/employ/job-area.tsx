@@ -1,8 +1,15 @@
 import React from 'react';
 import EmployJobItem from './job-item';
 import EmployShortSelect from './short-select';
+import { IJobData } from '@/database/job.model';
+import { getTimestamp } from '@/utils/utils';
 
-const EmployJobArea = () => {
+interface IEmployJobAreaProps {
+  jobs: IJobData[];
+  totalJob: number;
+}
+
+const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
   return (
     <div className="position-relative">
       <div className="d-sm-flex align-items-center justify-content-between mb-40 lg-mb-30">
@@ -56,37 +63,16 @@ const EmployJobArea = () => {
                   </tr>
                 </thead>
                 <tbody className="border-0">
-                  <EmployJobItem
-                    title="Brand & Producr Designer"
-                    info="Fulltime . Spain"
-                    application="130"
-                    date="05 Jun, 2023"
-                    status="active"
-                  />
-
-                  <EmployJobItem
-                    title="Marketing Specialist"
-                    info="Part-time . Uk"
-                    application="20"
-                    date="13 Aug, 2023"
-                    status="pending"
-                  />
-
-                  <EmployJobItem
-                    title="Accounting Manager"
-                    info="Fulltime . USA"
-                    application="278"
-                    date="27 Sep, 2023"
-                    status="expired"
-                  />
-
-                  <EmployJobItem
-                    title="Developer for IT company"
-                    info="Fulltime . Germany"
-                    application="70"
-                    date="14 Feb, 2023"
-                    status="active"
-                  />
+                  {jobs?.map((job, index) => (
+                    <EmployJobItem
+                      key={index}
+                      title={job.title}
+                      info={job.overview}
+                      application="20"
+                      date={getTimestamp(job?.createAt as Date)}
+                      status="active"
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>

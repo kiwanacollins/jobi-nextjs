@@ -6,6 +6,7 @@ import { UpdateUserParams } from './shared.types';
 import { updateUser } from './user.action';
 import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs/server';
+import Job from '@/database/job.model';
 
 // update user
 export async function createEmployeeProfileByUpdating(
@@ -46,6 +47,38 @@ export async function createEmployeeProfileByUpdating(
         data: updatedUser
       })
     );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export interface getEmployeeByIdParams {
+  userId: string;
+}
+
+export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
+  try {
+    connectToDatabase();
+
+    const { userId } = params;
+
+    const user = await User.findOne({ clerkId: userId });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const myJobPosts = await Job.find({ createdBy: user._id }).populate(
+      'createdBy',
+      'name email picture'
+    );
+    const totalJobPosts = myJobPosts.length;
+
+    return {
+      jobs: JSON.parse(JSON.stringify(myJobPosts)),
+      totalJob: totalJobPosts
+    };
   } catch (error) {
     console.log(error);
     throw error;

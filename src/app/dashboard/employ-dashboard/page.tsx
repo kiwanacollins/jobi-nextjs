@@ -4,6 +4,7 @@ import EmployDashboardArea from '@/app/components/dashboard/employ/dashboard-are
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { redirect } from 'next/navigation';
+import { getEmployeeJobPosts } from '@/lib/actions/employee.action';
 
 const EmployDashboardPage = async () => {
   const { userId } = auth();
@@ -11,9 +12,13 @@ const EmployDashboardPage = async () => {
   if (currentUser?.role !== 'employee') {
     redirect('/');
   }
+  const { userId: clerkId } = auth();
+  const { jobs, totalJob } = await getEmployeeJobPosts({
+    userId: clerkId as string
+  });
   return (
     <>
-      <EmployDashboardArea />
+      <EmployDashboardArea jobs={jobs} totalJob={totalJob} />
     </>
   );
 };

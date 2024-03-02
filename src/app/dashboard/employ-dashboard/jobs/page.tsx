@@ -1,12 +1,17 @@
 import React from 'react';
-
 import EmployJobArea from '@/app/components/dashboard/employ/job-area';
+import { auth } from '@clerk/nextjs';
+import { getEmployeeJobPosts } from '@/lib/actions/employee.action';
 
-const EmployDashboardJobsPage = () => {
+const EmployDashboardJobsPage = async () => {
+  const { userId: clerkId } = auth();
+  const { jobs, totalJob } = await getEmployeeJobPosts({
+    userId: clerkId as string
+  });
   return (
     <>
       {/* job area start */}
-      <EmployJobArea />
+      <EmployJobArea jobs={jobs} totalJob={totalJob} />
       {/* job area end */}
     </>
   );
