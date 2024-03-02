@@ -9,6 +9,9 @@ import main_graph from '@/assets/dashboard/images/main-graph.png';
 import { CardItem } from '../candidate/dashboard-area';
 import NiceSelect from '@/ui/nice-select';
 import { IJobData } from '@/database/job.model';
+import { usePathname } from 'next/navigation';
+import Swal from 'sweetalert2';
+import { deleteEmployeeJobPost } from '@/lib/actions/employee.action';
 
 // props type
 
@@ -18,6 +21,34 @@ interface IEmployDashboardProps {
 }
 
 const EmployDashboardArea = ({ jobs, totalJob }: IEmployDashboardProps) => {
+  const pathname = usePathname();
+
+  const handleDeleteUser = async (jobId: string | undefined) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        //Todo: delete job post by Id
+        const res = await deleteEmployeeJobPost({
+          jobId,
+          path: pathname
+        });
+        if (res.status === 'ok') {
+          Swal.fire({
+            title: 'Deleted!',
+            text: res.message,
+            icon: 'success'
+          });
+        }
+      }
+    });
+  };
   const handleJobs = (item: { value: string; label: string }) => {};
   return (
     <>
@@ -105,24 +136,30 @@ const EmployDashboardArea = ({ jobs, totalJob }: IEmployDashboardProps) => {
                     </button>
                     <ul className="dropdown-menu">
                       <li>
-                        <a className="dropdown-item" href="#">
-                          View Job
-                        </a>
+                        <button className="dropdown-item">View Job</button>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
-                          Archive
-                        </a>
+                        <button className="dropdown-item">Archive</button>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <button
+                          onClick={() => handleDeleteUser(j._id)}
+                          className="dropdown-item"
+                        >
                           Delete
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </div>
                 </div>
               ))}
+              {totalJob === 0 && (
+                <div className="job-item-list w-100  justify-content-center  d-flex align-items-center">
+                  <div className="job-title">
+                    <h4 className="mb-5">No Job Post</h4>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

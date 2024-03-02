@@ -1,19 +1,23 @@
 import React from 'react';
-import ActionDropdown from '../candidate/action-dropdown';
+import JobActionDropdown from './JobActionDropdown';
+
+interface IEmployJobItemProps {
+  title: string;
+  info: string;
+  date: string;
+  application: string;
+  status: string;
+  jobId?: string | undefined;
+}
 
 const EmployJobItem = ({
   title,
   info,
   date,
   application,
-  status
-}: {
-  title: string;
-  info: string;
-  date: string;
-  application: string;
-  status: string;
-}) => {
+  status,
+  jobId
+}: IEmployJobItemProps) => {
   return (
     <tr className={status}>
       <td>
@@ -36,7 +40,7 @@ const EmployJobItem = ({
             <span></span>
           </button>
           {/* action dropdown start */}
-          <ActionDropdown id="" />
+          <JobActionDropdown jobId={jobId} />
           {/* action dropdown end */}
         </div>
       </td>

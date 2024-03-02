@@ -7,6 +7,7 @@ import { updateUser } from './user.action';
 import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs/server';
 import Job from '@/database/job.model';
+import console from 'console';
 
 // update user
 export async function createEmployeeProfileByUpdating(
@@ -81,6 +82,43 @@ export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
     };
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+}
+
+interface IDeleteEmployeeJobPostParams {
+  jobId: string | undefined;
+  path: string;
+}
+
+export async function deleteEmployeeJobPost(
+  params: IDeleteEmployeeJobPostParams
+) {
+  const { jobId, path } = params;
+  try {
+    connectToDatabase();
+    // Find the job post
+    const jobPost = await Job.findByIdAndDelete(jobId);
+    console.log('jobPost:', jobPost);
+
+    if (!jobPost) {
+      throw new Error('Job post not found');
+    }
+
+    // Remove the job post reference from the user model
+    const user = await User.findById(jobPost.createdBy);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    user.jobPosts.pull(jobId); // Assuming 'jobPosts' is the name of the array field in the User model
+    await user.save();
+
+    revalidatePath(path);
+    return { status: 'ok', message: 'Job post deleted successfully' };
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 }

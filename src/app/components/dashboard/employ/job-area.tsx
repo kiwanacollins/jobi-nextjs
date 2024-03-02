@@ -63,9 +63,10 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                   </tr>
                 </thead>
                 <tbody className="border-0">
-                  {jobs?.map((job, index) => (
+                  {jobs?.map((job) => (
                     <EmployJobItem
-                      key={index}
+                      key={job._id}
+                      jobId={job._id}
                       title={job.title}
                       info={job.overview}
                       application="20"
@@ -73,6 +74,13 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                       status="active"
                     />
                   ))}
+                  {jobs.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="text-center">
+                        No job post found
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
