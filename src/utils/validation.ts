@@ -137,8 +137,8 @@ export const formJobDataSchema = z.object({
       message: 'Please select at least one skill.'
     }),
   experience: z.string().min(1, { message: 'Experience salary is required' }),
-  minSalary: z.string().min(1, { message: 'Minimum salary is required' }),
-  maxSalary: z.string().min(1, { message: 'Maximum salary is required' }),
+  minSalary: z.number().min(1, { message: 'Minimum salary is required' }),
+  maxSalary: z.number().min(1, { message: 'Maximum salary is required' }),
   industry: z.string().min(1, { message: 'Industry salary is required' }),
   english_fluency: z.string().min(1, { message: 'English fluency is required' })
 });
