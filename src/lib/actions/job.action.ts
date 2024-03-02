@@ -1,5 +1,6 @@
 'use server';
 
+import User from '@/database/user.model';
 import { connectToDatabase } from '../mongoose';
 import { CreateJobParams } from './shared.types';
 import Job from '@/database/job.model';
@@ -45,6 +46,11 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       minSalary,
       maxSalary,
       industry
+    });
+
+    // add new job to the user's job list
+    await User.findByIdAndUpdate(createdBy, {
+      $push: { jobPosts: newJob._id }
     });
 
     revalidatePath(path);

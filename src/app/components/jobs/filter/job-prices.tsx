@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import InputRange from '@/ui/input-range';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { formUrlQuery } from '@/utils/utils';
+import qs from 'query-string';
 
 // prop type
 type IProps = {
@@ -17,28 +17,31 @@ export function SalaryRangeSlider({
   maxPrice
 }: IProps) {
   const router = useRouter();
+
   const searchParams = useSearchParams();
-  const gte = searchParams.get('gte');
-  const lte = searchParams.get('lte');
+  const min = searchParams.get('min');
+  const max = searchParams.get('max');
 
   // eslint-disable-next-line no-unused-vars
-  const [active, setActive] = useState(gte || lte || '');
+  const [active, setActive] = useState(min || max || '');
   console.log('active:', active);
   // handleChanges
   const handleChanges = (val: number[]) => {
     setPriceValue(val);
-    const newGtUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: 'price',
-      value: `${val[0]},${val[1]}`
-    });
 
-    router.push(newGtUrl, { scroll: false });
+    const newUrl = qs.stringifyUrl(
+      {
+        url: window?.location?.pathname || '',
+        query: {
+          min: val[0],
+          max: val[1]
+        }
+      },
+      { skipNull: true }
+    );
+    console.log('newUrl:', newUrl);
 
-    console.log({
-      gte: val[0],
-      lte: val[1]
-    });
+    router.push(newUrl, { scroll: false });
   };
 
   return (

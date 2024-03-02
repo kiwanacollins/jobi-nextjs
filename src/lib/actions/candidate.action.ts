@@ -181,9 +181,10 @@ export async function getAllCandidates(params: getCandidatesParams) {
       gender,
       location,
       experience,
-      fluency
+      fluency,
+      min
     } = params;
-    console.log('getAllCandidates  gender:', gender);
+    console.log('getAllCandidates  minValue:', min);
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
 

@@ -41,7 +41,8 @@ export interface getCandidatesParams {
   keyword?: string;
   skill?: string;
   location?: string;
-  level?: string;
+  min?: string;
+  max?: string;
   qualification?: string;
   experience?: string;
   gender?: string;

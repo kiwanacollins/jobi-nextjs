@@ -21,8 +21,14 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     gender: searchParams.gender,
     location: searchParams.location,
     experience: searchParams.experience,
-    fluency: searchParams.fluency
+    fluency: searchParams.fluency,
+    min: searchParams.min
   });
+
+  // console.log('min-max', {
+  //   min: searchParams.min,
+  //   max: searchParams.max
+  // });
 
   return (
     <div>
