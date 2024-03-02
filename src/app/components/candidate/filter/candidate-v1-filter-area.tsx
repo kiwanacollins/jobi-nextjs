@@ -11,7 +11,7 @@ import SelectCandidateQualification from './select-qualification';
 import SelectCandidateType from './select-gender';
 
 const CandidateV1FilterArea = () => {
-  const [priceValue, setPriceValue] = useState<number[]>([0, 50000]);
+  const [priceValue, setPriceValue] = useState<number[]>([0, 5000]);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -182,7 +182,7 @@ const CandidateV1FilterArea = () => {
             <JobPrices
               priceValue={priceValue}
               setPriceValue={setPriceValue}
-              maxPrice={50000}
+              maxPrice={5000}
             />
           </div>
         </div>

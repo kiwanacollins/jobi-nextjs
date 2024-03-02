@@ -182,9 +182,13 @@ export async function getAllCandidates(params: getCandidatesParams) {
       location,
       experience,
       fluency,
-      min
+      min,
+      max
     } = params;
-    console.log('getAllCandidates  minValue:', min);
+    console.log('getAllCandidates  min-max:', {
+      min,
+      max
+    });
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
 
@@ -196,7 +200,9 @@ export async function getAllCandidates(params: getCandidatesParams) {
       gender ||
       location ||
       experience ||
-      fluency
+      fluency ||
+      min ||
+      max
     ) {
       if (keyword) {
         query.$or = [];
@@ -236,6 +242,15 @@ export async function getAllCandidates(params: getCandidatesParams) {
 
       if (gender) {
         query.gender = { $eq: gender };
+      }
+      if (min !== undefined || max !== undefined) {
+        query.$and = [];
+        if (min !== undefined) {
+          query.$and.push({ minSalary: { $gte: min } });
+        }
+        if (max !== undefined) {
+          query.$and.push({ maxSalary: { $lte: max } });
+        }
       }
     }
     console.log('getAllCandidates  query:', query);

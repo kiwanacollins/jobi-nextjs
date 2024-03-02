@@ -24,11 +24,9 @@ export function SalaryRangeSlider({
 
   // eslint-disable-next-line no-unused-vars
   const [active, setActive] = useState(min || max || '');
-  console.log('active:', active);
   // handleChanges
   const handleChanges = (val: number[]) => {
     setPriceValue(val);
-
     const newUrl = qs.stringifyUrl(
       {
         url: window?.location?.pathname || '',
@@ -39,7 +37,6 @@ export function SalaryRangeSlider({
       },
       { skipNull: true }
     );
-    console.log('newUrl:', newUrl);
 
     router.push(newUrl, { scroll: false });
   };

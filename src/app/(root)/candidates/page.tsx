@@ -22,7 +22,8 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     location: searchParams.location,
     experience: searchParams.experience,
     fluency: searchParams.fluency,
-    min: searchParams.min
+    min: searchParams.min,
+    max: searchParams.max
   });
 
   // console.log('min-max', {
