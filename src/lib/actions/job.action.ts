@@ -66,7 +66,10 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
 export const getJobPosts = async () => {
   try {
     await connectToDatabase();
-    const jobs = await Job.find().populate('createdBy', 'name picture').exec();
+    const jobs = await Job.find()
+      .populate('createdBy', 'name picture')
+      .sort({ createAt: -1 })
+      .exec();
     return { status: 'ok', jobs: JSON.parse(JSON.stringify(jobs)) };
   } catch (error) {
     console.log(error);
