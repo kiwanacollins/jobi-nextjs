@@ -141,8 +141,8 @@ const UpdateJobArea = ({ job }: IProps) => {
           country: data.country,
           city: data.city,
           experience: data.experience,
-          minSalary: data.minSalary.toString(),
-          maxSalary: data.maxSalary.toString(),
+          minSalary: data.minSalary,
+          maxSalary: data.maxSalary,
           industry: data.industry,
           english_fluency: data.english_fluency,
           skills: data.skills

@@ -13,8 +13,8 @@ export interface IJobData extends Document {
   skills: string[];
   address?: string;
   experience: string;
-  minSalary: string;
-  maxSalary: string;
+  minSalary: number;
+  maxSalary: number;
   industry: string;
   english_fluency: string;
   createdBy?: Schema.Types.ObjectId | string;
