@@ -1,12 +1,12 @@
 import React from 'react';
 
-import EmployDashboardArea from './dashboard-area';
+// import EmployDashboardArea from './dashboard-area';
 
 const EmployDashboardMain = () => {
   return (
     <div>
       {/* dashboard area start */}
-      <EmployDashboardArea />
+      {/* <EmployDashboardArea /> */}
       {/* dashboard area end */}
     </div>
   );
