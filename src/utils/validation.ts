@@ -1,5 +1,12 @@
 import * as z from 'zod';
 
+export const emailSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'Email address is required' })
+    .email({ message: 'Invalid email address' })
+});
+
 const educationSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   academy: z.string().min(1, { message: 'academy is required' }).max(100),

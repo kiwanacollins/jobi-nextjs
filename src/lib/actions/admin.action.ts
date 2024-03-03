@@ -64,9 +64,10 @@ export async function deleteSingleCategory(param: {
 
 interface ImakeAdminProps {
   email: string;
+  path: string;
 }
 export async function makeUserAdmin(params: ImakeAdminProps) {
-  const { email } = params;
+  const { email, path } = params;
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -85,5 +86,19 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
       });
     }
   }
+  revalidatePath(path);
   return JSON.parse(JSON.stringify(user));
+}
+
+export async function getAdmins() {
+  try {
+    await connectToDatabase();
+    const admins = await User.find(
+      { isAdmin: true },
+      { _id: 1, isAdmin: 1, name: 1, email: 1 }
+    );
+    return JSON.parse(JSON.stringify(admins));
+  } catch (error) {
+    console.log('Error getting admins:', error);
+  }
 }
