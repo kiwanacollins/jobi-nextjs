@@ -1,7 +1,13 @@
 import React from 'react';
 import DashboardMessage from '@/app/components/dashboard/candidate/dashboard-message';
+import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
-const EmployDashboardMessagesPage = () => {
+const EmployDashboardMessagesPage = async () => {
+  const user = await currentUser();
+  if (!user || user.privateMetadata.role !== 'employee') {
+    return redirect('/');
+  }
   return (
     <div>
       {/* messages area start */}

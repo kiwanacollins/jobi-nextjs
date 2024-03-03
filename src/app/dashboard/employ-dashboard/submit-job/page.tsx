@@ -8,6 +8,9 @@ const EmployDashboardSubmitJobPage = async () => {
   const { userId } = auth();
   if (!userId) redirect('/sign-in');
   const mongoUser = await getUserById({ userId });
+  if (mongoUser?.role !== 'employee') {
+    redirect('/');
+  }
 
   return (
     <>

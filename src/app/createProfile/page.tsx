@@ -38,7 +38,7 @@ const Page = () => {
       name: mongoUser?.name || '',
       email: mongoUser?.email || '',
       website: mongoUser?.website || '',
-      companySize: mongoUser?.companySize || 0,
+      companySize: mongoUser?.companySize,
       bio: mongoUser?.bio || '',
       categories: mongoUser?.categories || [],
       phone: mongoUser?.phone || '',
@@ -210,7 +210,9 @@ const Page = () => {
                     <input
                       type="number"
                       placeholder="Numbers of employee"
-                      {...register('companySize', { valueAsNumber: true })}
+                      {...register('companySize', {
+                        setValueAs: (v) => (v === '' ? undefined : parseInt(v))
+                      })}
                       name="companySize"
                     />
                     {errors?.companySize && (
