@@ -19,41 +19,11 @@ import { IJobData } from '@/database/job.model';
 import { updateJobById } from '@/lib/actions/job.action';
 import { usePathname } from 'next/navigation';
 
-export interface IFormJobData {
-  title: string;
-  overview: string;
-  duration: string;
-  salary_duration: string;
-  category: string;
-  location: string;
-  address?: {
-    address: string;
-    country: string;
-    city: string;
-    state: string;
-    mapLocation?: string;
-  };
-  country: string;
-  city: string;
-  state: string;
-  mapLocation?: string;
-  salary: number;
-  skills?: string[];
-  experience: string;
-  minSalary?: string;
-  maxSalary?: string;
-  industry: string;
-  salaryRange: string;
-  english_fluency: string;
-}
-
 interface IProps {
   job: IJobData;
 }
 
 const UpdateJobArea = ({ job }: IProps) => {
-  // const [skillTags, setSkillTags] = useState<string[]>(skills || []);
-  // const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -81,7 +51,7 @@ const UpdateJobArea = ({ job }: IProps) => {
       minSalary: job?.minSalary,
       maxSalary: job?.maxSalary,
       industry: job?.industry || '',
-      english_fluency: job?.experience || ''
+      english_fluency: job?.english_fluency || ''
     }
   });
   const {
@@ -290,7 +260,8 @@ const UpdateJobArea = ({ job }: IProps) => {
           {/* employ experience start */}
           <EmployExperience control={control} errors={errors} />
           {/* employ experience end */}
-          <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
+          {/* File attachment Start */}
+          {/* <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
           <div className="dash-input-wrapper mb-20">
             <label htmlFor="">File Attachment*</label>
             <div className="attached-file d-flex align-items-center justify-content-between mb-15">
@@ -305,7 +276,8 @@ const UpdateJobArea = ({ job }: IProps) => {
             Upload File
             <div id="uploadCV"></div>
           </div>
-          <small>Upload file .pdf, .doc, .docx</small>
+          <small>Upload file .pdf, .doc, .docx</small> */}
+          {/* File attachment End */}
           <h4 className="dash-title-three pt-50 lg-pt-30">
             Address & Location
           </h4>

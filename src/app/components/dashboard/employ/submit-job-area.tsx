@@ -23,37 +23,8 @@ type IProps = {
   mongoUserId: string | undefined;
 };
 
-export interface IFormJobData {
-  title: string;
-  overview: string;
-  duration: string;
-  salary_duration: string;
-  category: string;
-  location: string;
-  address?: {
-    address: string;
-    country: string;
-    city: string;
-    state: string;
-    mapLocation?: string;
-  };
-  country: string;
-  city: string;
-  state: string;
-  mapLocation?: string;
-  salary: number;
-  skills?: string[];
-  experience: string;
-  minSalary?: string;
-  maxSalary?: string;
-  industry: string;
-  salaryRange: string;
-  english_fluency: string;
-}
-
 const SubmitJobArea = ({ mongoUserId }: IProps) => {
-  // const [skillTags, setSkillTags] = useState<string[]>(skills || []);
-  // const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
@@ -307,7 +278,8 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           {/* employ experience start */}
           <EmployExperience control={control} errors={errors} />
           {/* employ experience end */}
-          <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
+          {/* file attachment start */}
+          {/* <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
           <div className="dash-input-wrapper mb-20">
             <label htmlFor="">File Attachment*</label>
             <div className="attached-file d-flex align-items-center justify-content-between mb-15">
@@ -322,7 +294,8 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
             Upload File
             <div id="uploadCV"></div>
           </div>
-          <small>Upload file .pdf, .doc, .docx</small>
+          <small>Upload file .pdf, .doc, .docx</small> */}
+          {/* file attachment end */}
           <h4 className="dash-title-three pt-50 lg-pt-30">
             Address & Location
           </h4>
