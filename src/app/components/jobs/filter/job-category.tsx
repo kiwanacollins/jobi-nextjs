@@ -41,7 +41,7 @@ const JobCategory = () => {
             <label>
               {c}{' '}
               <span>
-                {allJobData.filter((job) => job.category.includes(c)).length}
+                {allJobData.filter((job) => job?.category?.includes(c)).length}
               </span>
             </label>
           </li>

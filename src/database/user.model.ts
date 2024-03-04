@@ -73,7 +73,7 @@ const UserSchema = new Schema({
   street: { type: String },
   zip: { type: String },
   state: { type: String },
-  saved: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
+  saved: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   resumeId: { type: Schema.Types.ObjectId, ref: 'Resume' },
   jobPosts: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   joinedAt: { type: Date, default: Date.now }

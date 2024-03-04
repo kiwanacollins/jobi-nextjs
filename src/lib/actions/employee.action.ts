@@ -122,3 +122,48 @@ export async function deleteEmployeeJobPost(
     throw error;
   }
 }
+
+interface ToggleSaveCandidatesParams {
+  userId?: string;
+  candidateId: string;
+  path: string;
+}
+
+export async function toggleSaveCandidate(params: ToggleSaveCandidatesParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, candidateId, path } = params;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const isCandidateSaved = user.saved.includes(candidateId);
+
+    if (isCandidateSaved) {
+      // remove question from saved
+      await User.findByIdAndUpdate(
+        userId,
+        { $pull: { saved: candidateId } },
+        { new: true }
+      );
+      revalidatePath(path);
+      return { status: 'removed', message: 'Candidate removed from saved' };
+    } else {
+      // add question to saved
+      await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { saved: candidateId } },
+        { new: true }
+      );
+      revalidatePath(path);
+      return { status: 'added', message: 'Candidate saved successfully' };
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

@@ -5,15 +5,21 @@ import CandidateGridItem from './candidate-grid-item';
 import CandidateListItem from './candidate-list-item';
 import CandidateV1FilterArea from './filter/candidate-v1-filter-area';
 import ShortSelect from '../common/short-select';
+import { IUser } from '@/database/user.model';
 
 // import { IResumeType } from '@/database/resume.model';
 
 interface IProps {
   style_2?: boolean;
   candidates?: any[] | undefined;
+  loggedInUser?: IUser;
 }
 
-const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
+const CandidateV1Area = ({
+  style_2 = false,
+  candidates,
+  loggedInUser
+}: IProps) => {
   const [jobType, setJobType] = useState<string>(style_2 ? 'list' : 'grid');
 
   return (
@@ -84,7 +90,11 @@ const CandidateV1Area = ({ style_2 = false, candidates }: IProps) => {
                   className={`accordion-box list-style ${jobType === 'list' ? 'show' : ''}`}
                 >
                   {candidates?.map((item) => (
-                    <CandidateListItem key={item._id} item={item} />
+                    <CandidateListItem
+                      loggedInUser={loggedInUser}
+                      key={item._id}
+                      item={item}
+                    />
                   ))}
                 </div>
 

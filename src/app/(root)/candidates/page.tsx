@@ -6,6 +6,8 @@ import CandidateV1Area from '../../components/candidate/candidate-v1-area';
 
 import { getAllCandidates } from '@/lib/actions/candidate.action';
 import { SearchParamsProps } from '@/types';
+import { auth } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
   title: 'Candidates',
@@ -27,10 +29,8 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     max: searchParams.max
   });
 
-  // console.log('min-max', {
-  //   min: searchParams.min,
-  //   max: searchParams.max
-  // });
+  const { userId } = auth();
+  const loggedInUser = await getUserById({ userId });
 
   return (
     <div>
@@ -44,6 +44,7 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
       {/* candidate area start */}
       <CandidateV1Area
         candidates={JSON.parse(JSON.stringify(candidates))}
+        loggedInUser={loggedInUser}
         style_2={true}
       />
       {/* candidate area end */}

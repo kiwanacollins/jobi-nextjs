@@ -1,18 +1,42 @@
+'use client';
 import React from 'react';
 // import { ICandidate } from '@/data/candidate-data';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { toggleSaveCandidate } from '@/lib/actions/employee.action';
+import { notifyError, notifySuccess } from '@/utils/toast';
+import { IUser } from '@/database/user.model';
 
 const CandidateListItem = ({
   item,
-  style_2 = false
+  style_2 = false,
+  loggedInUser
 }: {
   item: any;
   style_2?: boolean;
+  loggedInUser?: IUser;
 }) => {
+  const pathname = usePathname();
+  const handleSaveCandidate = async (candidateId: string) => {
+    const response = await toggleSaveCandidate({
+      userId: loggedInUser?._id as string,
+      candidateId,
+      path: pathname
+    });
+    if (response.status === 'added') {
+      notifySuccess(response.message);
+    }
+    if (response.status === 'removed') {
+      notifyError(response.message);
+    }
+  };
+
+  const isSaved = loggedInUser?.saved?.includes(item._id);
+
   return (
     <div
-      className={`candidate-profile-card ${item.favorite ? 'favourite' : ''} ${
+      className={`candidate-profile-card ${item.favorite ? 'favourite' : 'favourite'} ${
         style_2 ? 'border-0' : ''
       } list-layout mb-25`}
     >
@@ -73,12 +97,12 @@ const CandidateListItem = ({
             </div>
             <div className="col-xl-3 col-md-4">
               <div className="d-flex justify-content-lg-end">
-                <Link
-                  href="/candidate-profile"
-                  className="save-btn text-center rounded-circle tran3s mt-10"
+                <button
+                  onClick={() => handleSaveCandidate(item._id)}
+                  className={`save-btn text-center rounded-circle ${isSaved ? 'active' : ''}  tran3s mt-10 }`}
                 >
-                  <i className="bi bi-heart"></i>
-                </Link>
+                  <i className="bi bi-heart "></i>
+                </button>
                 <Link
                   href={`/candidate-profile/${item?.resumeId}`}
                   className="profile-btn tran3s ms-md-2 mt-10 sm-mt-20"
