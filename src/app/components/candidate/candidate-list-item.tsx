@@ -62,7 +62,7 @@ const CandidateListItem = ({
                 <h4 className="candidate-name text-decoration-none  tran3s mb-0">
                   <Link
                     href={`/candidate-profile/${item?.resumeId}`}
-                    className="tran3s candidate-name"
+                    className="tran3s text-decoration-none"
                   >
                     {item?.name}
                   </Link>
@@ -97,15 +97,17 @@ const CandidateListItem = ({
             </div>
             <div className="col-xl-3 col-md-4">
               <div className="d-flex justify-content-lg-end">
-                <button
-                  onClick={() => handleSaveCandidate(item._id)}
-                  className={`save-btn text-center rounded-circle ${isSaved ? 'active' : ''}  tran3s mt-10 }`}
-                >
-                  <i className="bi bi-heart "></i>
-                </button>
+                {loggedInUser?.role === 'employee' && (
+                  <button
+                    onClick={() => handleSaveCandidate(item._id)}
+                    className={`save-btn text-center rounded-circle ${isSaved ? 'active' : ''}  tran3s mt-10 }`}
+                  >
+                    <i className="bi bi-heart "></i>
+                  </button>
+                )}
                 <Link
                   href={`/candidate-profile/${item?.resumeId}`}
-                  className="profile-btn tran3s ms-md-2 mt-10 sm-mt-20"
+                  className="profile-btn tran3s text-decoration-none ms-md-2 mt-10 sm-mt-20"
                 >
                   View Profile
                 </Link>

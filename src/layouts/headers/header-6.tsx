@@ -44,7 +44,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     <li>
                       <a
                         href="/sign-in"
-                        className={`fw-500 login-btn-three ${
+                        className={`fw-500 text-decoration-none login-btn-three ${
                           dark_style ? 'dark-style' : ''
                         } tran3s`}
                         // data-bs-toggle="modal"
@@ -92,6 +92,16 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                         </ul>
                       </li>
                     )}
+                    {currentUser?.role !== 'employee' && (
+                      <li className="d-none d-md-block ms-3 me-3 ">
+                        <Link
+                          href="/createProfile"
+                          className="btn-five text-decoration-none "
+                        >
+                          Join as Employee
+                        </Link>
+                      </li>
+                    )}
                     <UserButton
                       afterSignOutUrl="/"
                       appearance={{
@@ -110,7 +120,10 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
 
                   {currentUser?.role === 'employee' && (
                     <li className="d-none d-md-block ms-3">
-                      <Link href="/register" className="btn-five">
+                      <Link
+                        href="/dashboard/employ-dashboard/submit-job"
+                        className="btn-five text-decoration-none"
+                      >
                         Post a job
                       </Link>
                     </li>
