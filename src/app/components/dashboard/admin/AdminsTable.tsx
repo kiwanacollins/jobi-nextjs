@@ -24,6 +24,7 @@ const AdminsTable = ({ admins }: AdminsTableProps) => {
         <tbody className="border-0">
           {admins?.map((admin) => (
             <AdminItem
+              id={admin._id}
               key={admin._id}
               name={admin.name}
               email={admin.email}

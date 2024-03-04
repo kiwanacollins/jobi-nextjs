@@ -1,10 +1,40 @@
+'use client';
+
+import { removeFromAdmin } from '@/lib/actions/admin.action';
+import { usePathname } from 'next/navigation';
+import Swal from 'sweetalert2';
+
 interface IAdminItemProps {
+  id: string;
   name: string;
   email: string;
   status: string;
 }
 
-const AdminItem = ({ name, email, status }: IAdminItemProps) => {
+const AdminItem = ({ name, email, status, id }: IAdminItemProps) => {
+  const pathname = usePathname();
+  const handleRemoveAdmin = async (userId: string) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, remove it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await removeFromAdmin({
+          userId,
+          path: pathname
+        });
+        Swal.fire({
+          title: 'Removed!',
+          text: 'Removed from admin successfully',
+          icon: 'success'
+        });
+      }
+    });
+  };
   return (
     <tr className={status}>
       <td>
@@ -18,7 +48,11 @@ const AdminItem = ({ name, email, status }: IAdminItemProps) => {
       </td>
       <td>
         <div className="action-dots float-end">
-          <button title="Remove from admin" className="btn btn-danger">
+          <button
+            onClick={() => handleRemoveAdmin(id)}
+            title="Remove from admin"
+            className="btn btn-danger"
+          >
             Remove
           </button>
         </div>

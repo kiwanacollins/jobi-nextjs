@@ -102,3 +102,29 @@ export async function getAdmins() {
     console.log('Error getting admins:', error);
   }
 }
+
+interface IRemoveAdminProps {
+  userId: string;
+  path: string;
+}
+
+export async function removeFromAdmin(params: IRemoveAdminProps) {
+  const { userId, path } = params;
+  try {
+    await connectToDatabase();
+
+    const isAdmin = await User.findOne({ _id: userId, isAdmin: true });
+    if (!isAdmin) {
+      // Handle user not being an admin gracefully
+      console.log(`User with ID ${userId} is not an admin.`);
+      return;
+    }
+
+    // Set isAdmin to false, preserving data integrity
+    await User.updateOne({ _id: userId }, { isAdmin: false });
+
+    revalidatePath(path);
+  } catch (error) {
+    console.error('Error removing user from admin:', error);
+  }
+}
