@@ -179,7 +179,6 @@ export async function getSavedCandidates(params: IGetSavedCandidateParams) {
     const { clerkId } = params;
 
     const user = await User.findOne({ clerkId }).populate('saved');
-    console.log('getSavedCandidates  user:', user);
 
     if (!user) {
       throw new Error('User not found');

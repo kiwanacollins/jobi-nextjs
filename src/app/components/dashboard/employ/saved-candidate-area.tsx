@@ -13,7 +13,7 @@ const SavedCandidateArea = async ({
   loggedInUser
 }: ISavedCandidateArea) => {
   return (
-    <div className="position-relative">
+    <div className="candidates-profile position-relative">
       <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">
         <h2 className="main-title m0">Saved Candidate</h2>
         <div className="short-filter d-flex align-items-center">
@@ -22,11 +22,11 @@ const SavedCandidateArea = async ({
         </div>
       </div>
 
-      <div className="wrapper">
+      <div className="accordion-box list-style show">
         {candidates.map((item: IUser) => (
           <CandidateListItem
             loggedInUser={loggedInUser}
-            key={item.id}
+            key={item._id}
             item={item}
           />
         ))}
