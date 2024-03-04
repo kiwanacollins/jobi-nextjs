@@ -1,11 +1,17 @@
 import React from 'react';
-import CandidateItem from './candidate-item';
 import EmployShortSelect from './short-select';
-import { getAllCandidates } from '@/lib/actions/candidate.action';
 import { IUser } from '@/database/user.model';
+import CandidateListItem from '../../candidate/candidate-list-item';
 
-const SavedCandidateArea = async () => {
-  const candidates = await getAllCandidates({});
+interface ISavedCandidateArea {
+  candidates: IUser[];
+  loggedInUser?: IUser;
+}
+
+const SavedCandidateArea = async ({
+  candidates,
+  loggedInUser
+}: ISavedCandidateArea) => {
   return (
     <div className="position-relative">
       <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">
@@ -18,7 +24,11 @@ const SavedCandidateArea = async () => {
 
       <div className="wrapper">
         {candidates.map((item: IUser) => (
-          <CandidateItem key={item.id} item={item} />
+          <CandidateListItem
+            loggedInUser={loggedInUser}
+            key={item.id}
+            item={item}
+          />
         ))}
       </div>
 

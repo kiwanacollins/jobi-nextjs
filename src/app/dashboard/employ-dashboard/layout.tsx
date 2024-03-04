@@ -14,7 +14,7 @@ const EmployDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     async function checkUser() {
       const currentUser = await getUserById({ userId });
-      console.log('checkUser  currentUser:', currentUser);
+      console.log('checkUser employee dashboard  currentUser:', currentUser);
       if (currentUser?.role !== 'employee') {
         redirect('/');
       }

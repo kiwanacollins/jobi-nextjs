@@ -124,14 +124,14 @@ export async function deleteEmployeeJobPost(
 }
 
 interface ToggleSaveCandidatesParams {
-  userId?: string;
+  userId: string | null;
   candidateId: string;
   path: string;
 }
 
 export async function toggleSaveCandidate(params: ToggleSaveCandidatesParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { userId, candidateId, path } = params;
 
@@ -162,6 +162,31 @@ export async function toggleSaveCandidate(params: ToggleSaveCandidatesParams) {
       revalidatePath(path);
       return { status: 'added', message: 'Candidate saved successfully' };
     }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+interface IGetSavedCandidateParams {
+  clerkId: string;
+}
+
+export async function getSavedCandidates(params: IGetSavedCandidateParams) {
+  try {
+    connectToDatabase();
+
+    const { clerkId } = params;
+
+    const user = await User.findOne({ clerkId }).populate('saved');
+    console.log('getSavedCandidates  user:', user);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const savedCandidates = user.saved;
+
+    return { candidates: JSON.parse(JSON.stringify(savedCandidates)) };
   } catch (error) {
     console.log(error);
     throw error;
