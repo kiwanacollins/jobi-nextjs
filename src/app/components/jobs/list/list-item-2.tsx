@@ -38,13 +38,13 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
             <div className="split-box1">
               <Link
                 href={`/job-details-v1/${item._id}`}
-                className="job-duration fw-500"
+                className="job-duration text-decoration-none fw-500"
               >
                 {item?.duration}
               </Link>
               <Link
                 href={`/job-details-v1/${item._id}`}
-                className="title fw-500 tran3s"
+                className="title text-decoration-none fw-500 tran3s"
               >
                 {item.title.slice(0, 22)} {item.title.length > 20 ? '..' : ''}
               </Link>
@@ -53,7 +53,12 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
         </div>
         <div className="col-md-4 col-sm-6">
           <div className="job-location">
-            <Link href={`/job-details-v1/${item._id}`}>{item.location}</Link>
+            <Link
+              className="text-decoration-none"
+              href={`/job-details-v1/${item._id}`}
+            >
+              {item.location}
+            </Link>
           </div>
           <div className="job-salary">
             <span className="fw-500 text-dark">
@@ -75,7 +80,7 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
             </a>
             <Link
               href={`/job-details-v1/${item._id}`}
-              className="apply-btn text-center tran3s"
+              className="apply-btn text-decoration-none text-center tran3s"
             >
               APPLY
             </Link>

@@ -42,7 +42,7 @@ const ListItem = ({
             </Link>
             <Link
               href={`/job-details-v1/${_id}`}
-              className="title fw-500 tran3s"
+              className="title text-decoration-none fw-500 tran3s"
             >
               {title}
             </Link>
@@ -51,17 +51,28 @@ const ListItem = ({
         <div className="col-lg-3 col-md-4 col-sm-6 ms-auto">
           <Link
             href={`/job-details-v1/${_id}`}
-            className={`job-duration fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
+            className={`job-duration text-decoration-none fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
           >
             {duration}
           </Link>
           <div className="job-date">
-            date by <Link href={`/job-details-v1/${_id}`}>{industry}</Link>
+            date by{' '}
+            <Link
+              className="text-decoration-none"
+              href={`/job-details-v1/${_id}`}
+            >
+              {industry}
+            </Link>
           </div>
         </div>
         <div className="col-xxl-2 col-lg-3 col-md-4 col-sm-6 ms-auto xs-mt-10">
           <div className="job-location">
-            <Link href={`/job-details-v1/${_id}`}>{location}</Link>
+            <Link
+              className="text-decoration-none"
+              href={`/job-details-v1/${_id}`}
+            >
+              {location}
+            </Link>
           </div>
           <div className="job-category">
             {/* {category?.map((c, i) => (
@@ -84,7 +95,7 @@ const ListItem = ({
             </a>
             <Link
               href={`/job-details-v1/${_id}`}
-              className="apply-btn text-center tran3s"
+              className="apply-btn text-decoration-none text-center tran3s"
             >
               APPLY
             </Link>

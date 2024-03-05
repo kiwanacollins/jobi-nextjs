@@ -51,13 +51,16 @@ const JobGridItem = ({
       <div>
         <Link
           href={`/job-details-v1/${id}`}
-          className={`job-duration fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
+          className={`job-duration text-decoration-none fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
         >
           {duration}
         </Link>
       </div>
       <div>
-        <Link href={`/job-details-v1/${id}`} className="title fw-500 tran3s">
+        <Link
+          href={`/job-details-v1/${id}`}
+          className="title text-decoration-none fw-500 tran3s"
+        >
           {title}
         </Link>
       </div>
@@ -67,11 +70,13 @@ const JobGridItem = ({
       </div>
       <div className="d-flex align-items-center justify-content-between mt-auto">
         <div className="job-location">
-          <Link href={`/job-details-v1/${id}`}>{location}</Link>
+          <Link className="text-decoration-none" href={`/job-details-v1/${id}`}>
+            {location}
+          </Link>
         </div>
         <Link
           href={`/job-details-v1/${id}`}
-          className="apply-btn text-center tran3s"
+          className="apply-btn text-decoration-none text-center tran3s"
         >
           APPLY
         </Link>

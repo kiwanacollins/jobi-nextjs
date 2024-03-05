@@ -141,7 +141,7 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
               <ul className="dropdown-menu" aria-labelledby="profile-dropdown">
                 <li>
                   <Link
-                    className="dropdown-item d-flex align-items-center"
+                    className="dropdown-item text-decoration-none  d-flex align-items-center"
                     href="/dashboard/employ-dashboard/profile"
                   >
                     <Image
@@ -149,20 +149,24 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                       alt="icon"
                       className="lazy-img"
                     />
-                    <span className="ms-2 ps-1">Profile</span>
+                    <span className="ms-2 text-decoration-none ps-1">
+                      Profile
+                    </span>
                   </Link>
                 </li>
                 <li>
                   <Link
-                    className="dropdown-item d-flex align-items-center"
-                    href="/dashboard/employ-dashboard/profile"
+                    className="dropdown-item text-decoration-none d-flex align-items-center"
+                    href="/dashboard/employ-dashboard/setting"
                   >
                     <Image
                       src={profile_icon_2}
                       alt="icon"
                       className="lazy-img"
                     />
-                    <span className="ms-2 ps-1">Account Settings</span>
+                    <span className="ms-2 text-decoration-none ps-1">
+                      Account Settings
+                    </span>
                   </Link>
                 </li>
                 <li>
@@ -175,7 +179,9 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                       alt="icon"
                       className="lazy-img"
                     />
-                    <span className="ms-2 ps-1">Notification</span>
+                    <span className="ms-2 text-decoration-none ps-1">
+                      Notification
+                    </span>
                   </a>
                 </li>
               </ul>
@@ -189,7 +195,7 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                   <li key={m.id} onClick={() => setIsOpenSidebar(false)}>
                     <Link
                       href={m.link}
-                      className={`d-flex w-100 align-items-center ${
+                      className={`d-flex text-decoration-none w-100 align-items-center ${
                         isActive ? 'active' : ''
                       }`}
                     >
@@ -211,7 +217,7 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                   data-bs-target="#deleteModal"
                 >
                   <Image src={nav_8} alt="icon" className="lazy-img" />
-                  <span>Delete Account</span>
+                  <span className="text-decoration-none">Delete Account</span>
                 </a>
               </li>
             </ul>
@@ -221,13 +227,13 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
             <div className="progress-line position-relative">
               <div className="inner-line" style={{ width: '80%' }}></div>
             </div>
-            <p>Profile Complete</p>
+            <p className="text-decoration-none">Profile Complete</p>
           </div>
 
-          <a href="#" className="d-flex w-100 align-items-center logout-btn">
+          <button className="d-flex w-100 text-decoration-none align-items-center logout-btn">
             <Image src={logout} alt="icon" className="lazy-img" />
             <span>Logout</span>
-          </a>
+          </button>
         </div>
       </aside>
       {/* LogoutModal star */}

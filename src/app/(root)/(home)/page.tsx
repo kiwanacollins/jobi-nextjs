@@ -63,7 +63,10 @@ export default function HomePage() {
             </div>
             <div className="col-lg-5">
               <div className="d-flex justify-content-lg-end">
-                <Link href="/jobs" className="btn-six d-none d-lg-inline-block">
+                <Link
+                  href="/jobs"
+                  className="btn-six text-decoration-none d-none d-lg-inline-block"
+                >
                   Explore all jobs
                 </Link>
               </div>

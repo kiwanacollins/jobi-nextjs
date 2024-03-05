@@ -17,13 +17,8 @@ import nav_3 from '@/assets/dashboard/images/icon/icon_3.svg';
 import nav_3_active from '@/assets/dashboard/images/icon/icon_3_active.svg';
 import nav_4 from '@/assets/dashboard/images/icon/icon_4.svg';
 import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
-import nav_5 from '@/assets/dashboard/images/icon/icon_5.svg';
-import nav_5_active from '@/assets/dashboard/images/icon/icon_5_active.svg';
-import nav_6 from '@/assets/dashboard/images/icon/icon_6.svg';
-import nav_6_active from '@/assets/dashboard/images/icon/icon_6_active.svg';
 import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
-import nav_8 from '@/assets/dashboard/images/icon/icon_8.svg';
 import LogoutModal from '../../common/popup/logout-modal';
 import { useAuth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
@@ -46,34 +41,41 @@ const nav_data: {
   },
   {
     id: 2,
+    icon: nav_1,
+    icon_active: nav_1_active,
+    link: '/',
+    title: 'Home'
+  },
+  {
+    id: 3,
     icon: nav_2,
     icon_active: nav_2_active,
     link: '/dashboard/admin-dashboard/new-user',
     title: 'create user'
   },
   {
-    id: 3,
+    id: 4,
     icon: nav_2,
     icon_active: nav_2_active,
     link: '/dashboard/admin-dashboard/utils',
     title: 'Utils'
   },
   {
-    id: 4,
+    id: 5,
     icon: nav_2,
     icon_active: nav_2_active,
     link: '/dashboard/admin-dashboard/make-admin',
     title: 'Make admin'
   },
   {
-    id: 5,
+    id: 6,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/users',
     title: 'Users'
   },
   {
-    id: 6,
+    id: 7,
     icon: nav_4,
     icon_active: nav_4_active,
     link: '/dashboard/candidate-dashboard/messages',
@@ -81,23 +83,9 @@ const nav_data: {
   },
   {
     id: 7,
-    icon: nav_5,
-    icon_active: nav_5_active,
-    link: '/dashboard/candidate-dashboard/job-alert',
-    title: 'Job Alert'
-  },
-  {
-    id: 8,
-    icon: nav_6,
-    icon_active: nav_6_active,
-    link: '/dashboard/candidate-dashboard/saved-job',
-    title: 'Saved Job'
-  },
-  {
-    id: 9,
     icon: nav_7,
     icon_active: nav_7_active,
-    link: '/dashboard/candidate-dashboard/setting',
+    link: '/dashboard/admin-dashboard/setting',
     title: 'Account Settings'
   }
 ];
@@ -161,7 +149,7 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
-                    href="/dashboard/candidate-dashboard/profile"
+                    href="/dashboard/admin-dashboard/setting"
                   >
                     <Image
                       src={profile_icon_1}
@@ -174,7 +162,7 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center"
-                    href="/dashboard/candidate-dashboard/profile"
+                    href="/dashboard/admin-dashboard/setting"
                   >
                     <Image
                       src={profile_icon_2}
@@ -208,7 +196,7 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                   <li key={m.id} onClick={() => setIsOpenSidebar(false)}>
                     <Link
                       href={m.link}
-                      className={`d-flex w-100 align-items-center ${isActive ? 'active' : ''}`}
+                      className={`d-flex text-decoration-none w-100 align-items-center ${isActive ? 'active' : ''}`}
                     >
                       <Image
                         src={isActive ? m.icon_active : m.icon}
@@ -220,17 +208,6 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                   </li>
                 );
               })}
-              <li>
-                <a
-                  href="#"
-                  className="d-flex w-100 align-items-center"
-                  data-bs-toggle="modal"
-                  data-bs-target="#deleteModal"
-                >
-                  <Image src={nav_8} alt="icon" className="lazy-img" />
-                  <span>Delete Account</span>
-                </a>
-              </li>
             </ul>
           </nav>
           <div className="profile-complete-status">
@@ -241,10 +218,10 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
             <p>Profile Complete</p>
           </div>
 
-          <a href="#" className="d-flex w-100 align-items-center logout-btn">
+          <button className="d-flex text-decoration-none w-100 align-items-center logout-btn">
             <Image src={logout} alt="icon" className="lazy-img" />
             <span>Logout</span>
-          </a>
+          </button>
         </div>
       </aside>
       {/* LogoutModal star */}
