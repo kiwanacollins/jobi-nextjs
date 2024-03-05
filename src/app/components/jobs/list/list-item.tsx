@@ -16,7 +16,8 @@ const ListItem = ({
   style_2?: boolean;
   cls?: string;
 }) => {
-  const { _id, category, industry, duration, location, title } = item;
+  const { _id, category, industry, duration, location, title, createdBy } =
+    item;
   const { wishlist } = useAppSelector((state) => state.wishlist);
   const isActive = wishlist.some((p) => p._id === _id);
   const dispatch = useAppDispatch();
@@ -31,9 +32,13 @@ const ListItem = ({
       <div className="row justify-content-between align-items-center">
         <div className="col-xxl-3 col-lg-4">
           <div className="job-title d-flex align-items-center">
-            <Link href={`/job-details-v1/${_id}`} className="logo">
+            <Link href={`/job/${_id}`} className="logo">
               <Image
-                src={'/assets/images/logo/media_22.png'}
+                src={
+                  //@ts-ignore
+                  (createdBy?.picture as string) ||
+                  '/assets/images/logo/media_22.png'
+                }
                 alt="logo"
                 width={50}
                 height={50}
@@ -41,7 +46,7 @@ const ListItem = ({
               />
             </Link>
             <Link
-              href={`/job-details-v1/${_id}`}
+              href={`/job/${_id}`}
               className="title text-decoration-none fw-500 tran3s"
             >
               {title}
@@ -50,27 +55,21 @@ const ListItem = ({
         </div>
         <div className="col-lg-3 col-md-4 col-sm-6 ms-auto">
           <Link
-            href={`/job-details-v1/${_id}`}
+            href={`/job/${_id}`}
             className={`job-duration text-decoration-none fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
           >
             {duration}
           </Link>
           <div className="job-date">
             date by{' '}
-            <Link
-              className="text-decoration-none"
-              href={`/job-details-v1/${_id}`}
-            >
+            <Link className="text-decoration-none" href={`/job/${_id}`}>
               {industry}
             </Link>
           </div>
         </div>
         <div className="col-xxl-2 col-lg-3 col-md-4 col-sm-6 ms-auto xs-mt-10">
           <div className="job-location">
-            <Link
-              className="text-decoration-none"
-              href={`/job-details-v1/${_id}`}
-            >
+            <Link className="text-decoration-none" href={`/job/${_id}`}>
               {location}
             </Link>
           </div>
@@ -94,10 +93,10 @@ const ListItem = ({
               <i className="bi bi-bookmark-dash"></i>
             </a>
             <Link
-              href={`/job-details-v1/${_id}`}
+              href={`/job/${_id}`}
               className="apply-btn text-decoration-none text-center tran3s"
             >
-              APPLY
+              VIEW
             </Link>
           </div>
         </div>
