@@ -121,7 +121,7 @@ export const getJobById = async (jobId: string) => {
   try {
     await connectToDatabase();
     const job = await Job.findById(jobId)
-      .populate('createdBy', 'name picture')
+      .populate('createdBy', 'name picture website')
       .exec();
 
     if (!job) {

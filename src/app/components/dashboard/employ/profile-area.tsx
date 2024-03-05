@@ -46,8 +46,8 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
       categories: mongoUser?.categories || [],
       phone: mongoUser?.phone || '',
       mediaLinks: {
-        linkedin: '',
-        github: ''
+        linkedin: mongoUser?.mediaLinks?.linkedin || '',
+        github: mongoUser?.mediaLinks?.github || ''
       },
       established: mongoUser?.established || '',
       address: mongoUser?.address || '',

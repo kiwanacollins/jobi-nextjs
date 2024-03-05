@@ -22,7 +22,7 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
       <div className="row justify-content-between align-items-center">
         <div className="col-md-5">
           <div className="job-title d-flex align-items-center">
-            <Link href={`/job-details-v1/${item._id}`} className="logo">
+            <Link href={`/job/${item._id}`} className="logo">
               <Image
                 src={
                   //@ts-ignore
@@ -37,13 +37,13 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
             </Link>
             <div className="split-box1">
               <Link
-                href={`/job-details-v1/${item._id}`}
+                href={`/job/${item._id}`}
                 className="job-duration text-decoration-none fw-500"
               >
                 {item?.duration}
               </Link>
               <Link
-                href={`/job-details-v1/${item._id}`}
+                href={`/job/${item._id}`}
                 className="title text-decoration-none fw-500 tran3s"
               >
                 {item.title.slice(0, 22)} {item.title.length > 20 ? '..' : ''}
@@ -53,10 +53,7 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
         </div>
         <div className="col-md-4 col-sm-6">
           <div className="job-location">
-            <Link
-              className="text-decoration-none"
-              href={`/job-details-v1/${item._id}`}
-            >
+            <Link className="text-decoration-none" href={`/job/${item._id}`}>
               {item.location}
             </Link>
           </div>
@@ -79,10 +76,10 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
               <i className="bi bi-bookmark-dash"></i>
             </a>
             <Link
-              href={`/job-details-v1/${item._id}`}
+              href={`/job/${item._id}`}
               className="apply-btn text-decoration-none text-center tran3s"
             >
-              APPLY
+              VIEW
             </Link>
           </div>
         </div>

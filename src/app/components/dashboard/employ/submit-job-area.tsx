@@ -24,7 +24,6 @@ type IProps = {
 };
 
 const SubmitJobArea = ({ mongoUserId }: IProps) => {
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
