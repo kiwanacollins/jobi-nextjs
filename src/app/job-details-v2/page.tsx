@@ -4,7 +4,6 @@ import Wrapper from '@/layouts/wrapper';
 import Header from '@/layouts/headers/header';
 import FooterOne from '@/layouts/footers/footer-one';
 import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
-import JobDetailsBreadcrumbTwo from '../components/jobs/breadcrumb/job-details-breadcrumb-2';
 
 export const metadata: Metadata = {
   title: 'Job Details v2'
@@ -19,7 +18,7 @@ const JobDetailsV2Page = () => {
         {/* header end */}
 
         {/* job details breadcrumb start */}
-        <JobDetailsBreadcrumbTwo />
+        {/* <JobDetailsBreadcrumbTwo /> */}
         {/* job details breadcrumb end */}
 
         {/* job details area start */}
