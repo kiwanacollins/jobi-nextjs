@@ -82,7 +82,14 @@ const nav_data: {
     title: 'Messages'
   },
   {
-    id: 7,
+    id: 8,
+    icon: nav_3,
+    icon_active: nav_3_active,
+    link: '/dashboard/admin-dashboard/createBlog',
+    title: 'Create Blog'
+  },
+  {
+    id: 9,
     icon: nav_7,
     icon_active: nav_7_active,
     link: '/dashboard/admin-dashboard/setting',

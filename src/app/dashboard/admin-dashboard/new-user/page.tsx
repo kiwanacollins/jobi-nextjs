@@ -157,7 +157,6 @@ const NewUser = () => {
     simulateProgress();
     console.log(value);
     try {
-      console.count('submit');
       await createUserByAdmin({
         name: value?.name,
         email: value.email,

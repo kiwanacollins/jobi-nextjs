@@ -163,3 +163,21 @@ export const contactFormSchema = z.object({
   subject: z.string().optional(),
   message: z.string().min(1, { message: 'Message is required' })
 });
+
+const imageSchema = z.object({
+  url: z.string().min(1, { message: 'Image is required' }),
+  public_id: z.string().optional()
+});
+export const blogSchema = z.object({
+  title: z.string().min(1, { message: 'Title is required' }),
+  content: z.string().min(1, { message: 'Content is required' }),
+  image: imageSchema,
+  author: z.string().optional(),
+  tags: z
+    .array(z.string().min(1, { message: 'tags is required' }))
+    .refine((val) => val.length > 0, {
+      message: 'Please select at least one tag.'
+    }),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().optional()
+});
