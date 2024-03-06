@@ -96,10 +96,9 @@ export async function deleteEmployeeJobPost(
 ) {
   const { jobId, path } = params;
   try {
-    connectToDatabase();
+    await connectToDatabase();
     // Find the job post
     const jobPost = await Job.findByIdAndDelete(jobId);
-    console.log('jobPost:', jobPost);
 
     if (!jobPost) {
       throw new Error('Job post not found');

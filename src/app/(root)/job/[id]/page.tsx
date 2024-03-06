@@ -16,7 +16,6 @@ interface URLProps {
 
 const JobDetailsV1Page = async ({ params }: URLProps) => {
   const { job } = await getJobById(params.id);
-  console.log('JobDetailsV1Page  job:', job);
   return (
     <>
       {/* job details breadcrumb start */}

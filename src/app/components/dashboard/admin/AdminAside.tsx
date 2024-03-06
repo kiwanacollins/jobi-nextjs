@@ -78,7 +78,7 @@ const nav_data: {
     id: 7,
     icon: nav_4,
     icon_active: nav_4_active,
-    link: '/dashboard/candidate-dashboard/messages',
+    link: '/dashboard/admin-dashboard/messages',
     title: 'Messages'
   },
   {

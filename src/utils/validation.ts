@@ -65,7 +65,11 @@ export const userSchema = z.object({
   clerkId: z.string().optional(),
   name: z.string().min(1, { message: 'Name is required' }).max(255),
   age: z.coerce.number().min(1, { message: 'Age is required' }),
-  email: z.string().max(100).email('Invalid email'),
+  email: z
+    .string()
+    .min(1, { message: 'Email address is required' })
+    .max(100)
+    .email('Invalid email'),
   post: z.string().min(1, { message: 'post is required' }).max(100),
   bio: z.string().min(1, { message: 'post is required' }),
   gender: z.string().optional(),
@@ -148,4 +152,14 @@ export const formJobDataSchema = z.object({
   maxSalary: z.number().min(1, { message: 'Maximum salary is required' }),
   industry: z.string().min(1, { message: 'Industry salary is required' }),
   english_fluency: z.string().min(1, { message: 'English fluency is required' })
+});
+
+export const contactFormSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  email: z
+    .string()
+    .min(1, { message: 'Email in required' })
+    .email({ message: 'Invalid email address' }),
+  subject: z.string().optional(),
+  message: z.string().min(1, { message: 'Message is required' })
 });

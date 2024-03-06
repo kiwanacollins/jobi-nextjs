@@ -1,9 +1,10 @@
-import React from "react";
-import Image from "next/image";
+'use client';
+import React from 'react';
+import Image from 'next/image';
 import icon_1 from '@/assets/images/icon/icon_57.svg';
 import icon_2 from '@/assets/images/icon/icon_58.svg';
 import icon_3 from '@/assets/images/icon/icon_59.svg';
-import ContactForm from "../forms/contact-form";
+import ContactForm from '../forms/contact-form';
 
 const ContactArea = () => {
   return (

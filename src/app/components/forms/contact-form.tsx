@@ -1,77 +1,53 @@
 'use client';
 import React from 'react';
 
-import { Resolver, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import ErrorMsg from '../common/error-msg';
-import emailjs from '@emailjs/browser';
-import { notifyError, notifySuccess } from '@/utils/toast';
+import { contactFormSchema } from '@/utils/validation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { createContact } from '@/lib/actions/contact.action';
+import { usePathname } from 'next/navigation';
+import { notifySuccess } from '@/utils/toast';
 
-// form data type
-type IFormData = {
-  name: string;
-  email: string;
-  subject?: string;
-  message: string;
-};
-
-// resolver
-const resolver: Resolver<IFormData> = async (values) => {
-  return {
-    values: values.name ? values : {},
-    errors: !values.name
-      ? {
-          name: {
-            type: 'required',
-            message: 'Name is required.'
-          },
-          email: {
-            type: 'required',
-            message: 'Email is required.'
-          },
-          message: {
-            type: 'required',
-            message: 'Message is required.'
-          }
-        }
-      : {}
-  };
-};
 const ContactForm = () => {
-  // react hook form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm<IFormData>({ resolver });
-  // on submit
-  const onSubmit = (data: IFormData) => {
-    const templateParams = {
-      name: data.name,
-      email: data.email,
-      subject: data.subject,
-      message: data.message
-    };
-    if (data) {
-      emailjs
-        .send(
-          'service_gnu2rla',
-          'template_ilrquco',
-          templateParams,
-          'tDbxqotWh8Z0dv0h6'
-        )
-        .then(
-          (response) => {
-            notifySuccess('Your message sent successfully');
-          },
-          (err) => {
-            // console.log("FAILED...", err);
-            notifyError(err?.text);
-          }
-        );
-    }
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const pathname = usePathname();
+  type IContactFormType = z.infer<typeof contactFormSchema>;
 
-    reset();
+  // react hook form
+  const methods = useForm<IContactFormType>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      subject: '',
+      message: ''
+    }
+  });
+
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors }
+  } = methods;
+
+  // on submit
+  const onSubmit = async (data: IContactFormType) => {
+    setIsSubmitting(true);
+    try {
+      // add server action
+      const res = await createContact({ ...data, path: pathname });
+      if (res.status === 'success') {
+        notifySuccess(res.message);
+      }
+    } catch (error: any) {
+      console.log('onSubmit  error:', error);
+    } finally {
+      reset();
+      setIsSubmitting(false);
+    }
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,7 +73,7 @@ const ContactForm = () => {
             <input
               type="email"
               placeholder="Email Address*"
-              {...register('email', { required: `Email is required!` })}
+              {...register('email')}
               name="email"
             />
             <div className="help-block with-errors">
@@ -109,7 +85,7 @@ const ContactForm = () => {
           <div className="input-group-meta form-group mb-35">
             <label htmlFor="">Subject (optional)</label>
             <input
-              {...register('subject', { required: false })}
+              {...register('subject')}
               type="text"
               placeholder="Write about the subject here.."
               name="subject"
@@ -120,7 +96,7 @@ const ContactForm = () => {
           <div className="input-group-meta form-group mb-35">
             <textarea
               placeholder="Your message*"
-              {...register('message', { required: `Message is required!` })}
+              {...register('message')}
               name="message"
             />
             <div className="help-block with-errors">
@@ -129,8 +105,11 @@ const ContactForm = () => {
           </div>
         </div>
         <div className="col-12">
-          <button className="btn-eleven fw-500 tran3s d-block">
-            Send Message
+          <button
+            disabled={isSubmitting}
+            className="btn-eleven fw-500 tran3s d-block"
+          >
+            {isSubmitting ? 'Sending...' : 'Send Message'}
           </button>
         </div>
       </div>

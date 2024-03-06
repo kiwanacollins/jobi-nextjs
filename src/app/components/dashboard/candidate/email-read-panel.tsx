@@ -1,5 +1,5 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
 import icon from '@/assets/dashboard/images/icon/icon_28.svg';
 
 const EmailReadPanel = () => {
@@ -18,11 +18,7 @@ const EmailReadPanel = () => {
           </div>
           <div className="attached-file-preview d-flex align-items-center mt-15">
             <div className="file d-flex align-items-center me-2">
-              <Image
-                src={icon}
-                alt="icon"
-                className="lazy-img me-2"
-              />
+              <Image src={icon} alt="icon" className="lazy-img me-2" />
               <span>details.pdf</span>
             </div>
           </div>
@@ -42,19 +38,11 @@ const EmailReadPanel = () => {
           </div>
           <div className="attached-file-preview d-flex align-items-center mt-15">
             <div className="file d-flex align-items-center me-2">
-              <Image
-                src={icon}
-                alt="icon"
-                className="lazy-img me-2"
-              />
+              <Image src={icon} alt="icon" className="lazy-img me-2" />
               <span>details.pdf</span>
             </div>
             <div className="file d-flex align-items-center me-2">
-              <Image
-                src={icon}
-                alt="icon"
-                className="lazy-img me-2"
-              />
+              <Image src={icon} alt="icon" className="lazy-img me-2" />
               <span>form.pdf</span>
             </div>
           </div>
