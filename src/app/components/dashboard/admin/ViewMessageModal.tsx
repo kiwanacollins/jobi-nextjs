@@ -30,8 +30,9 @@ const ViewMessageModal = ({
               {name} - {email}
             </h5>
           </div>
-          <div className="mt-5 p-5 ">
-            <div className="">{message}</div>
+          <div className="mt-5 pt-5 px-3 ">
+            <h5 className="fw-500">Subject: {subject}</h5>
+            <p className="py-3 ">{message}</p>
           </div>
           <div className="modal-footer">
             <button
