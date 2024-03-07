@@ -177,7 +177,5 @@ export const blogSchema = z.object({
     .array(z.string().min(1, { message: 'tags is required' }))
     .refine((val) => val.length > 0, {
       message: 'Please select at least one tag.'
-    }),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional()
+    })
 });

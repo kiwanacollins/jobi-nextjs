@@ -1,34 +1,41 @@
 'use client';
 import ErrorMsg from '@/app/components/common/error-msg';
-import { createBlog } from '@/lib/actions/blog.action';
+import { IBlog } from '@/database/Blog.model';
+import { createBlog, updateBlogById } from '@/lib/actions/blog.action';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { blogSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
 import { z } from 'zod';
 
 interface IProps {
   type: string;
+  blog?: IBlog;
 }
 
-const Blog = ({ type }: IProps) => {
+const Blog = ({ type, blog }: IProps) => {
+  const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
-  const [imagePreview, setImagePreview] = useState<string | undefined>();
+  const [imagePreview, setImagePreview] = useState<string | undefined>(
+    blog?.image.url || ''
+  );
   const [progress, setProgress] = useState(0);
   type IBlogType = z.infer<typeof blogSchema>;
   // react hook form
   const methods = useForm<IBlogType>({
     resolver: zodResolver(blogSchema),
     defaultValues: {
-      title: '',
-      content: '',
-      tags: [],
+      title: blog?.title || '',
+      content: blog?.content || '',
+      tags: blog?.tags || [],
       image: {
-        url: ''
+        url: blog?.image.url || '',
+        public_id: blog?.image?.public_id || ''
       }
     }
   });
@@ -38,9 +45,12 @@ const Blog = ({ type }: IProps) => {
     setValue,
     reset,
     control,
-
     formState: { errors }
   } = methods;
+
+  useEffect(() => {
+    reset(blog);
+  }, [reset, blog]);
 
   const simulateProgress = () => {
     let currentProgress = 0;
@@ -95,6 +105,24 @@ const Blog = ({ type }: IProps) => {
         });
         setProgress(100);
         notifySuccess('BLog post created successfully!');
+      } else {
+        //  update blog
+        await updateBlogById({
+          blogId: blog?._id as string,
+          newData: {
+            title: data.title,
+            content: data.content,
+            tags: data.tags,
+            image: {
+              url: data.image.url,
+              public_id: data?.image?.public_id || ''
+            }
+          },
+          path: pathname
+        });
+        setProgress(100);
+        notifySuccess('Blog updated successfully!');
+        reset();
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
@@ -107,6 +135,7 @@ const Blog = ({ type }: IProps) => {
       setFilename('');
     }
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white card-box border-20">
@@ -148,7 +177,7 @@ const Blog = ({ type }: IProps) => {
         <div className="dash-input-wrapper mb-30">
           <label htmlFor="">Title*</label>
           <input
-            defaultValue={''}
+            defaultValue={blog?.title || ''}
             type="text"
             placeholder="You name"
             {...register('title')}
@@ -161,6 +190,7 @@ const Blog = ({ type }: IProps) => {
           <label htmlFor="">Content*</label>
           <textarea
             className="size-lg"
+            defaultValue={blog?.content || ''}
             placeholder="Write something interesting about your blog title...."
             {...register('content')}
             name="content"
@@ -177,6 +207,7 @@ const Blog = ({ type }: IProps) => {
           <Controller
             name="tags"
             control={control}
+            defaultValue={blog?.tags || []}
             render={({ field }) => (
               <CreatableSelect
                 isMulti={true}
