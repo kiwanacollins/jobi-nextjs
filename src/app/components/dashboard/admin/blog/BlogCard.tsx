@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Swal from 'sweetalert2';
+import parse from 'html-react-parser';
 
 interface BlogCardProps {
   blog: IBlog;
@@ -54,9 +55,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             : blog.title}
         </h5>
         <p className="text-secondary ">
-          {blog.content.length > 70
-            ? blog.content.slice(0, 70) + '...'
-            : blog.content}
+          {parse(blog.content.slice(0, 90) + '...')}
         </p>
         <div className="d-flex flex-column flex-md-row gap-1 py-2">
           <Link

@@ -7,10 +7,11 @@ import { blogSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
 import { z } from 'zod';
+import { Editor } from '@tinymce/tinymce-react';
 
 interface IProps {
   type: string;
@@ -19,6 +20,7 @@ interface IProps {
 
 const Blog = ({ type, blog }: IProps) => {
   const pathname = usePathname();
+  const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
   const [imagePreview, setImagePreview] = useState<string | undefined>(
@@ -41,7 +43,6 @@ const Blog = ({ type, blog }: IProps) => {
   });
   const {
     handleSubmit,
-    register,
     setValue,
     reset,
     control,
@@ -49,8 +50,8 @@ const Blog = ({ type, blog }: IProps) => {
   } = methods;
 
   useEffect(() => {
-    reset(blog);
-  }, [reset, blog]);
+    reset();
+  }, [reset]);
 
   const simulateProgress = () => {
     let currentProgress = 0;
@@ -122,7 +123,6 @@ const Blog = ({ type, blog }: IProps) => {
         });
         setProgress(100);
         notifySuccess('Blog updated successfully!');
-        reset();
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
@@ -176,25 +176,64 @@ const Blog = ({ type, blog }: IProps) => {
         </div>
         <div className="dash-input-wrapper mb-30">
           <label htmlFor="">Title*</label>
-          <input
-            defaultValue={blog?.title || ''}
-            type="text"
-            placeholder="You name"
-            {...register('title')}
+          <Controller
             name="title"
+            control={control}
+            defaultValue={blog?.title || ''}
+            render={({ field }) => (
+              <input type="text" placeholder="Your name" {...field} />
+            )}
           />
           {errors.title && <ErrorMsg msg={errors.title?.message as string} />}
         </div>
 
         <div className="dash-input-wrapper mb-30">
           <label htmlFor="">Content*</label>
-          <textarea
-            className="size-lg"
-            defaultValue={blog?.content || ''}
-            placeholder="Write something interesting about your blog title...."
-            {...register('content')}
+          <Controller
             name="content"
-          ></textarea>
+            control={control}
+            defaultValue={blog?.content || ''}
+            render={({ field }) => (
+              <Editor
+                apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                onInit={(evt, editor) => {
+                  // @ts-ignore
+                  editorRef.current = editor;
+                }}
+                onBlur={field.onBlur}
+                onEditorChange={(content) => field.onChange(content)}
+                initialValue={blog?.content || ''}
+                init={{
+                  height: 350,
+                  menubar: false,
+                  plugins: [
+                    'advlist',
+                    'autolink',
+                    'lists',
+                    'link',
+                    'image',
+                    'charmap',
+                    'preview',
+                    'anchor',
+                    'searchreplace',
+                    'visualblocks',
+                    'codesample',
+                    'fullscreen',
+                    'insertdatetime',
+                    'media',
+                    'table'
+                  ],
+                  toolbar:
+                    'undo redo | ' +
+                    ' bold italic forecolor | alignleft aligncenter |' +
+                    'alignright alignjustify | bullist numlist',
+                  content_style: 'body { font-family:Inter; font-size:16px }',
+                  skin: 'oxide',
+                  content_css: 'light'
+                }}
+              />
+            )}
+          />
           <div className="alert-text">
             Brief description for your Blog. URLs are hyperlinked.
           </div>

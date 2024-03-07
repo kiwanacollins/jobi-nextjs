@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
 import BlogFullWidthArea from '../../components/blogs/blog-frull-width';
+import { fetchAllBlogs } from '@/lib/actions/blog.action';
 
 export const metadata: Metadata = {
   title: 'Blog - Hireskills',
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
     'Stay informed and inspired with the latest insights, trends, and career advice on the HireSkills blog. Discover valuable resources to enhance your hiring process and career development.'
 };
 
-const BlogV3Page = () => {
+const BlogV3Page = async () => {
+  const blogs = await fetchAllBlogs();
   return (
     <>
       {/*breadcrumb start */}
@@ -20,7 +22,7 @@ const BlogV3Page = () => {
       />
       {/*breadcrumb end */}
       {/* blog v3 start */}
-      <BlogFullWidthArea />
+      <BlogFullWidthArea blogs={blogs} />
       {/* blog v3 end */}
 
       {/* job portal intro start */}

@@ -1,48 +1,55 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { IBlogDataType } from '@/types/blog-type';
+import { IBlog } from '@/database/Blog.model';
+import { getTimestamp } from '@/utils/utils';
 
-const FullWidthItem = ({ blog }: { blog: IBlogDataType }) => {
-  const { id, img_full, date, featured, tags, title } = blog || {};
+interface IProps {
+  blog: IBlog;
+}
+
+const FullWidthItem = ({ blog }: IProps) => {
+  // const { id, img_full, date, featured, tags, title } = blog || {};
   return (
     <article className="blog-meta-two box-layout mb-50 lg-mb-30">
       <figure className="post-img m0">
-        <Link href={`/blog-details/${id}`} className="w-100 d-block">
+        <Link href={`/blog/${blog._id}`} className="w-100 d-block">
           <Image
-            src={img_full!}
+            src={blog.image.url}
             alt="blog-img"
+            width={370}
+            height={270}
             className="lazy-img w-100 tran4s"
           />
         </Link>
         <Link
-          href={`/blog-details/${id}`}
+          href={`/blog/${blog._id}`}
           className="tags text-decoration-none fw-500"
         >
-          {tags[0]}
+          {blog.tags[0]}
         </Link>
       </figure>
       <div className="post-data mt-35">
         <div className="date">
-          {featured && (
+          {blog.updatedAt && (
             <span className="fw-500 text-decoration-none  text-dark">
               Featured -
             </span>
           )}
-          <Link className="text-decoration-none" href={`/blog-details/${id}`}>
-            {date}
+          <Link className="text-decoration-none" href={`/blog/${blog._id}`}>
+            {getTimestamp(blog.updatedAt as Date)}
           </Link>
         </div>
         <Link
           className="text-decoration-none tran3s"
-          href={`/blog-details/${id}`}
+          href={`/blog/${blog._id}`}
         >
           <h4 className="tran3s  blog-title">
-            {`${title.substring(0, 30)}...`}
+            {`${blog.title.substring(0, 30)}...`}
           </h4>
         </Link>
         <Link
-          href={`/blog-details/${id}`}
+          href={`/blog/${blog._id}`}
           className="continue-btn tran3s d-flex align-items-center"
         >
           <span className="fw-500 text-decoration-none me-2">

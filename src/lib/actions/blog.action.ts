@@ -123,6 +123,8 @@ export async function updateBlogById(params: IUpdateBlogByIdParams) {
       newData.image.public_id = result.public_id;
     }
 
+    // Set updatedAt field to the current date and time
+    newData.updatedAt = new Date();
     // Find the existing blog by ID
     const blog = await Blog.findOneAndUpdate({ _id: blogId }, newData, {
       new: true
