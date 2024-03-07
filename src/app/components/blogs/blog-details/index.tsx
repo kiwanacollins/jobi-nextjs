@@ -167,7 +167,7 @@ const BlogDetailsArea = ({ item }: { item: IBlogDataType }) => {
             </div>
 
             <div className="col-lg-4">
-              <BlogSidebar />
+              <BlogSidebar blogs={[]} />
             </div>
           </div>
         </div>
