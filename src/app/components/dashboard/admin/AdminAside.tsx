@@ -90,6 +90,13 @@ const nav_data: {
   },
   {
     id: 9,
+    icon: nav_3,
+    icon_active: nav_3_active,
+    link: '/dashboard/admin-dashboard/blogs',
+    title: 'Blogs'
+  },
+  {
+    id: 10,
     icon: nav_7,
     icon_active: nav_7_active,
     link: '/dashboard/admin-dashboard/setting',

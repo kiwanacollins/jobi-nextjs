@@ -1,7 +1,7 @@
-import React from "react";
-import { IBlogDataType } from "@/types/blog-type";
-import Image from "next/image";
-import Link from "next/link";
+import React from 'react';
+import { IBlogDataType } from '@/types/blog-type';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const BlogItemTwo = ({ blog }: { blog: IBlogDataType }) => {
   return (
@@ -17,11 +17,17 @@ const BlogItemTwo = ({ blog }: { blog: IBlogDataType }) => {
       </figure>
       <div className="post-data mt-30 lg-mt-20">
         <div>
-          <Link href={`/blog-details/${blog.id}`} className="date text-uppercase">
+          <Link
+            href={`/blog-details/${blog.id}`}
+            className="date text-uppercase"
+          >
             {blog.date}
           </Link>
         </div>
-        <Link href={`/blog-details/${blog.id}`} className="mt-10 mb-25 lg-mb-20">
+        <Link
+          href={`/blog-details/${blog.id}`}
+          className="mt-10 mb-25 lg-mb-20"
+        >
           <h4 className="tran3s blog-title">{blog.title}</h4>
         </Link>
         <div>

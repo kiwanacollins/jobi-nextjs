@@ -28,3 +28,15 @@ export async function createBlog(data: any) {
     throw error;
   }
 }
+
+// fetch all blogs
+export async function fetchAllBlogs() {
+  try {
+    await connectToDatabase();
+    const blogs = await Blog.find();
+    return JSON.parse(JSON.stringify(blogs));
+  } catch (error) {
+    console.error('Error fetching all blogs:', error);
+    throw error;
+  }
+}
