@@ -74,8 +74,8 @@ const menu_data: IMenuData[] = [
   },
   {
     id: 4,
-    link: '/blog',
-    title: 'Blog'
+    link: '/blogs',
+    title: 'Blogs'
     // sub_menus: [
     //   { link: '/blog-v1', title: 'Blog Standard' },
     //   { link: '/blog-v2', title: 'Blog Grid' },
