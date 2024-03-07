@@ -11,7 +11,7 @@ export default authMiddleware({
     '/candidates(.*)',
     '/about',
     '/contact',
-    '/blog',
+    '/blogs',
     '/api/webhook'
   ],
   ignoredRoutes: ['/api/webhook', '/src/app/api/webhook']
