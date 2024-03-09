@@ -1,8 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import icon from "@/assets/images/icon/icon_42.svg";
-import { IBlogDataType } from "@/types/blog-type";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import icon from '@/assets/images/icon/icon_42.svg';
+import { IBlogDataType } from '@/types/blog-type';
 
 const BlogItemFour = ({ blog }: { blog: IBlogDataType }) => {
   return (
@@ -13,24 +13,26 @@ const BlogItemFour = ({ blog }: { blog: IBlogDataType }) => {
             src={blog.img}
             alt="blog img"
             className="lazy-img w-100 tran4s"
-            style={{height:'auto'}}
+            style={{ height: 'auto' }}
           />
         </Link>
       </figure>
       <div className="post-data mt-30 lg-mt-20">
         <div>
-          <Link href={`/blog-details/${blog.id}`} className="date">
+          <Link
+            href={`/blog-details/${blog.id}`}
+            className="date text-decoration-none "
+          >
             {blog.date}
           </Link>
         </div>
-        <Link href={`/blog-details/${blog.id}`} className="mt-10 mb-5">
-          <h4 className="tran3s blog-title">
-            {blog.title}
-          </h4>
+        <Link
+          href={`/blog-details/${blog.id}`}
+          className="mt-10 mb-5 text-decoration-none "
+        >
+          <h4 className="tran3s blog-title">{blog.title}</h4>
         </Link>
-        <p className="mb-20">
-          {blog.desc}…
-        </p>
+        <p className="mb-20">{blog.desc}…</p>
         <Link href={`/blog-details/${blog.id}`} className="read-more">
           <Image src={icon} alt="icon" className="lazy-img" />
         </Link>

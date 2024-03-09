@@ -1,14 +1,14 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image";
+import React from 'react';
+import Image, { StaticImageData } from 'next/image';
 // internal
-import logo from "@/assets/images/logo/logo_02.png";
-import media_1 from "@/assets/images/logo/media_09.png";
-import media_2 from "@/assets/images/logo/media_10.png";
-import media_3 from "@/assets/images/logo/media_11.png";
-import media_4 from "@/assets/images/logo/media_12.png";
-import media_5 from "@/assets/images/logo/media_13.png";
-import shape from "@/assets/images/shape/shape_10.svg";
-import Link from "next/link";
+import logo from '@/assets/images/logo/logo_02.png';
+import media_1 from '@/assets/images/logo/media_09.png';
+import media_2 from '@/assets/images/logo/media_10.png';
+import media_3 from '@/assets/images/logo/media_11.png';
+import media_4 from '@/assets/images/logo/media_12.png';
+import media_5 from '@/assets/images/logo/media_13.png';
+import shape from '@/assets/images/shape/shape_10.svg';
+import Link from 'next/link';
 
 // brand icon
 function BrandIcon({ img, id }: { img: StaticImageData; id: string }) {
@@ -36,8 +36,9 @@ const FeatureTwo = () => {
                 We collaborate with a number of top tier companies on imagining
                 the future of work, have a look.
               </p>
-              <Link href="/about-us"
-                className="btn-nine tran3s d-flex align-items-center"
+              <Link
+                href="/about-us"
+                className="btn-nine  tran3s d-flex align-items-center"
               >
                 <span className="fw-500 me-2">Learn More</span>
                 <i className="bi bi-arrow-right"></i>
