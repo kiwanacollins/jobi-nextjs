@@ -3,13 +3,13 @@ import React from 'react';
 const CandidateSkeletonLoading = () => {
   return (
     <div
-      className={`candidate-profile-card  border-0 list-layout h-75   col-12  mb-25`}
+      className={`candidate-profile-card  border-0 list-layout h-75  col-12  mb-25`}
     >
       <div className="d-flex">
         <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
           <div className="rounded-circle placeholder-wave col-12 bg-success">
             <div
-              style={{ width: '80px', height: '80px' }}
+              style={{ width: '70px', height: '70px' }}
               className="lazy-img rounded-circle placeholder col-12 bg-success"
             ></div>
           </div>

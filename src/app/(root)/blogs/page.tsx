@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 const BlogV3Page = async () => {
   const blogs = await fetchAllBlogs();
+
   return (
     <>
       {/*breadcrumb start */}
