@@ -11,7 +11,7 @@ const AdminDashboardMakeAdminPage = async () => {
     return redirect('/');
   }
   const admins = await getAdmins();
-  console.log('AdminsTable  admins:', admins);
+
   return (
     <>
       <DashboardMakeAdmin />

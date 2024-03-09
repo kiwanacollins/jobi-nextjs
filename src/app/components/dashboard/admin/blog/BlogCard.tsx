@@ -71,11 +71,11 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             Delete
           </button>
         </div>
-        <div className="card-footer mt-2 px-2">
-          <small className="text-muted">
-            Last updated {getTimestamp(blog?.updatedAt as Date)}
-          </small>
-        </div>
+      </div>
+      <div className="card-footer mt-2 px-2">
+        <small className="text-muted">
+          Last updated {getTimestamp(blog?.updatedAt as Date)}
+        </small>
       </div>
     </div>
   );

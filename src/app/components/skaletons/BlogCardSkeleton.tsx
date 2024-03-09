@@ -1,8 +1,14 @@
 import React from 'react';
 const BlogCardSkeleton = () => (
   <article className="blog-meta-two placeholder-glow  box-layout mb-50 lg-mb-30">
-    <figure className="post-img   m0">
-      <div className="placeholder bg-success h-75    placeholder-lg w-100"></div>
+    <figure className="post-img    m0">
+      <div
+        style={{
+          width: '370px',
+          height: '370px'
+        }}
+        className="placeholder bg-success    placeholder-lg w-100"
+      ></div>
     </figure>
     <div className="post-data mt-35">
       <div className="date">
