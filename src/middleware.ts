@@ -13,6 +13,7 @@ export default authMiddleware({
     '/about',
     '/contact',
     '/blogs',
+    '/blog/:id',
     '/api/webhook'
   ],
   ignoredRoutes: ['/api/webhook', '/src/app/api/webhook']
