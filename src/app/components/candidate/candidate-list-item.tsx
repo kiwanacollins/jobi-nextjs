@@ -57,7 +57,7 @@ const CandidateListItem = ({
         </div>
         <div className="right-side">
           <div className="row gx-1 align-items-center">
-            <div className="col-xl-3">
+            <div className="col-lg-6">
               <div className="position-relative">
                 <h4 className="candidate-name text-decoration-none  tran3s mb-0">
                   <Link
@@ -80,22 +80,8 @@ const CandidateListItem = ({
                 </ul>
               </div>
             </div>
-            <div className="col-xl-3 col-md-4 col-sm-6">
-              <div className="candidate-info">
-                <span>Salary</span>
-                <div>
-                  {`$${item?.minSalary}-${item?.maxSalary} `}/
-                  {item?.salary_duration ?? 'month'}
-                </div>
-              </div>
-            </div>
-            <div className="col-xl-3 col-md-4 col-sm-6">
-              <div className="candidate-info">
-                <span>Location</span>
-                <div>{item?.address}</div>
-              </div>
-            </div>
-            <div className="col-xl-3 col-md-4">
+
+            <div className="col-lg-6">
               <div className="d-flex justify-content-lg-end">
                 {loggedInUser?.role === 'employee' && (
                   <button

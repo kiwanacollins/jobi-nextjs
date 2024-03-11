@@ -4,6 +4,7 @@ export default authMiddleware({
     '/',
     '/sign-in(.*)',
     '/register(.*)',
+    '/job/:id',
     '/jobs',
     '/jobs(.*)',
     '/candidates',

@@ -1,8 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-// import { ICandidate } from '@/data/candidate-data';
-// import { IResumeType } from '@/database/resume.model';
 
 const CandidateGridItem = ({
   item,
@@ -31,13 +29,16 @@ const CandidateGridItem = ({
           />
         </Link>
       </div>
-      <h4 className="candidate-name mt-15 mb-0">
-        <Link href={`/candidate-profile/${item.resumeId}`} className="tran3s">
+      <h4 className="candidate-name mt-15 p-3 mb-0">
+        <Link
+          href={`/candidate-profile/${item.resumeId}`}
+          className="tran3s text-decoration-none "
+        >
           {item?.name}
         </Link>
       </h4>
       <div className="candidate-post">{item?.post}</div>
-      <ul className="cadidate-skills style-none d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-30 sm-pt-20 pb-10">
+      <ul className="cadidate-skills style-none d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 sm-pt-20">
         {item.skills.slice(0, 3).map((s: any, i: any) => (
           <li key={i}>{s}</li>
         ))}
@@ -47,35 +48,14 @@ const CandidateGridItem = ({
           </li>
         )}
       </ul>
-      <div className="row gx-1">
-        <div className="col-md-6">
-          <div className="candidate-info mt-10">
-            <span>Salary</span>
-            <div>
-              {`$${item.minSalary}-${item.maxSalary} `}/
-              {item?.salary_duration ?? 'month'}
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="candidate-info mt-10">
-            <span>Location</span>
-            <div>{item?.country}</div>
-          </div>
-        </div>
-      </div>
-      <div className="row gx-2 pt-25 sm-pt-10">
-        <div className="col-md-6">
+
+      <div className="row ">
+        <div className="col-12">
           <Link
             href={`/candidate-profile/${item?.resumeId}`}
-            className="profile-btn tran3s w-100 mt-5"
+            className="profile-btn text-decoration-none tran3s w-100 mt-5"
           >
             View Profile
-          </Link>
-        </div>
-        <div className="col-md-6">
-          <Link href="/candidate-profile" className="msg-btn tran3s w-100 mt-5">
-            Message
           </Link>
         </div>
       </div>

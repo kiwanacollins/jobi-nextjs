@@ -1,18 +1,16 @@
 'use client';
 import React, { useState } from 'react';
-
 import Image from 'next/image';
 import CandidateProfileSlider from './candidate-profile-slider';
-import VideoPopup from '../common/video-popup';
 import Skills from './skills';
 import WorkExperience from './work-experience';
 import CandidateBio from './bio';
-import EmailSendForm from '../forms/email-send-form';
 import { IResumeType } from '@/database/resume.model';
 import Resume from '@/app/components/resume/Resume';
 import ResumeModal from '../resume/ResumeModal';
 import dynamic from 'next/dynamic';
 import { Button, Card } from 'react-bootstrap';
+import ModalVideo from 'react-modal-video';
 
 interface ICandidateDetailsAreaProps {
   candidateDetials: IResumeType;
@@ -35,15 +33,9 @@ const CandidateDetailsArea = ({
   const [videoId, setVideoId] = useState<string | undefined>(
     videos?.[0]?.videoId ?? ''
   );
-  const [thumbnail, setThumbnail] = useState<string | undefined>(
-    videos?.[0]?.videoId ?? ''
-  );
-
-  const videoThumanail = `https://img.youtube.com/vi/${thumbnail}/0.jpg`;
 
   const handleVideoClick = (videoId: string, thumbnail: string) => {
     setVideoId(videoId);
-    setThumbnail(thumbnail);
   };
 
   return (
@@ -58,8 +50,8 @@ const CandidateDetailsArea = ({
                   <p>{candidateDetials?.overview}</p>
                 </div>
                 {/* Video thumbnail start */}
-                <h3 className="title">Intro</h3>
-                <div
+                {/* <h3 className="title">Intro</h3> */}
+                {/* <div
                   className="video-post d-flex align-items-center justify-content-center mt-25 lg-mt-20 mb-50 lg-mb-20"
                   style={{ backgroundImage: `url(${videoThumanail})` }}
                 >
@@ -69,37 +61,42 @@ const CandidateDetailsArea = ({
                   >
                     <i className="bi bi-play"></i>
                   </button>
-                </div>
+                </div> */}
+                <h3 className="title">Videos </h3>
                 <div className="mb-4 p-4">
-                  <h3 className="title">Videos </h3>
-                  <div className="d-flex flex-wrap gap-4">
-                    {candidateDetials?.videos?.map((video, index) => {
-                      return (
-                        <Card key={index} style={{ width: '18rem' }}>
-                          <Card.Img
-                            variant="top"
-                            src={`https://img.youtube.com/vi/${video?.videoId}/0.jpg`}
-                          />
-                          <Card.Body>
-                            <Card.Title className="fw-bold">
-                              {video?.title}
-                            </Card.Title>
-                            <Button
-                              onClick={() =>
-                                handleVideoClick(
-                                  video.videoId ?? '',
-                                  video.videoId ?? ''
-                                )
-                              }
-                              className="px-3"
-                              variant="primary"
-                            >
-                              Watch
-                            </Button>
-                          </Card.Body>
-                        </Card>
-                      );
-                    })}
+                  <div className="container">
+                    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-3 ">
+                      {candidateDetials?.videos?.map((video, index) => {
+                        return (
+                          <Card className="col p-1" key={index}>
+                            <Card.Img
+                              variant="top"
+                              className="p-2"
+                              src={`https://img.youtube.com/vi/${video?.videoId}/0.jpg`}
+                            />
+                            <Card.Body>
+                              <Card.Title className="fw-bold">
+                                {video?.title}
+                              </Card.Title>
+                              <Button
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleVideoClick(
+                                    video.videoId ?? '',
+                                    video.videoId ?? ''
+                                  );
+                                  setIsVideoOpen(true);
+                                }}
+                                className="px-3"
+                                variant="primary"
+                              >
+                                Watch
+                              </Button>
+                            </Card.Body>
+                          </Card>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
                 {/* Video thumbnail end */}
@@ -216,32 +213,22 @@ const CandidateDetailsArea = ({
                     </PDFDownloadLink>
                   </div>
                 </div>
-                <h4 className="sidebar-title">Location</h4>
-                <div className="map-area mb-60 md-mb-40">
-                  <div className="gmap_canvas h-100 w-100">
-                    <iframe
-                      className="gmap_iframe h-100 w-100"
-                      src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=bass hill plaza medical centre&amp;t=&amp;z=12&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                    ></iframe>
-                  </div>
-                </div>
-                <h4 className="sidebar-title">Email James Brower.</h4>
-                <div className="email-form bg-wrapper bg-color">
-                  <p>
-                    Your email address & profile will be shown to the recipient.
-                  </p>
-                  <EmailSendForm />
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
       {/* video modal start */}
-      <VideoPopup
+      {/* <VideoPopup
         isVideoOpen={isVideoOpen}
         setIsVideoOpen={setIsVideoOpen}
         videoId={videoId as string}
+      /> */}
+      <ModalVideo
+        channel="youtube"
+        isOpen={isVideoOpen}
+        videoId={videoId as string}
+        onClose={() => setIsVideoOpen(false)}
       />
       {/* video modal end */}
       {/* Resume Modal start */}

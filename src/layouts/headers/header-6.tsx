@@ -56,7 +56,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   )}
 
                   <SignedIn>
-                    {currentUser?.role && currentUser?.isAdmin === true && (
+                    {(currentUser?.role || currentUser?.isAdmin === true) && (
                       <li className="nav-item dropdown Dashboard ">
                         <a
                           className="nav-link fw-bold me-3  text-white  dropdown-toggle"
