@@ -36,16 +36,13 @@ const CandidateListItem = ({
 
   return (
     <div
-      className={`candidate-profile-card ${item.favorite ? 'favourite' : 'favourite'} ${
+      className={`candidate-profile-card ${item.favorite ? 'favourite' : ''} ${
         style_2 ? 'border-0' : ''
       } list-layout mb-25`}
     >
       <div className="d-flex">
-        <div className="cadidate-avatar online position-relative d-block me-auto ms-auto">
-          <Link
-            href={`/candidate-profile/${item?.resumeId}`}
-            className="rounded-circle"
-          >
+        <div className="cadidate-avatar  position-relative d-block me-auto ms-auto">
+          <Link className="w-100" href={`/candidate-profile/${item?.resumeId}`}>
             <Image
               src={item?.picture}
               width={style_2 ? 120 : 80}
@@ -93,7 +90,7 @@ const CandidateListItem = ({
                 )}
                 <Link
                   href={`/candidate-profile/${item?.resumeId}`}
-                  className="profile-btn tran3s text-decoration-none ms-md-2 mt-10 sm-mt-20"
+                  className="profile-btn tran3s text-decoration-none ms-md-2 mt-10 sm-mt-10"
                 >
                   View Profile
                 </Link>

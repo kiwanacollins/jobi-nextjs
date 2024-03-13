@@ -38,7 +38,7 @@ const CandidateGridItem = ({
         </Link>
       </h4>
       <div className="candidate-post">{item?.post}</div>
-      <ul className="cadidate-skills style-none d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 sm-pt-20">
+      <ul className="cadidate-skills style-none d-flex flex-wrap align-items-center justify-content-center justify-content-md-between pt-4 sm-pt-10">
         {item.skills.slice(0, 3).map((s: any, i: any) => (
           <li key={i}>{s}</li>
         ))}
@@ -53,7 +53,7 @@ const CandidateGridItem = ({
         <div className="col-12">
           <Link
             href={`/candidate-profile/${item?.resumeId}`}
-            className="profile-btn text-decoration-none tran3s w-100 mt-5"
+            className="profile-btn text-decoration-none tran3s w-100 mt-3"
           >
             View Profile
           </Link>
