@@ -64,39 +64,46 @@ const nav_data: {
     id: 5,
     icon: nav_2,
     icon_active: nav_2_active,
+    link: '/dashboard/admin-dashboard/categories',
+    title: 'Categories'
+  },
+  {
+    id: 6,
+    icon: nav_2,
+    icon_active: nav_2_active,
     link: '/dashboard/admin-dashboard/make-admin',
     title: 'Make admin'
   },
   {
-    id: 6,
+    id: 7,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/users',
     title: 'Users'
   },
   {
-    id: 7,
+    id: 8,
     icon: nav_4,
     icon_active: nav_4_active,
     link: '/dashboard/admin-dashboard/messages',
     title: 'Messages'
   },
   {
-    id: 8,
+    id: 9,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/createBlog',
     title: 'Create Blog'
   },
   {
-    id: 9,
+    id: 10,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/blogs',
     title: 'Blogs'
   },
   {
-    id: 10,
+    id: 11,
     icon: nav_7,
     icon_active: nav_7_active,
     link: '/dashboard/admin-dashboard/setting',

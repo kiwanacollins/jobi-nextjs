@@ -7,25 +7,31 @@ import { revalidatePath } from 'next/cache';
 import { connectToDatabase } from '../mongoose';
 
 interface ICreateCategory {
-  skills: string[];
+  name: string;
+  subcategories: string[];
   path: string;
 }
 
 export async function createCategory(params: ICreateCategory) {
-  const { skills, path } = params;
+  const { name, subcategories, path } = params;
 
-  const skillDocument = [];
-
-  // Create the skills or get them if they already exist
-  for (const skill of skills) {
-    const existingskill = await Category.findOneAndUpdate(
-      { value: { $regex: new RegExp(`^${skill}$`, 'i') } },
-      { $setOnInsert: { value: skill } },
-      { upsert: true, new: true }
-    );
-    skillDocument.push(existingskill._id);
+  try {
+    await connectToDatabase();
+    const existingCategory = await Category.findOne({ name });
+    if (existingCategory) {
+      return { success: false, message: 'Category already exists' };
+    }
+    const category = new Category({
+      name,
+      subcategory: subcategories.map((name) => ({ name }))
+    });
+    await category.save();
+    revalidatePath(path);
+    return { success: true, message: 'Category created successfully' };
+  } catch (error) {
+    console.log('Error creating category:', error);
+    throw error;
   }
-  revalidatePath(path);
 }
 
 export async function getCategories() {

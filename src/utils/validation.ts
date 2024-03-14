@@ -179,3 +179,12 @@ export const blogSchema = z.object({
       message: 'Please select at least one tag.'
     })
 });
+
+export const categorySchema = z.object({
+  name: z.string().min(1, { message: 'Category is required' }),
+  subcategory: z
+    .array(z.string().min(1, { message: 'Subcategory is required' }))
+    .refine((val) => val.length > 0, {
+      message: 'Please enter at least one skill.'
+    })
+});

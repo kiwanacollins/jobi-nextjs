@@ -1,12 +1,16 @@
 import { Schema, model, models, Document } from 'mongoose';
 
 export interface ICategory extends Document {
-  value: string;
+  name: string;
+  subcategory?: {
+    name: string;
+  }[];
   createdOn?: Date;
 }
 
 const CategorySchema = new Schema({
-  value: { type: String, required: true, unique: true },
+  name: { type: String, required: true, unique: true },
+  subcategory: [{ name: { type: String } }],
   createdOn: { type: Date, default: Date.now }
 });
 

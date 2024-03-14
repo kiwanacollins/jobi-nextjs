@@ -25,7 +25,7 @@ const LoginModal = () => {
             <div className="text-center">
               <h2>Hi, Welcome Back!</h2>
               <p>
-                Still do not have an account?{' '}
+                Still do not have an account ?{' '}
                 <Link href="/register">Sign up</Link>
               </p>
             </div>
