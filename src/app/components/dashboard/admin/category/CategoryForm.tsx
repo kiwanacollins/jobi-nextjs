@@ -1,7 +1,11 @@
 'use client';
 import ErrorMsg from '@/app/components/common/error-msg';
 import { ICategory } from '@/database/categery.model';
-import { createCategory, updateCategoryById } from '@/lib/actions/admin.action';
+import {
+  createCategory,
+  deleteSingleSubcategory,
+  updateCategoryById
+} from '@/lib/actions/admin.action';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { categorySchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -78,9 +82,15 @@ const CategoryForm = ({ type, category }: IProps) => {
   };
 
   // remove skill
-  const handleTagRemove = (tag: string, e: any) => {
+  const handleTagRemove = async (tag: string, e: any) => {
     e.preventDefault();
     const newTags = skillsTag.filter((t: string) => t !== tag);
+    if (category?._id) {
+      const res = await deleteSingleSubcategory(category?._id, tag);
+      if (res.success) {
+        notifySuccess(res.message);
+      }
+    }
     setSkillsTag(newTags);
     setValue('subcategory', newTags);
   };
@@ -167,7 +177,7 @@ const CategoryForm = ({ type, category }: IProps) => {
           </div>
 
           <ul className="style-none d-flex flex-wrap gap-2  align-items-center mt-2">
-            {skillsTag.map((item: any, index) => {
+            {skillsTag?.map((item: any, index) => {
               return (
                 <li className="is_tag" key={index}>
                   <button className="is_tag px-2 py-1 ">

@@ -121,6 +121,33 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
   }
 }
 
+export async function deleteSingleSubcategory(
+  categoryId: string,
+  subcategoryName: string
+) {
+  try {
+    await connectToDatabase();
+
+    const category = await Category.findOneAndUpdate(
+      { _id: categoryId },
+      { $pull: { subcategory: { name: subcategoryName } } }
+    );
+
+    if (!category) {
+      return { success: false, message: 'Category not found' };
+    }
+
+    if (!category.subcategory.length) {
+      // Optional: Handle the case where all subcategories are deleted
+    }
+
+    return { success: true, message: 'Subcategory deleted successfully' };
+  } catch (error) {
+    console.log('Error deleting subcategory:', error);
+    throw error; // Re-throw for handling at a higher level
+  }
+}
+
 interface ImakeAdminProps {
   email: string;
   path: string;
