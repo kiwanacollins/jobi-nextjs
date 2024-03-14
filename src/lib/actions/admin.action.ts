@@ -5,6 +5,7 @@ import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 import { connectToDatabase } from '../mongoose';
+import { UpdateCategoryParams } from './shared.types';
 
 interface ICreateCategory {
   name: string;
@@ -43,6 +44,19 @@ export async function getCategories() {
     console.log('Error getting categories:', error);
   }
 }
+export async function getSingleCategoryById(categoryId: string) {
+  try {
+    await connectToDatabase();
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return { success: false, message: 'Category not found' };
+    }
+    return JSON.parse(JSON.stringify(category));
+  } catch (error) {
+    console.log('Error getting category by ID:', error);
+    throw error;
+  }
+}
 
 export async function deleteSingleCategory(param: {
   mongoId: string;
@@ -65,6 +79,45 @@ export async function deleteSingleCategory(param: {
   } catch (error) {
     console.error('Error deleting category:', error);
     throw error; // Re-throw to allow for error handling in calling code
+  }
+}
+
+export async function updateCategoryById(params: UpdateCategoryParams) {
+  const { categoryId, name, path, subcategories } = params;
+
+  try {
+    await connectToDatabase();
+
+    const category = await Category.findById(categoryId);
+
+    if (!category) {
+      return { success: false, message: 'Category not found' };
+    }
+
+    for (const subcategory of subcategories) {
+      const existingSubcategory = category?.subcategory?.find(
+        (sc: any) => sc.name === subcategory
+      );
+      if (!existingSubcategory) {
+        await Category.findOneAndUpdate(
+          { _id: categoryId },
+          {
+            $push: { subcategory: { name: subcategory } }
+          },
+          { new: true }
+        );
+      }
+    }
+    category.name = name;
+    await category.save();
+    revalidatePath(path);
+    return { success: true, message: 'Category updated successfully' };
+  } catch (error) {
+    console.log('Error updating category:', error);
+    return {
+      success: false,
+      message: 'Failed to update category. Please try again later.'
+    };
   }
 }
 

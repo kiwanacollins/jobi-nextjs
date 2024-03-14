@@ -26,7 +26,7 @@ const Page = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const groupedCategories = categories?.map((category) => category.value);
+  const groupedCategories = categories?.map((category) => category.name);
   type categorySchemaType = z.infer<typeof categorySchema>;
   const methods = useForm<categorySchemaType>({
     resolver: zodResolver(categorySchema),

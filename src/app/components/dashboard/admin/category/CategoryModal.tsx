@@ -1,15 +1,31 @@
-import React from 'react';
-import LoginForm from '@/app/components/forms/login-form';
+'use client';
+import React, { useEffect, useState } from 'react';
+import CategoryForm from './CategoryForm';
+import { ICategory } from '@/database/categery.model';
+import { getSingleCategoryById } from '@/lib/actions/admin.action';
 
-const CategoryModal = () => {
+interface IProps {
+  id: string;
+}
+
+const CategoryModal = ({ id }: IProps) => {
+  const [selectedCategory, setCategory] = useState<ICategory | null>(null);
+  // const category = await getSingleCategoryById(id);
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const response = await getSingleCategoryById(id as string);
+      setCategory(response);
+    };
+    fetchCategory();
+  }, [id]);
   return (
     <div
       className="modal fade"
-      id="categoryModal"
+      id={'categoryModal' + id}
       tabIndex={-1}
       aria-hidden="true"
     >
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog ">
         <div className="container">
           <div className="user-data-form modal-content">
             <button
@@ -19,10 +35,12 @@ const CategoryModal = () => {
               aria-label="Close"
             ></button>
             <div className="text-center">
-              <h2>Add Category</h2>
+              <h2>Update Category</h2>
             </div>
+            <div className="text-center">{id}</div>
+            <div className="text-center">{selectedCategory?.name}</div>
             <div className="form-wrapper">
-              <LoginForm />
+              <CategoryForm category={selectedCategory} type="edit" />
             </div>
           </div>
         </div>

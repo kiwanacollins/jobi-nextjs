@@ -1,30 +1,36 @@
 'use client';
 import ErrorMsg from '@/app/components/common/error-msg';
-import { createCategory } from '@/lib/actions/admin.action';
+import { ICategory } from '@/database/categery.model';
+import { createCategory, updateCategoryById } from '@/lib/actions/admin.action';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { categorySchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 interface IProps {
   type: string;
+  category?: ICategory | null;
 }
 
-const CategoryForm = ({ type }: IProps) => {
-  const [skillsTag, setSkillsTag] = useState<string[]>([]);
+const CategoryForm = ({ type, category }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const groupedSubcategories = category?.subcategory?.map((item) => item.name);
+  const [skillsTag, setSkillsTag] = useState<string[]>(
+    groupedSubcategories || []
+  );
 
   type ICategoryType = z.infer<typeof categorySchema>;
   // react hook form
   const methods = useForm<ICategoryType>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      name: '',
-      subcategory: []
+      name: category?.name || '',
+      subcategory: groupedSubcategories || []
     }
   });
 
@@ -35,6 +41,7 @@ const CategoryForm = ({ type }: IProps) => {
     setValue,
     setError,
     clearErrors,
+    reset,
     formState: { errors }
   } = methods;
 
@@ -81,16 +88,34 @@ const CategoryForm = ({ type }: IProps) => {
   const onSubmit = async (data: ICategoryType) => {
     setIsSubmitting(true);
     try {
-      const res = await createCategory({
-        name: data.name,
-        subcategories: data.subcategory,
-        path: pathname
-      });
-      if (res.success) {
-        notifySuccess(res.message);
+      if (type === 'add') {
+        const res = await createCategory({
+          name: data.name,
+          subcategories: data.subcategory,
+          path: pathname
+        });
+        if (res.success) {
+          notifySuccess(res.message);
+        }
+        if (!res.success) {
+          notifyError(res.message);
+        }
       }
-      if (!res.success) {
-        notifyError(res.message);
+      if (type === 'edit') {
+        const res = await updateCategoryById({
+          categoryId: category?._id,
+          name: data.name,
+          subcategories: data.subcategory,
+          path: pathname
+        });
+        console.log('res', res);
+        if (res.success) {
+          notifySuccess(res.message);
+          router.push('/dashboard/admin-dashboard/categories');
+        }
+        if (!res.success) {
+          notifyError(res.message);
+        }
       }
     } catch (error) {
       console.error('Error creating category:', error);
@@ -99,6 +124,7 @@ const CategoryForm = ({ type }: IProps) => {
       setSkillsTag([]);
       setValue('name', '');
       setValue('subcategory', []);
+      reset();
       setIsSubmitting(false);
     }
   };
@@ -110,7 +136,7 @@ const CategoryForm = ({ type }: IProps) => {
           <Controller
             name="name"
             control={control}
-            defaultValue={''}
+            defaultValue={category?.name || ''}
             render={({ field }) => (
               <>
                 <input

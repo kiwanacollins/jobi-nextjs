@@ -49,3 +49,10 @@ export interface getCandidatesParams {
   fluency?: string;
   duration?: string;
 }
+
+export interface UpdateCategoryParams {
+  categoryId: string;
+  name: string;
+  subcategories: string[];
+  path: string;
+}

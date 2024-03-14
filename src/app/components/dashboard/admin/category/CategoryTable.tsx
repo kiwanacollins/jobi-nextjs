@@ -1,11 +1,8 @@
+import { ICategory } from '@/database/categery.model';
 import CategoryItem from './CategoryItem';
 
 interface ICategoryTable {
-  categories: {
-    _id: string;
-    name: string;
-    subcategory: string[];
-  }[];
+  categories: ICategory[];
 }
 
 const CategoriesTable = ({ categories }: ICategoryTable) => {
@@ -14,23 +11,22 @@ const CategoriesTable = ({ categories }: ICategoryTable) => {
       <table className="table job-alert-table">
         <thead>
           <tr>
+            <th scope="col">No</th>
             <th scope="col">Category Name</th>
             <th scope="col">SubCategory</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody className="border-0">
-          <CategoryItem
-            id={'1'}
-            name={'Graphics Design'}
-            subcategory={['Logo', 'Banner', 'Business Card']}
-          />
-
-          <CategoryItem
-            id={'2'}
-            name={'Web Development'}
-            subcategory={['Frontend', 'Backend', 'Fullstack']}
-          />
+          {categories?.map((category, index) => (
+            <CategoryItem
+              key={category._id}
+              id={index + 1}
+              categoryId={category._id}
+              name={category.name}
+              subcategory={category.subcategory}
+            />
+          ))}
 
           {categories.length === 0 && (
             <tr>
