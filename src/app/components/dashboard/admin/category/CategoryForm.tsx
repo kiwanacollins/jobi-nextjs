@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { z } from 'zod';
+import * as z from 'zod';
 
 interface IProps {
   type: string;
@@ -48,8 +48,8 @@ const CategoryForm = ({ type, category }: IProps) => {
     reset,
     formState: { errors }
   } = methods;
-
-  console.log(watch());
+  console.log(watch('subcategory'));
+  console.log(errors);
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -118,7 +118,7 @@ const CategoryForm = ({ type, category }: IProps) => {
           subcategories: data.subcategory,
           path: pathname
         });
-        console.log('res', res);
+
         if (res.success) {
           notifySuccess(res.message);
           router.push('/dashboard/admin-dashboard/categories');
@@ -171,8 +171,8 @@ const CategoryForm = ({ type, category }: IProps) => {
               placeholder="Enter Skills"
               onKeyDown={(e) => handleInputKeyDown(e, 'skills')}
             />
-            {errors.subcategory && (
-              <ErrorMsg msg={errors.subcategory?.message as string} />
+            {errors?.subcategory && (
+              <ErrorMsg msg={errors?.subcategory?.message as string} />
             )}
           </div>
 

@@ -9,7 +9,7 @@ import { UpdateCategoryParams } from './shared.types';
 
 interface ICreateCategory {
   name: string;
-  subcategories: string[];
+  subcategories?: string[];
   path: string;
 }
 
@@ -24,7 +24,7 @@ export async function createCategory(params: ICreateCategory) {
     }
     const category = new Category({
       name,
-      subcategory: subcategories.map((name) => ({ name }))
+      subcategory: subcategories?.map((name) => ({ name }))
     });
     await category.save();
     revalidatePath(path);
@@ -94,7 +94,7 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
       return { success: false, message: 'Category not found' };
     }
 
-    for (const subcategory of subcategories) {
+    for (const subcategory of subcategories ?? []) {
       const existingSubcategory = category?.subcategory?.find(
         (sc: any) => sc.name === subcategory
       );

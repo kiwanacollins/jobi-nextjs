@@ -1,7 +1,7 @@
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { IBlogDataType } from "@/types/blog-type";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { IBlogDataType } from '@/types/blog-type';
 
 const BlogItemThree = ({ blog }: { blog: IBlogDataType }) => {
   return (
@@ -11,8 +11,10 @@ const BlogItemThree = ({ blog }: { blog: IBlogDataType }) => {
           <Image
             src={blog.img}
             alt=""
+            width={370}
+            height={270}
             className="lazy-img w-100 tran4s"
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: '100%', height: 'auto' }}
           />
         </Link>
         <Link href={`/blog-details/${blog.id}`} className="tags fw-500">
@@ -23,13 +25,14 @@ const BlogItemThree = ({ blog }: { blog: IBlogDataType }) => {
         <div className="date">
           {blog.featured && (
             <span className="fw-500 text-dark">Featured -</span>
-          )}{" "}
+          )}{' '}
           <Link href={`/blog-details/${blog.id}`}>{blog.date}</Link>
         </div>
         <Link href={`/blog-details/${blog.id}`}>
           <h4 className="tran3s blog-title">{blog.title}</h4>
         </Link>
-        <Link href={`/blog-details/${blog.id}`}
+        <Link
+          href={`/blog-details/${blog.id}`}
           className="continue-btn tran3s d-flex align-items-center"
         >
           <span className="fw-500 me-2">Continue Reading</span>
