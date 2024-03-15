@@ -15,6 +15,7 @@ import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
 
 import { clerkClient } from '@clerk/nextjs';
+import Category from '@/database/category.model';
 
 export async function getUserById(params: any) {
   try {
@@ -62,6 +63,7 @@ export async function createUserByAdmin(userData: any) {
     connectToDatabase();
     connectToCloudinary();
     const { picture } = userData;
+    console.log('createUserByAdmin  userData:', userData);
     if (picture) {
       const result = await cloudinary.v2.uploader.upload(picture as string, {
         folder: 'users',
@@ -72,7 +74,21 @@ export async function createUserByAdmin(userData: any) {
       userData.picture = result.secure_url;
     }
     const newUser = await User.create(userData);
-    return newUser;
+
+    if (userData.post) {
+      const category = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(userData.post, 'i')
+          }
+        },
+        { $push: { candidates: newUser._id } },
+        { new: true, upsert: true }
+      );
+      console.log('category', category);
+    }
+
+    return JSON.parse(JSON.stringify(newUser));
   } catch (error) {
     console.log(error);
     throw error;
@@ -124,8 +140,6 @@ export async function updateUser(params: UpdateUserParams) {
     connectToCloudinary();
     const { clerkId, updateData, path } = params;
     const { picture } = updateData;
-
-    console.log('updateData', updateData);
 
     if (picture) {
       const result = await cloudinary.v2.uploader.upload(picture as string, {

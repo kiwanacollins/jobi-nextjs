@@ -53,11 +53,13 @@ const linksSchema = z.object({
   linkedin: z
     .string()
     .min(1, { message: 'linkedin is required' })
-    .url('Invalid URL'),
+    .url('Invalid URL')
+    .optional(),
   github: z
     .string()
     .min(1, { message: 'github is required' })
     .url('Invalid URL')
+    .optional()
 });
 
 // Define the Zod schema for the IUser interface
@@ -74,17 +76,19 @@ export const userSchema = z.object({
   bio: z.string().min(1, { message: 'post is required' }),
   gender: z.string().optional(),
   qualification: z.string().min(1, { message: 'experience is required' }),
-  minSalary: z.coerce.number().min(1, { message: 'min salary is required' }),
-  maxSalary: z.coerce.number().min(1, { message: 'max salary is required' }),
-  salary_duration: z
-    .string()
-    .min(1, { message: 'salary duration is required' }),
+  // minSalary: z.coerce.number().min(1, { message: 'min salary is required' }),
+  // maxSalary: z.coerce.number().min(1, { message: 'max salary is required' }),
+  // salary_duration: z
+  //   .string()
+  //   .min(1, { message: 'salary duration is required' })
+  //   .optional(),
   experience: z.string().min(1, { message: 'experience is required' }),
   skills: z
-    .array(z.string().min(1, { message: 'skills is required' }))
+    .array(z.string().min(1, { message: 'skills is required' }).optional())
     .refine((val) => val.length > 0, {
       message: 'Please select at least one skill.'
-    }),
+    })
+    .optional(),
   phone: z.string().min(1, { message: 'post is required' }).max(11).optional(),
   picture: z.string().optional(),
   mediaLinks: linksSchema.optional(),

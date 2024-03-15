@@ -12,7 +12,7 @@ import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Country } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
-import SalaryDurationSelect from '@/app/components/dashboard/employ/salary-duration-select';
+
 import Select from 'react-select';
 import { getCategories } from '@/lib/actions/admin.action';
 import { ICategory } from '@/database/category.model';
@@ -40,7 +40,6 @@ const NewUser = () => {
       phone: '',
       post: '',
       skills: [],
-      salary_duration: '',
       qualification: '',
       bio: '',
       mediaLinks: {
@@ -162,7 +161,7 @@ const NewUser = () => {
         post: value.post,
         bio: value.bio,
         role: 'candidate',
-        salary_duration: value.salary_duration,
+        // salary_duration: value.salary_duration,
         experience: value.experience,
         phone: value.phone,
         age: value.age,
@@ -171,8 +170,8 @@ const NewUser = () => {
         qualification: value.qualification,
         english_fluency: value.english_fluency,
         skills: value.skills,
-        minSalary: value.minSalary,
-        maxSalary: value.maxSalary,
+        // minSalary: value.minSalary,
+        // maxSalary: value.maxSalary,
         mediaLinks: {
           linkedin: value.mediaLinks?.linkedin || '',
           github: value.mediaLinks?.github || ''
@@ -456,7 +455,7 @@ const NewUser = () => {
             </div>
 
             {/* Salary start */}
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-6">
                 <div className="dash-input-wrapper">
                   <label htmlFor="">Salary*</label>
@@ -492,7 +491,7 @@ const NewUser = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Salary end */}
             <div className="dash-input-wrapper">
