@@ -82,7 +82,9 @@ export async function createUserByAdmin(userData: any) {
             $regex: new RegExp(userData.post, 'i')
           }
         },
-        { $push: { candidates: newUser._id } },
+        {
+          candidates: { $push: newUser._id }
+        },
         { new: true, upsert: true }
       );
       console.log('category', category);

@@ -17,7 +17,6 @@ import { Country } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
 import Select from 'react-select';
 import { skills } from '@/constants';
-import SalaryDurationSelect from '@/app/components/dashboard/employ/salary-duration-select';
 
 interface ParamsProps {
   params: {
@@ -48,9 +47,9 @@ const UpdateUser = ({ params }: ParamsProps) => {
       age: mongoUser?.age,
       email: mongoUser?.email || '',
       skills: mongoUser?.skills || [],
-      salary_duration: mongoUser?.salary_duration,
-      maxSalary: mongoUser?.maxSalary,
-      minSalary: mongoUser?.minSalary,
+      // salary_duration: mongoUser?.salary_duration,
+      // maxSalary: mongoUser?.maxSalary,
+      // minSalary: mongoUser?.minSalary,
       qualification: mongoUser?.qualification,
       bio: mongoUser?.bio,
       mediaLinks: {
@@ -126,7 +125,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
     setGender(event.target.value);
   };
 
-  // add skills
   // const handleInputKeyDown = (
   //   e: React.KeyboardEvent<HTMLInputElement>,
   //   field: any
@@ -185,7 +183,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
           email: value.email,
           post: value.post,
           bio: value.bio,
-          salary_duration: value.salary_duration,
+          // salary_duration: value.salary_duration,
           experience: value.experience,
           phone: value.phone,
           age: value.age,
@@ -193,8 +191,8 @@ const UpdateUser = ({ params }: ParamsProps) => {
           gender: value.gender,
           qualification: value.qualification,
           skills: value.skills,
-          minSalary: value.minSalary,
-          maxSalary: value.maxSalary,
+          // minSalary: value.minSalary,
+          // maxSalary: value.maxSalary,
           mediaLinks: {
             linkedin: value.mediaLinks?.linkedin,
             github: value.mediaLinks?.github
@@ -448,7 +446,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
             {/* Experience end */}
 
             {/* Salary start */}
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-6">
                 <div className="dash-input-wrapper">
                   <label htmlFor="">Salary*</label>
@@ -486,7 +484,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   )}
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Salary end */}
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>
