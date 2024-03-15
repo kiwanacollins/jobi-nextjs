@@ -63,7 +63,7 @@ export async function createUserByAdmin(userData: any) {
     connectToDatabase();
     connectToCloudinary();
     const { picture } = userData;
-    console.log('createUserByAdmin  userData:', userData);
+
     if (picture) {
       const result = await cloudinary.v2.uploader.upload(picture as string, {
         folder: 'users',
@@ -82,12 +82,37 @@ export async function createUserByAdmin(userData: any) {
             $regex: new RegExp(userData.post, 'i')
           }
         },
-        {
-          candidates: { $push: newUser._id }
-        },
+        { $push: { candidates: newUser._id } },
         { new: true, upsert: true }
       );
       console.log('category', category);
+
+      for (const subcategoryName of userData.skills) {
+        const matchingSubcategory = category.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        console.log('matchingSubcategory', matchingSubcategory);
+
+        if (matchingSubcategory) {
+          await Category.findByIdAndUpdate(
+            category._id,
+            {
+              $push: {
+                'category.subcategory.$.candidates': newUser._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
+          );
+        }
+      }
     }
 
     return JSON.parse(JSON.stringify(newUser));
