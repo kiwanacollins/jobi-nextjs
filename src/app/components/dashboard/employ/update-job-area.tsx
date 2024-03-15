@@ -4,20 +4,19 @@ import CitySelect from '../candidate/city-select';
 import CountrySelect from '../candidate/country-select';
 import EmployExperience from './employ-experience';
 import { Controller, useForm } from 'react-hook-form';
-import { skills } from '@/constants';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { Country } from 'country-state-city';
 import { formJobDataSchema } from '@/utils/validation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMsg from '../../common/error-msg';
-import JobCategorySelect from './jobcategory-select';
-import JobTypeSelect from './jobType-select';
 import SalaryDurationSelect from './salary-duration-select';
 import Select from 'react-select';
 import { IJobData } from '@/database/job.model';
 import { updateJobById } from '@/lib/actions/job.action';
 import { usePathname } from 'next/navigation';
+import { ICategory } from '@/database/category.model';
+import { getCategories } from '@/lib/actions/admin.action';
 
 interface IProps {
   job: IJobData;
@@ -30,6 +29,10 @@ const UpdateJobArea = ({ job }: IProps) => {
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
   );
+
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   type IJobDataSchemaType = z.infer<typeof formJobDataSchema>;
 
@@ -62,10 +65,19 @@ const UpdateJobArea = ({ job }: IProps) => {
     watch,
     formState: { errors }
   } = methods;
-  console.log('watch', watch());
-  console.log('errors', errors);
 
   const selectedCountryName = watch('country');
+  const selectedPost = watch('category');
+  const skillsOfSelectedPost = categories.find(
+    (cat: any) => cat?.name === selectedPost
+  );
+
+  const selectedPostSkills = skillsOfSelectedPost?.subcategory?.map(
+    (item: any) => ({
+      value: item.name,
+      label: item.name
+    })
+  );
 
   useEffect(() => {
     const selectedCountry = Country.getAllCountries().find(
@@ -74,7 +86,28 @@ const UpdateJobArea = ({ job }: IProps) => {
     setSelectedCountryDetails(selectedCountry);
   }, [selectedCountryName]);
 
-  const options = skills.map((skill) => ({ value: skill, label: skill }));
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await getCategories();
+      setCategories(res);
+      const categoriesData = res?.map((item: any) => ({
+        value: item.name,
+        label: item.name
+      }));
+      setCategoryOptions(categoriesData);
+      const subcategories = res.flatMap((item: any) =>
+        item.subcategory.map((i: any) => i.name)
+      );
+      const uniqueSubcategories = [...new Set(subcategories)];
+      const subCategoryData = uniqueSubcategories.map((item: any) => ({
+        value: item as string,
+        label: item as string
+      }));
+      // @ts-ignore
+      setSubCategoryOptions(subCategoryData);
+    };
+    fetchCategories();
+  }, []);
 
   const simulateProgress = () => {
     let currentProgress = 0;
@@ -97,7 +130,6 @@ const UpdateJobArea = ({ job }: IProps) => {
 
     try {
       // todo: update job data
-
       await updateJobById({
         jobId: job._id,
         updateData: {
@@ -115,7 +147,8 @@ const UpdateJobArea = ({ job }: IProps) => {
           maxSalary: data.maxSalary,
           industry: data.industry,
           english_fluency: data.english_fluency,
-          skills: data.skills
+          //@ts-ignore
+          skills: data?.skills
         },
         path: pathname
       });
@@ -165,21 +198,77 @@ const UpdateJobArea = ({ job }: IProps) => {
           </div>
           <div className="row align-items-end">
             <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Job Category</label>
-                <JobCategorySelect register={register} />
-                {errors?.category && (
-                  <ErrorMsg msg={errors?.category?.message} />
-                )}
+              <div className="mb-30">
+                <label className="fw-semibold pb-1" htmlFor="">
+                  Job Category
+                </label>
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <Select
+                        {...field}
+                        isClearable
+                        options={categoryOptions || []}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) => {
+                          field.onChange(selectedOption?.value);
+                        }}
+                        value={
+                          field.value
+                            ? { value: field.value, label: field.value }
+                            : null
+                        }
+                      />
+                      {errors?.category && (
+                        <ErrorMsg msg={errors?.category?.message} />
+                      )}
+                    </>
+                  )}
+                />
               </div>
             </div>
             <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Job Type</label>
-                <JobTypeSelect register={register} />
-                {errors?.duration && (
-                  <ErrorMsg msg={errors?.duration.message} />
-                )}
+              <div className=" mb-30">
+                <label className="fw-semibold pb-1" htmlFor="">
+                  Job Type
+                </label>
+                <Controller
+                  name="duration"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <Select
+                        {...field}
+                        isClearable
+                        options={[
+                          { value: 'Full time', label: 'Full time' },
+                          { value: 'Part time', label: 'Part time' },
+                          {
+                            value: 'Hourly-Contract',
+                            label: 'Hourly-Contract'
+                          },
+                          { value: 'Fixed-Price', label: 'Fixed-Price' }
+                        ]}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) => {
+                          field.onChange(selectedOption?.value);
+                        }}
+                        value={
+                          field.value
+                            ? { value: field.value, label: field.value }
+                            : null
+                        }
+                      />
+                      {errors?.duration && (
+                        <ErrorMsg msg={errors?.duration.message} />
+                      )}
+                    </>
+                  )}
+                />
               </div>
             </div>
             <div className="col-md-6">
@@ -234,27 +323,33 @@ const UpdateJobArea = ({ job }: IProps) => {
               name="skills"
               control={control}
               render={({ field }) => (
-                <Select
-                  isMulti
-                  {...field}
-                  //@ts-ignore
-                  options={options || []}
-                  className="basic-multi-select"
-                  classNamePrefix="select"
-                  onChange={(selectedOption) =>
-                    field.onChange(
-                      selectedOption?.map(
-                        (option) => option?.value as string | null
+                <>
+                  <Select
+                    isMulti
+                    {...field}
+                    //@ts-ignore
+                    options={
+                      selectedPost
+                        ? selectedPostSkills
+                        : subCategoryOptions || []
+                    }
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(selectedOption) =>
+                      field.onChange(
+                        selectedOption?.map(
+                          (option) => option?.value as string | null
+                        )
                       )
-                    )
-                  }
-                  value={field.value?.map((val) =>
-                    val ? { value: val, label: val } : null
-                  )}
-                />
+                    }
+                    value={field.value?.map((val) =>
+                      val ? { value: val, label: val } : null
+                    )}
+                  />
+                  {errors?.skills && <ErrorMsg msg={errors?.skills.message} />}
+                </>
               )}
             />
-            {errors?.skills && <ErrorMsg msg={errors?.skills.message} />}
           </div>
 
           {/* employ experience start */}

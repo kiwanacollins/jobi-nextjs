@@ -16,7 +16,8 @@ import Link from 'next/link';
 import { Country } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
 import Select from 'react-select';
-import { skills } from '@/constants';
+import { ICategory } from '@/database/category.model';
+import { getCategories } from '@/lib/actions/admin.action';
 
 interface ParamsProps {
   params: {
@@ -35,6 +36,9 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
   );
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -75,12 +79,47 @@ const UpdateUser = ({ params }: ParamsProps) => {
 
   const selectedCountryName = watch('country');
 
+  const selectedPost = watch('post');
+  const skillsOfSelectedPost = categories.find(
+    (cat: any) => cat?.name === selectedPost
+  );
+
+  const selectedPostSkills = skillsOfSelectedPost?.subcategory?.map(
+    (item: any) => ({
+      value: item.name,
+      label: item.name
+    })
+  );
+
   useEffect(() => {
     const selectedCountry = Country.getAllCountries().find(
       (country) => country.name === selectedCountryName
     );
     setSelectedCountryDetails(selectedCountry);
   }, [selectedCountryName]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await getCategories();
+      setCategories(res);
+      const categoriesData = res?.map((item: any) => ({
+        value: item.name,
+        label: item.name
+      }));
+      setCategoryOptions(categoriesData);
+      const subcategories = res.flatMap((item: any) =>
+        item.subcategory.map((i: any) => i.name)
+      );
+      const uniqueSubcategories = [...new Set(subcategories)];
+      const subCategoryData = uniqueSubcategories.map((item: any) => ({
+        value: item as string,
+        label: item as string
+      }));
+      // @ts-ignore
+      setSubCategoryOptions(subCategoryData);
+    };
+    fetchCategories();
+  }, []);
 
   // fetchUser by id
   useEffect(() => {
@@ -213,16 +252,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
       setProgress(0);
     }
   };
-
-  const userSkills = mongoUser?.skills?.map((skill) => ({
-    value: skill,
-    label: skill
-  }));
-
-  const skillsOptions = skills.map((skill) => ({
-    value: skill,
-    label: skill
-  }));
 
   return (
     <>
@@ -387,39 +416,66 @@ const UpdateUser = ({ params }: ParamsProps) => {
 
             {/* Skills start */}
             <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">post*</label>
+              <Controller
+                name="post"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    isClearable
+                    options={categoryOptions || []}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(selectedOption) => {
+                      field.onChange(selectedOption?.value);
+                    }}
+                    value={
+                      field.value
+                        ? { value: field.value, label: field.value }
+                        : null
+                    }
+                  />
+                )}
+              />
+              {errors?.post && (
+                <ErrorMsg msg={errors?.post?.message as string} />
+              )}
+            </div>
+            <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Skills*</label>
-              <div className="skills-wrapper">
-                <div className="dash-input-wrapper mb-30">
-                  <Controller
-                    name="skills"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        isMulti
-                        {...field}
-                        //@ts-ignore
-                        defaultInputValue={userSkills || []}
-                        options={skillsOptions || []}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        onChange={(selectedOption) =>
-                          field.onChange(
-                            selectedOption?.map(
-                              (option) => option?.value as string | null
-                            )
-                          )
-                        }
-                        value={field.value?.map((val) =>
-                          val ? { value: val, label: val } : null
-                        )}
-                      />
+
+              <Controller
+                name="skills"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    isMulti
+                    {...field}
+                    //@ts-ignore
+                    options={
+                      selectedPost
+                        ? selectedPostSkills
+                        : subCategoryOptions || []
+                    }
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(selectedOption) =>
+                      field.onChange(
+                        selectedOption?.map(
+                          (option) => option?.value as string | null
+                        )
+                      )
+                    }
+                    value={field.value?.map((val) =>
+                      val ? { value: val, label: val } : null
                     )}
                   />
-                  {errors?.skills && (
-                    <ErrorMsg msg={errors?.skills?.message as string} />
-                  )}
-                </div>
-              </div>
+                )}
+              />
+              {errors?.skills && (
+                <ErrorMsg msg={errors?.skills?.message as string} />
+              )}
             </div>
 
             {/* Skills end */}
@@ -526,9 +582,9 @@ const UpdateUser = ({ params }: ParamsProps) => {
               />
               <ErrorMsg msg={errors.mediaLinks?.message as string} />
             </div>
-            <a href="#/" className="dash-btn-one">
+            {/* <a href="#/" className="dash-btn-one">
               <i className="bi bi-plus"></i> Add more link
-            </a>
+            </a> */}
           </div>
 
           <div className="bg-white card-box border-20 mt-40">

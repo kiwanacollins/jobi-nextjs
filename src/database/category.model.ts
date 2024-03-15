@@ -13,7 +13,8 @@ const CategorySchema = new Schema({
   subcategory: [
     {
       name: { type: String, unique: true },
-      candidates: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+      candidates: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+      job: [{ type: Schema.Types.ObjectId, ref: 'Job' }]
     }
   ],
   candidates: [{ type: Schema.Types.ObjectId, ref: 'User' }],

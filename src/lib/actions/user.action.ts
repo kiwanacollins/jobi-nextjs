@@ -147,10 +147,45 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
         new: true
       }
     );
-    console.log('updatedUser', updateUser);
 
     if (!updatedUser) {
       throw new Error(`User with Id ${mongoId} not found`);
+    }
+    if (updateData.post) {
+      const category = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(updateData.post, 'i')
+          }
+        },
+        { $addToSet: { candidates: updatedUser._id } },
+        { new: true, upsert: true }
+      );
+
+      for (const subcategoryName of updateData.skills) {
+        const matchingSubcategory = category.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        if (matchingSubcategory) {
+          await Category.findOneAndUpdate(
+            category._id,
+            {
+              $addToSet: {
+                'subcategory.$.candidates': updatedUser._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
+          );
+        }
+      }
     }
     revalidatePath(path);
   } catch (error) {
@@ -185,6 +220,44 @@ export async function updateUser(params: UpdateUserParams) {
     if (!updatedUser) {
       throw new Error(`User with clerkId ${clerkId} not found`);
     }
+
+    if (updateData.post) {
+      const category = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(updateData.post, 'i')
+          }
+        },
+        { $addToSet: { candidates: updatedUser._id } },
+        { new: true, upsert: true }
+      );
+
+      for (const subcategoryName of updateData.skills) {
+        const matchingSubcategory = category.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        if (matchingSubcategory) {
+          await Category.findOneAndUpdate(
+            category._id,
+            {
+              $addToSet: {
+                'subcategory.$.candidates': updatedUser._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
+          );
+        }
+      }
+    }
+
     revalidatePath(path);
   } catch (error) {
     console.log(error);

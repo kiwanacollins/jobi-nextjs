@@ -42,7 +42,7 @@ const CandidateListItem = ({
     >
       <div className="d-flex">
         <div className="cadidate-avatar  position-relative d-block me-auto ms-auto">
-          <Link className="w-100" href={`/candidate-profile/${item?.resumeId}`}>
+          <a href="#" className="rounded-circle">
             <Image
               src={item?.picture}
               width={style_2 ? 120 : 80}
@@ -50,7 +50,7 @@ const CandidateListItem = ({
               alt="image"
               className="lazy-img rounded-circle"
             />
-          </Link>
+          </a>
         </div>
         <div className="right-side">
           <div className="row gx-1 align-items-center">

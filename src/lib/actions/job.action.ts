@@ -69,7 +69,7 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
 
         if (matchingSubcategory) {
           await Category.findByIdAndUpdate(
-            category._id,
+            mongoCategory._id,
             {
               $push: {
                 'category.subcategory.$.job': newJob._id
@@ -105,7 +105,7 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
 // Update a single job by MongoDB ID
 interface IUpdateJobParams {
   jobId: string;
-  updateData: Partial<IJobData>;
+  updateData: IJobData;
   path: string;
 }
 
@@ -122,6 +122,45 @@ export const updateJobById = async (params: IUpdateJobParams) => {
 
     if (!updatedJob) {
       return { status: 'error', message: 'Job not found' };
+    }
+
+    if (updateData.category) {
+      const mongoCategory = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(updateData.category, 'i')
+          }
+        },
+        { $push: { job: updatedJob._id } },
+        { new: true, upsert: true }
+      );
+
+      for (const subcategoryName of updateData?.skills ?? []) {
+        const matchingSubcategory = await mongoCategory?.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        console.log('matchingSubcategory', matchingSubcategory);
+
+        if (matchingSubcategory) {
+          await Category.findByIdAndUpdate(
+            mongoCategory._id,
+            {
+              $push: {
+                'category.subcategory.$.job': updatedJob._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${updateData.category}'.`
+          );
+        }
+      }
     }
 
     // Assuming createdBy field in Job model represents the user who created the job

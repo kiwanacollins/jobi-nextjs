@@ -44,7 +44,7 @@ export function SalaryRangeSlider({
 
   return (
     <div className="salary-slider">
-      <div className="price-input d-flex align-items-center pt-5">
+      <div className="price-input d-flex align-items-center">
         <div className="field d-flex align-items-center">
           <input
             type="number"
@@ -117,7 +117,7 @@ const JobPrices = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
         priceValue={priceValue}
         setPriceValue={setPriceValue}
       />
-      <ul className="style-none d-flex flex-wrap justify-content-between radio-filter mb-5">
+      <ul className="style-none d-flex flex-wrap justify-content-between radio-filter">
         {durations?.map((duration, index) => (
           <li key={index}>
             <input

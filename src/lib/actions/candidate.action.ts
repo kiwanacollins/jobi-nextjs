@@ -255,7 +255,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
     console.log('getAllCandidates  query:', query);
 
     const candidates = await User.find(query).sort({
-      createdAt: -1
+      joinedAt: -1
     });
 
     return JSON.parse(JSON.stringify(candidates));

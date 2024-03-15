@@ -60,7 +60,7 @@ export function TrendingJobs() {
               style={{ backgroundImage: `url(${item.bg_img?.src})` }}
             >
               <Link
-                href="/job-grid-v3"
+                href="/jobs"
                 className="w-100 text-decoration-none h-100 ps-4 pb-20 d-flex align-items-end"
               >
                 <div className="title text-white fw-500 text-lg">

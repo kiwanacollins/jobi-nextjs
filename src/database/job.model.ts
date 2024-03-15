@@ -10,7 +10,7 @@ export interface IJobData extends Document {
   location: string;
   country: string;
   city: string;
-  skills: string[];
+  skills?: string[];
   address?: string;
   experience: string;
   minSalary: number;
