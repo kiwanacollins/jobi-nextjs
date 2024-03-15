@@ -5,6 +5,7 @@ import { connectToDatabase } from '../mongoose';
 import { CreateJobParams } from './shared.types';
 import Job, { IJobData } from '@/database/job.model';
 import { revalidatePath } from 'next/cache';
+import Category from '@/database/category.model';
 
 export const creatJobPost = async (jobDataParams: CreateJobParams) => {
   try {
@@ -47,6 +48,45 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       maxSalary,
       industry
     });
+
+    if (category) {
+      const mongoCategory = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(category, 'i')
+          }
+        },
+        { $push: { job: newJob._id } },
+        { new: true, upsert: true }
+      );
+
+      for (const subcategoryName of skills) {
+        const matchingSubcategory = await mongoCategory.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        console.log('matchingSubcategory', matchingSubcategory);
+
+        if (matchingSubcategory) {
+          await Category.findByIdAndUpdate(
+            category._id,
+            {
+              $push: {
+                'category.subcategory.$.job': newJob._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
+          );
+        }
+      }
+    }
 
     // add new job to the user's job list
     await User.findByIdAndUpdate(createdBy, {

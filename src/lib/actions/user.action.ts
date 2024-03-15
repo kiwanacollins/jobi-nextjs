@@ -85,10 +85,9 @@ export async function createUserByAdmin(userData: any) {
         { $push: { candidates: newUser._id } },
         { new: true, upsert: true }
       );
-      console.log('category', category);
 
       for (const subcategoryName of userData.skills) {
-        const matchingSubcategory = category.subcategory.find(
+        const matchingSubcategory = await category.subcategory.find(
           (subcategory: any) => subcategory.name === subcategoryName
         );
 

@@ -17,6 +17,7 @@ const CategorySchema = new Schema({
     }
   ],
   candidates: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  job: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   createdOn: { type: Date, default: Date.now }
 });
 

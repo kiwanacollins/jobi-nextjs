@@ -18,6 +18,7 @@ const JobCategory = () => {
   const visibleCategories = isShowMore
     ? uniqueCategories
     : uniqueCategories.slice(0, 5);
+
   useEffect(() => {
     const getAllJobs = async () => {
       const { jobs } = await getJobPosts();

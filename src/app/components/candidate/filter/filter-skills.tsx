@@ -1,12 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NiceSelect from '@/ui/nice-select';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery } from '@/utils/utils';
-import { skills } from '@/constants';
+import { getCategoriesAndSubcategories } from '@/lib/actions/category.action';
 
 const FilterSkills = () => {
-  const uniqueSkills = [...new Set(skills.flatMap((c) => c))];
+  const [subcategories, setSubcategories] = useState<string[]>([]);
+  const uniqueSkills = [...new Set(subcategories.flatMap((c) => c))];
   const options = uniqueSkills.map((c) => {
     return { value: c, label: c };
   });
@@ -37,12 +38,21 @@ const FilterSkills = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      const res = await getCategoriesAndSubcategories();
+      setSubcategories(res?.subcategories);
+    };
+    fetchAllCategories(); // Remove the 'return' statement
+  }, []);
+
   return (
     <NiceSelect
       options={options}
       defaultCurrent={0}
       onChange={(item) => handleSkills(item)}
       cls="bg-white"
+      placeholder="Select Skills"
       name="Category"
     />
   );

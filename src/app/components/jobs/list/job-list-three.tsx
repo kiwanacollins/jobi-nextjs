@@ -38,7 +38,7 @@ const JobListThree = ({
     let filteredData = all_jobs
       .filter((item) =>
         category.length !== 0
-          ? category.some((c) => item.category.includes(c))
+          ? category.some((c) => item?.category?.includes(c))
           : true
       )
       .filter((item) =>

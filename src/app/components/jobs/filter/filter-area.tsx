@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import JobLocations from './job-locations';
+// import JobLocations from './job-locations';
 import JobType from './job-type';
 import JobExperience from './job-experience';
 import JobCategory from './job-category';
@@ -35,7 +35,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
       ></button>
       <div className="main-title fw-500 text-dark">Filter By</div>
       <div className="light-bg border-20 ps-4 pe-4 pt-25 pb-30 mt-20">
-        <div className="filter-block bottom-line pb-25">
+        {/* <div className="filter-block bottom-line pb-25">
           <a
             className="filter-title fw-500 text-decoration-none  text-dark"
             data-bs-toggle="collapse"
@@ -50,7 +50,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
               <JobLocations />
             </div>
           </div>
-        </div>
+        </div> */}
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
