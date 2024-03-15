@@ -14,7 +14,8 @@ import { Country } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
 import SalaryDurationSelect from '@/app/components/dashboard/employ/salary-duration-select';
 import Select from 'react-select';
-import { skills } from '@/constants';
+import { getCategories } from '@/lib/actions/admin.action';
+import { ICategory } from '@/database/category.model';
 
 const NewUser = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,10 +23,12 @@ const NewUser = () => {
   const [filename, setFilename] = useState('');
   const [gender, setGender] = useState('male');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
-  // const [skillsTag, setSkillsTag] = useState<string[]>([]);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
   );
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -62,9 +65,21 @@ const NewUser = () => {
     formState: { errors }
   } = methods;
 
-  console.log('skills', watch('skills'));
-  console.log('errors', errors);
+  // console.log('post', watch('post'));
+  // console.log('skill', watch('skills'));
+  // console.log('errors', errors);
   const selectedCountryName = watch('country');
+  const selectedPost = watch('post');
+  const skillsOfSelectedPost = categories.find(
+    (cat: any) => cat?.name === selectedPost
+  );
+
+  const selectedPostSkills = skillsOfSelectedPost?.subcategory?.map(
+    (item: any) => ({
+      value: item.name,
+      label: item.name
+    })
+  );
 
   useEffect(() => {
     const selectedCountry = Country.getAllCountries().find(
@@ -72,6 +87,29 @@ const NewUser = () => {
     );
     setSelectedCountryDetails(selectedCountry);
   }, [selectedCountryName]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await getCategories();
+      setCategories(res);
+      const categoriesData = res?.map((item: any) => ({
+        value: item.name,
+        label: item.name
+      }));
+      setCategoryOptions(categoriesData);
+      const subcategories = res.flatMap((item: any) =>
+        item.subcategory.map((i: any) => i.name)
+      );
+      const uniqueSubcategories = [...new Set(subcategories)];
+      const subCategoryData = uniqueSubcategories.map((item: any) => ({
+        value: item as string,
+        label: item as string
+      }));
+      // @ts-ignore
+      setSubCategoryOptions(subCategoryData);
+    };
+    fetchCategories();
+  }, []);
 
   // handle file pdf upload
   const handleFileChange = async (
@@ -100,45 +138,6 @@ const NewUser = () => {
   const handleGenderChange = (event: any) => {
     setGender(event.target.value);
   };
-
-  // add skills
-  // const handleInputKeyDown = (
-  //   e: React.KeyboardEvent<HTMLInputElement>,
-  //   field: any
-  // ) => {
-  //   if (e.key === 'Enter' && field === 'skills') {
-  //     e.preventDefault();
-
-  //     const tagInput = e.target as HTMLInputElement;
-  //     const tagValue = tagInput.value;
-
-  //     if (tagValue !== '') {
-  //       if (tagValue.length > 15) {
-  //         return setError('skills', {
-  //           type: 'required',
-  //           message: 'Tag must be less than 15 characters.'
-  //         });
-  //       }
-  //       // Retrieve current skills array
-  //       const currentSkills = skillsTag || [];
-
-  //       if (!skillsTag.includes(tagValue as never)) {
-  //         setValue('skills', [...currentSkills, tagValue]);
-  //         setSkillsTag([...currentSkills, tagValue]);
-  //         tagInput.value = '';
-  //         clearErrors('skills');
-  //       }
-  //     }
-  //   }
-  // };
-
-  // remove skill
-  // const handleTagRemove = (tag: string, e: any) => {
-  //   e.preventDefault();
-  //   const newTags = skillsTag.filter((t: string) => t !== tag);
-  //   setSkillsTag(newTags);
-  //   setValue('skills', newTags);
-  // };
 
   const simulateProgress = () => {
     let currentProgress = 0;
@@ -197,11 +196,6 @@ const NewUser = () => {
     }
   };
 
-  const skillsOptions = skills.map((skill) => ({
-    value: skill,
-    label: skill
-  }));
-
   return (
     <>
       <h2 className="main-title">Create User</h2>
@@ -254,18 +248,7 @@ const NewUser = () => {
               />
               <ErrorMsg msg={errors?.email?.message as string} />
             </div>
-            <div className="dash-input-wrapper mb-30">
-              <label htmlFor="">post*</label>
-              <input
-                type="text"
-                placeholder="Designation"
-                {...register('post', { required: true })}
-                name="post"
-              />
-              {errors?.post && (
-                <ErrorMsg msg={errors?.post?.message as string} />
-              )}
-            </div>
+
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Phone</label>
               <input
@@ -348,54 +331,66 @@ const NewUser = () => {
 
             {/* Skills start */}
             <div className="dash-input-wrapper mb-30">
+              <label htmlFor="">post*</label>
+              <Controller
+                name="post"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    isClearable
+                    options={categoryOptions || []}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(selectedOption) => {
+                      field.onChange(selectedOption?.value);
+                    }}
+                    value={
+                      field.value
+                        ? { value: field.value, label: field.value }
+                        : null
+                    }
+                  />
+                )}
+              />
+              {errors?.post && (
+                <ErrorMsg msg={errors?.post?.message as string} />
+              )}
+            </div>
+            <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Skills*</label>
-              <div className="skills-wrapper">
-                <div className="dash-input-wrapper mb-30">
-                  <Controller
-                    name="skills"
-                    control={control}
-                    render={({ field }) => (
-                      <Select
-                        isMulti
-                        {...field}
-                        //@ts-ignore
 
-                        options={skillsOptions || []}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        onChange={(selectedOption) =>
-                          field.onChange(
-                            selectedOption?.map(
-                              (option) => option?.value as string | null
-                            )
-                          )
-                        }
-                        value={field.value?.map((val) =>
-                          val ? { value: val, label: val } : null
-                        )}
-                      />
+              <Controller
+                name="skills"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    isMulti
+                    {...field}
+                    //@ts-ignore
+                    options={
+                      selectedPost
+                        ? selectedPostSkills
+                        : subCategoryOptions || []
+                    }
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    onChange={(selectedOption) =>
+                      field.onChange(
+                        selectedOption?.map(
+                          (option) => option?.value as string | null
+                        )
+                      )
+                    }
+                    value={field.value?.map((val) =>
+                      val ? { value: val, label: val } : null
                     )}
                   />
-                  {errors?.skills && (
-                    <ErrorMsg msg={errors?.skills?.message as string} />
-                  )}
-                </div>
-                {/* <ul className="style-none d-flex flex-wrap align-items-center">
-                  {skillsTag.map((item: any, index) => {
-                    return (
-                      <li className="is_tag" key={index}>
-                        <button>
-                          {item}{' '}
-                          <i
-                            className="bi bi-x"
-                            onClick={(e) => handleTagRemove(item, e)}
-                          ></i>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul> */}
-              </div>
+                )}
+              />
+              {errors?.skills && (
+                <ErrorMsg msg={errors?.skills?.message as string} />
+              )}
             </div>
 
             {/* Skills end */}

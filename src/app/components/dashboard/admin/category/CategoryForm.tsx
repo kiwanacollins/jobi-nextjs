@@ -1,6 +1,6 @@
 'use client';
 import ErrorMsg from '@/app/components/common/error-msg';
-import { ICategory } from '@/database/categery.model';
+import { ICategory } from '@/database/category.model';
 import {
   createCategory,
   deleteSingleSubcategory,
@@ -41,15 +41,12 @@ const CategoryForm = ({ type, category }: IProps) => {
   const {
     handleSubmit,
     control,
-    watch,
     setValue,
     setError,
     clearErrors,
     reset,
     formState: { errors }
   } = methods;
-  console.log(watch('subcategory'));
-  console.log(errors);
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,

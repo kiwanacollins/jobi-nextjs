@@ -1,6 +1,6 @@
 'use server';
 
-import Category from '@/database/categery.model';
+import Category from '@/database/category.model';
 import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
@@ -38,7 +38,7 @@ export async function createCategory(params: ICreateCategory) {
 export async function getCategories() {
   try {
     await connectToDatabase();
-    const categories = await Category.find();
+    const categories = await Category.find({});
     return JSON.parse(JSON.stringify(categories));
   } catch (error) {
     console.log('Error getting categories:', error);

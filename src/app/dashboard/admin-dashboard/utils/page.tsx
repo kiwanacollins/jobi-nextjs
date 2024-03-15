@@ -12,7 +12,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { notifySuccess } from '@/utils/toast';
 import CreatableSelect from 'react-select/creatable';
-import { ICategory } from '@/database/categery.model';
+import { ICategory } from '@/database/category.model';
 
 const categorySchema = z.object({
   skills: z

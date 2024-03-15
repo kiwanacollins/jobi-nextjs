@@ -1,4 +1,4 @@
-import { ICategory } from '@/database/categery.model';
+import { ICategory } from '@/database/category.model';
 import CategoryItem from './CategoryItem';
 
 interface ICategoryTable {

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import CategoryForm from './CategoryForm';
-import { ICategory } from '@/database/categery.model';
+import { ICategory } from '@/database/category.model';
 import { getSingleCategoryById } from '@/lib/actions/admin.action';
 
 interface IProps {
