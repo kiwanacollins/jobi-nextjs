@@ -194,7 +194,7 @@ export const getJobPosts = async (params:IJobDataParams) => {
     if(category){
       query.$or = [{ category: { $regex: new RegExp(category, 'i') } }]
     }
-    console.log('query',query)
+    
     const jobs = await Job.find(query)
       .populate('createdBy', 'name picture')
       .sort({ createAt: -1 })
