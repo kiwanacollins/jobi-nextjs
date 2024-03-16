@@ -15,7 +15,7 @@ export function WidgetOne({
       </h5>
       <ul className="footer-nav-link  style-none">
         <li>
-          <Link className="text-decoration-none" href="/job-grid-v2">
+          <Link className="text-decoration-none" href="/jobs">
             Browse Jobs
           </Link>
         </li>
@@ -25,7 +25,7 @@ export function WidgetOne({
           </Link>
         </li>
         <li>
-          <Link className="text-decoration-none" href="/candidates-v1">
+          <Link className="text-decoration-none" href="/candidates">
             Candidates
           </Link>
         </li>
@@ -56,7 +56,7 @@ export function WidgetTwo({
           </Link>
         </li>
         <li>
-          <Link className="text-decoration-none" href="/blog-v2">
+          <Link className="text-decoration-none" href="/blogs">
             Blogs
           </Link>
         </li>

@@ -193,7 +193,6 @@ export async function getAllCandidates(params: getCandidatesParams) {
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
 
-    console.log('getAllCandidates  query:', query);
     if (
       keyword ||
       skill ||

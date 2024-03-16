@@ -4,6 +4,7 @@ import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
 import JobListThree from '../../components/jobs/list/job-list-three';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import { getJobPosts } from '@/lib/actions/job.action';
+import { SearchParamsProps } from '@/types';
 
 export const metadata: Metadata = {
   title: 'Jobs - Hireskills',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     'Explore a wide range of job opportunities on HireSkills. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
 };
 
-const JobListOnePage = async () => {
+const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
   const { jobs } = await getJobPosts();
   return (
     <>

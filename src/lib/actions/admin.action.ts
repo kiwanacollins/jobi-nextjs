@@ -100,7 +100,7 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
       );
       if (!existingSubcategory) {
         await Category.findOneAndUpdate(
-          { _id: categoryId },
+         {_id:category._id },
           {
             $push: { subcategory: { name: subcategory } }
           },
