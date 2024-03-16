@@ -192,7 +192,10 @@ export const getJobPosts = async (params:IJobDataParams) => {
     const {category } = params
     const query: FilterQuery<typeof Job> = {}
     if(category){
-      query.$or = [{ category: { $regex: new RegExp(category, 'i') } }]
+      query.$or = [
+        { category: { $regex: new RegExp(category, 'i') } },
+        { title: { $regex: new RegExp(category, 'i') } },
+      ]
     }
     
     const jobs = await Job.find(query)
