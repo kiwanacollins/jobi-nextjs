@@ -15,7 +15,7 @@ export function JobTypeItems({ showLength = true }: { showLength?: boolean }) {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getAllJobs = async () => {
-      const { jobs } = await getJobPosts();
+      const { jobs } = await getJobPosts({});
       setAllJobData(jobs);
     };
     getAllJobs();

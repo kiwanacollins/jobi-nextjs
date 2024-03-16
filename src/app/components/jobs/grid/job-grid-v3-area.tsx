@@ -39,7 +39,7 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
 
   useEffect(() => {
     const getAllJobs = async () => {
-      const { jobs } = await getJobPosts();
+      const { jobs } = await getJobPosts({});
       setAllJobData(jobs);
     };
     getAllJobs();

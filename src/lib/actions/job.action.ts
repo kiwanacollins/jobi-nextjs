@@ -181,14 +181,19 @@ export const updateJobById = async (params: IUpdateJobParams) => {
 };
 
 // get all job posts
-export const getJobPosts = async () => {
+
+interface IJobDataParams{
+  category?:string
+}
+
+export const getJobPosts = async (params:IJobDataParams) => {
   try {
     await connectToDatabase();
-    // const {category } = params
+    const {category } = params
     const query: FilterQuery<typeof Job> = {}
-    // if(category){
-    //   query.$or = [{ category: { $regex: new RegExp(category, 'i') } }]
-    // }
+    if(category){
+      query.$or = [{ category: { $regex: new RegExp(category, 'i') } }]
+    }
     const jobs = await Job.find(query)
       .populate('createdBy', 'name picture')
       .sort({ createAt: -1 })

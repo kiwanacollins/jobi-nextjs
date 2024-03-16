@@ -32,7 +32,7 @@ const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { jobs } = await getJobPosts();
+      const { jobs } = await getJobPosts({});
       setAllJobData(jobs);
     };
     fetchData();

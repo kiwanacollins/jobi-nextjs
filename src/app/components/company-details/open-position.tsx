@@ -7,7 +7,7 @@ import { IJobData } from '@/database/job.model';
 
 const OpenPosition = async () => {
   // const job_items = job_data.slice(0, 4);
-  const { jobs } = await getJobPosts();
+  const { jobs } = await getJobPosts({});
   const job_items = jobs.slice(0, 4);
   return (
     <section className="company-open-position pt-80 lg-pt-60 pb-100 lg-pb-60">

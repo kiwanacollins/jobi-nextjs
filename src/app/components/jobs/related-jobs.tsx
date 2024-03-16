@@ -48,7 +48,7 @@ const RelatedJobs = ({ category }: { category: string[] }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { jobs } = await getJobPosts();
+      const { jobs } = await getJobPosts({});
       setAllJobData(jobs);
     };
     fetchData();

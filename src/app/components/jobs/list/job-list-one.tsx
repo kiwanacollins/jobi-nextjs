@@ -6,7 +6,7 @@ import { getJobPosts } from '@/lib/actions/job.action';
 import { IJobData } from '@/database/job.model';
 
 export async function JobListItems({ style_2 = false }: { style_2?: boolean }) {
-  const { jobs } = await getJobPosts();
+  const { jobs } = await getJobPosts({});
   return (
     <>
       {jobs.slice(0, 5).map((item: IJobData) => (
