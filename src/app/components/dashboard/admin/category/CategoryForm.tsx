@@ -177,10 +177,10 @@ const CategoryForm = ({ type, category }: IProps) => {
             {skillsTag?.map((item: any, index) => {
               return (
                 <li className="is_tag" key={index}>
-                  <button className="is_tag px-2 py-1 ">
-                    {item}{' '}
+                  <button className="is_tag  px-2 py-1 ">
+                    <span className="">{item} </span>
                     <i
-                      className="bi text-danger  bi-x"
+                      className="bi bi-x text-danger fs-3  "
                       onClick={(e) => handleTagRemove(item, e)}
                     ></i>
                   </button>
@@ -189,7 +189,7 @@ const CategoryForm = ({ type, category }: IProps) => {
             })}
           </ul>
         </div>
-        <div className="button-group d-inline-flex align-items-center mt-30">
+        <div className="button-group d-inline-flex align-items-center mt-5">
           <button
             disabled={isSubmitting}
             type="submit"

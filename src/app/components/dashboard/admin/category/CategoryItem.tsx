@@ -58,7 +58,10 @@ const CategoryItem = ({ id, categoryId, name, subcategory }: ICategoryItem) => {
         <td>
           <div className=" d-flex flex-wrap gap-2 ">
             {subcategory?.map((sub, index) => (
-              <span key={index} className="badge bg-success py-1 px-2 ">
+              <span
+                key={index}
+                className="badge rounded-pill  bg-success py-2 px-3 "
+              >
                 {sub.name}
               </span>
             ))}

@@ -68,7 +68,7 @@ const Menus = ({ role, userId }: { role: string; userId: string }) => {
           </li>
         ) : (
           <li key={menu.id} className="nav-item">
-            <Link className="nav-link" href={menu.link}>
+            <Link className="nav-link" href={menu.link} role="button">
               {menu.title}
             </Link>
           </li>
