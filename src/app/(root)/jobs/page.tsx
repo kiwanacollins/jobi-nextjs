@@ -13,7 +13,9 @@ export const metadata: Metadata = {
 };
 
 const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
-  const { jobs } = await getJobPosts({});
+  const { jobs } = await getJobPosts({
+    category: searchParams.category
+  });
   return (
     <>
       {/* search breadcrumb start */}
