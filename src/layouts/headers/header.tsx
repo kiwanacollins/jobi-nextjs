@@ -86,7 +86,7 @@ const Header = () => {
                       {/* CategoryDropdown end */}
                     </li>
                     {/* menus start */}
-                    <Menus userId="" role="" />
+                    <Menus userId="" role="" handleNavCollapse={() => {}} />
                     {/* menus end */}
                     <li className="d-md-none">
                       <Link href="/register" className="job-post-btn tran3s">

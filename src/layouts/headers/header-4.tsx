@@ -64,7 +64,7 @@ const HeaderFour = () => {
                       </div>
                     </li>
                     {/* menus start */}
-                    <Menus userId="" role="" />
+                    <Menus userId="" role="" handleNavCollapse={() => {}} />
                     {/* menus end */}
                     <li className="d-md-none mt-5">
                       <Link href="/register" className="btn-five w-100">
