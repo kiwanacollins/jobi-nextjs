@@ -1,4 +1,5 @@
 import { IUser } from '@/database/user.model';
+import Link from 'next/link';
 import React from 'react';
 
 const CandidateBio = ({ user }: { user: IUser }) => {
@@ -15,7 +16,7 @@ const CandidateBio = ({ user }: { user: IUser }) => {
       <li>
         <span>Email: </span>
         <div>
-          <a href="mailto:me@support.com">{user?.email}</a>
+          <p>{user?.email}</p>
         </div>
       </li>
       <li>
@@ -26,25 +27,22 @@ const CandidateBio = ({ user }: { user: IUser }) => {
         <span>Gender: </span>
         <div>{user?.gender}</div>
       </li>
-      <li>
-        <span>Expected Salary: </span>
-        <div>{`$${user.minSalary}k-${user.maxSalary}k/${user.salary_duration}`}</div>
-      </li>
+
       <li>
         <span>Social:</span>
         <div>
-          <a href="#" className="me-3">
+          <Link href="#" className="me-3">
             <i className="bi bi-facebook"></i>
-          </a>
+          </Link>
           <a href="#" className="me-3">
             <i className="bi bi-instagram"></i>
           </a>
           <a href="#" className="me-3">
             <i className="bi bi-twitter"></i>
           </a>
-          <a href="#">
+          <Link href={`${user?.mediaLinks?.linkedin}`}>
             <i className="bi bi-linkedin"></i>
-          </a>
+          </Link>
         </div>
       </li>
     </ul>

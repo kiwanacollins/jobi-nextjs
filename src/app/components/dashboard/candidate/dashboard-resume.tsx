@@ -118,8 +118,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     reset
   } = methods;
 
-  console.log('errors', errors);
-
   const {
     fields: educationArrayFields,
     append: educationAppend,
@@ -306,22 +304,22 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                   id={`accordionThree${index}`}
                 >
                   <div className="accordion-item">
-                    <div className="accordion-header" id="headingTwo">
+                    <div className="accordion-header" id="headingThree">
                       <button
                         className="accordion-button collapsed"
                         type="button"
                         data-bs-toggle="collapse"
-                        data-bs-target={`#collapseTwo${index}`}
+                        data-bs-target={`#collapseThree${index}`}
                         aria-expanded="false"
-                        aria-controls="collapseTwo"
+                        aria-controls="collapseThree"
                       >
                         Add Videos*
                       </button>
                     </div>
                     <div
-                      id={`collapseTwo${index}`}
+                      id={`collapseThree${index}`}
                       className="accordion-collapse collapse"
-                      aria-labelledby="headingTwo"
+                      aria-labelledby="headingThree"
                       data-bs-parent={`#accordionThree${index}`}
                     >
                       <div className="accordion-body">

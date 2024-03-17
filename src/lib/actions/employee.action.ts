@@ -6,6 +6,7 @@ import { UpdateUserParams } from './shared.types';
 import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs/server';
 import Job from '@/database/job.model';
+import ShareData from '@/database/shareData.model';
 // update user
 export async function createEmployeeProfileByUpdating(
   params: UpdateUserParams
@@ -182,6 +183,49 @@ export async function getSavedCandidates(params: IGetSavedCandidateParams) {
     const savedCandidates = user.saved;
 
     return { candidates: JSON.parse(JSON.stringify(savedCandidates)) };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+interface IShareSavedCandidatesParams {
+  employeeId: string;
+}
+
+export async function shareSavedCandidates(
+  params: IShareSavedCandidatesParams
+) {
+  try {
+    connectToDatabase();
+
+    const { employeeId } = params;
+
+    const user = await User.findOne({ clerkId: employeeId }).populate('saved');
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const SavedInfo = await ShareData.findOneAndUpdate(
+      { employeeId: user._id },
+      {
+        $set: {
+          employeeId: user._id,
+          candidates: user.saved
+        }
+      },
+      { new: true, upsert: true }
+    );
+    if (!SavedInfo) {
+      throw new Error('Failed to share candidates');
+    }
+    console.log('SavedInfo', SavedInfo);
+
+    return {
+      success: true,
+      message: 'Candidates shared successfully',
+      data: JSON.parse(JSON.stringify(SavedInfo))
+    };
   } catch (error) {
     console.log(error);
     throw error;

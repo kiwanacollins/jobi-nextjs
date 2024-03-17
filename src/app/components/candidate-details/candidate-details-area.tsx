@@ -169,11 +169,7 @@ const CandidateDetailsArea = ({
                         candidateDetials?.user?.name
                       : ''}
                   </h3>
-                  <div className="text-center pb-25">
-                    <a href="#" className="invite-btn fw-500">
-                      Invite
-                    </a>
-                  </div>
+
                   {/* CandidateBio */}
 
                   <CandidateBio

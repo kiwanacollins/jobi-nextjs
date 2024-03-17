@@ -53,7 +53,7 @@ const nav_data: {
     link: '/dashboard/admin-dashboard/new-user',
     title: 'create user'
   },
-  
+
   {
     id: 4,
     icon: nav_2,
@@ -81,6 +81,13 @@ const nav_data: {
     icon_active: nav_4_active,
     link: '/dashboard/admin-dashboard/messages',
     title: 'Messages'
+  },
+  {
+    id: 8,
+    icon: nav_3,
+    icon_active: nav_3_active,
+    link: '/dashboard/admin-dashboard/received-data',
+    title: 'Received Data'
   },
   {
     id: 8,

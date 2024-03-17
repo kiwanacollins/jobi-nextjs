@@ -6,6 +6,7 @@ import { clerkClient } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 import { connectToDatabase } from '../mongoose';
 import { UpdateCategoryParams } from './shared.types';
+import ShareData from '@/database/shareData.model';
 
 interface ICreateCategory {
   name: string;
@@ -100,7 +101,7 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
       );
       if (!existingSubcategory) {
         await Category.findOneAndUpdate(
-         {_id:category._id },
+          { _id: category._id },
           {
             $push: { subcategory: { name: subcategory } }
           },
@@ -212,5 +213,28 @@ export async function removeFromAdmin(params: IRemoveAdminProps) {
     revalidatePath(path);
   } catch (error) {
     console.error('Error removing user from admin:', error);
+  }
+}
+
+export async function getShareSavedCandidates() {
+  try {
+    await connectToDatabase();
+    const sharedCandidates = await ShareData.find()
+      .populate({
+        path: 'employeeId',
+        select: 'name companyName picture email' // Specify fields for employee
+      })
+      .populate({
+        path: 'candidates',
+        select: 'name email picture resumeId' // Specify fields for candidates
+      });
+    console.log('sharedCandidates', sharedCandidates);
+    return {
+      success: true,
+      data: sharedCandidates
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }

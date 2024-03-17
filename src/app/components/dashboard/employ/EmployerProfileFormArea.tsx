@@ -82,8 +82,8 @@ const EmployerProfileFormArea = ({
     const updateData = {
       name: value.name,
       email: value.email,
+      companyName: value.companyName,
       website: value.website,
-      companySize: value.companySize,
       bio: value.bio,
       categories: value.categories,
       phone: value.phone,
@@ -91,11 +91,8 @@ const EmployerProfileFormArea = ({
         linkedin: value.mediaLinks.linkedin,
         github: value.mediaLinks.github
       },
-      established: value.established,
       address: value.address,
-      country: value.country,
-      city: value.city,
-      zip: value.zip
+      country: value.country
     };
 
     try {
@@ -153,7 +150,7 @@ const EmployerProfileFormArea = ({
                 defaultValue={mongoUser?.companyName || ''}
                 placeholder="Your Company Name"
                 {...register('companyName')}
-                name="name"
+                name="companyName"
               />
               {errors?.companyName && (
                 <ErrorMsg msg={errors?.companyName?.message as string} />
