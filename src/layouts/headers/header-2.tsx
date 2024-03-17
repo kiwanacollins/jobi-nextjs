@@ -62,7 +62,7 @@ const HeaderTwo = () => {
                         </Link>
                       </div>
                     </li>
-                    <Menus userId="" role="" />
+                    <Menus handleNavCollapse={() => {}} userId="" role="" />
                     <li className="d-md-none mt-5">
                       <Link href="/register" className="btn-five w-100">
                         Register
