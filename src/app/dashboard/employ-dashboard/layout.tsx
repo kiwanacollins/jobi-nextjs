@@ -5,6 +5,7 @@ import Wrapper from '@/layouts/wrapper';
 import { getUserById } from '@/lib/actions/user.action';
 import { useAuth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+import 'bootstrap/dist/js/bootstrap.bundle.js';
 
 import React, { useEffect, useState } from 'react';
 
@@ -14,7 +15,6 @@ const EmployDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     async function checkUser() {
       const currentUser = await getUserById({ userId });
-      console.log('checkUser employee dashboard  currentUser:', currentUser);
       if (currentUser?.role !== 'employee') {
         redirect('/');
       }

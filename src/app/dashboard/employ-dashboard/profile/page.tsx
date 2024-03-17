@@ -1,5 +1,4 @@
-import EmployProfileArea from '@/app/components/dashboard/employ/profile-area';
-import { IUser } from '@/database/user.model';
+import EmployerProfileFormArea from '@/app/components/dashboard/employ/EmployerProfileFormArea';
 import { getUserById } from '@/lib/actions/user.action';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
@@ -14,7 +13,7 @@ const EmployDashboardProfilePage = async () => {
   return (
     <>
       {/* profile area start */}
-      <EmployProfileArea mongoUser={mongoUser as IUser} />
+      <EmployerProfileFormArea mongoUser={mongoUser} />
       {/* profile area end */}
     </>
   );

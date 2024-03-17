@@ -10,8 +10,8 @@ export const emailSchema = z.object({
 const educationSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   academy: z.string().min(1, { message: 'academy is required' }).max(100),
-  yearStart: z.number(),
-  yearEnd: z.number().optional(),
+  yearStart: z.coerce.number(),
+  yearEnd: z.coerce.number().optional(),
   year: z.string().optional(),
   description: z
     .string()
@@ -22,8 +22,8 @@ const educationSchema = z.object({
 const experienceSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   company: z.string().min(1, { message: 'company is required' }).max(100),
-  yearStart: z.number(),
-  yearEnd: z.number().optional(),
+  yearStart: z.coerce.number(),
+  yearEnd: z.coerce.number().optional(),
   year: z.string().optional(),
   description: z
     .string()
@@ -50,16 +50,8 @@ export const resumeSchema = z.object({
 });
 
 const linksSchema = z.object({
-  linkedin: z
-    .string()
-    .min(1, { message: 'linkedin is required' })
-    .url('Invalid URL')
-    .optional(),
-  github: z
-    .string()
-    .min(1, { message: 'github is required' })
-    .url('Invalid URL')
-    .optional()
+  linkedin: z.string().url('Invalid URL').optional().or(z.literal('')),
+  github: z.string().url('Invalid URL').optional().or(z.literal(''))
 });
 
 // Define the Zod schema for the IUser interface
@@ -89,46 +81,29 @@ export const userSchema = z.object({
   mediaLinks: linksSchema.optional(),
   address: z.string().min(1, { message: 'Address is required' }),
   country: z.string().min(1, { message: 'Country is required' }),
-  city: z.string().min(1, { message: 'city is required' }),
-  zip: z.string().min(1, { message: 'Zip code is required' }),
   english_fluency: z.string().min(1, { message: 'English fluency is required' })
 });
 
 export const employeeProfileSchema = z.object({
   clerkId: z.string().optional(),
   name: z.string().min(1, { message: 'Name is required' }).max(255),
+  companyName: z.string().min(1, { message: 'Company name is required' }),
   email: z.string().max(100).email('Invalid email').readonly(),
   website: z
     .string()
     .min(1, { message: 'Website is required' })
     .url('Invalid URL'),
-  established: z
-    .string()
-    .transform((str) => (str ? new Date(str) : null)) // Convert string to Date or null if string is empty
-    .refine(
-      (date) => date === null || (!isNaN(date.getTime()) && date <= new Date()),
-      {
-        message: 'Date must be a valid date and cannot be in the future.'
-      }
-    )
-    .refine((date) => date !== null, {
-      message: 'Date is required.'
-    }),
-  bio: z.string().min(1, { message: 'required' }),
+
+  bio: z.string().max(500).optional(),
   categories: z
     .array(z.string().min(1, { message: 'categories is required' }))
     .refine((val) => val.length > 0, {
       message: 'Please select at least one categories.'
     }),
-  companySize: z.number().min(1, { message: 'Field is required' }),
   phone: z.string().min(1, { message: 'Phone number is required' }).optional(),
   mediaLinks: linksSchema.optional(),
   address: z.string().min(1, { message: 'Address is required' }),
-  country: z.string().min(1, { message: 'Country is required' }),
-  city: z.string().min(1, { message: 'city is required' }),
-  street: z.string().optional(),
-  zip: z.string().min(1, { message: 'Zip code is required' }),
-  state: z.string().optional()
+  country: z.string().min(1, { message: 'Country is required' })
 });
 
 export const formJobDataSchema = z.object({

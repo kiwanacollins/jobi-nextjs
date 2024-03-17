@@ -30,14 +30,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
   const [progress, setProgress] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [videoId, setVideoId] = useState<string | undefined>(
-    resume?.videos?.[0]?.videoId ?? undefined
-  );
-  const [thumbnail, setThumbnail] = useState<string | undefined>(
-    resume?.videos?.[0]?.videoId ?? undefined
-  );
-
-  const videoThumanail = `https://img.youtube.com/vi/${thumbnail}/0.jpg`;
 
   const isResumeExist = !!resume?._id;
   const groupedExperience = resume?.experience?.map((item: IExperience) => {
@@ -145,7 +137,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     control,
     name: 'experience'
   });
-  const { fields: videosArrayFields, append: videoAppend } = useFieldArray({
+  const {
+    fields: videosArrayFields,
+    append: videoAppend,
+    remove: removeVideo
+  } = useFieldArray({
     control,
     name: 'videos'
   });
@@ -272,51 +268,11 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     });
   };
 
-  const handleVideoClick = (
-    videoId: string | undefined,
-    thumbnail: string | undefined
-  ) => {
-    setVideoId(videoId);
-    setThumbnail(thumbnail);
-  };
-
   return (
     <>
       <div className="position-relative">
         <h2 className="main-title">My Resume</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="bg-white card-box border-20">
-            <h4 className="dash-title-three">Resume Attachment</h4>
-            {/* <div className="dash-input-wrapper mb-20">
-              <label htmlFor="">CV Attachment*</label>
-              <div className="attached-file d-flex align-items-center justify-content-between mb-15">
-                <span>MyCvResume.PDF</span>
-                <a href="#" className="remove-btn">
-                  <i className="bi bi-x"></i>
-                </a>
-              </div>
-              <div className="attached-file d-flex align-items-center justify-content-between">
-                <span>CandidateCV02.PDF</span>
-                <a href="#" className="remove-btn">
-                  <i className="bi bi-x"></i>
-                </a>
-              </div>
-            </div> */}
-
-            <div className="dash-btn-one d-inline-block position-relative me-3">
-              <i className="bi bi-plus"></i>
-              Upload CV
-              <input
-                type="file"
-                id="uploadCV"
-                accept="application/pdf"
-                placeholder="Up load resume"
-                name="file"
-              />
-            </div>
-            <small>{'Upload file .pdf'}</small>
-          </div>
-
           <div className="bg-white card-box border-20 mt-40">
             <h4 className="dash-title-three">Intro & Overview</h4>
             <div className="dash-input-wrapper mb-35 md-mb-20">
@@ -335,104 +291,111 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                 <ErrorMsg msg={errors.overview?.message} />
               )}
             </div>
-
-            <div className="row">
-              <div className="col-sm-6 d-flex flex-column ">
-                <div
-                  className="intro-video-post d-flex align-items-center justify-content-center mt-25 lg-mt-20 mb-50 lg-mb-20"
-                  style={{ backgroundImage: `url(${videoThumanail})` }}
-                >
-                  <button
-                    onClick={() => setIsVideoOpen(true)}
-                    className="fancybox rounded-circle video-icon tran3s text-center cursor-pointer"
-                  >
-                    <i className="bi bi-play"></i>
-                  </button>
-                </div>
-                <div className="mb-4 p-4">
-                  <h3 className="title">Video Lists </h3>
-                  <div className="d-flex flex-wrap gap-4">
-                    {resume?.videos?.map((video: IVideos, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="bg-primary  p-3   text-white rounded-3 cursor-pointer"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            handleVideoClick(video?.videoId, video?.videoId);
-                          }}
-                        >
-                          <div className="card-body ">
-                            <h5 className="card-title fw-bold ">
-                              {video?.title}{' '}
-                            </h5>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-6 d-flex">
-                <div className="bg-white card-box border-20">
-                  <h4 className="dash-title-three">Add Video</h4>
-                  {/* Video add Start */}
-                  {videosArrayFields.map((item, index) => {
-                    return (
-                      <div key={item.id}>
-                        <div className="d-flex justify-content-center align-items-center gap-4">
-                          <div className="dash-input-wrapper mb-30 md-mb-10">
-                            <label htmlFor="">Title*</label>
-                          </div>
-                          <div className="dash-input-wrapper mb-30">
-                            <input
-                              type="text"
-                              placeholder="Your Video Title"
-                              {...register(`videos.${index}.title`)}
-                              name={`videos.${index}.title`}
-                            />
-                            {errors?.videos?.[index]?.title && (
-                              <ErrorMsg
-                                msg={errors?.videos?.[index]?.title?.message}
-                              />
-                            )}
-                          </div>
-                        </div>
-                        <div className="d-flex justify-content-center align-items-center gap-4">
-                          <div className="dash-input-wrapper mb-30 md-mb-10">
-                            <label htmlFor="">Video id*</label>
-                          </div>
-                          <div className="dash-input-wrapper mb-30">
-                            <input
-                              type="text"
-                              placeholder="Enter Video ID"
-                              {...register(`videos.${index}.videoId`)}
-                              name={`videos.${index}.videoId`}
-                            />
-                            {errors?.videos?.[index]?.videoId && (
-                              <ErrorMsg
-                                msg={errors?.videos?.[index]?.videoId?.message}
-                              />
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-
-                  {/* Video add end */}
-                  <button
-                    onClick={(e) => handleAddVideos(e)}
-                    className="dash-btn-one"
-                  >
-                    <i className="bi bi-plus"></i> Add more
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
 
+          {/* Video accrodion start */}
+          <div className="bg-white card-box border-20 mt-40">
+            <h4 className="dash-title-three">Videos</h4>
+
+            {/* Add Education Start */}
+            {videosArrayFields.map((item, index) => {
+              return (
+                <div
+                  key={item.id}
+                  className="accordion dash-accordion-one"
+                  id={`accordionThree${index}`}
+                >
+                  <div className="accordion-item">
+                    <div className="accordion-header" id="headingTwo">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#collapseTwo${index}`}
+                        aria-expanded="false"
+                        aria-controls="collapseTwo"
+                      >
+                        Add Videos*
+                      </button>
+                    </div>
+                    <div
+                      id={`collapseTwo${index}`}
+                      className="accordion-collapse collapse"
+                      aria-labelledby="headingTwo"
+                      data-bs-parent={`#accordionThree${index}`}
+                    >
+                      <div className="accordion-body">
+                        <div className="row">
+                          <div className="col-lg-2">
+                            <div className="dash-input-wrapper mb-30 md-mb-10">
+                              <label htmlFor="">Title*</label>
+                            </div>
+                          </div>
+                          <div className="col-lg-10">
+                            <div className="dash-input-wrapper mb-30">
+                              <input
+                                type="text"
+                                placeholder="Your Video Title"
+                                {...register(`videos.${index}.title`)}
+                                name={`videos.${index}.title`}
+                              />
+                              {errors?.videos?.[index]?.title && (
+                                <ErrorMsg
+                                  msg={errors?.videos?.[index]?.title?.message}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-lg-2">
+                            <div className="dash-input-wrapper mb-30 md-mb-10">
+                              <label htmlFor="">Video Id*</label>
+                            </div>
+                          </div>
+                          <div className="col-lg-10">
+                            <div className="dash-input-wrapper mb-30">
+                              <input
+                                type="text"
+                                placeholder="Enter Video ID"
+                                {...register(`videos.${index}.videoId`)}
+                                name={`videos.${index}.videoId`}
+                              />
+                              {errors?.videos?.[index]?.videoId && (
+                                <ErrorMsg
+                                  msg={
+                                    errors?.videos?.[index]?.videoId?.message
+                                  }
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="row">
+                          <button
+                            onClick={() => removeVideo(index)}
+                            className="btn btn-danger w-auto  m-2"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            {/* Add Education End */}
+            <button
+              onClick={(e) => handleAddVideos(e)}
+              className="dash-btn-one"
+            >
+              <i className="bi bi-plus"></i> Add more
+            </button>
+          </div>
+
+          {/* Education start */}
           <div className="bg-white card-box border-20 mt-40">
             <h4 className="dash-title-three">Education</h4>
 
@@ -523,7 +486,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                               <div className="col-sm-6">
                                 <div className="dash-input-wrapper mb-30">
                                   <input
-                                    type="number"
+                                    type="text"
                                     placeholder="year start"
                                     {...register(
                                       `education.${index}.yearStart`,
@@ -606,6 +569,9 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
               <i className="bi bi-plus"></i> Add more
             </button>
           </div>
+          {/* Education end */}
+
+          {/* Experience start */}
 
           <div className="bg-white card-box border-20 mt-40">
             <h4 className="dash-title-three">Skills & Experience</h4>
@@ -787,6 +753,9 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
               <i className="bi bi-plus"></i> Add more
             </button>
           </div>
+          {/* Experience end */}
+
+          {/* Portfolio start */}
 
           <DashboardPortfolio
             setValue={setValue}
@@ -839,7 +808,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       <VideoPopup
         isVideoOpen={isVideoOpen}
         setIsVideoOpen={setIsVideoOpen}
-        videoId={videoId as string}
+        videoId={'videoId' as string}
       />
       {/* video modal end */}
     </>

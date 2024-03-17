@@ -1,5 +1,4 @@
 import React from 'react';
-
 import DashboardArea from '@/app/components/dashboard/candidate/dashboard-area';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';

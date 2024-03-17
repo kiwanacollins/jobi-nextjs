@@ -22,7 +22,9 @@ const EmployJobItem = ({
     <tr className={status}>
       <td>
         <div className="job-name fw-500">{title}</div>
-        <div className="info1">{info}</div>
+        <div className="info1 d-none d-lg-block w-50">
+          {info.length > 70 ? info.slice(0, 70) + '...' : info}
+        </div>
       </td>
       <td>{date}</td>
       <td>{application} Applications</td>

@@ -5,15 +5,13 @@ import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { getUserByMongoId, updateUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import CountrySelect from '@/app/components/dashboard/candidate/country-select';
-import CitySelect from '@/app/components/dashboard/candidate/city-select';
 import ErrorMsg from '@/app/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IUser } from '@/database/user.model';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Country } from 'country-state-city';
+import { Country, ICountry } from 'country-state-city';
 import OptionSelect from '@/app/components/common/OptionSelect';
 import Select from 'react-select';
 import { ICategory } from '@/database/category.model';
@@ -33,12 +31,15 @@ const UpdateUser = ({ params }: ParamsProps) => {
   const [gender, setGender] = useState('male');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
   const pathname = usePathname();
-  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
-    {} as any
-  );
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
+
+  const countries: ICountry[] = Country.getAllCountries();
+  const countryOptions = countries.map((country) => ({
+    value: country.name,
+    label: country.name
+  }));
 
   type userSchemaType = z.infer<typeof userSchema>;
 
@@ -61,9 +62,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
         github: mongoUser?.mediaLinks?.github || ''
       },
       address: mongoUser?.address || '',
-      country: mongoUser?.country || '',
-      city: mongoUser?.city,
-      zip: mongoUser?.zip || ''
+      country: mongoUser?.country || ''
     }
   });
 
@@ -77,8 +76,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
     formState: { errors }
   } = methods;
 
-  const selectedCountryName = watch('country');
-
   const selectedPost = watch('post');
   const skillsOfSelectedPost = categories.find(
     (cat: any) => cat?.name === selectedPost
@@ -90,13 +87,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
       label: item.name
     })
   );
-
-  useEffect(() => {
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === selectedCountryName
-    );
-    setSelectedCountryDetails(selectedCountry);
-  }, [selectedCountryName]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -164,38 +154,6 @@ const UpdateUser = ({ params }: ParamsProps) => {
     setGender(event.target.value);
   };
 
-  // const handleInputKeyDown = (
-  //   e: React.KeyboardEvent<HTMLInputElement>,
-  //   field: any
-  // ) => {
-  //   if (e.key === 'Enter' && field === 'skills') {
-  //     e.preventDefault();
-
-  //     const tagInput = e.target as HTMLInputElement;
-  //     const tagValue = tagInput.value;
-
-  //     if (tagValue !== '') {
-  //       if (tagValue.length > 15) {
-  //         return setError('skills', {
-  //           type: 'required',
-  //           message: 'Tag must be less than 15 characters.'
-  //         });
-  //       }
-  //       // Retrieve current skills array
-  //       const currentSkills = skillsTag || [];
-
-  //       if (!skillsTag.includes(tagValue as never)) {
-  //         setValue('skills', [...currentSkills, tagValue]);
-  //         setSkillsTag([...currentSkills, tagValue]);
-  //         tagInput.value = '';
-  //         clearErrors('skills');
-  //       }
-  //     }
-  //   }
-  // };
-
-  // remove skill
-
   // Simulate progress function
   const simulateProgress = () => {
     let currentProgress = 0;
@@ -237,9 +195,7 @@ const UpdateUser = ({ params }: ParamsProps) => {
             github: value.mediaLinks?.github
           },
           address: value.address,
-          country: value.country,
-          city: value.city,
-          zip: value.zip
+          country: value.country
         },
         path: pathname
       });
@@ -603,31 +559,35 @@ const UpdateUser = ({ params }: ParamsProps) => {
                   <ErrorMsg msg={errors?.address?.message as string} />
                 </div>
               </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">Country*</label>
-                  <CountrySelect register={register} />
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">City*</label>
-                  <CitySelect
-                    register={register}
-                    countryCode={selectedCountryDetails?.isoCode || ''}
+              <div className="col-12">
+                <div className=" mb-25">
+                  <label className="fw-semibold mb-2" htmlFor="">
+                    Country*
+                  </label>
+                  <Controller
+                    name="country"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        //@ts-ignore
+                        options={countryOptions || []}
+                        className="basic-multi-select"
+                        classNamePrefix="select"
+                        onChange={(selectedOption) => {
+                          field.onChange(selectedOption?.value);
+                        }}
+                        value={
+                          field.value
+                            ? { value: field.value, label: field.value }
+                            : null
+                        }
+                      />
+                    )}
                   />
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">Zip Code*</label>
-                  <input
-                    type="text"
-                    {...register('zip')}
-                    placeholder="1708"
-                    defaultValue={mongoUser?.zip}
-                    name="zip"
-                  />
+                  {errors?.country && (
+                    <ErrorMsg msg={errors?.country?.message as string} />
+                  )}
                 </div>
               </div>
             </div>

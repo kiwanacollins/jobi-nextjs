@@ -1,13 +1,14 @@
 import { Schema, models, model, Document } from 'mongoose';
 
 interface I_Links {
-  linkedin: string | undefined;
-  github: string | undefined;
+  linkedin?: string;
+  github?: string;
 }
 
 export interface IUser extends Document {
   clerkId?: string | undefined;
   name: string;
+  companyName?: string;
   age?: number;
   email: string;
   companySize?: number;
@@ -31,9 +32,6 @@ export interface IUser extends Document {
   mediaLinks?: I_Links;
   address?: string;
   country?: string;
-  city?: string;
-  street?: string;
-  zip?: string;
   saved?: Schema.Types.ObjectId[];
   resumeId?: Schema.Types.ObjectId | string;
   jobPosts?: Schema.Types.ObjectId[];
@@ -45,8 +43,7 @@ const UserSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   website: { type: String },
-  companySize: { type: Number },
-  established: { type: Date },
+  companyName: { type: String },
   categories: [{ type: String }],
   bio: { type: String },
   post: { type: String },
@@ -69,10 +66,6 @@ const UserSchema = new Schema({
   },
   address: { type: String },
   country: { type: String },
-  city: { type: String },
-  street: { type: String },
-  zip: { type: String },
-  state: { type: String },
   saved: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   resumeId: { type: Schema.Types.ObjectId, ref: 'Resume' },
   jobPosts: [{ type: Schema.Types.ObjectId, ref: 'Job' }],

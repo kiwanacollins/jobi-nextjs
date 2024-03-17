@@ -1,5 +1,4 @@
 import { Schema, models, model, Document } from 'mongoose';
-import User from './user.model';
 
 export interface IEducation {
   title: string;
@@ -63,29 +62,9 @@ const resumeSchema = new Schema({
   videos: [{ title: String, videoId: String }],
   education: [educationSchema],
   skills: [{ type: String }],
-  minSalary: { type: Number },
-  maxSalary: { type: Number },
   experience: [experienceSchema],
   portfolio: [{ imageUrl: String, public_id: String }],
   createdAt: { type: Date, default: Date.now }
-});
-
-// Define a pre-save hook on the resume model
-resumeSchema.pre('save', function (next) {
-  const resume = this; // This refers to the current resume document
-  // Find the associated user using the userId reference
-  User.findById(resume.user)
-    .then((user) => {
-      if (!user) {
-        return next(new Error('Associated user not found'));
-      }
-      // Copy minSalary and maxSalary from the user to the resume
-      resume.minSalary = user.minSalary;
-      resume.maxSalary = user.maxSalary;
-      resume.skills = user.skills;
-      next(); // Proceed with saving the resume
-    })
-    .catch((error) => next(error));
 });
 
 const Resume = models.Resume || model<IResumeType>('Resume', resumeSchema);
