@@ -8,14 +8,12 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { employeeProfileSchema } from '@/utils/validation';
 import Select from 'react-select';
-import { Country } from 'country-state-city';
 import { createEmployeeProfileByUpdating } from '@/lib/actions/employee.action';
 import { usePathname } from 'next/navigation';
 import { IServerResponse } from '@/types';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import ErrorMsg from '../../common/error-msg';
 import CountrySelect from '../candidate/country-select';
-import CitySelect from '../candidate/city-select';
 import { IUser } from '@/database/user.model';
 import { skills } from '@/constants';
 
@@ -29,10 +27,6 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
-    {} as any
-  );
-
   type employeeProfileType = z.infer<typeof employeeProfileSchema>;
 
   const methods = useForm<employeeProfileType>({
@@ -41,7 +35,6 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
       name: mongoUser?.name || '',
       email: mongoUser?.email || '',
       website: mongoUser?.website || '',
-      companySize: mongoUser?.companySize,
       bio: mongoUser?.bio || '',
       categories: mongoUser?.categories || [],
       phone: mongoUser?.phone || '',
@@ -49,12 +42,8 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
         linkedin: mongoUser?.mediaLinks?.linkedin || '',
         github: mongoUser?.mediaLinks?.github || ''
       },
-      established: mongoUser?.established || '',
       address: mongoUser?.address || '',
-      country: mongoUser?.country || '',
-      city: mongoUser?.city || '',
-      street: mongoUser?.street || '',
-      zip: mongoUser?.zip || ''
+      country: mongoUser?.country || ''
     }
   });
   const {
@@ -62,22 +51,8 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
     register,
     reset,
     control,
-    watch,
     formState: { errors }
   } = methods;
-
-  console.log('date', watch('established'));
-
-  console.log('validation errors', errors);
-
-  const selectedCountryName = watch('country');
-
-  useEffect(() => {
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === selectedCountryName
-    );
-    setSelectedCountryDetails(selectedCountry);
-  }, [selectedCountryName]);
 
   useEffect(() => {
     reset();
@@ -186,41 +161,7 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
                 )}
               </div>
             </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Founded Date*</label>
-                <input
-                  type="date"
-                  // @ts-ignore
-                  defaultValue={
-                    mongoUser?.established
-                      ? new Date(mongoUser?.established)
-                      : new Date().toLocaleDateString()
-                  }
-                  {...register('established')}
-                  name="established"
-                />
-                {errors?.established && (
-                  <ErrorMsg msg={errors?.established?.message as string} />
-                )}
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Company Size*</label>
-                <input
-                  type="number"
-                  placeholder="Numbers of employee"
-                  {...register('companySize', {
-                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
-                  })}
-                  name="companySize"
-                />
-                {errors?.companySize && (
-                  <ErrorMsg msg={errors?.companySize?.message as string} />
-                )}
-              </div>
-            </div>
+
             <div className="col-md-6">
               <div className="dash-input-wrapper mb-30">
                 <label htmlFor="">Phone Number*</label>
@@ -339,34 +280,6 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
                 <CountrySelect register={register} />
                 {errors?.country && (
                   <ErrorMsg msg={errors?.country?.message as string} />
-                )}
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">City*</label>
-                <CitySelect
-                  register={register}
-                  countryCode={selectedCountryDetails?.isoCode || ''}
-                />
-                {errors?.city && (
-                  <ErrorMsg msg={errors?.city?.message as string} />
-                )}
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">Zip Code*</label>
-                <input
-                  type="text"
-                  {...register('zip')}
-                  placeholder="1708"
-                  defaultValue={mongoUser?.zip}
-                  className="form-control"
-                  name="zip"
-                />
-                {errors?.zip && (
-                  <ErrorMsg msg={errors?.zip?.message as string} />
                 )}
               </div>
             </div>
