@@ -40,9 +40,7 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
         maxSalary: mongoUser?.maxSalary || '',
         mediaLinks: mongoUser?.mediaLinks,
         address: mongoUser?.address || '',
-        country: mongoUser?.country || '',
-        city: mongoUser?.city || '',
-        zip: mongoUser?.zip || ''
+        country: mongoUser?.country || ''
       },
       errors: !values.name
         ? {
@@ -71,18 +69,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
             country: {
               type: 'required',
               message: 'Country is required'
-            },
-            city: {
-              type: 'required',
-              message: 'City is required'
-            },
-            zip: {
-              type: 'required',
-              message: 'Zip is required'
-            },
-            state: {
-              type: 'required',
-              message: 'State is required'
             }
           }
         : {}
@@ -377,18 +363,6 @@ const DashboardProfileArea = ({ mongoUser, userId }: IProps) => {
                   <CitySelect
                     register={register}
                     countryCode={selectedCountryDetails?.isoCode || ''}
-                  />
-                </div>
-              </div>
-              <div className="col-lg-3">
-                <div className="dash-input-wrapper mb-25">
-                  <label htmlFor="">Zip Code*</label>
-                  <input
-                    type="text"
-                    {...register('zip')}
-                    placeholder="1708"
-                    defaultValue={mongoUser?.zip}
-                    name="zip"
                   />
                 </div>
               </div>

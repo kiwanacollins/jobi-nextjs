@@ -63,8 +63,6 @@ const EmployerProfileFormArea = ({
     formState: { errors }
   } = methods;
 
-  console.log('validation errors', errors);
-
   useEffect(() => {
     const fetchCategories = async () => {
       const res = await getCategories();
@@ -177,7 +175,7 @@ const EmployerProfileFormArea = ({
                   <input
                     type="text"
                     defaultValue={mongoUser?.website || ''}
-                    placeholder="http://somename.come"
+                    placeholder="Enter your website URL"
                     {...register('website')}
                     name="website"
                   />
