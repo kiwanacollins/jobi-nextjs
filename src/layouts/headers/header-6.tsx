@@ -1,12 +1,11 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from '@/assets/images/logo/logo_01.png';
 import dark_logo from '@/assets/images/logo/logo_04.png';
 import Menus from './component/menus';
 import useSticky from '@/hooks/use-sticky';
-
 import { SignedIn, UserButton } from '@clerk/nextjs';
 import { IUser } from '@/database/user.model';
 
@@ -18,6 +17,9 @@ interface Props {
 
 const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
   const { sticky } = useSticky();
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
+
+  const handleNavCollapse = () => setIsNavCollapsed(!isNavCollapsed);
 
   return (
     <>
@@ -138,12 +140,16 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   data-bs-toggle="collapse"
                   data-bs-target="#navbarNav"
                   aria-controls="navbarNav"
-                  aria-expanded="false"
+                  aria-expanded={!isNavCollapsed}
                   aria-label="Toggle navigation"
+                  onClick={handleNavCollapse}
                 >
                   <span></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
+                <div
+                  className={`${isNavCollapsed ? 'collapse' : ''} navbar-collapse`}
+                  id="navbarNav"
+                >
                   <ul className="navbar-nav">
                     <li className="d-block d-lg-none">
                       <div className="logo">
@@ -161,6 +167,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     <Menus
                       userId={userId as string}
                       role={currentUser?.role as string}
+                      handleNavCollapse={handleNavCollapse}
                     />
                     {/* menus end */}
                     {currentUser?.role === 'employee' && (

@@ -4,7 +4,6 @@ import Wrapper from '@/layouts/wrapper';
 import { getUserById } from '@/lib/actions/user.action';
 import { auth } from '@clerk/nextjs';
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomeRootLayout = async ({ children }: { children: React.ReactNode }) => {
   const { userId } = auth();
@@ -12,18 +11,16 @@ const HomeRootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
-      <div className="main-page-wrapper">
-        {/* header start */}
-        <HeaderSix
-          userId={userId?.toString()}
-          currentUser={JSON.parse(JSON.stringify(currentUser))}
-        />
-        {/* header end */}
-        {children}
-        {/* footer start */}
-        <FooterOne style_2={true} />
-        {/* footer end */}
-      </div>
+      {/* header start */}
+      <HeaderSix
+        userId={userId?.toString()}
+        currentUser={JSON.parse(JSON.stringify(currentUser))}
+      />
+      {/* header end */}
+      {children}
+      {/* footer start */}
+      <FooterOne style_2={true} />
+      {/* footer end */}
     </Wrapper>
   );
 };

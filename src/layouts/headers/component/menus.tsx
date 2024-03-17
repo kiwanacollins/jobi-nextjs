@@ -2,7 +2,15 @@ import React from 'react';
 import menu_data from '@/data/menu-data';
 import Link from 'next/link';
 
-const Menus = ({ role, userId }: { role: string; userId: string }) => {
+const Menus = ({
+  role,
+  userId,
+  handleNavCollapse
+}: {
+  role: string;
+  userId: string;
+  handleNavCollapse: () => void;
+}) => {
   return (
     <>
       {menu_data.map((menu) =>
@@ -67,8 +75,8 @@ const Menus = ({ role, userId }: { role: string; userId: string }) => {
             </ul>
           </li>
         ) : (
-          <li key={menu.id} className="nav-item">
-            <Link className="nav-link" href={menu.link} role="button">
+          <li key={menu.id} className="nav-item" onClick={handleNavCollapse}>
+            <Link className="nav-link" href={menu.link}>
               {menu.title}
             </Link>
           </li>
