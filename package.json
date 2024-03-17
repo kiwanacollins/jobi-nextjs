@@ -37,6 +37,7 @@
     "mongoose": "^7.5.4",
     "multer": "^1.4.5-lts.1",
     "next": "14.1.0",
+    "nextjs-progressbar": "^0.0.16",
     "prettier": "^3.2.4",
     "prismjs": "^1.29.0",
     "query-string": "^8.1.0",

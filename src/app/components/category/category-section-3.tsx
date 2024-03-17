@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import Link from 'next/link';
-import { category_data } from './category-section-2';
+// import { category_data } from './category-section-2';
 import { getCategories } from '@/lib/actions/admin.action';
 import { ICategory } from '@/database/category.model';
 import bg_1 from '@/assets/images/assets/img_16.jpg';
@@ -40,18 +40,13 @@ const slider_setting = {
 
 export function TrendingJobs() {
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const categoryItems = categories.map(c=>({
+  const categoryItems = categories?.map((c) => ({
     id: c._id,
-    name:c.name,
-    title: (
-      <>
-        {c.name}
-      </>
-    ),
+    name: c.name,
+    title: <>{c.name}</>,
     bg_img: bg_1
-
-  }))
-  const category_items = category_data.filter((c) => c.bg_img);
+  }));
+  // const category_items = category_data.filter((c) => c.bg_img);
   const sliderRef = useRef<Slider | null>(null);
 
   const sliderPrev = () => {
@@ -63,13 +58,13 @@ export function TrendingJobs() {
   };
 
   useEffect(() => {
-    const fetchAllCategory = async ()=>{
-        const res = await getCategories()
-        setCategories(res)
-    }
-    fetchAllCategory()
-  }, [])
-  
+    const fetchAllCategory = async () => {
+      const res = await getCategories();
+      setCategories(res);
+    };
+    fetchAllCategory();
+  }, []);
+
   return (
     <>
       <Slider
@@ -87,7 +82,7 @@ export function TrendingJobs() {
                 href={{
                   pathname: '/jobs',
                   query: {
-                    category:item.name
+                    category: item.name
                   }
                 }}
                 className="w-100 text-decoration-none h-100 ps-4 pb-20 d-flex align-items-end"

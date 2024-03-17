@@ -5,6 +5,7 @@ import { useAppDispatch } from '@/redux/hook';
 import { animationCreate } from '@/utils/utils';
 import { usePathname } from 'next/navigation';
 import { ToastContainer } from 'react-toastify';
+import NextNProgress from 'nextjs-progressbar';
 
 if (typeof window !== 'undefined') {
   require('bootstrap/dist/js/bootstrap');
@@ -27,6 +28,13 @@ const Wrapper = ({ children }: { children: React.ReactNode }) => {
   }, [pathname]);
   return (
     <>
+      <NextNProgress
+        color="#29DDDD"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={3}
+        showOnShallow={true}
+      />
       {children}
       <ToastContainer />
     </>
