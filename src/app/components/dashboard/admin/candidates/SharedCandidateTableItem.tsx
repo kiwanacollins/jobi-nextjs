@@ -27,7 +27,7 @@ const SharedCandidateTableItem = ({
         <div className="job-name fw-500">{employeeName}</div>
       </td>
       <td>
-        <div className="job-status text-capitalize d-flex flex-wrap gap-1">
+        <div className="job-status text-capitalize d-flex justify-content-center align-items-center  flex-wrap gap-1">
           {candidates?.map((candidate, index) => {
             return (
               <Link
@@ -39,20 +39,13 @@ const SharedCandidateTableItem = ({
                   src={candidate.picture}
                   alt={candidate.name}
                   title={candidate.name}
-                  width={30}
-                  height={30}
+                  width={50}
+                  height={50}
                   className="rounded-circle"
                 />
               </Link>
             );
           })}
-        </div>
-      </td>
-      <td>
-        <div className="action-dots float-end">
-          <button title="Remove from admin" className="btn btn-danger">
-            Remove
-          </button>
         </div>
       </td>
     </tr>

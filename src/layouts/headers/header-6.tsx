@@ -60,16 +60,15 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   <SignedIn>
                     {(currentUser?.role || currentUser?.isAdmin === true) && (
                       <li className="nav-item dropdown Dashboard ">
-                        <a
+                        <button
                           className="nav-link fw-bold me-3  text-white  dropdown-toggle"
-                          href="#"
                           role="button"
                           data-bs-toggle="dropdown"
                           data-bs-auto-close="outside"
                           aria-expanded="false"
                         >
                           Dashboard
-                        </a>
+                        </button>
                         <ul className="dropdown-menu p-3">
                           {currentUser?.role === 'employee' && (
                             <li>

@@ -15,7 +15,6 @@ const SharedCandidateListTable = ({
             <th scope="col">Company Name</th>
             <th scope="col">Employee Name</th>
             <th scope="col">Candiates</th>
-            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody className="border-0">
