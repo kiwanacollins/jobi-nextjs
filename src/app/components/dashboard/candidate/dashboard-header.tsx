@@ -34,6 +34,7 @@ type IProps = {
   setIsOpenSidebar?: React.Dispatch<React.SetStateAction<boolean>>
 }
 const DashboardHeader = ({setIsOpenSidebar}:IProps) => {
+  
   // handle click to open 
   const handleOpen = () => {
     if(setIsOpenSidebar){

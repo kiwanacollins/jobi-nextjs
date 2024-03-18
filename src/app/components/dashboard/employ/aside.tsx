@@ -58,13 +58,13 @@ const nav_data: {
     link: '/dashboard/employ-dashboard/jobs',
     title: 'My Jobs'
   },
-  {
-    id: 4,
-    icon: nav_4,
-    icon_active: nav_4_active,
-    link: '/dashboard/employ-dashboard/messages',
-    title: 'Messages'
-  },
+  // {
+  //   id: 4,
+  //   icon: nav_4,
+  //   icon_active: nav_4_active,
+  //   link: '/dashboard/employ-dashboard/messages',
+  //   title: 'Messages'
+  // },
   {
     id: 5,
     icon: nav_5,
@@ -79,13 +79,13 @@ const nav_data: {
     link: '/dashboard/employ-dashboard/saved-candidate',
     title: 'Saved Candidate'
   },
-  {
-    id: 7,
-    icon: nav_9,
-    icon_active: nav_9_active,
-    link: '/dashboard/employ-dashboard/membership',
-    title: 'Membership'
-  },
+  // {
+  //   id: 7,
+  //   icon: nav_9,
+  //   icon_active: nav_9_active,
+  //   link: '/dashboard/employ-dashboard/membership',
+  //   title: 'Membership'
+  // },
   {
     id: 8,
     icon: nav_7,
