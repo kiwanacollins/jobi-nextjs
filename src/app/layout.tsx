@@ -6,6 +6,7 @@ import { EB_Garamond } from 'next/font/google';
 import BackToTopCom from './components/common/back-to-top-com';
 import { Providers } from '@/redux/provider';
 import React from 'react';
+import NextTopLoader from 'nextjs-toploader';
 
 const gordita = localFont({
   src: [
@@ -60,6 +61,7 @@ export default function RootLayout({
           suppressHydrationWarning={true}
           className={`${gordita.variable} ${garamond.variable}`}
         >
+          <NextTopLoader  showSpinner={false} />
           <Providers>{children}</Providers>
           <BackToTopCom />
         </body>
