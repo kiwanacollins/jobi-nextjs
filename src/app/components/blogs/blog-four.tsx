@@ -1,10 +1,13 @@
 import React from 'react';
-import blog_data from '@/data/blog-data';
+// import blog_data from '@/data/blog-data';
 import BlogItemFour from './blog-item/blog-item-4';
 import Link from 'next/link';
+import { fetchAllBlogs } from '@/lib/actions/blog.action';
+import { IBlog } from '@/database/Blog.model';
 
-const BlogFour = () => {
-  const blog_items = blog_data.filter((b) => b.blog === 'blog-two');
+const BlogFour = async () => {
+  // const blog_items = blog_data.filter((b) => b.blog === 'blog-two');
+  const blogs = await fetchAllBlogs();
   return (
     <section className="blog-section-one mt-160 xl-mt-150 lg-mt-100">
       <div className="container">
@@ -23,15 +26,15 @@ const BlogFour = () => {
           </div>
 
           <div className="row gx-xxl-5">
-            {blog_items.map((item) => (
-              <div key={item.id} className="col-lg-4 col-md-6">
+            {blogs?.slice(0, 3)?.map((item: IBlog) => (
+              <div key={item._id} className="col-lg-4 col-md-6">
                 <BlogItemFour blog={item} />
               </div>
             ))}
           </div>
 
           <div className="text-center explore-btn sm-mt-50">
-            <Link href="/blog-v1" className="btn-six">
+            <Link href="/blogs" className="btn-six">
               Explore More
             </Link>
           </div>

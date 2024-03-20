@@ -83,7 +83,7 @@ export default function HomePage() {
           <div className="text-center mt-50 wow fadeInUp">
             <div className="btn-eight fw-500">
               Do you want to post a job for your company?{' '}
-              <span>We can help.</span> <Link href="/register">Click here</Link>
+              <span>We can help.</span> <Link href="/sign-in">Click here</Link>
             </div>
           </div>
         </div>

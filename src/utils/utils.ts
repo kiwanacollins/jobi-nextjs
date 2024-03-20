@@ -80,3 +80,13 @@ export const getTimestamp = (createdAt: Date): string => {
     return `${years} year${years > 1 ? 's' : ''} ago`;
   }
 };
+
+export const getTime = (dateString: Date): string => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  };
+  return date.toLocaleDateString('en-US', options);
+};
