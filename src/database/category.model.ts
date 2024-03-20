@@ -5,6 +5,10 @@ export interface ICategory extends Document {
   subcategory?: {
     name: string;
   }[];
+  image: {
+    url: string;
+    public_id?: string;
+  };
   createdOn?: Date;
 }
 
@@ -17,6 +21,10 @@ const CategorySchema = new Schema({
       job: [{ type: Schema.Types.ObjectId, ref: 'Job' }]
     }
   ],
+  image: {
+    url: { type: String, required: true },
+    public_id: { type: String }
+  },
   candidates: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   job: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   createdOn: { type: Date, default: Date.now }

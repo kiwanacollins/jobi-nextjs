@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link';
+import React from 'react';
 
 const FancyBannerSix = () => {
   return (
@@ -16,16 +16,16 @@ const FancyBannerSix = () => {
             </div>
             <div className="col-lg-5 ms-auto">
               <p className="text-lg text-white mb-35 lg-mb-20 md-mt-20 text-center text-lg-start">
-                Find your dream job & earn from all world the leading brands.{" "}
+                Find your dream job & earn from all world the leading brands.{' '}
               </p>
               <ul className="btn-group style-none d-flex justify-content-center justify-content-lg-start">
                 <li className="me-2 ms-2 ms-lg-0">
-                  <Link href="/job-list-v1" className="btn-seven border6">
+                  <Link href="/jobs" className="btn-seven border6">
                     Looking for job?
                   </Link>
                 </li>
                 <li className="ms-2 ms-2 ms-lg-0">
-                  <Link href="/candidates-v2" className="btn-five border6">
+                  <Link href="/candidates" className="btn-five border6">
                     Start Hiring
                   </Link>
                 </li>

@@ -7,25 +7,48 @@ import { revalidatePath } from 'next/cache';
 import { connectToDatabase } from '../mongoose';
 import { UpdateCategoryParams } from './shared.types';
 import ShareData from '@/database/shareData.model';
+import connectToCloudinary from '../cloudinary';
+import cloudinary from 'cloudinary';
 
 interface ICreateCategory {
   name: string;
   subcategories?: string[];
+  image: {
+    url: string;
+    public_id?: string;
+  };
   path: string;
 }
 
 export async function createCategory(params: ICreateCategory) {
-  const { name, subcategories, path } = params;
+  const { name, image, subcategories, path } = params;
 
   try {
     await connectToDatabase();
+    connectToCloudinary();
     const existingCategory = await Category.findOne({ name });
     if (existingCategory) {
       return { success: false, message: 'Category already exists' };
     }
+    if (image.url) {
+      const result = await cloudinary.v2.uploader.upload(image.url as string, {
+        folder: 'categories',
+        width: 350
+      });
+
+      if (!result) {
+        return { success: false, message: 'Error uploading image' };
+      }
+      image.url = result.secure_url;
+      image.public_id = result.public_id;
+    }
     const category = new Category({
       name,
-      subcategory: subcategories?.map((name) => ({ name }))
+      subcategory: subcategories?.map((name) => ({ name })),
+      image: {
+        url: image.url,
+        public_id: image.public_id
+      }
     });
     await category.save();
     revalidatePath(path);
@@ -84,10 +107,11 @@ export async function deleteSingleCategory(param: {
 }
 
 export async function updateCategoryById(params: UpdateCategoryParams) {
-  const { categoryId, name, path, subcategories } = params;
+  const { categoryId, name, image, path, subcategories } = params;
 
   try {
     await connectToDatabase();
+    await connectToCloudinary();
 
     const category = await Category.findById(categoryId);
 
@@ -109,8 +133,27 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
         );
       }
     }
+
+    if (image.url) {
+      const result = await cloudinary.v2.uploader.upload(image.url as string, {
+        folder: 'categories',
+        width: 350
+      });
+
+      if (!result) {
+        return { success: false, message: 'Error uploading image' };
+      }
+      image.url = result.secure_url;
+      image.public_id = result.public_id;
+      // console.log('result', result);
+      // console.log('image', image);
+    }
+
     category.name = name;
+    category.image = image;
+
     await category.save();
+    console.log('Update category', category);
     revalidatePath(path);
     return { success: true, message: 'Category updated successfully' };
   } catch (error) {

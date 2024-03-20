@@ -53,6 +53,10 @@ export interface getCandidatesParams {
 export interface UpdateCategoryParams {
   categoryId: string;
   name: string;
+  image: {
+    url: string;
+    public_id?: string;
+  };
   subcategories?: string[];
   path: string;
 }

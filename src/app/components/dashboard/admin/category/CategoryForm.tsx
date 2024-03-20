@@ -9,6 +9,7 @@ import {
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { categorySchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,6 +22,8 @@ interface IProps {
 
 const CategoryForm = ({ type, category }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [filename, setFilename] = useState('');
+  const [imagePreview, setImagePreview] = useState<string | undefined>();
   const pathname = usePathname();
   const router = useRouter();
   const groupedSubcategories = category?.subcategory?.map((item) => item.name);
@@ -44,9 +47,36 @@ const CategoryForm = ({ type, category }: IProps) => {
     setValue,
     setError,
     clearErrors,
+    watch,
     reset,
     formState: { errors }
   } = methods;
+
+  console.log('image', watch('image'));
+
+  // handle file  upload
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+    const pdfFile = new FileReader();
+    const selectedFile = event.target.files?.[0] || null;
+
+    const fileName = selectedFile?.name || '';
+    setFilename(fileName);
+    if (event.target.name === 'file') {
+      pdfFile.onload = () => {
+        if (pdfFile.readyState === 2) {
+          setValue('image.url', pdfFile.result as string);
+        }
+      };
+
+      pdfFile.onloadend = () => {
+        setImagePreview(pdfFile.result as string | undefined);
+      };
+    }
+    pdfFile.readAsDataURL(event.target.files?.[0] as File);
+  };
 
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -99,6 +129,9 @@ const CategoryForm = ({ type, category }: IProps) => {
         const res = await createCategory({
           name: data.name,
           subcategories: data.subcategory,
+          image: {
+            url: data.image.url
+          },
           path: pathname
         });
         if (res.success) {
@@ -112,6 +145,10 @@ const CategoryForm = ({ type, category }: IProps) => {
         const res = await updateCategoryById({
           categoryId: category?._id,
           name: data.name,
+          image: {
+            url: data.image.url,
+            public_id: category?.image?.public_id
+          },
           subcategories: data.subcategory,
           path: pathname
         });
@@ -138,6 +175,32 @@ const CategoryForm = ({ type, category }: IProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white card-box border-20">
+        <div className="user-avatar-setting d-flex align-items-center mb-30">
+          {(imagePreview || category?.image?.url) && (
+            <Image
+              //@ts-ignore
+              src={imagePreview || category?.image?.url}
+              alt="avatar"
+              height={120}
+              width={120}
+              className="lazy-img user-img"
+            />
+          )}
+
+          <div className="upload-btn position-relative tran3s ms-4 me-3">
+            <small>{filename || ' Upload Category photo'}</small>
+
+            <input
+              type="file"
+              id="uploadImg"
+              name="file"
+              accept="image/*"
+              placeholder="Upload new photo"
+              onChange={(e) => handleFileChange(e)}
+            />
+          </div>
+          <button className="delete-btn tran3s">Delete</button>
+        </div>
         <div className="dash-input-wrapper mb-30">
           <label htmlFor="">Category Name*</label>
           <Controller

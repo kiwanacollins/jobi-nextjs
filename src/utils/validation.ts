@@ -143,6 +143,7 @@ const imageSchema = z.object({
   url: z.string().min(1, { message: 'Image is required' }),
   public_id: z.string().optional()
 });
+
 export const blogSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   content: z.string().min(1, { message: 'Content is required' }),
@@ -157,5 +158,6 @@ export const blogSchema = z.object({
 
 export const categorySchema = z.object({
   name: z.string().min(1, { message: 'Category is required' }),
-  subcategory: z.array(z.string()).optional()
+  subcategory: z.array(z.string()).optional(),
+  image: imageSchema
 });
