@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import CandidateProfileSlider from './candidate-profile-slider';
 import Skills from './skills';
@@ -9,8 +9,10 @@ import { IResumeType } from '@/database/resume.model';
 import Resume from '@/app/components/resume/Resume';
 import ResumeModal from '../resume/ResumeModal';
 import dynamic from 'next/dynamic';
-import { Button, Card } from 'react-bootstrap';
+
 import ModalVideo from 'react-modal-video';
+import Slider from 'react-slick';
+import { slider_setting } from '@/constants';
 
 interface ICandidateDetailsAreaProps {
   candidateDetials: IResumeType;
@@ -28,6 +30,16 @@ const CandidateDetailsArea = ({
   candidateDetials
 }: ICandidateDetailsAreaProps) => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
+
+  const sliderRef = useRef<Slider | null>(null);
+
+  const sliderPrev = () => {
+    sliderRef.current?.slickPrev();
+  };
+
+  const sliderNext = () => {
+    sliderRef.current?.slickNext();
+  };
   const { overview, user, education, experience, skills, videos, portfolio } =
     candidateDetials;
   const [videoId, setVideoId] = useState<string | undefined>(
@@ -37,6 +49,16 @@ const CandidateDetailsArea = ({
   const handleVideoClick = (videoId: string, thumbnail: string) => {
     setVideoId(videoId);
   };
+
+  // const thumbnail = `https://img.youtube.com/vi/${video?.videoId}/0.jpg`;
+  // onClick={(e) => {
+  //   e.preventDefault();
+  //   handleVideoClick(
+  //     video.videoId ?? '',
+  //     video.videoId ?? ''
+  //   );
+  //   setIsVideoOpen(true);
+  // }}
 
   return (
     <>
@@ -62,23 +84,20 @@ const CandidateDetailsArea = ({
                     <i className="bi bi-play"></i>
                   </button>
                 </div> */}
-                <h3 className="title">Videos </h3>
-                <div className="mb-4 p-4">
-                  <div className="container">
-                    <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 gap-3 ">
-                      {candidateDetials?.videos?.map((video, index) => {
-                        return (
-                          <Card className="col p-1" key={index}>
-                            <Card.Img
-                              variant="top"
-                              className="p-2"
-                              src={`https://img.youtube.com/vi/${video?.videoId}/0.jpg`}
-                            />
-                            <Card.Body>
-                              <Card.Title className="fw-bold">
-                                {video?.title}
-                              </Card.Title>
-                              <Button
+                <div className="mb-75 lg-mb-50">
+                  <h3 className="title py-3">Videos </h3>
+                  <div className="">
+                    <div className="container">
+                      <div className="position-relative">
+                        <Slider
+                          {...slider_setting}
+                          ref={sliderRef}
+                          className=" card-wrapper category-slider-one row"
+                        >
+                          {candidateDetials?.videos?.map((video, index) => {
+                            return (
+                              <div
+                                key={index}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   handleVideoClick(
@@ -87,15 +106,33 @@ const CandidateDetailsArea = ({
                                   );
                                   setIsVideoOpen(true);
                                 }}
-                                className="px-3"
-                                variant="primary"
+                                className="item"
                               >
-                                Watch
-                              </Button>
-                            </Card.Body>
-                          </Card>
-                        );
-                      })}
+                                <div
+                                  className="card-style-six position-relative"
+                                  style={{
+                                    backgroundImage: `url(${`https://img.youtube.com/vi/${video?.videoId}/0.jpg`})`
+                                  }}
+                                >
+                                  <button className="w-100 text-decoration-none h-100 ps-4 pb-20 d-flex align-items-end">
+                                    <div className="title text-white fw-500 text-lg">
+                                      {video.title}
+                                    </div>
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </Slider>
+                      </div>
+                      <ul className="slider-arrows slick-arrow-two d-flex justify-content-center style-none sm-mt-20">
+                        <li onClick={sliderPrev} className="prev_d slick-arrow">
+                          <i className="bi bi-chevron-left"></i>
+                        </li>
+                        <li onClick={sliderNext} className="next_d slick-arrow">
+                          <i className="bi bi-chevron-right"></i>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>

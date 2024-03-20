@@ -20,3 +20,34 @@ export const skills = [
   'Automobile',
   'Account'
 ];
+
+// slider setting
+export const slider_setting = {
+  dots: false,
+  arrows: false,
+  centerPadding: '0px',
+  slidesToShow: 2,
+  slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 3000,
+  responsive: [
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 768,
+      settings: {
+        slidesToShow: 2
+      }
+    },
+    {
+      breakpoint: 576,
+      settings: {
+        slidesToShow: 1
+      }
+    }
+  ]
+};

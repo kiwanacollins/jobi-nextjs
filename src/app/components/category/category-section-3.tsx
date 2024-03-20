@@ -96,7 +96,7 @@ export function TrendingJobs() {
         ))}
       </Slider>
 
-      <ul className="slider-arrows slick-arrow-two d-flex justify-content-center style-none sm-mt-20">
+      <ul className="slider-arrows slick-arrow-two mt-lg-12 d-flex justify-content-center style-none sm-mt-20">
         <li onClick={sliderPrev} className="prev_d slick-arrow">
           <i className="bi bi-chevron-left"></i>
         </li>
