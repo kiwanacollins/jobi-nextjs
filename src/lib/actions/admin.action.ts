@@ -89,9 +89,14 @@ export async function deleteSingleCategory(param: {
   const { mongoId, path } = param;
   try {
     await connectToDatabase();
+    await connectToCloudinary();
     const result = await Category.findByIdAndDelete(mongoId);
 
     if (result) {
+      // Delete the image from Cloudinary
+      if (result.image.public_id) {
+        await cloudinary.v2.uploader.destroy(result.image.public_id);
+      }
       revalidatePath(path);
       return { success: true, message: 'Category deleted successfully' };
     } else {
@@ -145,15 +150,13 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
       }
       image.url = result.secure_url;
       image.public_id = result.public_id;
-      // console.log('result', result);
-      // console.log('image', image);
     }
 
     category.name = name;
     category.image = image;
 
     await category.save();
-    console.log('Update category', category);
+
     revalidatePath(path);
     return { success: true, message: 'Category updated successfully' };
   } catch (error) {

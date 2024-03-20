@@ -168,6 +168,7 @@ const CategoryForm = ({ type, category }: IProps) => {
       setSkillsTag([]);
       setValue('name', '');
       setValue('subcategory', []);
+      setImagePreview('');
       reset();
       setIsSubmitting(false);
     }
