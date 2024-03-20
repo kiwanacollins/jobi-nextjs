@@ -57,7 +57,7 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                   <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Job Created</th>
-                    <th scope="col">Applicants</th>
+                  
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -69,7 +69,6 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                       jobId={job._id}
                       title={job.title}
                       info={job.overview}
-                      application="20"
                       date={getTimestamp(job?.createAt as Date)}
                       status="active"
                     />
@@ -100,24 +99,21 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                 <tbody className="border-0">
                   <EmployJobItem
                     title="Marketing Specialist"
-                    info="Part-time . Uk"
-                    application="20"
+                    info="Part-time . Uk"                  
                     date="13 Aug, 2023"
                     status="pending"
                   />
-
                   <EmployJobItem
                     title="Brand & Producr Designer"
                     info="Fulltime . Spain"
-                    application="130"
+               
                     date="05 Jun, 2023"
                     status="active"
                   />
-
                   <EmployJobItem
                     title="Developer for IT company"
                     info="Fulltime . Germany"
-                    application="70"
+                  
                     date="14 Feb, 2023"
                     status="active"
                   />
@@ -125,7 +121,6 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                   <EmployJobItem
                     title="Accounting Manager"
                     info="Fulltime . USA"
-                    application="278"
                     date="27 Sep, 2023"
                     status="expired"
                   />

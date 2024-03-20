@@ -58,13 +58,13 @@ const nav_data: {
     link: '/dashboard/employ-dashboard/jobs',
     title: 'My Jobs'
   },
-  {
-    id: 4,
-    icon: nav_4,
-    icon_active: nav_4_active,
-    link: '/dashboard/employ-dashboard/messages',
-    title: 'Messages'
-  },
+  // {
+  //   id: 4,
+  //   icon: nav_4,
+  //   icon_active: nav_4_active,
+  //   link: '/dashboard/employ-dashboard/messages',
+  //   title: 'Messages'
+  // },
   {
     id: 5,
     icon: nav_5,
@@ -79,13 +79,13 @@ const nav_data: {
     link: '/dashboard/employ-dashboard/saved-candidate',
     title: 'Saved Candidate'
   },
-  {
-    id: 7,
-    icon: nav_9,
-    icon_active: nav_9_active,
-    link: '/dashboard/employ-dashboard/membership',
-    title: 'Membership'
-  },
+  // {
+  //   id: 7,
+  //   icon: nav_9,
+  //   icon_active: nav_9_active,
+  //   link: '/dashboard/employ-dashboard/membership',
+  //   title: 'Membership'
+  // },
   {
     id: 8,
     icon: nav_7,
@@ -107,7 +107,7 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
       <aside className={`dash-aside-navbar ${isOpenSidebar ? 'show' : ''}`}>
         <div className="position-relative">
           <div className="logo text-md-center d-md-block d-flex align-items-center justify-content-between">
-            <Link href="/dashboard/employ-dashboard">
+            <Link href="/">
               <Image src={logo} alt="logo" priority />
             </Link>
             <button

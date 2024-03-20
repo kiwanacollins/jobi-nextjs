@@ -5,7 +5,8 @@ import Wrapper from '@/layouts/wrapper';
 import { getUserById } from '@/lib/actions/user.action';
 import { useAuth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+// import 'bootstrap/dist/js/bootstrap.bundle.js';
+import NextTopLoader from 'nextjs-toploader';
 
 import React, { useEffect, useState } from 'react';
 
@@ -24,6 +25,7 @@ const EmployDashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
+      <NextTopLoader  showSpinner={false} />
       <div className="main-page-wrapper">
         <EmployAside
           isOpenSidebar={isOpenSidebar}

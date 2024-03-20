@@ -5,7 +5,7 @@ interface IEmployJobItemProps {
   title: string;
   info: string;
   date: string;
-  application: string;
+ 
   status: string;
   jobId?: string | undefined;
 }
@@ -14,7 +14,6 @@ const EmployJobItem = ({
   title,
   info,
   date,
-  application,
   status,
   jobId
 }: IEmployJobItemProps) => {
@@ -27,7 +26,7 @@ const EmployJobItem = ({
         </div>
       </td>
       <td>{date}</td>
-      <td>{application} Applications</td>
+      
       <td>
         <div className="job-status text-capitalize">{status}</div>
       </td>

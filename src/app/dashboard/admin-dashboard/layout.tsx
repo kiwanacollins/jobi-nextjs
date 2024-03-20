@@ -7,6 +7,7 @@ import { useAuth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 // import 'bootstrap/dist/js/bootstrap';
+import NextTopLoader from 'nextjs-toploader';
 
 const CandidateDashboardLayout = ({
   children
@@ -27,6 +28,7 @@ const CandidateDashboardLayout = ({
   }, [userId]);
   return (
     <Wrapper>
+     <NextTopLoader  showSpinner={false} />
       <div className="main-page-wrapper">
         <AdminAside
           isOpenSidebar={isOpenSidebar}
