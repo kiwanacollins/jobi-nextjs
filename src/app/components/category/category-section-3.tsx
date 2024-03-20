@@ -44,7 +44,7 @@ export function TrendingJobs() {
     id: c._id,
     name: c.name,
     title: <>{c.name}</>,
-    bg_img: bg_1
+    bg_img: c?.image?.url || bg_1
   }));
   // const category_items = category_data.filter((c) => c.bg_img);
   const sliderRef = useRef<Slider | null>(null);
@@ -76,7 +76,7 @@ export function TrendingJobs() {
           <div key={item.id} className="item">
             <div
               className="card-style-six position-relative"
-              style={{ backgroundImage: `url(${item.bg_img?.src})` }}
+              style={{ backgroundImage: `url(${item.bg_img})` }}
             >
               <Link
                 href={{
