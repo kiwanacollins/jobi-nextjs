@@ -118,7 +118,7 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
     if (!category) {
       return { success: false, message: 'Category not found' };
     }
-
+    // check if subcategory exists
     for (const subcategory of subcategories ?? []) {
       const existingSubcategory = category?.subcategory?.find(
         (sc: any) => sc.name === subcategory
@@ -133,7 +133,7 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
         );
       }
     }
-
+    // upload image to cloudinary
     if (image.url) {
       const result = await cloudinary.v2.uploader.upload(image.url as string, {
         folder: 'categories',
