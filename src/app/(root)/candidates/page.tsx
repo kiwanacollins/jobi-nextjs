@@ -17,16 +17,16 @@ export const metadata: Metadata = {
 
 const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
   const candidates = await getAllCandidates({
-    keyword: searchParams.keyword,
-    query: searchParams.query,
-    skill: searchParams.skill,
-    qualification: searchParams.qualification,
-    gender: searchParams.gender,
-    location: searchParams.location,
-    experience: searchParams.experience,
-    fluency: searchParams.fluency,
-    duration: searchParams.duration,
-    category: searchParams.category
+    keyword: searchParams?.keyword,
+    query: searchParams?.query,
+    skill: searchParams?.skill,
+    qualification: searchParams?.qualification,
+    gender: searchParams?.gender,
+    location: searchParams?.location,
+    experience: searchParams?.experience,
+    fluency: searchParams?.fluency,
+    duration: searchParams?.duration,
+    category: searchParams?.category
 
     // min: searchParams.min,
     // max: searchParams.max

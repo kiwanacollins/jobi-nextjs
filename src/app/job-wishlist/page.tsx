@@ -1,14 +1,14 @@
-import React from "react";
-import { Metadata } from "next";
-import Wrapper from "@/layouts/wrapper";
-import Header from "@/layouts/headers/header";
-import FooterOne from "@/layouts/footers/footer-one";
-import JobPortalIntro from "../components/job-portal-intro/job-portal-intro";
-import CommonBreadcrumb from "../components/common/common-breadcrumb";
-import WishlistArea from "../components/wishlist/wishlist-area";
+import React from 'react';
+import { Metadata } from 'next';
+import Wrapper from '@/layouts/wrapper';
+import Header from '@/layouts/headers/header';
+import FooterOne from '@/layouts/footers/footer-one';
+import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
+import CommonBreadcrumb from '../components/common/common-breadcrumb';
+import WishlistArea from '../components/wishlist/wishlist-area';
 
 export const metadata: Metadata = {
-  title: "Job Wishlist",
+  title: 'Job Wishlist'
 };
 
 const JobWishlistPage = () => {

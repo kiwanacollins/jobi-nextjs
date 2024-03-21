@@ -4,14 +4,16 @@ import Link from 'next/link';
 interface ISharedCandidateTableItem {
   id: number;
   companyName: string;
+  employeeId: string;
   employeeName: string;
-  email: string;
+  email?: string;
   candidates: any[];
 }
 const SharedCandidateTableItem = ({
   companyName,
   employeeName,
   email,
+  employeeId,
   id,
   candidates
 }: ISharedCandidateTableItem) => {
@@ -21,10 +23,14 @@ const SharedCandidateTableItem = ({
         <div className="job-name fw-500">{id}</div>
       </td>
       <td>
-        <div className="job-name fw-500">{companyName}</div>
+        <div className="job-name fw-500">
+          <Link href={`/wishlist/employee/${employeeId}`}>{companyName}</Link>
+        </div>
       </td>
       <td>
-        <div className="job-name fw-500">{employeeName}</div>
+        <div className="job-name fw-500">
+          <Link href={`/wishlist/employee/${employeeId}`}>{employeeName}</Link>
+        </div>
       </td>
       <td>
         <div className="job-status text-capitalize d-flex justify-content-center align-items-center  flex-wrap gap-1">

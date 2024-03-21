@@ -1,5 +1,6 @@
 export interface SearchParamsProps {
   searchParams: { [key: string]: string | undefined };
+  params?: { id: string };
 }
 
 export interface IServerResponse {

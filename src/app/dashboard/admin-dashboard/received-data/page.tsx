@@ -3,7 +3,6 @@ import { getShareSavedCandidates } from '@/lib/actions/admin.action';
 
 const Page = async () => {
   const { data } = await getShareSavedCandidates();
-  console.log('Page  sharedCandidates:', data);
 
   return (
     <div>

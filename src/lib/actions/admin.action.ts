@@ -268,16 +268,40 @@ export async function getShareSavedCandidates() {
     const sharedCandidates = await ShareData.find()
       .populate({
         path: 'employeeId',
-        select: 'name companyName picture email' // Specify fields for employee
+        select: 'name companyName picture email clerkId' // Specify fields for employee
       })
       .populate({
         path: 'candidates',
         select: 'name email picture resumeId' // Specify fields for candidates
       });
-    console.log('sharedCandidates', sharedCandidates);
+
     return {
       success: true,
       data: sharedCandidates
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+export async function getSingleCompanySharedData(employeeId: string) {
+  try {
+    await connectToDatabase();
+    await connectToDatabase();
+    const singleShareData = await ShareData.findOne({ employeeId })
+      .populate({
+        path: 'employeeId',
+        select:
+          'name companyName website clerkId picture email categories mediaLinks' // Specify fields for employee
+      })
+      .populate({
+        path: 'candidates',
+        select: 'name email picture resumeId post skills' // Specify fields for candidates
+      });
+
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(singleShareData))
     };
   } catch (error) {
     console.log(error);
