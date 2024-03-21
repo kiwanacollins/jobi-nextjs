@@ -34,7 +34,6 @@ const CandidateV1FilterArea = () => {
             params: searchParams.toString(),
             keysToRemove: ['keyword']
           });
-
           router.push(newUrl, { scroll: false });
         }
       }

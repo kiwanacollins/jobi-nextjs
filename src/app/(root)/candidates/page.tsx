@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
   const candidates = await getAllCandidates({
     keyword: searchParams.keyword,
+    query: searchParams.query,
     skill: searchParams.skill,
     qualification: searchParams.qualification,
     gender: searchParams.gender,
@@ -25,8 +26,10 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     experience: searchParams.experience,
     fluency: searchParams.fluency,
     duration: searchParams.duration,
-    min: searchParams.min,
-    max: searchParams.max
+    category: searchParams.category
+
+    // min: searchParams.min,
+    // max: searchParams.max
   });
 
   const { userId } = auth();

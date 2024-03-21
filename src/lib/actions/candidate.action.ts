@@ -176,6 +176,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
 
     const {
       keyword,
+      query: searchQuery,
       skill,
       qualification,
       gender,
@@ -183,15 +184,32 @@ export async function getAllCandidates(params: getCandidatesParams) {
       experience,
       fluency,
       duration,
+      category,
       min,
       max
     } = params;
-    console.log('getAllCandidates  min-max:', {
-      min,
-      max
-    });
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
+
+    if (searchQuery) {
+      query.$or = [];
+      query.$or.push(
+        { name: { $regex: new RegExp(searchQuery as string, 'i') } },
+        { post: { $regex: new RegExp(searchQuery as string, 'i') } },
+        {
+          qualification: { $regex: new RegExp(searchQuery as string, 'i') }
+        },
+        {
+          post: { $regex: new RegExp(searchQuery as string, 'i') }
+        },
+        {
+          skills: { $elemMatch: { $regex: new RegExp(searchQuery, 'i') } }
+        },
+        {
+          gender: { $eq: searchQuery }
+        }
+      );
+    }
 
     if (
       keyword ||
@@ -202,6 +220,7 @@ export async function getAllCandidates(params: getCandidatesParams) {
       experience ||
       fluency ||
       duration ||
+      category ||
       min ||
       max
     ) {
@@ -214,6 +233,12 @@ export async function getAllCandidates(params: getCandidatesParams) {
             qualification: { $regex: new RegExp(keyword as string, 'i') }
           },
           {
+            post: { $regex: new RegExp(keyword as string, 'i') }
+          },
+          {
+            skills: { $elemMatch: { $regex: new RegExp(keyword, 'i') } }
+          },
+          {
             gender: { $eq: keyword }
           }
         );
@@ -221,6 +246,9 @@ export async function getAllCandidates(params: getCandidatesParams) {
 
       if (qualification) {
         query.qualification = { $regex: new RegExp(qualification, 'i') };
+      }
+      if (category) {
+        query.post = { $regex: new RegExp(category, 'i') };
       }
       if (fluency) {
         query.english_fluency = { $regex: new RegExp(fluency, 'i') };

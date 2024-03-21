@@ -1,26 +1,62 @@
-import React from "react";
-import NiceSelect from "@/ui/nice-select";
-import job_data from "@/data/job-data";
-import slugify from "slugify";
+'use client';
+import React, { useEffect, useState } from 'react';
+import NiceSelect from '@/ui/nice-select';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery } from '@/utils/utils';
+import { getCategoriesAndSubcategories } from '@/lib/actions/category.action';
 
 const JobCategorySelect = ({
-  setCategoryVal,
+  setCategoryVal
 }: {
   setCategoryVal: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const [categoryData, setCategoryData] = useState<string[]>([]);
   const uniqueCategories = [
-    ...new Set(job_data.flatMap((job) => job.category)),
+    ...new Set(categoryData.flatMap((category) => category))
   ];
   // category_option
-  const category_option = uniqueCategories.map((c) => {
+  const category_option = uniqueCategories.map((category) => {
     return {
-      value: slugify(c.split(",").join("-").toLowerCase(), "-"),
-      label: c,
+      value: category,
+      label: category
     };
   });
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category');
+  const [active, setActive] = useState(category || '');
   const handleCategory = (item: { value: string; label: string }) => {
-    setCategoryVal(item.value);
+    if (active === item.value) {
+      setActive('');
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'category',
+        value: null
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      setActive(item.value);
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'category',
+        value: item.value.toLowerCase()
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
   };
+
+  useEffect(() => {
+    const fetchAllCategories = async () => {
+      const res = await getCategoriesAndSubcategories();
+
+      setCategoryData(res?.categories);
+    };
+    fetchAllCategories(); // Remove the 'return' statement
+  }, []);
   return (
     <NiceSelect
       options={category_option}
@@ -28,6 +64,7 @@ const JobCategorySelect = ({
       onChange={(item) => handleCategory(item)}
       name="Category"
       cls="category"
+      placeholder="Select Category"
     />
   );
 };

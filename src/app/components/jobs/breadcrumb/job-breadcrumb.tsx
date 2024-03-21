@@ -1,13 +1,13 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import shape_1 from "@/assets/images/shape/shape_02.svg";
-import shape_2 from "@/assets/images/shape/shape_03.svg";
-import SearchForm from "../../forms/search-form";
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import shape_1 from '@/assets/images/shape/shape_02.svg';
+import shape_2 from '@/assets/images/shape/shape_03.svg';
+import SearchForm from '../../forms/search-form';
 
 const JobBreadcrumb = ({
-  title = "Job Listing",
-  subtitle = "We delivered blazing fast & striking work solution",
+  title = 'Job Listing',
+  subtitle = 'We delivered blazing fast & striking work solution'
 }: {
   title?: string;
   subtitle?: string;
@@ -30,7 +30,7 @@ const JobBreadcrumb = ({
             <div className="row">
               <div className="col-xl-9 col-lg-8 m-auto">
                 <div className="job-search-one position-relative">
-                  <SearchForm/>
+                  <SearchForm />
                 </div>
               </div>
             </div>

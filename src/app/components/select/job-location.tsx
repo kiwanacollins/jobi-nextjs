@@ -1,10 +1,10 @@
-import React from "react";
-import slugify from "slugify";
-import job_data from "@/data/job-data";
-import NiceSelect from "@/ui/nice-select";
+import React from 'react';
+import slugify from 'slugify';
+import job_data from '@/data/job-data';
+import NiceSelect from '@/ui/nice-select';
 
 const JobLocationSelect = ({
-  setLocationVal,
+  setLocationVal
 }: {
   setLocationVal: React.Dispatch<React.SetStateAction<string>>;
 }) => {
@@ -12,8 +12,8 @@ const JobLocationSelect = ({
   // location_option
   const location_option = uniqueLocations.map((l) => {
     return {
-      value: slugify(l.split(",").join("-").toLowerCase(), "-"),
-      label: l,
+      value: slugify(l.split(',').join('-').toLowerCase(), '-'),
+      label: l
     };
   });
   const handleLocation = (item: { value: string; label: string }) => {
