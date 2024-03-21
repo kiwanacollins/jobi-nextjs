@@ -279,7 +279,6 @@ export async function getAllCandidates(params: getCandidatesParams) {
         }
       }
     }
-    console.log('getAllCandidates  query:', query);
 
     const candidates = await User.find(query).sort({
       joinedAt: -1

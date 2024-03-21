@@ -182,22 +182,32 @@ export const updateJobById = async (params: IUpdateJobParams) => {
 
 // get all job posts
 
-interface IJobDataParams{
-  category?:string
+interface IJobDataParams {
+  query?: string;
+  category?: string;
 }
 
-export const getJobPosts = async (params:IJobDataParams) => {
+export const getJobPosts = async (params: IJobDataParams) => {
   try {
     await connectToDatabase();
-    const {category } = params
-    const query: FilterQuery<typeof Job> = {}
-    if(category){
+    const { category, query: searchQuery } = params;
+    const query: FilterQuery<typeof Job> = {};
+    if (searchQuery) {
+      query.$or = [
+        { category: { $regex: new RegExp(searchQuery, 'i') } },
+        { title: { $regex: new RegExp(searchQuery, 'i') } },
+        { experience: { $regex: new RegExp(searchQuery, 'i') } },
+        { industry: { $regex: new RegExp(searchQuery, 'i') } },
+        { duration: { $regex: new RegExp(searchQuery, 'i') } }
+      ];
+    }
+    if (category) {
       query.$or = [
         { category: { $regex: new RegExp(category, 'i') } },
-        { title: { $regex: new RegExp(category, 'i') } },
-      ]
+        { title: { $regex: new RegExp(category, 'i') } }
+      ];
     }
-    
+
     const jobs = await Job.find(query)
       .populate('createdBy', 'name picture')
       .sort({ createAt: -1 })

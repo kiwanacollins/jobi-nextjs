@@ -4,6 +4,7 @@ import Image from 'next/image';
 import shape_1 from '@/assets/images/shape/shape_02.svg';
 import shape_2 from '@/assets/images/shape/shape_03.svg';
 import SearchForm from '../../forms/search-form';
+import { usePathname } from 'next/navigation';
 
 const JobBreadcrumb = ({
   title = 'Job Listing',
@@ -12,6 +13,7 @@ const JobBreadcrumb = ({
   title?: string;
   subtitle?: string;
 }) => {
+  const pathname = usePathname();
   return (
     <div className="inner-banner-one position-relative">
       <div className="container">
@@ -30,7 +32,7 @@ const JobBreadcrumb = ({
             <div className="row">
               <div className="col-xl-9 col-lg-8 m-auto">
                 <div className="job-search-one position-relative">
-                  <SearchForm />
+                  <SearchForm route={pathname} />
                 </div>
               </div>
             </div>

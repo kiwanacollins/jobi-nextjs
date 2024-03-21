@@ -5,7 +5,11 @@ import JobCategorySelect from '../select/job-category';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
 
-const SearchForm = () => {
+interface SearchFormProps {
+  route?: string;
+}
+
+const SearchForm = ({ route }: SearchFormProps) => {
   const { handleSubmit, setCategoryVal } = useSearchFormSubmit();
 
   const router = useRouter();
@@ -25,7 +29,7 @@ const SearchForm = () => {
 
         router.push(newUrl, { scroll: false });
       } else {
-        if (pathname === '/candidates') {
+        if (pathname === route) {
           const newUrl = removeKeysFromQuery({
             params: searchParams.toString(),
             keysToRemove: ['query']
@@ -36,7 +40,7 @@ const SearchForm = () => {
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [keyword, pathname, router, searchParams, query]);
+  }, [keyword, pathname, router, searchParams, query, route]);
 
   return (
     <form onSubmit={handleSubmit}>

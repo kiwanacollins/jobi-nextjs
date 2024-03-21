@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 
 const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
   const { jobs } = await getJobPosts({
-    category: searchParams.category
+    category: searchParams.category,
+    query: searchParams.query
   });
   return (
     <>

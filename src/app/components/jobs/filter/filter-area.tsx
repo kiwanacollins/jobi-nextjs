@@ -5,22 +5,22 @@ import JobType from './job-type';
 import JobExperience from './job-experience';
 import JobCategory from './job-category';
 import JobTags from './job-tags';
-import JobPrices from './job-prices';
+// import JobPrices from './job-prices';
 import { useAppDispatch } from '@/redux/hook';
 import { resetFilter } from '@/redux/features/filterSlice';
 
 // prop type
 type IProps = {
-  priceValue: number[];
-  setPriceValue: React.Dispatch<React.SetStateAction<number[]>>;
-  maxPrice: number;
+  priceValue?: number[];
+  setPriceValue?: React.Dispatch<React.SetStateAction<number[]>>;
+  maxPrice?: number;
 };
 const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
   const dispatch = useAppDispatch();
   // handleReset
   const handleReset = () => {
     dispatch(resetFilter());
-    setPriceValue([0, maxPrice]);
+    // setPriceValue([0, maxPrice]);
   };
   return (
     <div
@@ -82,7 +82,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
           </div>
         </div>
         {/* <!-- /.filter-block --> */}
-        <div className="filter-block bottom-line pb-25 mt-25">
+        {/* <div className="filter-block bottom-line pb-25 mt-25">
           <a
             className="filter-title text-decoration-none fw-500 text-dark"
             data-bs-toggle="collapse"
@@ -99,7 +99,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
               maxPrice={maxPrice}
             />
           </div>
-        </div>
+        </div> */}
         {/* <!-- /.filter-block --> */}
         <div className="filter-block bottom-line pb-25 mt-25">
           <a

@@ -19,9 +19,9 @@ const JobListThree = ({
   allJobs: IJobData[];
 }) => {
   const all_jobs = allJobs;
-  const maxPrice = all_jobs.reduce((max, job) => {
-    return job.maxSalary > max ? job.maxSalary : max;
-  }, 0);
+  // const maxPrice = all_jobs.reduce((max, job) => {
+  //   return job.maxSalary > max ? job.maxSalary : max;
+  // }, 0);
   const { category, experience, job_type, location, skills } = useAppSelector(
     (state) => state.filter
   );
@@ -30,7 +30,7 @@ const JobListThree = ({
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
   const [jobType, setJobType] = useState(grid_style ? 'grid' : 'list');
-  const [priceValue, setPriceValue] = useState([0, maxPrice]);
+  // const [priceValue, setPriceValue] = useState([0, maxPrice]);
   const [shortValue, setShortValue] = useState('');
 
   useEffect(() => {
@@ -60,10 +60,10 @@ const JobListThree = ({
         skills.length !== 0
           ? skills.some((t) => item?.skills?.includes(t))
           : true
-      )
-      .filter(
-        (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
       );
+    // .filter(
+    //   (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+    // );
 
     if (shortValue === 'price-low-to-high') {
       filteredData = filteredData
@@ -88,7 +88,7 @@ const JobListThree = ({
     job_type,
     location,
     skills,
-    priceValue,
+    // priceValue,
     shortValue,
     all_jobs
   ]);
@@ -117,9 +117,9 @@ const JobListThree = ({
             </button>
             {/* filter area start */}
             <FilterArea
-              priceValue={priceValue}
-              setPriceValue={setPriceValue}
-              maxPrice={maxPrice}
+            // priceValue={priceValue}
+            // setPriceValue={setPriceValue}
+            // maxPrice={maxPrice}
             />
             {/* filter area end */}
           </div>
