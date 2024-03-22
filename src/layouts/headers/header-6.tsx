@@ -49,8 +49,6 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                         className={`fw-500 text-decoration-none login-btn-three ${
                           dark_style ? 'dark-style' : ''
                         } tran3s`}
-                        // data-bs-toggle="modal"
-                        // data-bs-target="#loginModal"
                       >
                         Login/Sign up
                       </a>
@@ -58,17 +56,18 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   )}
 
                   <SignedIn>
-                    {(currentUser?.role || currentUser?.isAdmin === true) && (
+                    {/* {(currentUser?.role || currentUser?.isAdmin === true) && (
                       <li className="nav-item dropdown Dashboard ">
-                        <button
+                        <a
                           className="nav-link fw-bold me-3  text-white  dropdown-toggle"
+                          href="#"
                           role="button"
                           data-bs-toggle="dropdown"
                           data-bs-auto-close="outside"
                           aria-expanded="false"
                         >
                           Dashboard
-                        </button>
+                        </a>
                         <ul className="dropdown-menu p-3">
                           {currentUser?.role === 'employee' && (
                             <li>
@@ -92,7 +91,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                           )}
                         </ul>
                       </li>
-                    )}
+                    )} */}
                     {currentUser?.role !== 'employee' && (
                       <li className="d-none d-md-block ms-3 me-3 ">
                         <Link
@@ -166,6 +165,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     <Menus
                       userId={userId as string}
                       role={currentUser?.role as string}
+                      isAdmin={currentUser?.isAdmin as boolean}
                       handleNavCollapse={handleNavCollapse}
                     />
                     {/* menus end */}
