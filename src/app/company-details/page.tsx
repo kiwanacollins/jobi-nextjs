@@ -28,7 +28,7 @@ const CompanyDetailsPage = () => {
         {/*breadcrumb end */}
 
         {/* company details area start */}
-        <CompanyDetailsArea />
+        <CompanyDetailsArea candidates={[]} company={{}} />
         {/* company details area end */}
 
         {/*job Open Position */}
