@@ -11,7 +11,7 @@ const Menus = ({
 }: {
   role: string;
   userId: string;
-  isAdmin: boolean;
+  isAdmin?: boolean;
   handleNavCollapse: () => void;
 }) => {
   return (
