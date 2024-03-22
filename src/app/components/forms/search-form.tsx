@@ -10,7 +10,7 @@ interface SearchFormProps {
 }
 
 const SearchForm = ({ route }: SearchFormProps) => {
-  const { handleSubmit, setCategoryVal } = useSearchFormSubmit();
+  const { handleSubmit } = useSearchFormSubmit();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -60,7 +60,7 @@ const SearchForm = ({ route }: SearchFormProps) => {
         <div className="col-md-4">
           <div className="input-box border-left">
             <div className="label">Category</div>
-            <JobCategorySelect setCategoryVal={setCategoryVal} />
+            <JobCategorySelect />
           </div>
         </div>
         <div className="col-md-3">
