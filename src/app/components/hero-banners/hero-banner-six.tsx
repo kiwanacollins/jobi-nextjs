@@ -2,16 +2,19 @@
 import React from 'react';
 import banner_1 from '@/assets/images/assets/banner_img_01.jpg';
 import banner_2 from '@/assets/images/assets/banner_img_02.jpg';
-import useSearchFormSubmit from '@/hooks/use-search-form-submit';
-import JobCategorySelect from '../select/job-category';
 import CounterOne from '../counter/counter-one';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 
 const HeroBannerSix = () => {
-  const { handleSubmit, setCategoryVal, setSearchText } = useSearchFormSubmit();
-  // handleSearchInput
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
+  // react hook form
+  const rounter = useRouter();
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = (data: any) => {
+    rounter.push(`/jobs?query=${data.keyword}`);
   };
+
   return (
     <div className="hero-banner-six position-relative pt-170 lg-pt-150 pb-60 lg-pb-40">
       <div className="container">
@@ -37,27 +40,26 @@ const HeroBannerSix = () => {
                   className="job-search-one style-two position-relative me-xxl-3 ms-xxl-3 mb-100 lg-mb-50 wow fadeInUp"
                   data-wow-delay="0.5s"
                 >
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row">
-                      <div className="col-md-5">
+                      <div className="col-md-9">
                         <div className="input-box">
                           <div className="label">Your job title, keyword</div>
                           <input
-                            onChange={handleSearchInput}
                             type="text"
-                            placeholder="Google"
+                            placeholder="Search Jobs"
                             className="keyword"
+                            {...register('keyword')}
+                            required
                           />
                         </div>
                       </div>
-                      <div className="col-md-4">
-                        <div className="input-box border-left">
-                          <div className="label">Category</div>
-                          <JobCategorySelect setCategoryVal={setCategoryVal} />
-                        </div>
-                      </div>
+
                       <div className="col-md-3">
-                        <button className="fw-500 text-md h-100 w-100 tran3s search-btn-two">
+                        <button
+                          type="submit"
+                          className="fw-500 text-md h-100 w-100 tran3s search-btn-two"
+                        >
                           Search
                         </button>
                       </div>

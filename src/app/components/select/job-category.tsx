@@ -5,14 +5,10 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery } from '@/utils/utils';
 import { getCategoriesAndSubcategories } from '@/lib/actions/category.action';
 
-const JobCategorySelect = ({
-  setCategoryVal
-}: {
-  setCategoryVal: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const JobCategorySelect = () => {
   const [categoryData, setCategoryData] = useState<string[]>([]);
   const uniqueCategories = [
-    ...new Set(categoryData.flatMap((category) => category))
+    ...new Set(categoryData?.flatMap((category) => category))
   ];
   // category_option
   const category_option = uniqueCategories.map((category) => {
