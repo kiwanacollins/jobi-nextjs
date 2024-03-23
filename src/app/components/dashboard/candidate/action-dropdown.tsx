@@ -45,7 +45,12 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
     <ul className="dropdown-menu dropdown-menu-end">
       <li className="dropdown-item">
         <Link href={`/candidate-profile/${resumeId}`} className="dropdown-item">
-          <Image src={view} alt="icon" className="lazy-img" /> View
+          <Image src={view} alt="icon" className="lazy-img" /> View profile
+        </Link>
+      </li>
+      <li className="dropdown-item">
+        <Link href={`/dashboard/admin-dashboard/candidate/addresume/${id}`} className="dropdown-item">
+        <Image src={edit} alt="icon" className="lazy-img" />  Edit Resume
         </Link>
       </li>
       <li className="dropdown-item">
