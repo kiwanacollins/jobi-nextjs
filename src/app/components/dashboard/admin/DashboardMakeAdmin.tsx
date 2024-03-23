@@ -1,6 +1,6 @@
 'use client';
 import { makeUserAdmin } from '@/lib/actions/admin.action';
-import { notifySuccess } from '@/utils/toast';
+import { notifyError, notifySuccess } from '@/utils/toast';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react';
 import * as z from 'zod';
@@ -28,16 +28,17 @@ const DashboardMakeAdmin = () => {
   const onSubmit = async (data: IEmailType) => {
     setIsSubmitting(true);
     try {
-      await makeUserAdmin({
+     const res = await makeUserAdmin({
         email: data.email,
         path: pathname
       });
-
-      notifySuccess('Admin created successfully');
-      setIsSubmitting(false);
+      if(res?.success){
+        notifySuccess(res.message as string);
+      }
     } catch (error) {
       // Handle network or other errors
       console.error('Error:', error);
+      notifyError(error as string)
     } finally {
       setIsSubmitting(false);
       reset();

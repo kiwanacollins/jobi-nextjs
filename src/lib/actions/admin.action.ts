@@ -201,7 +201,9 @@ interface ImakeAdminProps {
 }
 export async function makeUserAdmin(params: ImakeAdminProps) {
   const { email, path } = params;
-  const user = await User.findOne({ email });
+  try {
+
+    const user = await User.findOne({ email });
 
   if (!user) {
     throw new Error('User not found');
@@ -220,7 +222,17 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
     }
   }
   revalidatePath(path);
-  return JSON.parse(JSON.stringify(user));
+   return {
+    success: true,
+    message:'Admin created successfully',
+    data:JSON.parse(JSON.stringify(user))
+   };
+  } catch (error) {
+   return {
+    success: false,
+    message:error
+   }
+  }
 }
 
 export async function getAdmins() {
