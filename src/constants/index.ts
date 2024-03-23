@@ -26,7 +26,7 @@ export const slider_setting = {
   dots: false,
   arrows: false,
   centerPadding: '0px',
-  slidesToShow: 2,
+  slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
   autoplaySpeed: 3000,
@@ -34,13 +34,13 @@ export const slider_setting = {
     {
       breakpoint: 992,
       settings: {
-        slidesToShow: 2
+        slidesToShow: 1
       }
     },
     {
       breakpoint: 768,
       settings: {
-        slidesToShow: 2
+        slidesToShow: 1
       }
     },
     {

@@ -125,7 +125,7 @@ const CandidateDetailsArea = ({
                           })}
                         </Slider>
                       </div>
-                      <ul className="slider-arrows slick-arrow-two d-flex justify-content-center style-none sm-mt-20">
+                      <ul className="slider-arrows mt-3 slick-arrow-two d-flex justify-content-center style-none sm-mt-20">
                         <li onClick={sliderPrev} className="prev_d slick-arrow">
                           <i className="bi bi-chevron-left"></i>
                         </li>
