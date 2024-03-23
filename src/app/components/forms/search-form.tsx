@@ -64,7 +64,7 @@ const SearchForm = ({ route }: SearchFormProps) => {
           </div>
         </div>
         <div className="col-md-3">
-          <button className="fw-500 text-uppercase h-100 tran3s search-btn">
+          <button disabled type='submit' className="fw-500 text-uppercase h-100 tran3s search-btn">
             Search
           </button>
         </div>

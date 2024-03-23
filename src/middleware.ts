@@ -8,6 +8,7 @@ export default authMiddleware({
     '/jobs',
     '/jobs(.*)',
     '/candidates',
+    '/wishlist',
     '/candidate-profile(.*)',
     '/candidates(.*)',
     '/about',
