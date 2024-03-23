@@ -22,7 +22,7 @@ const SharedCandidateListTable = ({
             <SharedCandidateTableItem
               id={index + 1}
               key={item._id}
-              employeeId={item.employeeId.clerkId}
+              employeeId={item.employeeId._id}
               companyName={item.employeeId.companyName}
               employeeName={item.employeeId.name}
               email={item.employeeId.email}
