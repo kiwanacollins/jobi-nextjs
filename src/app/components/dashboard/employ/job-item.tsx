@@ -1,11 +1,12 @@
 import React from 'react';
 import JobActionDropdown from './JobActionDropdown';
+import ParseHTML from '../../common/parseHTML';
 
 interface IEmployJobItemProps {
   title: string;
   info: string;
   date: string;
- 
+
   status: string;
   jobId?: string | undefined;
 }
@@ -22,11 +23,13 @@ const EmployJobItem = ({
       <td>
         <div className="job-name fw-500">{title}</div>
         <div className="info1 d-none d-lg-block w-50">
-          {info.length > 70 ? info.slice(0, 70) + '...' : info}
+          <ParseHTML
+            data={info.length > 70 ? info.slice(0, 70) + '...' : info}
+          />
         </div>
       </td>
       <td>{date}</td>
-      
+
       <td>
         <div className="job-status text-capitalize">{status}</div>
       </td>
