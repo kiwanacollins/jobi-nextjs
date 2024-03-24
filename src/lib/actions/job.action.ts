@@ -96,7 +96,11 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
 
     revalidatePath(path);
 
-    return { status: 'ok', newJob };
+    return {
+      success: true,
+      message: 'Job post created successfully',
+      newJob: JSON.parse(JSON.stringify(newJob))
+    };
   } catch (error) {
     console.log(error);
     throw error;
@@ -122,7 +126,7 @@ export const updateJobById = async (params: IUpdateJobParams) => {
     );
 
     if (!updatedJob) {
-      return { status: 'error', message: 'Job not found' };
+      return { error: true, message: 'Job post not found' };
     }
 
     if (updateData.category) {
@@ -141,7 +145,7 @@ export const updateJobById = async (params: IUpdateJobParams) => {
           (subcategory: any) => subcategory.name === subcategoryName
         );
 
-        console.log('matchingSubcategory', matchingSubcategory);
+        // console.log('matchingSubcategory', matchingSubcategory);
 
         if (matchingSubcategory) {
           await Category.findByIdAndUpdate(
@@ -173,7 +177,11 @@ export const updateJobById = async (params: IUpdateJobParams) => {
 
     revalidatePath(path);
 
-    return { status: 'ok', updatedJob };
+    return {
+      success: true,
+      message: 'Job updated successfully',
+      updatedJob: JSON.parse(JSON.stringify(updatedJob))
+    };
   } catch (error) {
     console.log(error);
     throw error;

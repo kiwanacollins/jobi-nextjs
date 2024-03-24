@@ -84,9 +84,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
           title: '',
           company: '',
           year: '',
-          description: '',
-          yearStart: 2020,
-          yearEnd: 2023
+          description: ''
         }
       ],
       education: groupedEducation || [
@@ -94,9 +92,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
           title: '',
           academy: '',
           year: '',
-          description: '',
-          yearStart: 2020,
-          yearEnd: 2023
+          description: ''
         }
       ],
       videos: groupedVideos || [
@@ -168,7 +164,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
         title: item.title,
         company: item.company,
         yearStart: item.yearStart,
-        yearEnd: item.yearEnd || 0,
+        yearEnd: item.yearEnd,
         year,
         description: item.description
       };
@@ -180,7 +176,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
         title: item.title,
         academy: item.academy,
         yearStart: item.yearStart,
-        yearEnd: item.yearEnd || 0,
+        yearEnd: item.yearEnd,
         year,
         description: item.description
       };
@@ -241,8 +237,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       academy: '',
       year: '',
       description: '',
-      yearStart: 2020,
-      yearEnd: 2023
+      yearStart: 0,
+      yearEnd: 0
     });
   };
 
@@ -261,8 +257,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       company: '',
       year: '',
       description: '',
-      yearStart: 2020,
-      yearEnd: 2023
+      yearStart: 0,
+      yearEnd: 0
     });
   };
 
@@ -484,11 +480,14 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                               <div className="col-sm-6">
                                 <div className="dash-input-wrapper mb-30">
                                   <input
-                                    type="text"
+                                    type="number"
                                     placeholder="year start"
                                     {...register(
                                       `education.${index}.yearStart`,
-                                      { valueAsNumber: true }
+                                      {
+                                        setValueAs: (v) =>
+                                          v === '' ? undefined : parseInt(v)
+                                      }
                                     )}
                                   />
                                   {errors.education?.[index]?.yearStart && (
@@ -507,7 +506,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                     type="number"
                                     placeholder="year end"
                                     {...register(`education.${index}.yearEnd`, {
-                                      valueAsNumber: true
+                                      setValueAs: (v) =>
+                                        v === '' ? undefined : parseInt(v)
                                     })}
                                   />
                                   {errors.education?.[index]?.yearEnd && (
@@ -667,7 +667,10 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                     placeholder="year start"
                                     {...register(
                                       `experience.${index}.yearStart`,
-                                      { valueAsNumber: true }
+                                      {
+                                        setValueAs: (v) =>
+                                          v === '' ? undefined : parseInt(v)
+                                      }
                                     )}
                                   />
                                   {errors.experience?.[index]?.yearStart
@@ -685,10 +688,13 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                 <div className="dash-input-wrapper mb-30">
                                   <input
                                     type="number"
-                                    placeholder="year start"
+                                    placeholder="year End"
                                     {...register(
                                       `experience.${index}.yearEnd`,
-                                      { valueAsNumber: true }
+                                      {
+                                        setValueAs: (v) =>
+                                          v === '' ? undefined : parseInt(v)
+                                      }
                                     )}
                                   />
                                   {errors.experience?.[index]?.yearEnd

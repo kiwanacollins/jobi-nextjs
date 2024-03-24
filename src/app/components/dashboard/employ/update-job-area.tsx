@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CitySelect from '../candidate/city-select';
 import CountrySelect from '../candidate/country-select';
 import EmployExperience from './employ-experience';
@@ -17,6 +17,7 @@ import { updateJobById } from '@/lib/actions/job.action';
 import { usePathname } from 'next/navigation';
 import { ICategory } from '@/database/category.model';
 import { getCategories } from '@/lib/actions/admin.action';
+import { Editor } from '@tinymce/tinymce-react';
 
 interface IProps {
   job: IJobData;
@@ -25,6 +26,7 @@ interface IProps {
 const UpdateJobArea = ({ job }: IProps) => {
   const pathname = usePathname();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const editorRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
@@ -130,7 +132,7 @@ const UpdateJobArea = ({ job }: IProps) => {
 
     try {
       // todo: update job data
-      await updateJobById({
+      const res = await updateJobById({
         jobId: job._id,
         updateData: {
           title: data.title,
@@ -152,18 +154,25 @@ const UpdateJobArea = ({ job }: IProps) => {
         },
         path: pathname
       });
-      setProgress(100);
-      notifySuccess('Job post created successfully!');
+      if (res.success) {
+        setProgress(100);
+        notifySuccess(res.message);
+      }
+      if (res.error) {
+        notifyError(res.message);
+      }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
-      notifyError(error);
+      notifyError(error.message || 'Failed to Update post!');
       setProgress(0);
     } finally {
-      reset();
       setProgress(0);
       setIsSubmitting(false);
     }
   };
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   return (
     <div className="position-relative">
@@ -185,15 +194,50 @@ const UpdateJobArea = ({ job }: IProps) => {
           </div>
           <div className="dash-input-wrapper mb-30">
             <label htmlFor="">Job Description*</label>
-            <textarea
-              className="size-lg"
-              defaultValue={job.overview || ''}
-              placeholder="Write about the job in details..."
-              {...register('overview', {
-                required: `Description is required!`
-              })}
+            <Controller
               name="overview"
-            ></textarea>
+              control={control}
+              render={({ field }) => (
+                <Editor
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                  onInit={(evt, editor) => {
+                    // @ts-ignore
+                    editorRef.current = editor;
+                  }}
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => field.onChange(content)}
+                  initialValue={job?.overview || ''}
+                  init={{
+                    height: 350,
+                    menubar: false,
+                    plugins: [
+                      'advlist',
+                      'autolink',
+                      'lists',
+                      'link',
+                      'image',
+                      'charmap',
+                      'preview',
+                      'anchor',
+                      'searchreplace',
+                      'visualblocks',
+                      'codesample',
+                      'fullscreen',
+                      'insertdatetime',
+                      'media',
+                      'table'
+                    ],
+                    toolbar:
+                      'undo redo | ' +
+                      ' bold italic forecolor | alignleft aligncenter |' +
+                      'alignright alignjustify | bullist numlist',
+                    content_style: 'body { font-family:Inter; font-size:16px }',
+                    skin: 'oxide',
+                    content_css: 'light'
+                  }}
+                />
+              )}
+            />
             {errors?.overview && <ErrorMsg msg={errors?.overview.message} />}
           </div>
           <div className="row align-items-end">

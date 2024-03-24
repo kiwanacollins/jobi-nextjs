@@ -90,14 +90,14 @@ const nav_data: {
     title: 'Received Data'
   },
   {
-    id: 8,
+    id: 9,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/createBlog',
     title: 'Create Blog'
   },
   {
-    id: 9,
+    id: 10,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/blogs',

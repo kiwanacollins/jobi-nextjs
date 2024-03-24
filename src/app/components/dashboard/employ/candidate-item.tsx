@@ -62,7 +62,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                   </button>
                   <ActionDropdown
                     id={item?._id}
-                    resumeId={item?.resumeId as string | undefined}
+                    resumeId={(item?.resumeId as string) || ''}
                   />
                 </div>
               </div>

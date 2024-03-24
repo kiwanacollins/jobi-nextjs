@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CitySelect from '../candidate/city-select';
 import CountrySelect from '../candidate/country-select';
 import EmployExperience from './employ-experience';
@@ -16,6 +16,7 @@ import ErrorMsg from '../../common/error-msg';
 import Select from 'react-select';
 import { ICategory } from '@/database/category.model';
 import { getCategories } from '@/lib/actions/admin.action';
+import { Editor } from '@tinymce/tinymce-react';
 // props type
 type IProps = {
   mongoUserId: string | undefined;
@@ -23,6 +24,7 @@ type IProps = {
 
 const SubmitJobArea = ({ mongoUserId }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const editorRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const [selectedCountryDetails, setSelectedCountryDetails] = useState(
     {} as any
@@ -66,7 +68,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
 
   const selectedCountryName = watch('country');
   const selectedPost = watch('category');
-  const skillsOfSelectedPost = categories.find(
+  const skillsOfSelectedPost = categories?.find(
     (cat: any) => cat?.name === selectedPost
   );
 
@@ -122,7 +124,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
 
   // on submit
   const onSubmit = async (data: IJobDataSchemaType) => {
-    console.log('data', data);
+    // console.log('data', data);
     setIsSubmitting(true);
     simulateProgress();
     const {
@@ -164,19 +166,20 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     try {
       if (type === 'add') {
         // !Error: this function is calling two times
-        await creatJobPost({
+        const res = await creatJobPost({
           data: mongoData,
           clerkId: userId,
           createdBy: mongoUserId,
           path: pathname
         });
-        setProgress(100);
-        notifySuccess('Job post created successfully!');
+        if (res.success) {
+          notifySuccess(res.message);
+          setProgress(100);
+        }
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
       notifyError(error);
-      setProgress(0);
     } finally {
       reset();
       setProgress(0);
@@ -203,14 +206,50 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           </div>
           <div className="dash-input-wrapper mb-30">
             <label htmlFor="">Job Description*</label>
-            <textarea
-              className="size-lg"
-              placeholder="Write about the job in details..."
-              {...register('overview', {
-                required: `Description is required!`
-              })}
+            <Controller
               name="overview"
-            ></textarea>
+              control={control}
+              render={({ field }) => (
+                <Editor
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                  onInit={(evt, editor) => {
+                    // @ts-ignore
+                    editorRef.current = editor;
+                  }}
+                  onBlur={field.onBlur}
+                  onEditorChange={(content) => field.onChange(content)}
+                  initialValue={''}
+                  init={{
+                    height: 350,
+                    menubar: false,
+                    plugins: [
+                      'advlist',
+                      'autolink',
+                      'lists',
+                      'link',
+                      'image',
+                      'charmap',
+                      'preview',
+                      'anchor',
+                      'searchreplace',
+                      'visualblocks',
+                      'codesample',
+                      'fullscreen',
+                      'insertdatetime',
+                      'media',
+                      'table'
+                    ],
+                    toolbar:
+                      'undo redo | ' +
+                      ' bold italic forecolor | alignleft aligncenter |' +
+                      'alignright alignjustify | bullist numlist',
+                    content_style: 'body { font-family:Inter; font-size:16px }',
+                    skin: 'oxide',
+                    content_css: 'light'
+                  }}
+                />
+              )}
+            />
             {errors?.overview && <ErrorMsg msg={errors?.overview.message} />}
           </div>
           <div className="row align-items-end">

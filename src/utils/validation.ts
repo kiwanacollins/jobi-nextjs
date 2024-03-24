@@ -10,8 +10,8 @@ export const emailSchema = z.object({
 const educationSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   academy: z.string().min(1, { message: 'academy is required' }).max(100),
-  yearStart: z.coerce.number(),
-  yearEnd: z.coerce.number().optional(),
+  yearStart: z.number(),
+  yearEnd: z.number().optional(),
   year: z.string().optional(),
   description: z
     .string()
@@ -22,8 +22,8 @@ const educationSchema = z.object({
 const experienceSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   company: z.string().min(1, { message: 'company is required' }).max(100),
-  yearStart: z.coerce.number(),
-  yearEnd: z.coerce.number().optional(),
+  yearStart: z.number(),
+  yearEnd: z.number().optional(),
   year: z.string().optional(),
   description: z
     .string()
@@ -108,7 +108,7 @@ export const employeeProfileSchema = z.object({
 
 export const formJobDataSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
-  overview: z.string().min(1, { message: 'Overview is required' }),
+  overview: z.string().min(1, { message: 'Description is required' }),
   duration: z.string().min(1, { message: 'Duration is required' }),
   salary_duration: z.string().min(1, { message: 'salary is required' }),
   category: z.string().min(1, { message: 'category is required' }),
