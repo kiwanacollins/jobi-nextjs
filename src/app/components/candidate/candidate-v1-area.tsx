@@ -6,6 +6,7 @@ import CandidateListItem from './candidate-list-item';
 import CandidateV1FilterArea from './filter/candidate-v1-filter-area';
 import ShortSelect from '../common/short-select';
 import { IUser } from '@/database/user.model';
+import CommonPagination from '../common/CommonPagination';
 
 // import { IResumeType } from '@/database/resume.model';
 
@@ -13,12 +14,16 @@ interface IProps {
   style_2?: boolean;
   candidates?: any[] | undefined;
   loggedInUser?: IUser;
+  pageNumber: number;
+  isNext: boolean;
 }
 
 const CandidateV1Area = ({
   style_2 = false,
   candidates,
-  loggedInUser
+  loggedInUser,
+  pageNumber,
+  isNext
 }: IProps) => {
   const [jobType, setJobType] = useState<string>(style_2 ? 'list' : 'grid');
 
@@ -98,28 +103,9 @@ const CandidateV1Area = ({
                   ))}
                 </div>
 
-                <div className="pt-20 d-sm-flex align-items-center justify-content-between">
-                  <p className="m0 order-sm-last text-center text-sm-start xs-pb-20">
-                    Showing <span className="text-dark fw-500">1 to 20</span> of{' '}
-                    <span className="text-dark fw-500">1,270</span>
-                  </p>
+                <div className="pt-20 d-sm-flex align-items-center justify-content-center">
                   <div className="d-flex justify-content-center">
-                    <ul className="pagination-two d-flex align-items-center style-none">
-                      <li className="active">
-                        <a href="#">1</a>
-                      </li>
-                      <li>
-                        <a href="#">2</a>
-                      </li>
-                      <li>
-                        <a href="#">3</a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i className="bi bi-chevron-right"></i>
-                        </a>
-                      </li>
-                    </ul>
+                    <CommonPagination isNext={isNext} pageNumber={pageNumber} />
                   </div>
                 </div>
               </div>

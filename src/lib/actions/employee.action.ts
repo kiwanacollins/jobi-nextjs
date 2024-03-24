@@ -7,6 +7,7 @@ import User from '@/database/user.model';
 import { clerkClient } from '@clerk/nextjs/server';
 import Job from '@/database/job.model';
 import ShareData from '@/database/shareData.model';
+import { FilterQuery } from 'mongoose';
 // update user
 export async function createEmployeeProfileByUpdating(
   params: UpdateUserParams
@@ -54,13 +55,16 @@ export async function createEmployeeProfileByUpdating(
 
 export interface getEmployeeByIdParams {
   userId: string;
+  page?: number;
+  pageSize?: number;
+  query?: string;
 }
 
 export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
   try {
     connectToDatabase();
 
-    const { userId } = params;
+    const { userId, page = 1, pageSize = 8, query: searchQuery } = params;
 
     const user = await User.findOne({ clerkId: userId });
 
@@ -68,15 +72,32 @@ export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
       throw new Error('User not found');
     }
 
-    const myJobPosts = await Job.find({ createdBy: user._id }).populate(
-      'createdBy',
-      'name email picture'
-    );
-    const totalJobPosts = myJobPosts.length;
+    // Calculcate the number of posts to skip based on the page number and page size
+    const skipAmount = (page - 1) * pageSize;
+
+    const query: FilterQuery<typeof Job> = { createdBy: user._id };
+    if (searchQuery) {
+      query.$or = [
+        { category: { $regex: new RegExp(searchQuery, 'i') } },
+        { title: { $regex: new RegExp(searchQuery, 'i') } },
+        { experience: { $regex: new RegExp(searchQuery, 'i') } },
+        { industry: { $regex: new RegExp(searchQuery, 'i') } },
+        { duration: { $regex: new RegExp(searchQuery, 'i') } }
+      ];
+    }
+
+    const myJobPosts = await Job.find(query)
+      .populate('createdBy', 'name email picture')
+      .skip(skipAmount)
+      .limit(pageSize);
+
+    const totalJobPosts = await Job.countDocuments({ createdBy: user._id });
+    const isNext = totalJobPosts > skipAmount + myJobPosts.length;
 
     return {
       jobs: JSON.parse(JSON.stringify(myJobPosts)),
-      totalJob: totalJobPosts
+      totalJob: totalJobPosts,
+      isNext
     };
   } catch (error) {
     console.log(error);

@@ -186,8 +186,13 @@ export async function getAllCandidates(params: getCandidatesParams) {
       duration,
       category,
       min,
-      max
+      max,
+      page = 1,
+      pageSize = 8 // default page size is 10
     } = params;
+
+    // Calculcate the number of posts to skip based on the page number and page size
+    const skipAmount = (page - 1) * pageSize;
 
     const query: FilterQuery<typeof User> = { role: 'candidate' };
 
@@ -280,11 +285,17 @@ export async function getAllCandidates(params: getCandidatesParams) {
       }
     }
 
-    const candidates = await User.find(query).sort({
-      joinedAt: -1
-    });
+    const candidates = await User.find(query)
+      .skip(skipAmount)
+      .limit(pageSize)
+      .sort({
+        joinedAt: -1
+      });
 
-    return JSON.parse(JSON.stringify(candidates));
+    const totalCandidates = await User.countDocuments(query);
+    const isNext = totalCandidates > skipAmount + candidates.length;
+
+    return { candidates: JSON.parse(JSON.stringify(candidates)), isNext };
   } catch (error) {
     console.error('Error fetching candidates:', error);
     throw error;

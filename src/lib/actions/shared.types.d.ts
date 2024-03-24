@@ -50,6 +50,8 @@ export interface getCandidatesParams {
   fluency?: string;
   duration?: string;
   category?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 export interface UpdateCategoryParams {

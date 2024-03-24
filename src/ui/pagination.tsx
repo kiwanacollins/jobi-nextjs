@@ -1,8 +1,8 @@
-import Image from "next/image";
-import React from "react";
-import ReactPaginate from "react-paginate";
-import icon from "@/assets/images/icon/icon_50.svg";
-import icon_2 from "@/assets/images/icon/icon_69.svg";
+import Image from 'next/image';
+import React from 'react';
+import ReactPaginate from 'react-paginate';
+import icon from '@/assets/images/icon/icon_50.svg';
+import icon_2 from '@/assets/images/icon/icon_69.svg';
 
 // prop type
 type IProps = {

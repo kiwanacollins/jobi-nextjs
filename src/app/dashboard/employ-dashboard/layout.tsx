@@ -4,7 +4,7 @@ import EmployAside from '@/app/components/dashboard/employ/aside';
 import Wrapper from '@/layouts/wrapper';
 import { getUserById } from '@/lib/actions/user.action';
 import { useAuth } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 // import 'bootstrap/dist/js/bootstrap.bundle.js';
 import NextTopLoader from 'nextjs-toploader';
 
@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 
 const EmployDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
+  const pathname = usePathname();
   const { userId } = useAuth();
   useEffect(() => {
     async function checkUser() {
@@ -25,7 +26,7 @@ const EmployDashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
-      <NextTopLoader  showSpinner={false} />
+      <NextTopLoader showSpinner={false} />
       <div className="main-page-wrapper">
         <EmployAside
           isOpenSidebar={isOpenSidebar}
@@ -33,7 +34,10 @@ const EmployDashboardLayout = ({ children }: { children: React.ReactNode }) => {
         />
         <div className="dashboard-body">
           <div className="position-relative">
-            <DashboardHeader setIsOpenSidebar={setIsOpenSidebar} />
+            <DashboardHeader
+              route={pathname}
+              setIsOpenSidebar={setIsOpenSidebar}
+            />
             {children}
           </div>
         </div>

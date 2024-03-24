@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
-  const candidates = await getAllCandidates({
+  const { candidates, isNext } = await getAllCandidates({
     keyword: searchParams?.keyword,
     query: searchParams?.query,
     skill: searchParams?.skill,
@@ -26,8 +26,8 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     experience: searchParams?.experience,
     fluency: searchParams?.fluency,
     duration: searchParams?.duration,
-    category: searchParams?.category
-
+    category: searchParams?.category,
+    page: searchParams.page ? +searchParams.page : 1
     // min: searchParams.min,
     // max: searchParams.max
   });
@@ -49,6 +49,8 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
         candidates={JSON.parse(JSON.stringify(candidates))}
         loggedInUser={loggedInUser}
         style_2={true}
+        pageNumber={searchParams?.page ? +searchParams.page : 1}
+        isNext={isNext}
       />
       {/* candidate area end */}
 

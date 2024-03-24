@@ -4,7 +4,7 @@ import DashboardHeader from '@/app/components/dashboard/candidate/dashboard-head
 import Wrapper from '@/layouts/wrapper';
 import { getUserById } from '@/lib/actions/user.action';
 import { useAuth } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 // import 'bootstrap/dist/js/bootstrap';
 import NextTopLoader from 'nextjs-toploader';
@@ -15,6 +15,7 @@ const CandidateDashboardLayout = ({
   children: React.ReactNode;
 }) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
+  const pathname = usePathname();
 
   const { userId } = useAuth();
   useEffect(() => {
@@ -28,7 +29,7 @@ const CandidateDashboardLayout = ({
   }, [userId]);
   return (
     <Wrapper>
-     <NextTopLoader  showSpinner={false} />
+      <NextTopLoader showSpinner={false} />
       <div className="main-page-wrapper">
         <AdminAside
           isOpenSidebar={isOpenSidebar}
@@ -36,7 +37,10 @@ const CandidateDashboardLayout = ({
         />
         <div className="dashboard-body">
           <div className="position-relative">
-            <DashboardHeader setIsOpenSidebar={setIsOpenSidebar} />
+            <DashboardHeader
+              route={pathname}
+              setIsOpenSidebar={setIsOpenSidebar}
+            />
             {children}
           </div>
         </div>

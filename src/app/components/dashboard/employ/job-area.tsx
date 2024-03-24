@@ -3,17 +3,30 @@ import EmployJobItem from './job-item';
 import EmployShortSelect from './short-select';
 import { IJobData } from '@/database/job.model';
 import { getTimestamp } from '@/utils/utils';
+import CommonPagination from '../../common/CommonPagination';
 
 interface IEmployJobAreaProps {
   jobs: IJobData[];
   totalJob: number;
+  isNext: boolean;
+  pageNumber: number;
 }
 
-const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
+const EmployJobArea = ({
+  jobs,
+  totalJob,
+  isNext,
+  pageNumber
+}: IEmployJobAreaProps) => {
   return (
     <div className="position-relative">
       <div className="d-sm-flex align-items-center justify-content-between mb-40 lg-mb-30">
-        <h2 className="main-title m0">My Jobs</h2>
+        <h2 className="main-title m0">
+          My Jobs
+          {totalJob > 0 && (
+            <span className="badge bg-primary ms-2">{totalJob}</span>
+          )}
+        </h2>
         <div className="d-flex ms-auto xs-mt-30">
           <div
             className="nav nav-tabs tab-filter-btn me-4"
@@ -57,7 +70,7 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                   <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Job Created</th>
-                  
+
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -99,21 +112,19 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
                 <tbody className="border-0">
                   <EmployJobItem
                     title="Marketing Specialist"
-                    info="Part-time . Uk"                  
+                    info="Part-time . Uk"
                     date="13 Aug, 2023"
                     status="pending"
                   />
                   <EmployJobItem
                     title="Brand & Producr Designer"
                     info="Fulltime . Spain"
-               
                     date="05 Jun, 2023"
                     status="active"
                   />
                   <EmployJobItem
                     title="Developer for IT company"
                     info="Fulltime . Germany"
-                  
                     date="14 Feb, 2023"
                     status="active"
                   />
@@ -132,28 +143,7 @@ const EmployJobArea = ({ jobs, totalJob }: IEmployJobAreaProps) => {
       </div>
 
       <div className="dash-pagination d-flex justify-content-end mt-30">
-        <ul className="style-none d-flex align-items-center">
-          <li>
-            <a href="#" className="active">
-              1
-            </a>
-          </li>
-          <li>
-            <a href="#">2</a>
-          </li>
-          <li>
-            <a href="#">3</a>
-          </li>
-          <li>..</li>
-          <li>
-            <a href="#">7</a>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bi bi-chevron-right"></i>
-            </a>
-          </li>
-        </ul>
+        <CommonPagination isNext={isNext} pageNumber={pageNumber} />
       </div>
     </div>
   );
