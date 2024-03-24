@@ -43,7 +43,7 @@ const EmployJobArea = ({
             >
               All
             </button>
-            <button
+            {/* <button
               className="nav-link"
               data-bs-toggle="tab"
               data-bs-target="#a2"
@@ -52,7 +52,7 @@ const EmployJobArea = ({
               aria-selected="false"
             >
               New
-            </button>
+            </button> */}
           </div>
           <div className="short-filter d-flex align-items-center ms-auto">
             <div className="text-dark fw-500 me-2">Short by:</div>
@@ -97,7 +97,7 @@ const EmployJobArea = ({
               </table>
             </div>
           </div>
-          <div className="tab-pane fade" id="a2" role="tabpanel">
+          {/* <div className="tab-pane fade" id="a2" role="tabpanel">
             <div className="table-responsive">
               <table className="table job-alert-table">
                 <thead>
@@ -138,7 +138,7 @@ const EmployJobArea = ({
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

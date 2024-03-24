@@ -202,36 +202,44 @@ interface ImakeAdminProps {
 export async function makeUserAdmin(params: ImakeAdminProps) {
   const { email, path } = params;
   try {
-
     const user = await User.findOne({ email });
 
-  if (!user) {
-    throw new Error('User not found');
-  }
-
-  if (user?.clerkId) {
-    user.isAdmin = true;
-    await user.save();
-    const clerkUser = await clerkClient.users.getUser(user.clerkId as string);
-    if (!clerkUser.privateMetadata.isAdmin) {
-      await clerkClient.users.updateUserMetadata(user.clerkId as string, {
-        privateMetadata: {
-          isAdmin: true
-        }
-      });
+    if (!user) {
+      return {
+        error: 'User not found'
+      };
     }
-  }
-  revalidatePath(path);
-   return {
-    success: true,
-    message:'Admin created successfully',
-    data:JSON.parse(JSON.stringify(user))
-   };
+
+    if (user?.clerkId) {
+      if (user.isAdmin) {
+        return {
+          error: 'User is already an admin'
+        };
+      } else {
+        user.isAdmin = true;
+        await user.save();
+        const clerkUser = await clerkClient.users.getUser(
+          user.clerkId as string
+        );
+        if (!clerkUser.privateMetadata.isAdmin) {
+          await clerkClient.users.updateUserMetadata(user.clerkId as string, {
+            privateMetadata: {
+              isAdmin: true
+            }
+          });
+        }
+      }
+    }
+    revalidatePath(path);
+    return {
+      success: true,
+      message: 'Admin created successfully',
+      data: JSON.parse(JSON.stringify(user))
+    };
   } catch (error) {
-   return {
-    success: false,
-    message:error
-   }
+    return {
+      error: JSON.parse(JSON.stringify(error))
+    };
   }
 }
 

@@ -28,17 +28,20 @@ const DashboardMakeAdmin = () => {
   const onSubmit = async (data: IEmailType) => {
     setIsSubmitting(true);
     try {
-     const res = await makeUserAdmin({
+      const res = await makeUserAdmin({
         email: data.email,
         path: pathname
       });
-      if(res?.success){
+      if (res?.success) {
         notifySuccess(res.message as string);
+      }
+      if (res?.error) {
+        notifyError(res.error as string);
       }
     } catch (error) {
       // Handle network or other errors
       console.error('Error:', error);
-      notifyError(error as string)
+      notifyError(error as string);
     } finally {
       setIsSubmitting(false);
       reset();
