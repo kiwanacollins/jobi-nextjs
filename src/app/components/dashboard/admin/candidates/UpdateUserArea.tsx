@@ -74,6 +74,9 @@ const UpdateUserArea = ({ mongoUser }: IParamsProps) => {
   } = methods;
 
   console.log('watch:', watch());
+  useEffect(() => {
+    reset();
+  }, [reset]);
 
   const selectedPost = watch('post');
   const skillsOfSelectedPost = categories.find(
@@ -223,7 +226,7 @@ const UpdateUserArea = ({ mongoUser }: IParamsProps) => {
                   id="uploadImg"
                   name="file"
                   accept="image/*"
-                  defaultValue={mongoUser?.picture || ''}
+                  // defaultValue={mongoUser?.picture || ''}
                   onChange={(e) => handleFileChange(e)}
                 />
               </div>
