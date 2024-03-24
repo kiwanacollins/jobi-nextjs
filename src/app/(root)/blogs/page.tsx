@@ -4,6 +4,8 @@ import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
 import BlogFullWidthArea from '../../components/blogs/blog-frull-width';
 import { fetchAllBlogs } from '@/lib/actions/blog.action';
+import { auth } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
   title: 'Blog - Hireskills',
@@ -13,6 +15,8 @@ export const metadata: Metadata = {
 
 const BlogV3Page = async () => {
   const blogs = await fetchAllBlogs();
+  const { userId } = auth();
+  const loggInUser = await getUserById({ userId });
 
   return (
     <>
@@ -27,7 +31,7 @@ const BlogV3Page = async () => {
       {/* blog v3 end */}
 
       {/* job portal intro start */}
-      <JobPortalIntro top_border={true} />
+      <JobPortalIntro loggInUser={loggInUser} top_border={true} />
       {/* job portal intro end */}
     </>
   );

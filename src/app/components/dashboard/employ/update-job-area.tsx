@@ -126,7 +126,7 @@ const UpdateJobArea = ({ job }: IProps) => {
 
   // on submit
   const onSubmit = async (data: IJobDataSchemaType) => {
-    console.log('data', data);
+    // console.log('data', data);
     setIsSubmitting(true);
     simulateProgress();
 
