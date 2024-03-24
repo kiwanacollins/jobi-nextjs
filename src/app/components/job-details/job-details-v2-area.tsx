@@ -6,6 +6,7 @@ import icon_3 from '@/assets/images/icon/icon_54.svg';
 import icon_4 from '@/assets/images/icon/icon_55.svg';
 import icon_5 from '@/assets/images/icon/icon_56.svg';
 import { IJobData } from '@/database/job.model';
+import ParseHTML from '../common/parseHTML';
 
 interface IJobDetailsV2AreaProps {
   job: IJobData;
@@ -68,24 +69,11 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
                 </div>
               </ul>
 
-              <div className="post-block mt-50 lg-mt-40">
-                <h4 className="block-title">Overview</h4>
-                <p>
-                  When team members told us they needed more flexibility around
-                  where and how they worked, we acted, creating two options to
-                  accommodate two different styles of work. One non-negotiable
-                  principle along the way? We had to retain our deep culture of
-                  collaboration, both among ourselves and with our clients.
-                  Introducing Work From Near and Work From Anywhere at
-                  WillowTree. <a href="#">Learn more here</a>. Please indicate
-                  which location(s) you are interested.
-                </p>
-              </div>
               <div className="post-block mt-60 lg-mt-40">
                 <h4 className="block-title">Job Description</h4>
-                <p>{job?.overview}</p>
+                <ParseHTML data={job?.overview} />
               </div>
-              <div className="post-block mt-70 lg-mt-40">
+              {/* <div className="post-block mt-70 lg-mt-40">
                 <h4 className="block-title">Responsibilities</h4>
                 <ul className="list-type-one style-none mb-15">
                   <li>
@@ -157,10 +145,10 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
                   <li>Unlimited paid vacation and paid company holidays</li>
                   <li>Monthly wellness/gym stipend</li>
                 </ul>
-              </div>
-              <button className="btn-ten text-decoration-none   fw-500 text-white text-center tran3s mt-30">
+              </div> */}
+              {/* <button className="btn-ten text-decoration-none   fw-500 text-white text-center tran3s mt-30">
                 Apply for this position
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
