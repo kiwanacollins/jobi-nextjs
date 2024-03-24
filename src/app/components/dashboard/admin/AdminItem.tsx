@@ -9,9 +9,10 @@ interface IAdminItemProps {
   name: string;
   email: string;
   status: string;
+  serial: number;
 }
 
-const AdminItem = ({ name, email, status, id }: IAdminItemProps) => {
+const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
   const pathname = usePathname();
   const handleRemoveAdmin = async (userId: string) => {
     Swal.fire({
@@ -37,6 +38,9 @@ const AdminItem = ({ name, email, status, id }: IAdminItemProps) => {
   };
   return (
     <tr className={status}>
+      <td>
+        <div className="job-name fw-500">{serial}</div>
+      </td>
       <td>
         <div className="job-name fw-500">{name}</div>
       </td>

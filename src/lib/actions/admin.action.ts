@@ -9,6 +9,7 @@ import { UpdateCategoryParams } from './shared.types';
 import ShareData from '@/database/shareData.model';
 import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
+import { FilterQuery } from 'mongoose';
 
 interface ICreateCategory {
   name: string;
@@ -243,13 +244,29 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
   }
 }
 
-export async function getAdmins() {
+interface IgetAdminsProps {
+  query?: string;
+}
+export async function getAdmins(params: IgetAdminsProps) {
   try {
     await connectToDatabase();
-    const admins = await User.find(
-      { isAdmin: true },
-      { _id: 1, isAdmin: 1, name: 1, email: 1 }
-    );
+    const { query: searchQuery } = params;
+
+    const query: FilterQuery<typeof User> = { isAdmin: true };
+
+    if (searchQuery) {
+      query.$or = [
+        { name: { $regex: searchQuery, $options: 'i' } },
+        { email: { $regex: searchQuery, $options: 'i' } }
+      ];
+    }
+
+    const admins = await User.find(query, {
+      _id: 1,
+      isAdmin: 1,
+      name: 1,
+      email: 1
+    });
     return JSON.parse(JSON.stringify(admins));
   } catch (error) {
     console.log('Error getting admins:', error);

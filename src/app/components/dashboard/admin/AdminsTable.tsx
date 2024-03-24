@@ -15,6 +15,7 @@ const AdminsTable = ({ admins }: AdminsTableProps) => {
       <table className="table job-alert-table">
         <thead>
           <tr>
+            <th scope="col">No</th>
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Status</th>
@@ -22,9 +23,10 @@ const AdminsTable = ({ admins }: AdminsTableProps) => {
           </tr>
         </thead>
         <tbody className="border-0">
-          {admins?.map((admin) => (
+          {admins?.map((admin, index) => (
             <AdminItem
               id={admin._id}
+              serial={index + 1}
               key={admin._id}
               name={admin.name}
               email={admin.email}
