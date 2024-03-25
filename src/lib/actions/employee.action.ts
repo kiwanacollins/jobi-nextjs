@@ -188,14 +188,20 @@ export async function toggleSaveCandidate(params: ToggleSaveCandidatesParams) {
 
 interface IGetSavedCandidateParams {
   clerkId: string;
-  query?:string
+  query?:string,
+  page?:number,
+  pageSize?:number
+ 
 }
 
 export async function getSavedCandidates(params: IGetSavedCandidateParams) {
   try {
     connectToDatabase();
 
-    const { clerkId,query:searchQuery } = params;
+    const { clerkId,query:searchQuery} = params;
+
+    // const skipAmount =  (page - 1) * pageSize;
+
 
     const query: FilterQuery<typeof User> = {  };
 
@@ -220,18 +226,25 @@ export async function getSavedCandidates(params: IGetSavedCandidateParams) {
 
     const user = await User.findOne({ clerkId }).populate({
       path:'saved',
-      match: query
-    });
-    
+      match: query,
+      // options:{
+      //   limit:pageSize,
+      //   skip:skipAmount
+      // }
+    })
+
 
     if (!user) {
       throw new Error('User not found');
     }
 
     const savedCandidates = user.saved;
+  
 
+    return { 
+      candidates: JSON.parse(JSON.stringify(savedCandidates)),
 
-    return { candidates: JSON.parse(JSON.stringify(savedCandidates)) };
+    };
   } catch (error) {
     console.log(error);
     throw error;
