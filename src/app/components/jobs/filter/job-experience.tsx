@@ -12,11 +12,9 @@ export function JobExperienceItems({
   showLength?: boolean;
 }) {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
-
   const uniqueExperiences = [
     ...new Set(allJobData?.map((job) => job?.experience))
-  ] || [];
-  console.log(uniqueExperiences)
+  ];
   const { experience } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
 
