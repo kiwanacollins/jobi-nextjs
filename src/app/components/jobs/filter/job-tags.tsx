@@ -9,6 +9,7 @@ import { getJobPosts } from '@/lib/actions/job.action';
 const JobTags = () => {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const uniqueTags = [...new Set(allJobData.flatMap((job) => job.skills))];
+  console.log(uniqueTags)
   const { skills } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
   useEffect(() => {

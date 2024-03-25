@@ -12,6 +12,7 @@ export function JobTypeItems({ showLength = true }: { showLength?: boolean }) {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const jobDuration = [...new Set(allJobData.map((job) => job.duration))];
   const { job_type } = useAppSelector((state) => state.filter);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     const getAllJobs = async () => {

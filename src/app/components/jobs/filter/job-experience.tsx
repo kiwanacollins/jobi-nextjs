@@ -14,10 +14,12 @@ export function JobExperienceItems({
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
 
   const uniqueExperiences = [
-    ...new Set(allJobData.map((job) => job.experience))
-  ];
+    ...new Set(allJobData?.map((job) => job?.experience))
+  ] || [];
+  console.log(uniqueExperiences)
   const { experience } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     const getAllJobs = async () => {
       const { jobs } = await getJobPosts({});
