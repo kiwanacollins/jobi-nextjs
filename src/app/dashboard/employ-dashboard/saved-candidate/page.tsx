@@ -16,7 +16,7 @@ const EmployDashboardSavedCandidatePage = async ({searchParams}:SearchParamsProp
 
   const { candidates } = await getSavedCandidates({
     clerkId: user.id as string,
-    query: searchParams.query
+    query: searchParams.query,
   });
 
   return (

@@ -38,6 +38,7 @@ export interface DeleteUserParams {
 }
 
 export interface getCandidatesParams {
+
   keyword?: string;
   query?: string;
   skill?: string;
@@ -52,6 +53,7 @@ export interface getCandidatesParams {
   category?: string;
   page?: number;
   pageSize?: number;
+  sort?:string
 }
 
 export interface UpdateCategoryParams {

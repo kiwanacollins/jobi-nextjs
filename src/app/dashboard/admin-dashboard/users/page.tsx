@@ -11,7 +11,8 @@ const UsersPage = async ({ searchParams }: SearchParamsProps) => {
   // const candidate_items = candidate_data.slice(0, 4);
   const { candidates, isNext } = await getAllCandidates({
     query: searchParams.query,
-    page: searchParams.page ? +searchParams.page : 1
+    page: searchParams.page ? +searchParams.page : 1,
+    sort: searchParams.sort
   });
 
   return (

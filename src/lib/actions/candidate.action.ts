@@ -188,7 +188,8 @@ export async function getAllCandidates(params: getCandidatesParams) {
       min,
       max,
       page = 1,
-      pageSize = 8 // default page size is 10
+      pageSize = 8, // default page size is 10,
+      sort
     } = params;
 
     // Calculcate the number of posts to skip based on the page number and page size
@@ -285,12 +286,31 @@ export async function getAllCandidates(params: getCandidatesParams) {
       }
     }
 
+    let sortOptions = {};
+
+    switch (sort) {
+      case 'old':
+        sortOptions = { joinedAt: 1 };
+        break;
+
+      case 'name':
+        sortOptions = { name: 1 };
+        break;
+
+      case 'new':
+        sortOptions = { joinedAt: -1 };
+        break;
+
+      default:
+        sortOptions = { joinedAt: -1 }
+        break;
+    }
+
+
     const candidates = await User.find(query)
       .skip(skipAmount)
       .limit(pageSize)
-      .sort({
-        joinedAt: -1
-      });
+      .sort(sortOptions);
 
     const totalCandidates = await User.countDocuments(query);
     const isNext = totalCandidates > skipAmount + candidates.length;

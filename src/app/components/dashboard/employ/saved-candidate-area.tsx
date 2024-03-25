@@ -85,8 +85,8 @@ const SavedCandidateArea = ({
           <h3>No candidates saved Yet</h3>
         </div>
       )}
-
-      <div className="dash-pagination d-flex justify-content-end mt-30">
+      {/* Pagination start */}
+      {/* <div className="dash-pagination d-flex justify-content-end mt-30">
         <ul className="style-none d-flex align-items-center">
           <li>
             <a href="#" className="active">
@@ -109,7 +109,8 @@ const SavedCandidateArea = ({
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
+      {/* Pagination end */}
     </div>
   );
 };
