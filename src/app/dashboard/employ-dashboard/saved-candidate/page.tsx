@@ -4,8 +4,9 @@ import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { getSavedCandidates } from '@/lib/actions/employee.action';
 import { getUserById } from '@/lib/actions/user.action';
+import { SearchParamsProps } from '@/types';
 
-const EmployDashboardSavedCandidatePage = async () => {
+const EmployDashboardSavedCandidatePage = async ({searchParams}:SearchParamsProps) => {
   const user = await currentUser();
   if (!user || user.privateMetadata.role !== 'employee') {
     return redirect('/');
@@ -14,7 +15,8 @@ const EmployDashboardSavedCandidatePage = async () => {
   const loggedInUser = await getUserById({ userId: user.id });
 
   const { candidates } = await getSavedCandidates({
-    clerkId: user.id as string
+    clerkId: user.id as string,
+    query: searchParams.query
   });
 
   return (

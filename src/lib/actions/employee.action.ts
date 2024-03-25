@@ -188,20 +188,48 @@ export async function toggleSaveCandidate(params: ToggleSaveCandidatesParams) {
 
 interface IGetSavedCandidateParams {
   clerkId: string;
+  query?:string
 }
 
 export async function getSavedCandidates(params: IGetSavedCandidateParams) {
   try {
     connectToDatabase();
 
-    const { clerkId } = params;
+    const { clerkId,query:searchQuery } = params;
 
-    const user = await User.findOne({ clerkId }).populate('saved');
+    const query: FilterQuery<typeof User> = {  };
+
+    if(searchQuery) {
+      query.$or =[ 
+        { name: { $regex: new RegExp(searchQuery as string, 'i') } },
+        { post: { $regex: new RegExp(searchQuery as string, 'i') } },
+        {
+          qualification: { $regex: new RegExp(searchQuery as string, 'i') }
+        },
+        {
+          post: { $regex: new RegExp(searchQuery as string, 'i') }
+        },
+        {
+          skills: { $elemMatch: { $regex: new RegExp(searchQuery, 'i') } }
+        },
+        {
+          gender: { $eq: searchQuery }
+        }
+      ]
+    }
+
+    const user = await User.findOne({ clerkId }).populate({
+      path:'saved',
+      match: query
+    });
+    
 
     if (!user) {
       throw new Error('User not found');
     }
+
     const savedCandidates = user.saved;
+
 
     return { candidates: JSON.parse(JSON.stringify(savedCandidates)) };
   } catch (error) {
