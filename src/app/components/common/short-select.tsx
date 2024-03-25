@@ -1,21 +1,45 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import NiceSelect from '@/ui/nice-select';
 import { useAppDispatch } from '@/redux/hook';
 import { setJobType } from '@/redux/features/filterSlice';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery } from '@/utils/utils';
 
 const ShortSelect = () => {
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const sort = searchParams.get('sort');
+  const [active, setActive] = useState(sort || '');
   // handleShort
   const handleShort = (item: { value: string; label: string }) => {
-    dispatch(setJobType(item.value));
+    if (active === item.value) {
+      setActive('');
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'sort',
+        value: null
+      });
+
+      router.push(newUrl, { scroll: false });
+    } else {
+      setActive(item.value);
+
+      const newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'sort',
+        value: item.value.toLowerCase()
+      });
+
+      router.push(newUrl, { scroll: false });
+    }
   };
   return (
     <NiceSelect
       options={[
-        { value: 'New', label: 'New' },
-        { value: 'Category', label: 'Category' },
-        { value: 'Job Type', label: 'Job Type' }
+        { value: "New", label: "New" },
+        { value: "Old", label: "Old" },
+        { value: "Name", label: "Name" }
       ]}
       defaultCurrent={0}
       onChange={(item) => handleShort(item)}

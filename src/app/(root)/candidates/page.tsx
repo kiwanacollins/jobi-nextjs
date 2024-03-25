@@ -27,7 +27,8 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
     fluency: searchParams?.fluency,
     duration: searchParams?.duration,
     category: searchParams?.category,
-    page: searchParams.page ? +searchParams.page : 1
+    page: searchParams.page ? +searchParams.page : 1,
+    sort: searchParams.sort
     // min: searchParams.min,
     // max: searchParams.max
   });
