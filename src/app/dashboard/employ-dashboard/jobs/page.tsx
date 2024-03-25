@@ -14,7 +14,8 @@ const EmployDashboardJobsPage = async ({ searchParams }: SearchParamsProps) => {
   const { jobs, totalJob, isNext } = await getEmployeeJobPosts({
     userId: clerkId as string,
     page: searchParams.page ? +searchParams.page : 1,
-    query: searchParams.query
+    query: searchParams.query,
+    sort: searchParams.sort
   });
   return (
     <>

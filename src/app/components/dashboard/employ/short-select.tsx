@@ -37,7 +37,7 @@ const EmployShortSelect = () => {
       options={[
         { value: "New", label: "New" },
         { value: "Old", label: "Old" },
-        { value: "Name", label: "Name" },
+        { value: "Name", label: "Name/Title" },
 
         // { value: "Active", label: "Active" },
         // { value: "Pending", label: "Pending" },

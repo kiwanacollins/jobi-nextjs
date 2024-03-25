@@ -58,13 +58,14 @@ export interface getEmployeeByIdParams {
   page?: number;
   pageSize?: number;
   query?: string;
+  sort?:string
 }
 
 export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 8, query: searchQuery } = params;
+    const { userId, page = 1, pageSize = 8, query: searchQuery,sort } = params;
 
     const user = await User.findOne({ clerkId: userId });
 
@@ -86,10 +87,30 @@ export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
       ];
     }
 
+    let sortOptions = {};
+
+    switch (sort) {
+      case 'old':
+        sortOptions = { createAt: 1 };
+        break;
+
+      case 'name':
+        sortOptions = { title: 1 };
+        break;
+
+      case 'new':
+        sortOptions = { createAt: -1 };
+        break;
+
+      default:
+        sortOptions = { createAt: -1 }
+        break;
+    }
+
     const myJobPosts = await Job.find(query)
       .populate('createdBy', 'name email picture')
       .skip(skipAmount)
-      .limit(pageSize);
+      .limit(pageSize).sort(sortOptions)
 
     const totalJobPosts = await Job.countDocuments({ createdBy: user._id });
     const isNext = totalJobPosts > skipAmount + myJobPosts.length;
