@@ -57,30 +57,19 @@ export function CardItem({
   );
 }
 
-const DashboardArea = () => {
-  const job_items = [...job_data.reverse().slice(0, 5)];
-  const monthlyData = [
-    { month: 'January', value: 100 },
-    { month: 'February', value: 150 },
-    { month: 'March', value: 200 },
-    { month: 'April', value: 180 },
-    { month: 'May', value: 220 },
-    { month: 'June', value: 250 },
-    { month: 'July', value: 300 },
-    { month: 'August', value: 280 },
-    { month: 'September', value: 270 },
-    { month: 'October', value: 230 },
-    { month: 'November', value: 190 },
-    { month: 'December', value: 210 }
-  ];
+interface IDashboardAreaProps {
+  statistics: any;
+}
 
-  const months = monthlyData.map((item) => item.month);
-  const values = monthlyData.map((item) => item.value);
+const DashboardArea = ({ statistics }: IDashboardAreaProps) => {
+  const job_items = [...job_data.reverse().slice(0, 5)];
+  const dates = statistics?.usersByJoinedAt?.map((item: any) => item._id);
+  const values = statistics?.usersByJoinedAt?.map((item: any) => item.count);
   const chartData = {
-    labels: months,
+    labels: dates,
     datasets: [
       {
-        label: 'Monthly Report',
+        label: 'Daily Report',
         data: values,
         Bar: true,
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -103,24 +92,50 @@ const DashboardArea = () => {
     <>
       <h2 className="main-title">Dashboard</h2>
       <div className="row">
-        <CardItem img={icon_1} title="Total Visitor" value="1.7k+" />
-        <CardItem img={icon_2} title="Shortlisted" value="03" />
-        <CardItem img={icon_3} title="Views" value="2.1k" />
-        <CardItem img={icon_4} title="Applied Job" value="07" />
+        <CardItem
+          img={icon_1}
+          title="Total Users"
+          value={statistics?.totalUsers}
+        />
+        <CardItem
+          img={icon_2}
+          title="Total Employee"
+          value={statistics?.totalEmployees}
+        />
+        <CardItem
+          img={icon_3}
+          title="Total Candidates"
+          value={statistics?.totalCandidates}
+        />
+        <CardItem
+          img={icon_4}
+          title="Total Jobs"
+          value={statistics?.totalJobPosts}
+        />
       </div>
 
       <div className="row d-flex pt-50 lg-pt-10">
         <div className="col-xl-7 col-lg-6 d-flex flex-column">
           <div className="user-activity-chart bg-white border-20 mt-30 h-100">
-            <h4 className="dash-title-two">Profile Views</h4>
+            <h4 className="dash-title-two">User Statistics</h4>
             <div className="ps-5 pe-5 mt-50">
               {/* <Image
                 src={main_graph}
                 alt="main-graph"
                 className="lazy-img m-auto"
               /> */}
-              <Bar data={chartData} options={chartOptions} />
-              <Line data={chartData} options={chartOptions} />
+              <div>
+                <Bar data={chartData} options={chartOptions} />
+                <p className="text-center fw-bold py-3">
+                  Bar Chart (Daily Join User)
+                </p>
+              </div>
+              <div>
+                <Line data={chartData} options={chartOptions} />
+                <p className="text-center fw-bold py-3">
+                  Line Chart (Daily Join User)
+                </p>
+              </div>
             </div>
           </div>
         </div>

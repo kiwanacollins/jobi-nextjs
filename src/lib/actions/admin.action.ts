@@ -10,6 +10,7 @@ import ShareData from '@/database/shareData.model';
 import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
 import { FilterQuery } from 'mongoose';
+import Job from '@/database/job.model';
 
 interface ICreateCategory {
   name: string;
@@ -343,5 +344,38 @@ export async function getSingleCompanySharedData(employeeId: string) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+// get user statistics
+export async function getUserStatistics() {
+  try {
+    const totalUsers = await User.countDocuments();
+
+    const totalCandidates = await User.countDocuments({ role: 'candidate' });
+
+    const totalEmployees = await User.countDocuments({ role: 'employee' });
+
+    const totalJobPosts = await Job.countDocuments();
+
+    const usersByJoinedAt = await User.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$joinedAt' } },
+          count: { $sum: 1 }
+        }
+      },
+      { $sort: { _id: 1 } } // Sort by joinedAt date
+    ]);
+
+    return {
+      totalUsers,
+      totalCandidates,
+      totalEmployees,
+      usersByJoinedAt,
+      totalJobPosts
+    };
+  } catch (error) {
+    console.log(error);
   }
 }

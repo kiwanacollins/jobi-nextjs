@@ -22,7 +22,6 @@ const EmployDashboardPage = async () => {
   const data = await getEmployeeStatisticsByClerkId({
     clerkId: clerkId as string
   });
-  console.log('EmployDashboardPage  data:', data);
   return (
     <>
       <EmployDashboardArea statistics={data} jobs={jobs} totalJob={totalJob} />

@@ -7,7 +7,7 @@ import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
 import icon_4 from '@/assets/dashboard/images/icon/icon_15.svg';
 // import main_graph from '@/assets/dashboard/images/main-graph.png';
 import { CardItem } from '../candidate/dashboard-area';
-import NiceSelect from '@/ui/nice-select';
+// import NiceSelect from '@/ui/nice-select';
 import { IJobData } from '@/database/job.model';
 import { usePathname } from 'next/navigation';
 import Swal from 'sweetalert2';
@@ -76,7 +76,7 @@ const EmployDashboardArea = ({
       }
     });
   };
-  const handleJobs = (item: { value: string; label: string }) => {};
+  // const handleJobs = (item: { value: string; label: string }) => {};
 
   const category = statistics?.totalJobsByCategory?.map(
     (item: any) => item._id
@@ -92,7 +92,6 @@ const EmployDashboardArea = ({
         label: 'Category Report',
         PointElement: true,
         data: categoryValues,
-        Bar: true,
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgb(75, 192, 192)',
         borderWidth: 1
@@ -112,7 +111,6 @@ const EmployDashboardArea = ({
         label: 'Category Report',
         PointElement: true,
         data: skillValues,
-        Bar: true,
         backgroundColor: 'tomato',
         borderColor: 'tomato',
         borderWidth: 1
@@ -150,7 +148,7 @@ const EmployDashboardArea = ({
         <div className="col-xl-7 col-lg-6 d-flex flex-column">
           <div className="user-activity-chart bg-white border-20 mt-30 h-100">
             <h4 className="dash-title-two">Statistics Views</h4>
-            <div className="d-sm-flex align-items-center job-list">
+            {/* <div className="d-sm-flex align-items-center job-list">
               <div className="fw-500 pe-3">Jobs:</div>
               <div className="flex-fill xs-mt-10">
                 <NiceSelect
@@ -171,16 +169,31 @@ const EmployDashboardArea = ({
                   name="Search Jobs"
                 />
               </div>
-            </div>
+            </div> */}
             <div className="ps-5 pe-5 mt-50">
               {/* <Image
                 src={main_graph}
                 alt="main-graph"
                 className="lazy-img m-auto"
               /> */}
-              <Bar data={barChartDataCategory} options={chartOptions} />
-              <Bar data={barChartDataSkills} options={chartOptions} />
-              <Line data={barChartDataSkills} options={chartOptions} />
+              <div>
+                <Bar data={barChartDataCategory} options={chartOptions} />
+                <p className="text-center fw-semibold  py-3">
+                  Bar Chart (category)
+                </p>
+              </div>
+              <div>
+                <Bar data={barChartDataSkills} options={chartOptions} />
+                <p className="text-center fw-semibold  py-3">
+                  Bar Chart (Skills)
+                </p>
+              </div>
+              <div>
+                <Line data={barChartDataSkills} options={chartOptions} />
+                <p className="text-center fw-semibold  py-3">
+                  Line Chart (Skills)
+                </p>
+              </div>
             </div>
           </div>
         </div>
