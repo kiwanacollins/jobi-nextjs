@@ -7,7 +7,7 @@ import { getCategoriesAndSubcategories } from '@/lib/actions/category.action';
 
 const FilterSkills = () => {
   const [subcategories, setSubcategories] = useState<string[]>([]);
-  const uniqueSkills = [...new Set(subcategories.flatMap((c) => c))];
+  const uniqueSkills = [...new Set(subcategories?.flatMap((c) => c))];
   const options = uniqueSkills.map((c) => {
     return { value: c, label: c };
   });

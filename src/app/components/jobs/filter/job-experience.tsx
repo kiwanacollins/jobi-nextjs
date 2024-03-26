@@ -10,7 +10,7 @@ export function JobExperienceItems({
   allJobs
 }: {
   showLength?: boolean;
-  allJobs: IJobData[];
+  allJobs?: IJobData[];
 }) {
   // const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const uniqueExperiences = [
@@ -34,7 +34,7 @@ export function JobExperienceItems({
             {e}
             {showLength && (
               <span>
-                {allJobs.filter((job) => job.experience === e).length}
+                {allJobs?.filter((job) => job.experience === e).length}
               </span>
             )}
           </label>

@@ -12,9 +12,9 @@ export function JobTypeItems({
   allJobs
 }: {
   showLength?: boolean;
-  allJobs: IJobData[];
+  allJobs?: IJobData[];
 }) {
-  const jobDuration = [...new Set(allJobs.map((job) => job.duration))];
+  const jobDuration = [...new Set(allJobs?.map((job) => job.duration))];
   const { job_type } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
   // useEffect(() => {
@@ -39,7 +39,7 @@ export function JobTypeItems({
             {duration}{' '}
             {showLength && (
               <span>
-                {allJobs.filter((job) => job.duration === duration).length}
+                {allJobs?.filter((job) => job.duration === duration).length}
               </span>
             )}
           </label>
