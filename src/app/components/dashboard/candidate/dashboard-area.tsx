@@ -6,7 +6,29 @@ import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
 import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
 import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
 import icon_4 from '@/assets/dashboard/images/icon/icon_15.svg';
-import main_graph from '@/assets/dashboard/images/main-graph.png';
+// import main_graph from '@/assets/dashboard/images/main-graph.png';
+
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  LinearScale,
+  PointElement,
+  LineElement
+} from 'chart.js';
+import { Bar, Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
 
 // card item
 export function CardItem({
@@ -19,7 +41,7 @@ export function CardItem({
   title: string;
 }) {
   return (
-    <div className="col-lg-3 col-6">
+    <div className="col-lg-6 col-6">
       <div className="dash-card-one bg-white border-30 position-relative mb-15">
         <div className="d-sm-flex align-items-center justify-content-between">
           <div className="icon rounded-circle d-flex align-items-center justify-content-center order-sm-1">
@@ -37,6 +59,45 @@ export function CardItem({
 
 const DashboardArea = () => {
   const job_items = [...job_data.reverse().slice(0, 5)];
+  const monthlyData = [
+    { month: 'January', value: 100 },
+    { month: 'February', value: 150 },
+    { month: 'March', value: 200 },
+    { month: 'April', value: 180 },
+    { month: 'May', value: 220 },
+    { month: 'June', value: 250 },
+    { month: 'July', value: 300 },
+    { month: 'August', value: 280 },
+    { month: 'September', value: 270 },
+    { month: 'October', value: 230 },
+    { month: 'November', value: 190 },
+    { month: 'December', value: 210 }
+  ];
+
+  const months = monthlyData.map((item) => item.month);
+  const values = monthlyData.map((item) => item.value);
+  const chartData = {
+    labels: months,
+    datasets: [
+      {
+        label: 'Monthly Report',
+        data: values,
+        Bar: true,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgb(75, 192, 192)',
+        borderWidth: 1
+      }
+    ]
+  };
+
+  const chartOptions = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
 
   return (
     <>
@@ -53,11 +114,13 @@ const DashboardArea = () => {
           <div className="user-activity-chart bg-white border-20 mt-30 h-100">
             <h4 className="dash-title-two">Profile Views</h4>
             <div className="ps-5 pe-5 mt-50">
-              <Image
+              {/* <Image
                 src={main_graph}
                 alt="main-graph"
                 className="lazy-img m-auto"
-              />
+              /> */}
+              <Bar data={chartData} options={chartOptions} />
+              <Line data={chartData} options={chartOptions} />
             </div>
           </div>
         </div>

@@ -4,7 +4,10 @@ import EmployDashboardArea from '@/app/components/dashboard/employ/dashboard-are
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { redirect } from 'next/navigation';
-import { getEmployeeJobPosts } from '@/lib/actions/employee.action';
+import {
+  getEmployeeJobPosts,
+  getEmployeeStatisticsByClerkId
+} from '@/lib/actions/employee.action';
 
 const EmployDashboardPage = async () => {
   const { userId } = auth();
@@ -16,9 +19,13 @@ const EmployDashboardPage = async () => {
   const { jobs, totalJob } = await getEmployeeJobPosts({
     userId: clerkId as string
   });
+  const data = await getEmployeeStatisticsByClerkId({
+    clerkId: clerkId as string
+  });
+  console.log('EmployDashboardPage  data:', data);
   return (
     <>
-      <EmployDashboardArea jobs={jobs} totalJob={totalJob} />
+      <EmployDashboardArea statistics={data} jobs={jobs} totalJob={totalJob} />
     </>
   );
 };

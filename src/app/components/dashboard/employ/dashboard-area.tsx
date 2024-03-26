@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
+// import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
 import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
-import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
+// import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
 import icon_4 from '@/assets/dashboard/images/icon/icon_15.svg';
-import main_graph from '@/assets/dashboard/images/main-graph.png';
+// import main_graph from '@/assets/dashboard/images/main-graph.png';
 import { CardItem } from '../candidate/dashboard-area';
 import NiceSelect from '@/ui/nice-select';
 import { IJobData } from '@/database/job.model';
@@ -13,14 +13,41 @@ import { usePathname } from 'next/navigation';
 import Swal from 'sweetalert2';
 import { deleteEmployeeJobPost } from '@/lib/actions/employee.action';
 
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  Tooltip,
+  Legend,
+  LinearScale,
+  PointElement,
+  LineElement
+} from 'chart.js';
+import { Bar, Line } from 'react-chartjs-2';
+
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend
+);
+
 // props type
 
 interface IEmployDashboardProps {
   jobs: IJobData[];
   totalJob: number;
+  statistics: any;
 }
 
-const EmployDashboardArea = ({ jobs, totalJob }: IEmployDashboardProps) => {
+const EmployDashboardArea = ({
+  jobs,
+  totalJob,
+  statistics
+}: IEmployDashboardProps) => {
   const pathname = usePathname();
 
   const handleDeleteUser = async (jobId: string | undefined) => {
@@ -50,20 +77,79 @@ const EmployDashboardArea = ({ jobs, totalJob }: IEmployDashboardProps) => {
     });
   };
   const handleJobs = (item: { value: string; label: string }) => {};
+
+  const category = statistics?.totalJobsByCategory?.map(
+    (item: any) => item._id
+  );
+  const categoryValues = statistics?.totalJobsByCategory?.map(
+    (item: any) => item.totalJobs
+  );
+
+  const barChartDataCategory = {
+    labels: category,
+    datasets: [
+      {
+        label: 'Category Report',
+        PointElement: true,
+        data: categoryValues,
+        Bar: true,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgb(75, 192, 192)',
+        borderWidth: 1
+      }
+    ]
+  };
+
+  const skills = statistics?.totalJobsBySkills?.map((item: any) => item._id);
+  const skillValues = statistics?.totalJobsBySkills?.map(
+    (item: any) => item.totalJobs
+  );
+
+  const barChartDataSkills = {
+    labels: skills,
+    datasets: [
+      {
+        label: 'Category Report',
+        PointElement: true,
+        data: skillValues,
+        Bar: true,
+        backgroundColor: 'tomato',
+        borderColor: 'tomato',
+        borderWidth: 1
+      }
+    ]
+  };
+
+  const chartOptions = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  };
   return (
     <>
       <h2 className="main-title">Dashboard</h2>
       <div className="row">
-        <CardItem img={icon_1} title="Total Visitor" value="1.7k+" />
-        <CardItem img={icon_2} title="Shortlisted" value="03" />
-        <CardItem img={icon_3} title="Views" value="2.1k" />
-        <CardItem img={icon_4} title="Applied Job" value="07" />
+        {/* <CardItem img={icon_1} title="Total Visitor" value="1.7k+" /> */}
+        <CardItem
+          img={icon_2}
+          title="Shortlisted"
+          value={statistics?.totalSavedUsers}
+        />
+        {/* <CardItem img={icon_3} title="Views" value="2.1k" /> */}
+        <CardItem
+          img={icon_4}
+          title="Posted Job"
+          value={statistics?.totalPostedJobs}
+        />
       </div>
 
       <div className="row d-flex pt-50 lg-pt-10">
         <div className="col-xl-7 col-lg-6 d-flex flex-column">
           <div className="user-activity-chart bg-white border-20 mt-30 h-100">
-            <h4 className="dash-title-two">Job Views</h4>
+            <h4 className="dash-title-two">Statistics Views</h4>
             <div className="d-sm-flex align-items-center job-list">
               <div className="fw-500 pe-3">Jobs:</div>
               <div className="flex-fill xs-mt-10">
@@ -87,11 +173,14 @@ const EmployDashboardArea = ({ jobs, totalJob }: IEmployDashboardProps) => {
               </div>
             </div>
             <div className="ps-5 pe-5 mt-50">
-              <Image
+              {/* <Image
                 src={main_graph}
                 alt="main-graph"
                 className="lazy-img m-auto"
-              />
+              /> */}
+              <Bar data={barChartDataCategory} options={chartOptions} />
+              <Bar data={barChartDataSkills} options={chartOptions} />
+              <Line data={barChartDataSkills} options={chartOptions} />
             </div>
           </div>
         </div>

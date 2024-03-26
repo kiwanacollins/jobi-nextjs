@@ -58,14 +58,14 @@ export interface getEmployeeByIdParams {
   page?: number;
   pageSize?: number;
   query?: string;
-  sort?:string
+  sort?: string;
 }
 
 export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
   try {
     connectToDatabase();
 
-    const { userId, page = 1, pageSize = 8, query: searchQuery,sort } = params;
+    const { userId, page = 1, pageSize = 8, query: searchQuery, sort } = params;
 
     const user = await User.findOne({ clerkId: userId });
 
@@ -103,14 +103,15 @@ export async function getEmployeeJobPosts(params: getEmployeeByIdParams) {
         break;
 
       default:
-        sortOptions = { createAt: -1 }
+        sortOptions = { createAt: -1 };
         break;
     }
 
     const myJobPosts = await Job.find(query)
       .populate('createdBy', 'name email picture')
       .skip(skipAmount)
-      .limit(pageSize).sort(sortOptions)
+      .limit(pageSize)
+      .sort(sortOptions);
 
     const totalJobPosts = await Job.countDocuments({ createdBy: user._id });
     const isNext = totalJobPosts > skipAmount + myJobPosts.length;
@@ -209,25 +210,23 @@ export async function toggleSaveCandidate(params: ToggleSaveCandidatesParams) {
 
 interface IGetSavedCandidateParams {
   clerkId: string;
-  query?:string,
-  page?:number,
-  pageSize?:number
- 
+  query?: string;
+  page?: number;
+  pageSize?: number;
 }
 
 export async function getSavedCandidates(params: IGetSavedCandidateParams) {
   try {
     connectToDatabase();
 
-    const { clerkId,query:searchQuery} = params;
+    const { clerkId, query: searchQuery } = params;
 
     // const skipAmount =  (page - 1) * pageSize;
 
+    const query: FilterQuery<typeof User> = {};
 
-    const query: FilterQuery<typeof User> = {  };
-
-    if(searchQuery) {
-      query.$or =[ 
+    if (searchQuery) {
+      query.$or = [
         { name: { $regex: new RegExp(searchQuery as string, 'i') } },
         { post: { $regex: new RegExp(searchQuery as string, 'i') } },
         {
@@ -242,29 +241,26 @@ export async function getSavedCandidates(params: IGetSavedCandidateParams) {
         {
           gender: { $eq: searchQuery }
         }
-      ]
+      ];
     }
 
     const user = await User.findOne({ clerkId }).populate({
-      path:'saved',
-      match: query,
+      path: 'saved',
+      match: query
       // options:{
       //   limit:pageSize,
       //   skip:skipAmount
       // }
-    })
-
+    });
 
     if (!user) {
       throw new Error('User not found');
     }
 
     const savedCandidates = user.saved;
-  
 
-    return { 
-      candidates: JSON.parse(JSON.stringify(savedCandidates)),
-
+    return {
+      candidates: JSON.parse(JSON.stringify(savedCandidates))
     };
   } catch (error) {
     console.log(error);
@@ -312,5 +308,50 @@ export async function shareSavedCandidates(
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+export async function getEmployeeStatisticsByClerkId({
+  clerkId
+}: {
+  clerkId: string;
+}) {
+  try {
+    // Step 1: Find the employee by clerkId
+    const employee = await User.findOne({ clerkId });
+
+    if (!employee) {
+      throw new Error('Employee not found');
+    }
+
+    // Step 2: Count the total posted jobs
+    const totalPostedJobs = await Job.countDocuments({
+      createdBy: employee._id
+    });
+
+    // Step 3: Aggregate the total jobs by category
+    const totalJobsByCategory = await Job.aggregate([
+      { $match: { createdBy: employee._id } },
+      { $group: { _id: '$category', totalJobs: { $sum: 1 } } }
+    ]);
+
+    // Step 4: Aggregate the total jobs by skills
+    const totalJobsBySkills = await Job.aggregate([
+      { $match: { createdBy: employee._id } },
+      { $unwind: '$skills' },
+      { $group: { _id: '$skills', totalJobs: { $sum: 1 } } }
+    ]);
+    // Step 5: Count the total saved users
+    const totalSavedUsers = employee.saved.length;
+
+    return {
+      // employee: JSON.parse(JSON.stringify(employee)),
+      totalPostedJobs,
+      totalJobsByCategory: JSON.parse(JSON.stringify(totalJobsByCategory)),
+      totalJobsBySkills: JSON.parse(JSON.stringify(totalJobsBySkills)),
+      totalSavedUsers
+    };
+  } catch (error) {
+    console.error(error);
   }
 }
