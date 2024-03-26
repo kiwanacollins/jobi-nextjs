@@ -1,30 +1,24 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 // import job_data from '@/data/job-data';
 import { setExperience } from '@/redux/features/filterSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IJobData } from '@/database/job.model';
-import { getJobPosts } from '@/lib/actions/job.action';
 
 export function JobExperienceItems({
-  showLength = true
+  showLength = true,
+  allJobs
 }: {
   showLength?: boolean;
+  allJobs: IJobData[];
 }) {
-  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
+  // const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const uniqueExperiences = [
-    ...new Set(allJobData?.map((job) => job?.experience))
+    ...new Set(allJobs?.map((job) => job?.experience))
   ];
   const { experience } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const getAllJobs = async () => {
-      const { jobs } = await getJobPosts({});
-      setAllJobData(jobs);
-    };
-    getAllJobs();
-  }, []);
   return (
     <>
       {uniqueExperiences?.map((e, index) => (
@@ -40,7 +34,7 @@ export function JobExperienceItems({
             {e}
             {showLength && (
               <span>
-                {allJobData.filter((job) => job.experience === e).length}
+                {allJobs.filter((job) => job.experience === e).length}
               </span>
             )}
           </label>
@@ -50,12 +44,16 @@ export function JobExperienceItems({
   );
 }
 
-const JobExperience = () => {
+interface IProps {
+  allJobs: IJobData[];
+}
+
+const JobExperience = ({ allJobs }: IProps) => {
   return (
     <>
       <div className="main-body">
         <ul className="style-none filter-input">
-          <JobExperienceItems />
+          <JobExperienceItems allJobs={allJobs} />
         </ul>
       </div>
     </>

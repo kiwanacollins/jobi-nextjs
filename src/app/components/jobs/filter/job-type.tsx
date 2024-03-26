@@ -1,25 +1,29 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 // import job_data from '@/data/job-data';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { setJobType } from '@/redux/features/filterSlice';
-import { getJobPosts } from '@/lib/actions/job.action';
 import { IJobData } from '@/database/job.model';
 
 // job type items
 
-export function JobTypeItems({ showLength = true }: { showLength?: boolean }) {
-  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
-  const jobDuration = [...new Set(allJobData.map((job) => job.duration))];
+export function JobTypeItems({
+  showLength = true,
+  allJobs
+}: {
+  showLength?: boolean;
+  allJobs: IJobData[];
+}) {
+  const jobDuration = [...new Set(allJobs.map((job) => job.duration))];
   const { job_type } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const getAllJobs = async () => {
-      const { jobs } = await getJobPosts({});
-      setAllJobData(jobs);
-    };
-    getAllJobs();
-  }, []);
+  // useEffect(() => {
+  //   const getAllJobs = async () => {
+  //     const { jobs } = await getJobPosts({});
+  //     setAllJobData(jobs);
+  //   };
+  //   getAllJobs();
+  // }, []);
   return (
     <>
       {jobDuration.map((duration, index) => (
@@ -35,7 +39,7 @@ export function JobTypeItems({ showLength = true }: { showLength?: boolean }) {
             {duration}{' '}
             {showLength && (
               <span>
-                {allJobData.filter((job) => job.duration === duration).length}
+                {allJobs.filter((job) => job.duration === duration).length}
               </span>
             )}
           </label>
@@ -45,11 +49,11 @@ export function JobTypeItems({ showLength = true }: { showLength?: boolean }) {
   );
 }
 
-const JobType = () => {
+const JobType = ({ allJobs }: { allJobs: IJobData[] }) => {
   return (
     <div className="main-body">
       <ul className="style-none filter-input">
-        <JobTypeItems />
+        <JobTypeItems allJobs={allJobs} />
       </ul>
     </div>
   );

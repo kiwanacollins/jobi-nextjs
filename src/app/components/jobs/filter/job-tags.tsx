@@ -1,24 +1,22 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 // import job_data from '@/data/job-data';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { setTags } from '@/redux/features/filterSlice';
 import { IJobData } from '@/database/job.model';
-import { getJobPosts } from '@/lib/actions/job.action';
 
-const JobTags = () => {
-  const [allJobData, setAllJobData] = useState<IJobData[]>([]);
-  const uniqueTags = [...new Set(allJobData.flatMap((job) => job.skills))];
-  console.log(uniqueTags)
+const JobTags = ({ allJobs }: { allJobs: IJobData[] }) => {
+  const uniqueTags = [...new Set(allJobs.flatMap((job) => job.skills))];
   const { skills } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const getAllJobs = async () => {
-      const { jobs } = await getJobPosts({});
-      setAllJobData(jobs);
-    };
-    getAllJobs();
-  }, []);
+
+  // useEffect(() => {
+  //   const getAllJobs = async () => {
+  //     const { jobs } = await getJobPosts({});
+  //     setAllJobData(jobs);
+  //   };
+  //   getAllJobs();
+  // }, []);
 
   return (
     <div className="main-body">

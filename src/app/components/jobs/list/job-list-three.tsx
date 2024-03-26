@@ -117,9 +117,10 @@ const JobListThree = ({
             </button>
             {/* filter area start */}
             <FilterArea
-            // priceValue={priceValue}
-            // setPriceValue={setPriceValue}
-            // maxPrice={maxPrice}
+              allJobs={allJobs}
+              // priceValue={priceValue}
+              // setPriceValue={setPriceValue}
+              // maxPrice={maxPrice}
             />
             {/* filter area end */}
           </div>

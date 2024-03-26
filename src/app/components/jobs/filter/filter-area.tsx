@@ -8,14 +8,21 @@ import JobTags from './job-tags';
 // import JobPrices from './job-prices';
 import { useAppDispatch } from '@/redux/hook';
 import { resetFilter } from '@/redux/features/filterSlice';
+import { IJobData } from '@/database/job.model';
 
 // prop type
 type IProps = {
   priceValue?: number[];
   setPriceValue?: React.Dispatch<React.SetStateAction<number[]>>;
   maxPrice?: number;
+  allJobs: IJobData[];
 };
-const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
+const FilterArea = ({
+  priceValue,
+  setPriceValue,
+  maxPrice,
+  allJobs
+}: IProps) => {
   const dispatch = useAppDispatch();
   // handleReset
   const handleReset = () => {
@@ -63,7 +70,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
             Job Type
           </a>
           <div className="collapse show" id="collapseJobType">
-            <JobType />
+            <JobType allJobs={allJobs} />
           </div>
         </div>
         {/* <!-- /.filter-block --> */}
@@ -78,7 +85,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
             Experience
           </a>
           <div className="collapse show" id="collapseExp">
-            <JobExperience />
+            <JobExperience allJobs={allJobs} />
           </div>
         </div>
         {/* <!-- /.filter-block --> */}
@@ -112,7 +119,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
             Category
           </a>
           <div className="collapse" id="collapseCategory">
-            <JobCategory />
+            <JobCategory allJobs={allJobs} />
           </div>
         </div>
         {/* <!-- /.filter-block --> */}
@@ -127,7 +134,7 @@ const FilterArea = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
             Tags
           </a>
           <div className="collapse" id="collapseTag">
-            <JobTags />
+            <JobTags allJobs={allJobs} />
           </div>
         </div>
         {/* <!-- /.filter-block --> */}
