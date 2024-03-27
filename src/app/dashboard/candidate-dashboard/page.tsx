@@ -14,7 +14,7 @@ const CandidateDashboardPage = async () => {
   }
   return (
     <>
-      <DashboardArea />
+      <DashboardArea statistics={{}} />
     </>
   );
 };
