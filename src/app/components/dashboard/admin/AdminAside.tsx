@@ -31,6 +31,12 @@ const nav_data: {
   icon_active: StaticImageData;
   link: string;
   title: string;
+  sub_menus?: {
+    icon: StaticImageData;
+    icon_active: StaticImageData;
+    link: string;
+    title: string;
+  }[];
 }[] = [
   {
     id: 1,
@@ -56,8 +62,8 @@ const nav_data: {
 
   {
     id: 4,
-    icon: nav_2,
-    icon_active: nav_2_active,
+    icon: nav_1,
+    icon_active: nav_1_active,
     link: '/dashboard/admin-dashboard/categories',
     title: 'Categories'
   },
@@ -109,6 +115,27 @@ const nav_data: {
     icon_active: nav_7_active,
     link: '/dashboard/admin-dashboard/setting',
     title: 'Account Settings'
+  },
+  {
+    id: 12,
+    icon: nav_2,
+    icon_active: nav_2_active,
+    link: '/dashboard/candidate-dashboard',
+    title: 'Candidates',
+    sub_menus: [
+      {
+        icon: nav_2,
+        icon_active: nav_2_active,
+        link: '/dashboard/admin-dashboard/new-user',
+        title: 'Create Candidate '
+      },
+      {
+        icon: nav_3,
+        icon_active: nav_3_active,
+        link: '/dashboard/admin-dashboard/users',
+        title: 'All Candidates'
+      }
+    ]
   }
 ];
 // props type
@@ -216,17 +243,53 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                 const isActive = pathname === m.link;
                 return (
                   <li key={m.id} onClick={() => setIsOpenSidebar(false)}>
-                    <Link
-                      href={m.link}
-                      className={`d-flex text-decoration-none w-100 align-items-center ${isActive ? 'active' : ''}`}
-                    >
-                      <Image
-                        src={isActive ? m.icon_active : m.icon}
-                        alt="icon"
-                        className="lazy-img"
-                      />
-                      <span>{m.title}</span>
-                    </Link>
+                    {m.sub_menus ? (
+                      <div className="dropdown">
+                        <a
+                          className={`dropdown-toggle d-flex text-decoration-none w-100 align-items-center ${isActive ? 'active' : ''}`}
+                          href="#"
+                          role="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          <Image
+                            src={isActive ? m.icon_active : m.icon}
+                            alt="icon"
+                            className="lazy-img"
+                          />
+                          <span>{m.title}</span>
+                        </a>
+                        <ul className="dropdown-menu px-2">
+                          {m.sub_menus.map((subItem, index) => (
+                            <li key={index}>
+                              <Link
+                                href={subItem.link}
+                                className={` dropdown-item  d-flex text-decoration-none w-100 align-items-start ${isActive ? 'active' : ''}`}
+                              >
+                                <Image
+                                  src={isActive ? m.icon_active : m.icon}
+                                  alt="icon"
+                                  className="lazy-img"
+                                />
+                                <span> {subItem.title}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : (
+                      <Link
+                        href={m.link}
+                        className={`d-flex text-decoration-none w-100 align-items-center ${isActive ? 'active' : ''}`}
+                      >
+                        <Image
+                          src={isActive ? m.icon_active : m.icon}
+                          alt="icon"
+                          className="lazy-img"
+                        />
+                        <span>{m.title}</span>
+                      </Link>
+                    )}
                   </li>
                 );
               })}
