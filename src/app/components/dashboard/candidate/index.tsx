@@ -7,7 +7,7 @@ const CandidateDashboardMain = () => {
   return (
     <>
       {/* dashboard area start */}
-      <DashboardArea />
+      <DashboardArea statistics={{}} />
       {/* dashboard area end */}
     </>
   );
