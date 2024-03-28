@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image, { StaticImageData } from 'next/image';
-import job_data from '@/data/job-data';
+// import job_data from '@/data/job-data';
 import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
 import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
 import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
@@ -19,6 +19,8 @@ import {
   LineElement
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
+import { IUser } from '@/database/user.model';
+import CandidateItem from '../employ/candidate-item';
 
 ChartJS.register(
   BarElement,
@@ -59,10 +61,11 @@ export function CardItem({
 
 interface IDashboardAreaProps {
   statistics: any;
+  candidates: IUser[];
 }
 
-const DashboardArea = ({ statistics }: IDashboardAreaProps) => {
-  const job_items = [...job_data.reverse().slice(0, 5)];
+const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
+  // const job_items = [...job_data.reverse().slice(0, 5)];
   const dates = statistics?.usersByJoinedAt?.map((item: any) => item._id);
   const values = statistics?.usersByJoinedAt?.map((item: any) => item.count);
   const chartData = {
@@ -141,59 +144,13 @@ const DashboardArea = ({ statistics }: IDashboardAreaProps) => {
         </div>
         <div className="col-xl-5 col-lg-6 d-flex">
           <div className="recent-job-tab bg-white border-20 mt-30 w-100">
-            <h4 className="dash-title-two">Recent Applied Job</h4>
+            <h4 className="dash-title-two">Recent Candidates</h4>
             <div className="wrapper">
-              {job_items.map((j) => (
-                <div
-                  key={j.id}
-                  className="job-item-list d-flex align-items-center"
-                >
-                  <div>
-                    <Image
-                      src={j.logo}
-                      alt="logo"
-                      width={40}
-                      height={40}
-                      className="lazy-img logo"
-                    />
-                  </div>
-                  <div className="job-title">
-                    <h6 className="mb-5">
-                      <a href="#">{j.duration}</a>
-                    </h6>
-                    <div className="meta">
-                      <span>Fulltime</span> . <span>{j.location}</span>
-                    </div>
-                  </div>
-                  <div className="job-action">
-                    <button
-                      className="action-btn dropdown-toggle"
-                      type="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <span></span>
-                    </button>
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          View Job
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Archive
-                        </a>
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="#">
-                          Delete
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              ))}
+              {candidates
+                ?.slice(0, 5)
+                .map((item: IUser) => (
+                  <CandidateItem key={item._id} item={item} />
+                ))}
             </div>
           </div>
         </div>
