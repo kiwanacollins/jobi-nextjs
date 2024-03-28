@@ -7,7 +7,7 @@ import { getAllCandidates } from '@/lib/actions/candidate.action';
 
 const AdminDashboardPage = async () => {
   const user = await currentUser();
-  if (!user || !user?.privateMetadata?.isAdmin) {
+  if (!user || !user.privateMetadata.isAdmin) {
     return redirect('/');
   }
   const data = await getUserStatistics();
