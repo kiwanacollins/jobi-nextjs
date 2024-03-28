@@ -42,8 +42,8 @@ export function TrendingJobs() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const categoryItems = categories?.map((c) => ({
     id: c._id,
-    name: c.name,
-    title: <>{c.name}</>,
+    name: c?.name,
+    title: <>{c?.name}</>,
     bg_img: c?.image?.url || bg_1
   }));
   // const category_items = category_data.filter((c) => c.bg_img);
@@ -72,11 +72,11 @@ export function TrendingJobs() {
         ref={sliderRef}
         className="card-wrapper category-slider-one row"
       >
-        {categoryItems.map((item) => (
+        {categoryItems?.map((item) => (
           <div key={item.id} className="item">
             <div
               className="card-style-six position-relative"
-              style={{ backgroundImage: `url(${item.bg_img})` }}
+              style={{ backgroundImage: `url(${item?.bg_img})` }}
             >
               <Link
                 href={{
