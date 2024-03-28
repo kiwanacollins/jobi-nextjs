@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import Image, { StaticImageData } from 'next/image';
-// import job_data from '@/data/job-data';
 import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
 import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
 import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
@@ -61,11 +60,10 @@ export function CardItem({
 
 interface IDashboardAreaProps {
   statistics: any;
-  candidates: IUser[];
+  candidates?: IUser[];
 }
 
 const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
-  // const job_items = [...job_data.reverse().slice(0, 5)];
   const dates = statistics?.usersByJoinedAt?.map((item: any) => item._id);
   const values = statistics?.usersByJoinedAt?.map((item: any) => item.count);
   const chartData = {
