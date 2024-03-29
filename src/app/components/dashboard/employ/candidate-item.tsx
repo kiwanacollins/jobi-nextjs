@@ -28,7 +28,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
               <div className="position-relative">
                 <h4 className="candidate-name mb-0">
                   <Link
-                    href={`/candidate-profile/${item?._id}`}
+                    href={`/candidate-profile/${item?.resumeId}`}
                     className="tran3s text-decoration-none  "
                   >
                     {item?.name}

@@ -47,7 +47,7 @@ const CandidateProfileSlider = ({
               alt={img?.public_id as string}
               className="w-100"
               width={350}
-              height={500}
+              height={400}
               style={{ width: '100%', height: 'auto' }}
             />
           </button>
