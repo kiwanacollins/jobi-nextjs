@@ -37,7 +37,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                 <div className="candidate-post">
                   <p>{item?.post}</p>
                 </div>
-                <ul className="cadidate-skills style-none d-flex flex-wrap  align-items-center">
+                <ul className="cadidate-skills style-none d-flex   align-items-center">
                   {item?.skills?.map((skill, index) => {
                     return <li key={index}>{skill}</li>;
                   })}
