@@ -142,7 +142,7 @@ const EmployJobArea = ({
         </div>
       </div>
 
-      <div className="dash-pagination d-flex justify-content-end mt-30">
+      <div className="dash-pagination d-flex justify-content-center align-items-center  mt-30">
         <CommonPagination isNext={isNext} pageNumber={pageNumber} />
       </div>
     </div>

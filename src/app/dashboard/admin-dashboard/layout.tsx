@@ -9,6 +9,10 @@ import React, { useEffect, useState } from 'react';
 // import 'bootstrap/dist/js/bootstrap';
 import NextTopLoader from 'nextjs-toploader';
 
+// if (typeof window !== 'undefined') {
+//   require('bootstrap/dist/js/bootstrap');
+// }
+
 const CandidateDashboardLayout = ({
   children
 }: {

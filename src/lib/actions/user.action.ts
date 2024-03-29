@@ -60,8 +60,8 @@ export async function createUser(userData: CreateUserParams) {
 // type createUserByAdminParams = z.infer<typeof userSchema>;
 export async function createUserByAdmin(userData: any) {
   try {
-    connectToDatabase();
-    connectToCloudinary();
+    await connectToDatabase();
+    await connectToCloudinary();
     const { picture } = userData;
 
     if (picture) {
@@ -87,18 +87,19 @@ export async function createUserByAdmin(userData: any) {
       );
 
       for (const subcategoryName of userData.skills) {
-        const matchingSubcategory = await category.subcategory.find(
+        const matchingSubcategory = category.subcategory.find(
           (subcategory: any) => subcategory.name === subcategoryName
         );
 
-        console.log('matchingSubcategory', matchingSubcategory);
-
         if (matchingSubcategory) {
-          await Category.findByIdAndUpdate(
-            category._id,
+          await Category.findOneAndUpdate(
             {
-              $push: {
-                'category.subcategory.$.candidates': newUser._id
+              _id: category._id,
+              'subcategory.name': subcategoryName
+            },
+            {
+              $addToSet: {
+                'subcategory.$.candidates': newUser._id
               }
             },
             {
@@ -125,8 +126,8 @@ export async function createUserByAdmin(userData: any) {
 
 export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
   try {
-    connectToDatabase();
-    connectToCloudinary();
+    await connectToDatabase();
+    await connectToCloudinary();
     const { mongoId, updateData, path } = params;
     const { picture } = updateData;
 
@@ -149,7 +150,10 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
     );
 
     if (!updatedUser) {
-      throw new Error(`User with Id ${mongoId} not found`);
+      return {
+        error: true,
+        message: `User with Id ${mongoId} not found`
+      };
     }
     if (updateData.post) {
       const category = await Category.findOneAndUpdate(
@@ -169,7 +173,10 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
 
         if (matchingSubcategory) {
           await Category.findOneAndUpdate(
-            category._id,
+            {
+              _id: category._id,
+              'subcategory.name': subcategoryName
+            },
             {
               $addToSet: {
                 'subcategory.$.candidates': updatedUser._id
@@ -188,9 +195,12 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
       }
     }
     revalidatePath(path);
+    return {
+      success: true,
+      message: 'User updated successfully'
+    };
   } catch (error) {
-    console.log(error);
-    throw error;
+    console.log('update user error', error);
   }
 }
 

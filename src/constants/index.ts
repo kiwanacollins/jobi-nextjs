@@ -51,3 +51,27 @@ export const slider_setting = {
     }
   ]
 };
+
+export const qualificationOptions = [
+  { value: `master's degree`, label: `Master's Degree` },
+  { value: `Bachelor degree`, label: `Bachelor Degree` },
+  { value: `Higher Secondary`, label: `Higher Secondary` },
+  { value: `Secondary School`, label: `Secondary School` }
+];
+
+export const experienceOptions = [
+  { value: 'Intermediate', label: 'Intermediate' },
+  { value: 'No-Experience', label: 'No-Experience' },
+  { value: 'Expert', label: 'Expert' }
+];
+
+export const englishLevelOptions = [
+  { value: 'Basic', label: 'Basic' },
+  { value: 'Conversational', label: 'Conversational' },
+  { value: 'Fluent', label: 'Fluent' },
+  { value: 'Native', label: 'Native' }
+];
+export const genderOptions = [
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' }
+];
