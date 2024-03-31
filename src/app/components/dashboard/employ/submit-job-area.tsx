@@ -176,6 +176,9 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           notifySuccess(res.message);
           setProgress(100);
         }
+        if (res.error) {
+          notifyError(res.message);
+        }
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);

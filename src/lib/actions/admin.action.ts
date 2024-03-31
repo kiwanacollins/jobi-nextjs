@@ -75,7 +75,7 @@ export async function getSingleCategoryById(categoryId: string) {
     await connectToDatabase();
     const category = await Category.findById(categoryId);
     if (!category) {
-      return { success: false, message: 'Category not found' };
+      return { error: true, message: 'Category not found' };
     }
     return JSON.parse(JSON.stringify(category));
   } catch (error) {
@@ -103,7 +103,7 @@ export async function deleteSingleCategory(param: {
       return { success: true, message: 'Category deleted successfully' };
     } else {
       return {
-        success: false,
+        error: true,
         message: `Category with ID: ${mongoId} not found`
       };
     }
@@ -123,7 +123,7 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
     const category = await Category.findById(categoryId);
 
     if (!category) {
-      return { success: false, message: 'Category not found' };
+      return { error: true, message: 'Category not found' };
     }
     // check if subcategory exists
     for (const subcategory of subcategories ?? []) {
@@ -284,17 +284,27 @@ export async function removeFromAdmin(params: IRemoveAdminProps) {
   try {
     await connectToDatabase();
 
-    const isAdmin = await User.findOne({ _id: userId, isAdmin: true });
+    const isAdmin = await User.findOne({
+      _id: userId,
+      isAdmin: true
+    });
     if (!isAdmin) {
       // Handle user not being an admin gracefully
       console.log(`User with ID ${userId} is not an admin.`);
-      return;
+      return {
+        error: true,
+        message: 'User is not Found'
+      };
     }
 
     // Set isAdmin to false, preserving data integrity
     await User.updateOne({ _id: userId }, { isAdmin: false });
 
     revalidatePath(path);
+    return {
+      success: true,
+      message: 'User removed from admin successfully'
+    };
   } catch (error) {
     console.error('Error removing user from admin:', error);
   }

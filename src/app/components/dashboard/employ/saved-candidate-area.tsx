@@ -31,12 +31,19 @@ const SavedCandidateArea = ({
         const res = await shareSavedCandidates({
           employeeId
         });
-        console.log('shareSavedCandidates', res);
         if (res.success) {
           Swal.fire({
             title: 'Shared!',
             text: res.message,
             icon: 'success'
+          });
+          setIsLoading(false);
+        }
+        if (res.error) {
+          Swal.fire({
+            title: 'Error!',
+            text: res.message,
+            icon: 'error'
           });
           setIsLoading(false);
         }

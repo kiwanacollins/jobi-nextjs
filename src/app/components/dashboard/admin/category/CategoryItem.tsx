@@ -39,6 +39,13 @@ const CategoryItem = ({ id, categoryId, name, subcategory }: ICategoryItem) => {
               icon: 'success'
             });
           }
+          if (response.error) {
+            Swal.fire({
+              title: 'Error!',
+              text: response?.message,
+              icon: 'error'
+            });
+          }
         }
       });
     } catch (error) {

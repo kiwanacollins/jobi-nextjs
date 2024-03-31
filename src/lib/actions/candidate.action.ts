@@ -302,12 +302,17 @@ export async function getAllCandidates(params: getCandidatesParams) {
         break;
 
       default:
-        sortOptions = { joinedAt: -1 }
+        sortOptions = { joinedAt: -1 };
         break;
     }
 
-
-    const candidates = await User.find(query)
+    const candidates = await User.find(query, {
+      saved: 0,
+      jobPosts: 0,
+      joinedAt: 0,
+      role: 0,
+      mediaLinks: 0
+    })
       .skip(skipAmount)
       .limit(pageSize)
       .sort(sortOptions);

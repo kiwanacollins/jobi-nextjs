@@ -36,7 +36,7 @@ const menu_data: IMenuData[] = [
     title: 'Contact'
   },
   {
-    id: 5,
+    id: 6,
     link: '/wishlist',
     title: 'Wishlist'
   }

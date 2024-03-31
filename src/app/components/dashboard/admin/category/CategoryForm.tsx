@@ -157,7 +157,7 @@ const CategoryForm = ({ type, category }: IProps) => {
           notifySuccess(res.message);
           router.push('/dashboard/admin-dashboard/categories');
         }
-        if (!res.success) {
+        if (res.error) {
           notifyError(res.message);
         }
       }

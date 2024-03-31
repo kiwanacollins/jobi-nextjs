@@ -50,6 +50,10 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       industry
     });
 
+    if (!newJob) {
+      return { error: true, message: 'Error creating Job post' };
+    }
+
     if (category) {
       const mongoCategory = await Category.findOneAndUpdate(
         {

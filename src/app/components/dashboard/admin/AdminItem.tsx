@@ -24,15 +24,24 @@ const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
       confirmButtonText: 'Yes, remove it!'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await removeFromAdmin({
+        const res = await removeFromAdmin({
           userId,
           path: pathname
         });
-        Swal.fire({
-          title: 'Removed!',
-          text: 'Removed from admin successfully',
-          icon: 'success'
-        });
+        if (res?.success) {
+          Swal.fire({
+            title: 'Removed!',
+            text: res?.message,
+            icon: 'success'
+          });
+        }
+        if (res?.error) {
+          Swal.fire({
+            title: 'Error!',
+            text: res?.message,
+            icon: 'error'
+          });
+        }
       }
     });
   };

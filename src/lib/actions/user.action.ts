@@ -16,6 +16,7 @@ import cloudinary from 'cloudinary';
 
 import { clerkClient } from '@clerk/nextjs';
 import Category from '@/database/category.model';
+import ShareData from '@/database/shareData.model';
 
 export async function getUserById(params: any) {
   try {
@@ -24,6 +25,13 @@ export async function getUserById(params: any) {
     const { userId } = params;
 
     const user = await User.findOne({ clerkId: userId });
+
+    if (!user) {
+      return {
+        error: true,
+        message: 'User not found'
+      };
+    }
 
     return JSON.parse(JSON.stringify(user));
   } catch (error) {
@@ -38,6 +46,12 @@ export async function getUserByMongoId(params: any) {
     const { id } = params;
 
     const user = await User.findById(id);
+    if (!user) {
+      return {
+        error: true,
+        message: 'User not found'
+      };
+    }
 
     return JSON.parse(JSON.stringify(user));
   } catch (error) {
@@ -315,6 +329,7 @@ export async function deleteUser(params: DeleteUserParams) {
 
     // delete candidate resume
     await Resume.deleteMany({ user: user._id });
+    await ShareData.deleteMany({ employeeId: user._id });
 
     const deletedUser = await User.findByIdAndDelete(user._id);
 

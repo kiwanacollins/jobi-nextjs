@@ -246,7 +246,8 @@ export async function getSavedCandidates(params: IGetSavedCandidateParams) {
 
     const user = await User.findOne({ clerkId }).populate({
       path: 'saved',
-      match: query
+      match: query,
+      select: 'name picture post skills resumeId'
       // options:{
       //   limit:pageSize,
       //   skip:skipAmount
@@ -254,12 +255,16 @@ export async function getSavedCandidates(params: IGetSavedCandidateParams) {
     });
 
     if (!user) {
-      throw new Error('User not found');
+      return {
+        success: false,
+        message: 'User not found'
+      };
     }
 
     const savedCandidates = user.saved;
 
     return {
+      success: true,
       candidates: JSON.parse(JSON.stringify(savedCandidates))
     };
   } catch (error) {
@@ -283,7 +288,10 @@ export async function shareSavedCandidates(
     const user = await User.findOne({ clerkId: employeeId }).populate('saved');
 
     if (!user) {
-      throw new Error('User not found');
+      return {
+        error: true,
+        message: 'Employee not found'
+      };
     }
     const SavedInfo = await ShareData.findOneAndUpdate(
       { employeeId: user._id },
@@ -296,9 +304,11 @@ export async function shareSavedCandidates(
       { new: true, upsert: true }
     );
     if (!SavedInfo) {
-      throw new Error('Failed to share candidates');
+      return {
+        error: true,
+        message: 'Failed to share candidates'
+      };
     }
-    console.log('SavedInfo', SavedInfo);
 
     return {
       success: true,
