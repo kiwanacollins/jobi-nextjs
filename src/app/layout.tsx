@@ -61,7 +61,7 @@ export default function RootLayout({
           suppressHydrationWarning={true}
           className={`${gordita.variable} ${garamond.variable}`}
         >
-          <NextTopLoader  showSpinner={false} />
+          <NextTopLoader showSpinner={false} />
           <Providers>{children}</Providers>
           <BackToTopCom />
         </body>
