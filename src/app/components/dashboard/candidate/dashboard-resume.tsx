@@ -237,8 +237,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       academy: '',
       year: '',
       description: '',
-      yearStart: 0,
-      yearEnd: 0
+      yearStart: 2024,
+      yearEnd: 2024
     });
   };
 
@@ -257,8 +257,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       company: '',
       year: '',
       description: '',
-      yearStart: 0,
-      yearEnd: 0
+      yearStart: 2024,
+      yearEnd: 2024
     });
   };
 

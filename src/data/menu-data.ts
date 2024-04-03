@@ -34,12 +34,12 @@ const menu_data: IMenuData[] = [
     id: 5,
     link: '/contact',
     title: 'Contact'
-  },
-  {
-    id: 6,
-    link: '/wishlist',
-    title: 'Wishlist'
   }
+  // {
+  //   id: 6,
+  //   link: '/wishlist',
+  //   title: 'Wishlist'
+  // }
   // {
   //   id: 6,
   //   link: '/dashboard/candidate-dashboard',

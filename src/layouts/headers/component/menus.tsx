@@ -85,6 +85,14 @@ const Menus = ({
           </li>
         )
       )}
+
+      {role !== 'employee' && (
+        <li className="nav-item" onClick={handleNavCollapse}>
+          <Link className="nav-link" href={'/wishlist'}>
+            Wishlist
+          </Link>
+        </li>
+      )}
       <SignedIn>
         {(role || isAdmin === true) && (
           <li className="nav-item dropdown Dashboard ">
