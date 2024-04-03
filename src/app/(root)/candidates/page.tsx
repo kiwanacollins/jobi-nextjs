@@ -4,10 +4,10 @@ import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import CandidateV1Area from '../../components/candidate/candidate-v1-area';
 
-import { getAllCandidates } from '@/lib/actions/candidate.action';
 import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
+import { getActiveCandidates } from '@/lib/actions/candidate.action';
 
 export const metadata: Metadata = {
   title: 'Candidates',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
-  const { candidates, isNext } = await getAllCandidates({
+  const { candidates, isNext } = await getActiveCandidates({
     keyword: searchParams?.keyword,
     query: searchParams?.query,
     skill: searchParams?.skill,

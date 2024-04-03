@@ -169,8 +169,8 @@ export async function getCandidateResumes(params: getCandidatesParams) {
   }
 }
 
-// get All candidates
-export async function getAllCandidates(params: getCandidatesParams) {
+// get All Active candidates
+export async function getActiveCandidates(params: getCandidatesParams) {
   try {
     await connectToDatabase();
 
@@ -195,7 +195,10 @@ export async function getAllCandidates(params: getCandidatesParams) {
     // Calculcate the number of posts to skip based on the page number and page size
     const skipAmount = (page - 1) * pageSize;
 
-    const query: FilterQuery<typeof User> = { role: 'candidate' };
+    const query: FilterQuery<typeof User> = {
+      role: 'candidate',
+      resumeId: { $exists: true }
+    };
 
     if (searchQuery) {
       query.$or = [];
@@ -321,6 +324,102 @@ export async function getAllCandidates(params: getCandidatesParams) {
     const isNext = totalCandidates > skipAmount + candidates.length;
 
     return { candidates: JSON.parse(JSON.stringify(candidates)), isNext };
+  } catch (error) {
+    console.error('Error fetching candidates:', error);
+    throw error;
+  }
+}
+
+// get All candidates
+
+interface I_GetAllCandidatesProps {
+  query?: string;
+  page?: number;
+  pageSize?: number;
+  sort?: string;
+}
+
+export async function getAllCandidates(params: I_GetAllCandidatesProps) {
+  try {
+    await connectToDatabase();
+
+    const {
+      query: searchQuery,
+      page = 1,
+      pageSize = 8, // default page size is 10,
+      sort
+    } = params;
+
+    // Calculcate the number of posts to skip based on the page number and page size
+    const skipAmount = (page - 1) * pageSize;
+
+    const query: FilterQuery<typeof User> = {
+      role: 'candidate'
+    };
+
+    if (searchQuery) {
+      query.$or = [];
+      query.$or.push(
+        { name: { $regex: new RegExp(searchQuery as string, 'i') } },
+        { post: { $regex: new RegExp(searchQuery as string, 'i') } },
+        {
+          qualification: { $regex: new RegExp(searchQuery as string, 'i') }
+        },
+        {
+          post: { $regex: new RegExp(searchQuery as string, 'i') }
+        },
+        {
+          skills: { $elemMatch: { $regex: new RegExp(searchQuery, 'i') } }
+        },
+        {
+          gender: { $eq: searchQuery }
+        }
+      );
+    }
+
+    let sortOptions = {};
+
+    switch (sort) {
+      case 'old':
+        sortOptions = { joinedAt: 1 };
+        break;
+
+      case 'name':
+        sortOptions = { name: 1 };
+        break;
+
+      case 'new':
+        sortOptions = { joinedAt: -1 };
+        break;
+
+      default:
+        sortOptions = { joinedAt: -1 };
+        break;
+    }
+
+    const candidates = await User.find(query, {
+      saved: 0,
+      jobPosts: 0,
+      joinedAt: 0,
+      role: 0,
+      mediaLinks: 0
+    })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .sort(sortOptions);
+
+    const totalCandidates = await User.countDocuments(query);
+    const isNext = totalCandidates > skipAmount + candidates.length;
+
+    const totalCandidatesCount = await User.countDocuments({
+      role: 'candidate'
+    });
+
+    return {
+      candidates: JSON.parse(JSON.stringify(candidates)),
+      totalCandidates: totalCandidatesCount,
+      isNext
+    };
   } catch (error) {
     console.error('Error fetching candidates:', error);
     throw error;
