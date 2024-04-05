@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DashboardPortfolio from './dashboard-portfolio';
 import VideoPopup from '../../common/video-popup';
 import * as z from 'zod';
@@ -19,6 +19,7 @@ import {
 } from '@/database/resume.model';
 import { usePathname } from 'next/navigation';
 import { IUser } from '@/database/user.model';
+import { getLast30YearsOptions } from '@/constants';
 
 interface IProps {
   mongoUser: IUser;
@@ -157,7 +158,6 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
   const onSubmit = async (data: resumeSchemaType) => {
     setIsSubmitting(true);
     simulateProgress();
-    console.log('submtted data', data);
     const experience = data?.experience?.map((item: IExperience) => {
       const year = item?.yearStart + '-' + item?.yearEnd;
       return {
@@ -204,17 +204,32 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       };
       if (isResumeExist) {
         // update resume
-        await updateResume({
+        const res = await updateResume({
           resumeId: resume?._id,
           resumeData,
           path: pathname
         });
-        setProgress(100);
-        notifySuccess('Resume Updated successfully.');
+        if (res.success) {
+          setProgress(100);
+          notifySuccess(res.message);
+        }
+        if (res?.error) {
+          notifyError(res.message);
+          setProgress(0);
+        }
       } else {
-        await createResume(resumeData);
-        setProgress(100);
-        notifySuccess('Resume Created successfully.');
+        const res = await createResume({
+          resumeData,
+          path: pathname
+        });
+        if (res?.success) {
+          setProgress(100);
+          notifySuccess(res.message);
+        }
+        if (res?.error) {
+          notifyError(res.message);
+          setProgress(0);
+        }
       }
     } catch (error: any) {
       console.log(error);
@@ -226,9 +241,9 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     }
   };
 
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  // useEffect(() => {
+  //   reset();
+  // }, [reset]);
 
   const handleAddEducation = (e: any) => {
     e.preventDefault(); // Prevent form submission
@@ -237,8 +252,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       academy: '',
       year: '',
       description: '',
-      yearStart: 2024,
-      yearEnd: 2024
+      yearStart: 2024
     });
   };
 
@@ -257,8 +271,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
       company: '',
       year: '',
       description: '',
-      yearStart: 2024,
-      yearEnd: 2024
+      yearStart: 2024
     });
   };
 
@@ -479,9 +492,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                             <div className="row">
                               <div className="col-sm-6">
                                 <div className="dash-input-wrapper mb-30">
-                                  <input
-                                    type="number"
-                                    placeholder="year start"
+                                  <select
+                                    defaultValue=""
                                     {...register(
                                       `education.${index}.yearStart`,
                                       {
@@ -489,7 +501,18 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                           v === '' ? undefined : parseInt(v)
                                       }
                                     )}
-                                  />
+                                    className="form-select"
+                                  >
+                                    <option value="" disabled>
+                                      Year Start
+                                    </option>
+                                    {getLast30YearsOptions().map((year, i) => (
+                                      <option key={i} value={year}>
+                                        {year}
+                                      </option>
+                                    ))}
+                                  </select>
+
                                   {errors.education?.[index]?.yearStart && (
                                     <ErrorMsg
                                       msg={
@@ -502,14 +525,24 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                               </div>
                               <div className="col-sm-6">
                                 <div className="dash-input-wrapper mb-30">
-                                  <input
-                                    type="number"
-                                    placeholder="year end"
+                                  <select
+                                    defaultValue=""
                                     {...register(`education.${index}.yearEnd`, {
                                       setValueAs: (v) =>
                                         v === '' ? undefined : parseInt(v)
                                     })}
-                                  />
+                                    className="form-select"
+                                  >
+                                    <option value="" disabled>
+                                      Year End
+                                    </option>
+                                    {getLast30YearsOptions().map((year, i) => (
+                                      <option key={i} value={year}>
+                                        {year}
+                                      </option>
+                                    ))}
+                                  </select>
+
                                   {errors.education?.[index]?.yearEnd && (
                                     <ErrorMsg
                                       msg={
@@ -662,9 +695,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                             <div className="row">
                               <div className="col-sm-6">
                                 <div className="dash-input-wrapper mb-30">
-                                  <input
-                                    type="number"
-                                    placeholder="year start"
+                                  <select
+                                    defaultValue=""
                                     {...register(
                                       `experience.${index}.yearStart`,
                                       {
@@ -672,7 +704,18 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                           v === '' ? undefined : parseInt(v)
                                       }
                                     )}
-                                  />
+                                    className="form-select"
+                                  >
+                                    <option value="" disabled>
+                                      Year Start
+                                    </option>
+                                    {getLast30YearsOptions().map((year, i) => (
+                                      <option key={i} value={year}>
+                                        {year}
+                                      </option>
+                                    ))}
+                                  </select>
+
                                   {errors.experience?.[index]?.yearStart
                                     ?.message && (
                                     <ErrorMsg
@@ -686,9 +729,8 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                               </div>
                               <div className="col-sm-6">
                                 <div className="dash-input-wrapper mb-30">
-                                  <input
-                                    type="number"
-                                    placeholder="year End"
+                                  <select
+                                    defaultValue=""
                                     {...register(
                                       `experience.${index}.yearEnd`,
                                       {
@@ -696,7 +738,18 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
                                           v === '' ? undefined : parseInt(v)
                                       }
                                     )}
-                                  />
+                                    className="form-select"
+                                  >
+                                    <option value="" disabled>
+                                      Year End
+                                    </option>
+                                    {getLast30YearsOptions().map((year, i) => (
+                                      <option key={i} value={year}>
+                                        {year}
+                                      </option>
+                                    ))}
+                                  </select>
+
                                   {errors.experience?.[index]?.yearEnd
                                     ?.message && (
                                     <ErrorMsg

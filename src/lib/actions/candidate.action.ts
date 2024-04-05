@@ -53,7 +53,13 @@ export async function getResumeById(resumeId: string) {
   }
 }
 
-export async function createResume(resumeData: resumeDataParams) {
+interface ICreateResumeParams {
+  resumeData: resumeDataParams;
+  path: string;
+}
+
+export async function createResume(params: ICreateResumeParams) {
+  const { resumeData, path } = params;
   try {
     await connectToDatabase();
     await connectToCloudinary();
@@ -72,7 +78,10 @@ export async function createResume(resumeData: resumeDataParams) {
         image.public_id = result.public_id;
       } catch (error: any) {
         console.log('error ', error);
-        return;
+        return {
+          error: true,
+          message: error.message
+        };
       }
     }
 
@@ -85,6 +94,13 @@ export async function createResume(resumeData: resumeDataParams) {
       overview
     });
 
+    if (!newResume) {
+      return {
+        error: true,
+        message: 'Error creating resume'
+      };
+    }
+
     await User.findOneAndUpdate(
       { _id: user },
       { resumeId: newResume._id },
@@ -94,10 +110,18 @@ export async function createResume(resumeData: resumeDataParams) {
     );
 
     revalidatePath('/candidates');
-    return newResume;
-  } catch (error) {
+    revalidatePath(path);
+    return {
+      success: true,
+      message: 'Resume created successfully',
+      data: JSON.parse(JSON.stringify(newResume))
+    };
+  } catch (error: any) {
     console.log(error);
-    throw error;
+    return {
+      error: true,
+      message: error.message
+    };
   }
 }
 
@@ -126,7 +150,10 @@ export async function updateResume(params: updateResumeParams) {
         image.public_id = result.public_id;
       } catch (error: any) {
         console.log('error ', error);
-        return;
+        return {
+          error: true,
+          message: 'Error updating portfolio'
+        };
       }
     }
 
@@ -137,13 +164,24 @@ export async function updateResume(params: updateResumeParams) {
     );
 
     if (!updatedResume) {
-      throw new Error(`User with ID ${resumeId} not found`);
+      return {
+        error: true,
+        message: 'Error updating resume'
+      };
     }
 
     revalidatePath(path);
-  } catch (error) {
+    return {
+      success: true,
+      message: 'Resume updated successfully',
+      data: JSON.parse(JSON.stringify(updatedResume))
+    };
+  } catch (error: any) {
     console.error('Error fetching user:', error);
-    throw error;
+    return {
+      error: true,
+      message: error.message
+    };
   }
 }
 

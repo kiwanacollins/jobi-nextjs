@@ -25,13 +25,15 @@ const CandidateProfileSlider = ({
       {
         breakpoint: 992,
         settings: {
-          slidesToShow: 2
+          slidesToShow: 2,
+          slidesToScroll: 1
         }
       },
       {
         breakpoint: 450,
         settings: {
-          slidesToShow: 1
+          slidesToShow: 1,
+          slidesToScroll: 1
         }
       }
     ]

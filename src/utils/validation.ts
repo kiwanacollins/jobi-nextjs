@@ -10,7 +10,12 @@ export const emailSchema = z.object({
 const educationSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   academy: z.string().min(1, { message: 'academy is required' }).max(100),
-  yearStart: z.number(),
+  yearStart: z
+    .number()
+    .nonnegative()
+    .refine((val) => val !== undefined && val !== null, {
+      message: 'required'
+    }),
   yearEnd: z.number().optional(),
   year: z.string().optional(),
   description: z
@@ -22,7 +27,12 @@ const educationSchema = z.object({
 const experienceSchema = z.object({
   title: z.string().min(1, { message: 'title is required' }).max(100),
   company: z.string().min(1, { message: 'company is required' }).max(100),
-  yearStart: z.number(),
+  yearStart: z
+    .number()
+    .nonnegative()
+    .refine((val) => val !== undefined && val !== null, {
+      message: 'required'
+    }),
   yearEnd: z.number().optional(),
   year: z.string().optional(),
   description: z

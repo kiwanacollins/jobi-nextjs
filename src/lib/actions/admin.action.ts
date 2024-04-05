@@ -284,11 +284,12 @@ export async function removeFromAdmin(params: IRemoveAdminProps) {
   try {
     await connectToDatabase();
 
-    const isAdmin = await User.findOne({
+    const user = await User.findOne({
       _id: userId,
       isAdmin: true
     });
-    if (!isAdmin) {
+
+    if (!user) {
       // Handle user not being an admin gracefully
       console.log(`User with ID ${userId} is not an admin.`);
       return {
@@ -297,8 +298,27 @@ export async function removeFromAdmin(params: IRemoveAdminProps) {
       };
     }
 
-    // Set isAdmin to false, preserving data integrity
-    await User.updateOne({ _id: userId }, { isAdmin: false });
+    if (!user.isAdmin) {
+      return {
+        error: 'User is not an admin'
+      };
+    }
+
+    // Update isAdmin status
+    user.isAdmin = false;
+    await user.save();
+
+    // Update private metadata if necessary
+    if (user.clerkId) {
+      const clerkUser = await clerkClient.users.getUser(user.clerkId);
+      if (clerkUser.privateMetadata.isAdmin) {
+        await clerkClient.users.updateUserMetadata(user.clerkId, {
+          privateMetadata: {
+            isAdmin: false
+          }
+        });
+      }
+    }
 
     revalidatePath(path);
     return {

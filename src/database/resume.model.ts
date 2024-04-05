@@ -3,7 +3,7 @@ import { Schema, models, model, Document } from 'mongoose';
 export interface IEducation {
   title: string;
   academy: string;
-  yearStart: number;
+  yearStart?: number;
   yearEnd?: number;
   year?: string;
   description: string;
@@ -12,7 +12,7 @@ export interface IEducation {
 export interface IExperience {
   title: string;
   company: string;
-  yearStart: number;
+  yearStart?: number;
   yearEnd?: number;
   year?: string;
   description: string;

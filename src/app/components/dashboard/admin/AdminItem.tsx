@@ -2,6 +2,7 @@
 
 import { removeFromAdmin } from '@/lib/actions/admin.action';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 interface IAdminItemProps {
@@ -14,6 +15,7 @@ interface IAdminItemProps {
 
 const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
   const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(false);
   const handleRemoveAdmin = async (userId: string) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -23,6 +25,7 @@ const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, remove it!'
     }).then(async (result) => {
+      setIsLoading(true);
       if (result.isConfirmed) {
         const res = await removeFromAdmin({
           userId,
@@ -34,6 +37,7 @@ const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
             text: res?.message,
             icon: 'success'
           });
+          setIsLoading(false);
         }
         if (res?.error) {
           Swal.fire({
@@ -41,6 +45,7 @@ const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
             text: res?.message,
             icon: 'error'
           });
+          setIsLoading(false);
         }
       }
     });
@@ -64,9 +69,21 @@ const AdminItem = ({ name, email, status, id, serial }: IAdminItemProps) => {
           <button
             onClick={() => handleRemoveAdmin(id)}
             title="Remove from admin"
+            disabled={isLoading}
             className="btn btn-danger"
           >
-            Remove
+            {isLoading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Removing...
+              </>
+            ) : (
+              'Remove'
+            )}
           </button>
         </div>
       </td>

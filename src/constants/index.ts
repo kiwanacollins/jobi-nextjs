@@ -75,3 +75,13 @@ export const genderOptions = [
   { value: 'male', label: 'Male' },
   { value: 'female', label: 'Female' }
 ];
+
+export const getLast30YearsOptions = () => {
+  const currentYear = new Date().getFullYear();
+  const options = [];
+  for (let i = currentYear; i >= currentYear - 29; i--) {
+    options.push(i);
+  }
+
+  return options;
+};
