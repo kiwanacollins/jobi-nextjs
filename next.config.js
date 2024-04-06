@@ -4,7 +4,7 @@ const nextConfig = {
     mdxRs: true,
     serverComponentsExternalPackages: ['mongoose'],
     serverActions: {
-      bodySizeLimit: '2mb'
+      bodySizeLimit: '3mb'
     }
   },
   images: {

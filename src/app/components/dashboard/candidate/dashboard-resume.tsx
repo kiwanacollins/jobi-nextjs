@@ -234,7 +234,7 @@ const DashboardResume = ({ mongoUser, resume }: IProps) => {
     } catch (error: any) {
       console.log(error);
       setProgress(0);
-      notifyError(error as string);
+      notifyError(error.message as string);
     } finally {
       setIsSubmitting(false);
       setProgress(0);
