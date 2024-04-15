@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 import { deleteUserById } from '@/lib/actions/user.action';
 import Swal from 'sweetalert2';
 import { BookCheck } from 'lucide-react';
-import { markAsHired } from '@/lib/actions/admin.action';
+import { cancelCandidateHiring, markAsHired } from '@/lib/actions/admin.action';
 
 interface IProps {
   id: string;
@@ -78,6 +78,36 @@ const ActionDropdown = ({ id, resumeId, isHired }: IProps) => {
       }
     });
   };
+
+  // cancel Hiring
+  const handleCancelHiring = async (userId: string) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to cancel hiring this user?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, cancel hiring!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await cancelCandidateHiring({
+          userId,
+          path: pathname
+        });
+        if (res?.success) {
+          Swal.fire({
+            title: 'Cancelled!',
+            text: res.message,
+            icon: 'success'
+          });
+        }
+        if (res?.error) {
+          Swal.fire({ title: 'Error!', text: res.message, icon: 'error' });
+        }
+      }
+    });
+  };
   return (
     <ul className="dropdown-menu dropdown-menu-end">
       <li className="dropdown-item">
@@ -104,14 +134,23 @@ const ActionDropdown = ({ id, resumeId, isHired }: IProps) => {
       </li>
       {/* mark as hired */}
       <li className="dropdown-item">
-        {!isHired ? (
+        {!isHired && resumeId ? (
           <button
             onClick={() => handleMarkAsHired(id)}
             className="dropdown-item"
           >
             <BookCheck size={16} /> Mark as Hired
           </button>
-        ) : null}
+        ) : (
+          resumeId && (
+            <button
+              onClick={() => handleCancelHiring(id)}
+              className="dropdown-item"
+            >
+              <BookCheck size={16} /> Cancel Hiring
+            </button>
+          )
+        )}
       </li>
       <li className="dropdown-item">
         <a className="dropdown-item" href="#">

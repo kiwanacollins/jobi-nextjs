@@ -279,6 +279,42 @@ export async function markAsHired(params: ImarkAsHiredProps) {
   }
 }
 
+interface IcancelHiredProps {
+  userId: string;
+  path: string;
+}
+
+export async function cancelCandidateHiring(params: IcancelHiredProps) {
+  const { userId, path } = params;
+  try {
+    await connectToDatabase();
+
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return {
+        error: true,
+        message: 'User not found'
+      };
+    }
+
+    user.isHired = false; // Set isHired back to false
+    await user.save();
+
+    revalidatePath(path);
+    return {
+      success: true,
+      message: 'User hiring canceled.' // Adjusted success message
+    };
+  } catch (error) {
+    console.error('Error canceling user hiring:', error);
+    return {
+      error: true,
+      message: 'Error canceling user hiring.' // Error message for catch block
+    };
+  }
+}
+
 interface IgetAdminsProps {
   query?: string;
 }
