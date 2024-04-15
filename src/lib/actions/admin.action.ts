@@ -245,6 +245,40 @@ export async function makeUserAdmin(params: ImakeAdminProps) {
   }
 }
 
+// mark user as hired
+
+interface ImarkAsHiredProps {
+  userId: string;
+  path: string;
+}
+
+export async function markAsHired(params: ImarkAsHiredProps) {
+  const { userId, path } = params;
+  try {
+    await connectToDatabase();
+
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return {
+        error: true,
+        message: 'User not found'
+      };
+    }
+
+    user.isHired = true;
+    await user.save();
+
+    revalidatePath(path);
+    return {
+      success: true,
+      message: `Marked!', 'User has been marked as hired.`
+    };
+  } catch (error) {
+    console.error('Error marking user as hired:', error);
+  }
+}
+
 interface IgetAdminsProps {
   query?: string;
 }

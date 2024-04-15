@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { deleteUserById } from '@/lib/actions/user.action';
 import Swal from 'sweetalert2';
+import { BookCheck } from 'lucide-react';
+import { markAsHired } from '@/lib/actions/admin.action';
 
 interface IProps {
   id: string;
@@ -29,15 +31,49 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
       confirmButtonText: 'Yes, delete it!'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await deleteUserById({
+        const res = await deleteUserById({
           id: userId,
           path: pathname
         });
-        Swal.fire({
-          title: 'Deleted!',
-          text: 'User has been deleted.',
-          icon: 'success'
+        if (res?.success) {
+          Swal.fire({
+            title: 'Deleted!',
+            text: res.message,
+            icon: 'success'
+          });
+        }
+        if (res?.error) {
+          Swal.fire({ title: 'Error!', text: res.message, icon: 'error' });
+        }
+      }
+    });
+  };
+
+  const handleMarkAsHired = async (userId: string) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to mark this user as hired?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, mark as hired!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await markAsHired({
+          userId,
+          path: pathname
         });
+        if (res?.success) {
+          Swal.fire({
+            title: 'Hired!',
+            text: res.message,
+            icon: 'success'
+          });
+        }
+        if (res?.error) {
+          Swal.fire('Error!', res.message, 'error');
+        }
       }
     });
   };
@@ -64,6 +100,12 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
             <Image src={edit} alt="icon" className="lazy-img" /> Edit Resume
           </Link>
         )}
+      </li>
+      {/* mark as hired */}
+      <li className="dropdown-item">
+        <button onClick={() => handleMarkAsHired(id)} className="dropdown-item">
+          <BookCheck size={18} className="lazy-img" /> Mark as Hired
+        </button>
       </li>
       <li className="dropdown-item">
         <a className="dropdown-item" href="#">

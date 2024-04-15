@@ -353,7 +353,10 @@ export async function deleteUserById(params: DeleteUserByIdParams) {
     const user = await User.findByIdAndDelete(id);
 
     if (!user) {
-      throw new Error('User not found');
+      return {
+        error: true,
+        message: 'User not found'
+      };
     }
 
     if (user.clerkId) {
@@ -361,7 +364,11 @@ export async function deleteUserById(params: DeleteUserByIdParams) {
     }
 
     revalidatePath(path);
-    return JSON.parse(JSON.stringify(user));
+    return {
+      success: true,
+      message: 'User deleted successfully',
+      user: JSON.parse(JSON.stringify(user))
+    };
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error; // Rethrow to allow for further handling

@@ -28,6 +28,7 @@ export interface IUser extends Document {
   phone?: string;
   picture?: string;
   role?: string;
+  isHired?: boolean;
   isAdmin?: boolean;
   mediaLinks?: I_Links;
   address?: string;
@@ -59,6 +60,7 @@ const UserSchema = new Schema({
   experience: { type: String },
   picture: { type: String },
   role: { type: String },
+  isHired: { type: Boolean },
   isAdmin: { type: Boolean },
   mediaLinks: {
     linkedin: { type: String },

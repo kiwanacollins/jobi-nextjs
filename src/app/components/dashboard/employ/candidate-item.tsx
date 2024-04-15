@@ -45,12 +45,15 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                   onClick={() => handleViewProfile(item?.resumeId as string)}
                   className="candidate-name cursor-pointer tran3s text-decoration-none  mb-0"
                 >
-                  {item?.name}
+                  {item?.name}{' '}
+                  {item?.isHired && (
+                    <span className="badge bg-success">Hired</span>
+                  )}
                 </h4>
                 <div className="candidate-post">
                   <p>{item?.post}</p>
                 </div>
-                <ul className="cadidate-skills flex-wrap flex-md-nowrap   style-none d-flex   align-items-center">
+                <ul className="cadidate-skills flex-wrap flex-lg-nowrap  style-none d-flex   align-items-center">
                   {item?.skills?.map((skill, index) => {
                     return <li key={index}>{skill}</li>;
                   })}
