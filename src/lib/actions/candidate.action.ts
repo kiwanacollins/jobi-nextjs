@@ -429,6 +429,9 @@ export async function getAllCandidates(params: I_GetAllCandidatesProps) {
       case 'new':
         sortOptions = { joinedAt: -1 };
         break;
+      case 'hired':
+        sortOptions = { isHired: -1 };
+        break;
 
       default:
         sortOptions = { joinedAt: -1 };

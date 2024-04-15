@@ -1,8 +1,8 @@
-"use client"
-import React, { useState } from "react";
-import NiceSelect from "@/ui/nice-select";
-import { useRouter, useSearchParams } from "next/navigation";
-import { formUrlQuery } from "@/utils/utils";
+'use client';
+import React, { useState } from 'react';
+import NiceSelect from '@/ui/nice-select';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery } from '@/utils/utils';
 
 const EmployShortSelect = () => {
   const router = useRouter();
@@ -35,9 +35,10 @@ const EmployShortSelect = () => {
   return (
     <NiceSelect
       options={[
-        { value: "New", label: "New" },
-        { value: "Old", label: "Old" },
-        { value: "Name", label: "Name/Title" },
+        { value: 'New', label: 'New' },
+        { value: 'Old', label: 'Old' },
+        { value: 'Name', label: 'Name/Title' },
+        { value: 'Hired', label: 'Hired' }
 
         // { value: "Active", label: "Active" },
         // { value: "Pending", label: "Pending" },

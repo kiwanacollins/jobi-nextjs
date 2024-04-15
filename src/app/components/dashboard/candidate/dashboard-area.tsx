@@ -15,11 +15,11 @@ import {
   Legend,
   LinearScale,
   PointElement,
-  LineElement
+  LineElement,
+  ArcElement
 } from 'chart.js';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar, Line, Pie } from 'react-chartjs-2';
 import { IUser } from '@/database/user.model';
-import CandidateItem from '../employ/candidate-item';
 
 ChartJS.register(
   BarElement,
@@ -28,7 +28,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 // card item
@@ -88,6 +89,33 @@ const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
       }
     }
   };
+  const piChartData = {
+    labels: ['candidates', 'Hired'],
+    datasets: [
+      {
+        data: [statistics.totalCandidates, statistics.totalHiredUsers],
+        backgroundColor: ['#059BFF', '#FF6384'],
+        hoverBackgroundColor: ['#059BFF', '#FF6384']
+      }
+    ]
+  };
+
+  const piChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top'
+        },
+        title: {
+          display: true,
+          text: 'Chart.js Pie Chart'
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -140,8 +168,10 @@ const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
             </div>
           </div>
         </div>
-        <div className="col-xl-5 col-lg-6 d-flex">
-          <div className="recent-job-tab bg-white border-20 mt-30 w-100">
+        <div className="col-xl-5 col-lg-6 ">
+          <Pie options={piChartOptions} data={piChartData} />
+
+          {/* <div className="recent-job-tab bg-white border-20 mt-30 w-100">
             <h4 className="dash-title-two">Recent Candidates</h4>
             <div className="wrapper">
               {candidates
@@ -150,7 +180,7 @@ const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
                   <CandidateItem key={item._id} item={item} />
                 ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

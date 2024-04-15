@@ -420,6 +420,8 @@ export async function getUserStatistics() {
 
     const totalEmployees = await User.countDocuments({ role: 'employee' });
 
+    const totalHiredUsers = await User.countDocuments({ isHired: true });
+
     const totalJobPosts = await Job.countDocuments();
 
     const usersByJoinedAt = await User.aggregate([
@@ -437,7 +439,8 @@ export async function getUserStatistics() {
       totalCandidates,
       totalEmployees,
       usersByJoinedAt,
-      totalJobPosts
+      totalJobPosts,
+      totalHiredUsers
     };
   } catch (error) {
     console.log(error);

@@ -47,7 +47,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                 >
                   {item?.name}{' '}
                   {item?.isHired && (
-                    <span className="badge bg-success">Hired</span>
+                    <span className="badge bg-success ">Hired</span>
                   )}
                 </h4>
                 <div className="candidate-post">
@@ -92,6 +92,7 @@ const CandidateItem = ({ item }: { item: IUser }) => {
                   <ActionDropdown
                     id={item?._id}
                     resumeId={(item?.resumeId as string) || ''}
+                    isHired={item?.isHired}
                   />
                 </div>
               </div>

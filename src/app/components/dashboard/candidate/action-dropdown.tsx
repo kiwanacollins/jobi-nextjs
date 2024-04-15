@@ -15,9 +15,10 @@ import { markAsHired } from '@/lib/actions/admin.action';
 interface IProps {
   id: string;
   resumeId?: string | undefined;
+  isHired?: boolean;
 }
 
-const ActionDropdown = ({ id, resumeId }: IProps) => {
+const ActionDropdown = ({ id, resumeId, isHired }: IProps) => {
   const pathname = usePathname();
 
   const handleDeleteUser = async (userId: string) => {
@@ -103,9 +104,14 @@ const ActionDropdown = ({ id, resumeId }: IProps) => {
       </li>
       {/* mark as hired */}
       <li className="dropdown-item">
-        <button onClick={() => handleMarkAsHired(id)} className="dropdown-item">
-          <BookCheck size={18} className="lazy-img" /> Mark as Hired
-        </button>
+        {!isHired ? (
+          <button
+            onClick={() => handleMarkAsHired(id)}
+            className="dropdown-item"
+          >
+            <BookCheck size={16} /> Mark as Hired
+          </button>
+        ) : null}
       </li>
       <li className="dropdown-item">
         <a className="dropdown-item" href="#">
