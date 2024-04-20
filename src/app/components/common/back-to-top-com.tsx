@@ -1,10 +1,10 @@
-"use client";
-import BackToTop from "@/lib/back-to-top";
-import React, { useEffect } from "react";
+'use client';
+import BackToTop from '@/lib/back-to-top';
+import React, { useEffect } from 'react';
 
 function BackToTopCom() {
   useEffect(() => {
-    BackToTop(".scroll-top");
+    BackToTop('.scroll-top');
   }, []);
   return (
     <button className="scroll-top">

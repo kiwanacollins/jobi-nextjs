@@ -7,6 +7,7 @@ import BackToTopCom from './components/common/back-to-top-com';
 import { Providers } from '@/redux/provider';
 import React from 'react';
 import NextTopLoader from 'nextjs-toploader';
+import WhatsAppButton from './components/common/WhatsAppButton';
 
 const gordita = localFont({
   src: [
@@ -63,6 +64,10 @@ export default function RootLayout({
         >
           <NextTopLoader showSpinner={false} />
           <Providers>{children}</Providers>
+          <WhatsAppButton
+            phoneNumber={'+8801938056537'}
+            message="Hello, I would like to know about your services"
+          />
           <BackToTopCom />
         </body>
       </html>
