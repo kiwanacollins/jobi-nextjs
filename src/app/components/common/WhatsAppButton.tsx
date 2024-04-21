@@ -57,7 +57,7 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       rel="noopener noreferrer"
       style={buttonStyles}
     >
-      <Image src={whatsappIcon} width={40} height={40} alt="whatsapp icon" />
+      <Image src={whatsappIcon} width={45} height={45} alt="whatsapp icon" />
     </Link>
   );
 };

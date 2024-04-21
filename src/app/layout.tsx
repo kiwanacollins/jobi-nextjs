@@ -42,8 +42,8 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: 'Hireskills - Job Portal',
-  description: 'Hireskills - Job Porta - Find your dream job today!'
+  title: 'OneSkill - Job Portal',
+  description: 'OneSkill - Job Porta - Find your dream job today!'
 };
 
 export default function RootLayout({

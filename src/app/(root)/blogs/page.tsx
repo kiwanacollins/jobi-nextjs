@@ -8,9 +8,9 @@ import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
-  title: 'Blog - Hireskills',
+  title: 'Blog - OneSkill',
   description:
-    'Stay informed and inspired with the latest insights, trends, and career advice on the HireSkills blog. Discover valuable resources to enhance your hiring process and career development.'
+    'Stay informed and inspired with the latest insights, trends, and career advice on the OneSkill blog. Discover valuable resources to enhance your hiring process and career development.'
 };
 
 const BlogV3Page = async () => {

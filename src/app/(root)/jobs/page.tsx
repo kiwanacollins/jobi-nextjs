@@ -7,9 +7,9 @@ import { getJobPosts } from '@/lib/actions/job.action';
 import { SearchParamsProps } from '@/types';
 
 export const metadata: Metadata = {
-  title: 'Jobs - Hireskills',
+  title: 'Jobs - OneSkill',
   description:
-    'Explore a wide range of job opportunities on HireSkills. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
+    'Explore a wide range of job opportunities on OneSkill. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
 };
 
 const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {

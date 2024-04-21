@@ -52,7 +52,7 @@ const CategoryForm = ({ type, category }: IProps) => {
     formState: { errors }
   } = methods;
 
-  console.log('image', watch('image'));
+
 
   // handle file  upload
   const handleFileChange = async (
@@ -186,11 +186,15 @@ const CategoryForm = ({ type, category }: IProps) => {
               width={120}
               className="lazy-img user-img"
             />
+           
           )}
+          
 
           <div className="upload-btn position-relative tran3s ms-4 me-3">
             <small>{filename || ' Upload Category photo'}</small>
-
+            {errors.image && (
+                  <ErrorMsg msg={errors.image.message as string} />
+                )}
             <input
               type="file"
               id="uploadImg"
@@ -200,8 +204,9 @@ const CategoryForm = ({ type, category }: IProps) => {
               onChange={(e) => handleFileChange(e)}
             />
           </div>
-          <button className="delete-btn tran3s">Delete</button>
+          {/* <button className="delete-btn tran3s">Delete</button> */}
         </div>
+          
         <div className="dash-input-wrapper mb-30">
           <label htmlFor="">Category Name*</label>
           <Controller

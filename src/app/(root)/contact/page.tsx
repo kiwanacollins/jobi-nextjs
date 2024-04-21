@@ -4,9 +4,9 @@ import MapArea from '../../components/contact/map-area';
 import ContactArea from '../../components/contact/contact-area';
 
 export const metadata: Metadata = {
-  title: 'Contact | Hireskills',
+  title: 'Contact | OneSkill',
   description:
-    "Have questions or need assistance? Reach out to the HireSkills team. We're here to help you with any inquiries regarding job postings, candidate searches, or general information."
+    "Have questions or need assistance? Reach out to the OneSkill team. We're here to help you with any inquiries regarding job postings, candidate searches, or general information."
 };
 
 const ContactPage = () => {

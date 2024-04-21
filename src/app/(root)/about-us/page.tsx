@@ -8,7 +8,7 @@ import HowItWorks from '../../components/how-it-works/how-it-works';
 import FeedbackOne from '../../components/feedBacks/feedback-one';
 
 export const metadata: Metadata = {
-  title: 'About us | HireSkills'
+  title: 'About us | OneSkill'
 };
 
 const AboutUsPage = () => {

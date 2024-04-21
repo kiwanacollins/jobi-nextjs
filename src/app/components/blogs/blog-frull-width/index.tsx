@@ -21,7 +21,7 @@ const BlogFullWidthArea = ({ blogs }: IProps) => {
             </div>
           ))}
         </div>
-        <BlogPagination />
+        {/* <BlogPagination /> */}
       </div>
     </section>
   );

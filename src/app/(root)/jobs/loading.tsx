@@ -6,9 +6,9 @@ import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkelet
 import FilterSkeleton from '@/app/components/skaletons/FilterSkeleton';
 
 export const metadata: Metadata = {
-  title: 'Jobs - Hireskills',
+  title: 'Jobs - OneSkill',
   description:
-    'Explore a wide range of job opportunities on HireSkills. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
+    'Explore a wide range of job opportunities on OneSkill. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
 };
 
 const JobLoadingPage = () => {
