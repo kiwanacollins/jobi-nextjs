@@ -5,6 +5,7 @@ import icon_1 from '@/assets/images/icon/icon_57.svg';
 import icon_2 from '@/assets/images/icon/icon_58.svg';
 import icon_3 from '@/assets/images/icon/icon_59.svg';
 import ContactForm from '../forms/contact-form';
+import Link from 'next/link';
 
 const ContactArea = () => {
   return (
@@ -24,8 +25,8 @@ const ContactArea = () => {
                     </div>
                     <h5 className="title">Our Address</h5>
                     <p>
-                      Bass Hill Plaza Medical Centre <br />
-                      Sydney, Australia
+                      Awal Center, Kamal Ataturk Avenue,34, 19th floor  <br />
+                      Banani, Dhaka, Bangladesh
                     </p>
                   </div>
                 </div>
@@ -51,9 +52,9 @@ const ContactArea = () => {
                     <h5 className="title">Live Support</h5>
                     <p>
                       live chat service <br />
-                      <a href="#" className="webaddress">
-                        www.jobilivechat.com
-                      </a>
+                      <Link href="https://www.oneskill.io" className="webaddress">
+                        www.oneskill.io
+                      </Link>
                     </p>
                   </div>
                 </div>
