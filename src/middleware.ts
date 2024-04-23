@@ -12,6 +12,8 @@ export default authMiddleware({
     '/candidates(.*)',
     '/about',
     '/contact',
+    '/faq',
+    '/pricing',
     '/blogs',
     '/blog/:id',
     '/api/webhook'
