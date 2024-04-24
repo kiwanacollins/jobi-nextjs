@@ -1,3 +1,4 @@
+import createMDX from '@next/mdx';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -7,6 +8,7 @@ const nextConfig = {
       bodySizeLimit: '3mb'
     }
   },
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
     remotePatterns: [
       {
@@ -21,4 +23,9 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+const withMDX = createMDX({
+  // Add markdown plugins here, as desired
+});
+
+// Merge MDX config with Next.js config
+export default withMDX(nextConfig);

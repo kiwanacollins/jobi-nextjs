@@ -80,7 +80,7 @@ const FooterOne = ({
             <div className="col-lg-4 order-lg-1 mb-15">
               <ul className="d-flex style-none bottom-nav justify-content-center justify-content-lg-start">
                 <li>
-                  <Link className="text-decoration-none" href="/contact">
+                  <Link className="text-decoration-none" href="/terms">
                     Privacy & Terms.
                   </Link>
                 </li>

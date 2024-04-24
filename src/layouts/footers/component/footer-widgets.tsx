@@ -11,7 +11,7 @@ export function WidgetOne({
   return (
     <div className={`${cls} mb-20`}>
       <h5 className={`footer-title ${style_2 ? 'text-white' : ''}`}>
-        Services​
+        Services
       </h5>
       <ul className="footer-nav-link  style-none">
         <li>
@@ -92,7 +92,7 @@ export function WidgetThree({
           </Link>
         </li>
         <li>
-          <Link className="text-decoration-none" href="/contact">
+          <Link className="text-decoration-none" href="/terms">
             Terms & conditions
           </Link>
         </li>
