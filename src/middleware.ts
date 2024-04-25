@@ -14,6 +14,8 @@ export default authMiddleware({
     '/contact',
     '/faq',
     '/terms',
+    '/termsofuses',
+    '/policy',
     '/pricing',
     '/blogs',
     '/blog/:id',
