@@ -8,15 +8,18 @@ import JobGridItem from '../grid/job-grid-item';
 import { useAppSelector } from '@/redux/hook';
 import NiceSelect from '@/ui/nice-select';
 import { IJobData } from '@/database/job.model';
+import { IUser } from '@/database/user.model';
 
 const JobListThree = ({
   itemsPerPage,
   grid_style = false,
-  allJobs
+  allJobs,
+currentUser
 }: {
   itemsPerPage: number;
   grid_style?: boolean;
   allJobs: IJobData[];
+  currentUser?: IUser | null;
 }) => {
   const all_jobs = allJobs;
   // const maxPrice = all_jobs.reduce((max, job) => {
@@ -171,7 +174,7 @@ const JobListThree = ({
               >
                 {currentItems &&
                   currentItems?.map((job) => (
-                    <ListItemTwo key={job._id} item={job} />
+                    <ListItemTwo currentUser={JSON.parse(JSON.stringify(currentUser))} key={job._id} item={job} />
                   ))}
               </div>
 

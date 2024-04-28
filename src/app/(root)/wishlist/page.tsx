@@ -1,11 +1,13 @@
 import CommonBreadcrumb from '@/app/components/common/common-breadcrumb';
 import WishlistArea from '@/app/components/wishlist/wishlist-area';
-import { currentUser } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
+import { auth, currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 const Page = async () => {
-  const user = await currentUser();
-  if (!user || user.privateMetadata.role === 'employee') {
+  const { userId } = auth();
+  const currentUser = await getUserById({ userId });
+  if (!currentUser || currentUser.role === 'employee') {
     return redirect('/');
   }
   return (

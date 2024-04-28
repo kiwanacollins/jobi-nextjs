@@ -5,6 +5,8 @@ import JobListThree from '../../components/jobs/list/job-list-three';
 import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
 import { getJobPosts } from '@/lib/actions/job.action';
 import { SearchParamsProps } from '@/types';
+import { auth } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
   title: 'Jobs - OneSkill',
@@ -17,6 +19,8 @@ const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
     category: searchParams.category,
     query: searchParams.query
   });
+  const { userId } = auth();
+  const currentUser = await getUserById({ userId });
   return (
     <>
       {/* search breadcrumb start */}
@@ -24,7 +28,7 @@ const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
       {/* search breadcrumb end */}
 
       {/* job list three start */}
-      <JobListThree allJobs={jobs} itemsPerPage={8} />
+      <JobListThree allJobs={jobs} currentUser={JSON.parse(JSON.stringify(currentUser))} itemsPerPage={8} />
       {/* job list three end */}
 
       {/* job portal intro start */}

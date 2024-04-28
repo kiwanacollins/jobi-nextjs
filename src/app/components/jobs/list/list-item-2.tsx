@@ -7,8 +7,9 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { add_to_wishlist } from '@/redux/features/wishlist';
 import { IJobData } from '@/database/job.model';
+import { IUser } from '@/database/user.model';
 
-const ListItemTwo = ({ item }: { item: IJobData }) => {
+const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUser | null; }) => {
   const { wishlist } = useAppSelector((state) => state.wishlist);
   const isActive = wishlist.some((p) => p._id === item._id); // edited
   const dispatch = useAppDispatch();
@@ -66,7 +67,7 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
         </div>
         <div className="col-md-3 col-sm-6">
           <div className="btn-group d-flex align-items-center justify-content-sm-end xs-mt-20">
-            <a
+           {currentUser?.role !== 'employee'?( <a
               onClick={() => handleAddWishlist(item)}
               className={`save-btn text-center rounded-circle tran3s me-3 cursor-pointer ${
                 isActive ? 'active' : ''
@@ -74,7 +75,7 @@ const ListItemTwo = ({ item }: { item: IJobData }) => {
               title={`${isActive ? 'Remove Job' : 'Save Job'}`}
             >
               <i className="bi bi-bookmark-dash"></i>
-            </a>
+            </a>):null}
             <Link
               href={`/job/${item._id}`}
               className="apply-btn text-decoration-none text-center tran3s"
