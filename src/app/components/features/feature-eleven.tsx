@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import AccordionItem from '../accordion/accordion-item';
 import VideoPopup from '../common/video-popup';
 import CounterOne from '../counter/counter-one';
+import { aboutUsContent } from '@/constants';
 
 const FeatureEleven = () => {
   const [isVideoOpen, setIsVideoOpen] = useState<boolean>(false);
@@ -21,9 +22,14 @@ const FeatureEleven = () => {
               <div className="col-lg-6 ms-auto">
                 <div className="wow fadeInRight">
                   <div className="accordion accordion-style-one color-two ps-xxl-5 ms-xxl-4" id="accordionOne">
-                    <AccordionItem id='one' isShow={true} title='Who we are?' desc='Our founders Dustin Moskovitz and Justin lorem Rosenstein met while leading Engineering teams at Facebook quesi. Lorem ipsum dolor sit, amet consectetur adipisicing elit.' parent='accordionOne' />
-                    <AccordionItem id='two' title='What’s our goal' desc='Our founders Dustin Moskovitz and Justin lorem Rosenstein met while leading Engineering teams at Facebook quesi. Lorem ipsum dolor sit, amet consectetur adipisicing elit.' parent='accordionOne' />
-                    <AccordionItem id='three' title='Our vision' desc='Our founders Dustin Moskovitz and Justin lorem Rosenstein met while leading Engineering teams at Facebook quesi. Lorem ipsum dolor sit, amet consectetur adipisicing elit.' parent='accordionOne' />
+                   
+                   {
+                    aboutUsContent.map((content,index) => {
+                      return (
+                        <AccordionItem isShow={index === 0 ? true :false } id={index} title={content.question} desc={content.answer} parent='accordionOne' />
+                      )
+                    })
+                   }
                   </div>
                 </div>
               </div>
