@@ -1,8 +1,8 @@
-import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
-import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
+import JobBreadcrumb from '@/components/jobs/breadcrumb/job-breadcrumb';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 
-import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkeletonLoading';
-import FilterSkeleton from '@/app/components/skaletons/FilterSkeleton';
+import CandidateSkeletonLoading from '@/components/skaletons/CandidateSkeletonLoading';
+import FilterSkeleton from '@/components/skaletons/FilterSkeleton';
 
 const Loading = () => {
   return (

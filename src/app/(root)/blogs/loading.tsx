@@ -1,5 +1,5 @@
-import CommonBreadcrumb from '@/app/components/common/common-breadcrumb';
-import BlogCardSkeleton from '@/app/components/skaletons/BlogCardSkeleton';
+import CommonBreadcrumb from '@/components/common/common-breadcrumb';
+import BlogCardSkeleton from '@/components/skaletons/BlogCardSkeleton';
 
 const BlogsLoadingPage = () => {
   return (

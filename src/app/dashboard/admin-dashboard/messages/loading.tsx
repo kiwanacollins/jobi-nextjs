@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingTableSkeleton from '@/app/components/skaletons/TableSkeleton';
+import LoadingTableSkeleton from '@/components/skaletons/TableSkeleton';
 
 const LoadingPageMessages = async () => {
   return (

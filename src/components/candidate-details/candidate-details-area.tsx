@@ -6,7 +6,7 @@ import Skills from './skills';
 import WorkExperience from './work-experience';
 import CandidateBio from './bio';
 import { IResumeType } from '@/database/resume.model';
-import Resume from '@/app/components/resume/Resume';
+import Resume from '@/components/resume/Resume';
 import ResumeModal from '../resume/ResumeModal';
 import dynamic from 'next/dynamic';
 

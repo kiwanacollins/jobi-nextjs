@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EmployDashboardArea from '@/app/components/dashboard/employ/dashboard-area';
+import EmployDashboardArea from '@/components/dashboard/employ/dashboard-area';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { redirect } from 'next/navigation';

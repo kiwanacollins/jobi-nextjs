@@ -1,6 +1,6 @@
 'use client';
-import CandidateAside from '@/app/components/dashboard/candidate/aside';
-import DashboardHeader from '@/app/components/dashboard/candidate/dashboard-header';
+import CandidateAside from '@/components/dashboard/candidate/aside';
+import DashboardHeader from '@/components/dashboard/candidate/dashboard-header';
 import Wrapper from '@/layouts/wrapper';
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';

@@ -1,5 +1,5 @@
 import React from 'react';
-import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkeletonLoading';
+import CandidateSkeletonLoading from '@/components/skaletons/CandidateSkeletonLoading';
 
 const LoadingCandidateDashboardSavedJobPage = () => {
   return (

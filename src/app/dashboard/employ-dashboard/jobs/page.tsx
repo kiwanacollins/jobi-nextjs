@@ -1,5 +1,5 @@
 import React from 'react';
-import EmployJobArea from '@/app/components/dashboard/employ/job-area';
+import EmployJobArea from '@/components/dashboard/employ/job-area';
 import { auth, currentUser } from '@clerk/nextjs';
 import { getEmployeeJobPosts } from '@/lib/actions/employee.action';
 import { redirect } from 'next/navigation';

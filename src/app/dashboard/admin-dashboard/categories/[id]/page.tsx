@@ -1,4 +1,4 @@
-import CategoryForm from '@/app/components/dashboard/admin/category/CategoryForm';
+import CategoryForm from '@/components/dashboard/admin/category/CategoryForm';
 import { getSingleCategoryById } from '@/lib/actions/admin.action';
 import React from 'react';
 

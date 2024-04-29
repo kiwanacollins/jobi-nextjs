@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Menus from './component/menus';
 import logo from '@/assets/images/logo/logo_01.png';
 import CategoryDropdown from './component/category-dropdown';
-import LoginModal from '@/app/components/common/popup/login-modal';
+import LoginModal from '@/components/common/popup/login-modal';
 import useSticky from '@/hooks/use-sticky';
 
 const Header = () => {

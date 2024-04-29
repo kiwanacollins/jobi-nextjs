@@ -1,5 +1,5 @@
-import CompanyBreadCrumb from '@/app/components/common/common-breadcrumb';
-import CompanyDetailsArea from '@/app/components/company-details/company-details-area';
+import CompanyBreadCrumb from '@/components/common/common-breadcrumb';
+import CompanyDetailsArea from '@/components/company-details/company-details-area';
 import { getSingleCompanySharedData } from '@/lib/actions/admin.action';
 import { SearchParamsProps } from '@/types';
 

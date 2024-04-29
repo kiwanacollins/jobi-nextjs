@@ -1,5 +1,5 @@
 import { UserProfile } from '@clerk/nextjs';
-import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
+import CompanyBreadcrumb from '@/components/common/common-breadcrumb';
 
 const page = () => {
   return (

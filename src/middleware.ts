@@ -21,7 +21,7 @@ export default authMiddleware({
     '/blog/:id',
     '/api/webhook'
   ],
-  ignoredRoutes: ['/api/webhook', '/src/app/api/webhook']
+  ignoredRoutes: ['/api/webhook', '/src/api/webhook']
 });
 
 export const config = {

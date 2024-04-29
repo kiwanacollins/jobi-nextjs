@@ -1,5 +1,5 @@
-import CategoryForm from '@/app/components/dashboard/admin/category/CategoryForm';
-import CategoriesTable from '@/app/components/dashboard/admin/category/CategoryTable';
+import CategoryForm from '@/components/dashboard/admin/category/CategoryForm';
+import CategoriesTable from '@/components/dashboard/admin/category/CategoryTable';
 import { getCategories } from '@/lib/actions/admin.action';
 import React from 'react';
 const AddCategoryPage = async () => {

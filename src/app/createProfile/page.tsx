@@ -1,5 +1,5 @@
 import { auth } from '@clerk/nextjs';
-import EmployerProfileFormArea from '../components/dashboard/employ/EmployerProfileFormArea';
+import EmployerProfileFormArea from '@/components/dashboard/employ/EmployerProfileFormArea';
 import { getUserById } from '@/lib/actions/user.action';
 
 const Page = async () => {

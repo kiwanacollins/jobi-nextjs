@@ -1,5 +1,5 @@
 import React from 'react';
-import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
+import CompanyBreadcrumb from '@/components/common/common-breadcrumb';
 
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (

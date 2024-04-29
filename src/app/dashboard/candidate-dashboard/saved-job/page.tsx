@@ -1,5 +1,5 @@
 import React from 'react';
-import SavedJobArea from '@/app/components/dashboard/candidate/saved-job-area';
+import SavedJobArea from '@/components/dashboard/candidate/saved-job-area';
 
 const CandidateDashboardSavedJobPage = () => {
   return (

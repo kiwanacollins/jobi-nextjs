@@ -1,7 +1,7 @@
 import React from 'react';
 
-import DashboardMakeAdmin from '@/app/components/dashboard/admin/DashboardMakeAdmin';
-import LoadingTableSkeleton from '@/app/components/skaletons/TableSkeleton';
+import DashboardMakeAdmin from '@/components/dashboard/admin/DashboardMakeAdmin';
+import LoadingTableSkeleton from '@/components/skaletons/TableSkeleton';
 
 const AdminDashboardMakeAdminPage = () => {
   return (

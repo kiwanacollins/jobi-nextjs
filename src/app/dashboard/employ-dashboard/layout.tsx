@@ -1,4 +1,4 @@
-import EmployeDashboardLayoutContent from '@/app/components/dashboard/employ/EmployeDashboardLayoutContent';
+import EmployeDashboardLayoutContent from '@/components/dashboard/employ/EmployeDashboardLayoutContent';
 import Wrapper from '@/layouts/wrapper';
 import { getUserById } from '@/lib/actions/user.action';
 import { auth } from '@clerk/nextjs';

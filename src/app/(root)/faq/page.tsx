@@ -1,8 +1,8 @@
 import React from 'react';
 import { Metadata } from 'next';
-import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
-import CompanyBreadcrumb from '../../components/common/common-breadcrumb';
-import FaqArea from '../../components/faqs/faq-area';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import CompanyBreadcrumb from '@/components/common/common-breadcrumb';
+import FaqArea from '@/components/faqs/faq-area';
 
 export const metadata: Metadata = {
   title: 'Faq'

@@ -1,14 +1,14 @@
-import React from "react";
-import { Metadata } from "next";
-import Header from "@/layouts/headers/header";
-import Wrapper from "@/layouts/wrapper";
-import JobPortalIntro from "../components/job-portal-intro/job-portal-intro";
-import CompanyBreadcrumb from "../components/common/common-breadcrumb";
-import FooterOne from "@/layouts/footers/footer-one";
-import CompanyV1Area from "../components/company/company-v1-area";
+import React from 'react';
+import { Metadata } from 'next';
+import Header from '@/layouts/headers/header';
+import Wrapper from '@/layouts/wrapper';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import CompanyBreadcrumb from '@/components/common/common-breadcrumb';
+import FooterOne from '@/layouts/footers/footer-one';
+import CompanyV1Area from '@/components/company/company-v1-area';
 
 export const metadata: Metadata = {
-  title: "Company v2",
+  title: 'Company v2'
 };
 
 const CompanyV2Page = () => {
@@ -20,7 +20,10 @@ const CompanyV2Page = () => {
         {/* header end */}
 
         {/*breadcrumb start */}
-        <CompanyBreadcrumb title="Company" subtitle="Find your desire company and get your dream job" />
+        <CompanyBreadcrumb
+          title="Company"
+          subtitle="Find your desire company and get your dream job"
+        />
         {/*breadcrumb end */}
 
         {/* company v2 area start */}

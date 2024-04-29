@@ -1,4 +1,4 @@
-import BlogCard from '@/app/components/dashboard/admin/blog/BlogCard';
+import BlogCard from '@/components/dashboard/admin/blog/BlogCard';
 import { IBlog } from '@/database/Blog.model';
 import { fetchAllBlogs } from '@/lib/actions/blog.action';
 

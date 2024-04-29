@@ -1,5 +1,5 @@
 'use client';
-import ErrorMsg from '@/app/components/common/error-msg';
+import ErrorMsg from '@/components/common/error-msg';
 import { ICategory } from '@/database/category.model';
 import {
   createCategory,
@@ -51,8 +51,6 @@ const CategoryForm = ({ type, category }: IProps) => {
     reset,
     formState: { errors }
   } = methods;
-
-
 
   // handle file  upload
   const handleFileChange = async (
@@ -186,15 +184,11 @@ const CategoryForm = ({ type, category }: IProps) => {
               width={120}
               className="lazy-img user-img"
             />
-           
           )}
-          
 
           <div className="upload-btn position-relative tran3s ms-4 me-3">
             <small>{filename || ' Upload Category photo'}</small>
-            {errors.image && (
-                  <ErrorMsg msg={errors.image.message as string} />
-                )}
+            {errors.image && <ErrorMsg msg={errors.image.message as string} />}
             <input
               type="file"
               id="uploadImg"
@@ -206,7 +200,7 @@ const CategoryForm = ({ type, category }: IProps) => {
           </div>
           {/* <button className="delete-btn tran3s">Delete</button> */}
         </div>
-          
+
         <div className="dash-input-wrapper mb-30">
           <label htmlFor="">Category Name*</label>
           <Controller

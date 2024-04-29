@@ -1,9 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
-import JobPortalIntro from '@/app/components/job-portal-intro/job-portal-intro';
-import JobDetailsV2Area from '@/app/components/job-details/job-details-v2-area';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import JobDetailsV2Area from '@/components/job-details/job-details-v2-area';
 import { getJobById } from '@/lib/actions/job.action';
-import JobDetailsBreadcrumbTwo from '@/app/components/jobs/breadcrumb/job-details-breadcrumb-2';
+import JobDetailsBreadcrumbTwo from '@/components/jobs/breadcrumb/job-details-breadcrumb-2';
 
 export const metadata: Metadata = {
   title: 'Job Details - OneSkill'

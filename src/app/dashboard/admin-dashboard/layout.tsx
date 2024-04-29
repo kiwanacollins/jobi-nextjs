@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import React from 'react';
 // import 'bootstrap/dist/js/bootstrap';
 import NextTopLoader from 'nextjs-toploader';
-import AdminDashboardLayoutContent from '@/app/components/dashboard/admin/AdminDashboardLayoutContent';
+import AdminDashboardLayoutContent from '@/components/dashboard/admin/AdminDashboardLayoutContent';
 
 // if (typeof window !== 'undefined') {
 //   require('bootstrap/dist/js/bootstrap');

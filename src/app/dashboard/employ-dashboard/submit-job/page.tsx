@@ -1,5 +1,5 @@
 import React from 'react';
-import SubmitJobArea from '@/app/components/dashboard/employ/submit-job-area';
+import SubmitJobArea from '@/components/dashboard/employ/submit-job-area';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { getUserById } from '@/lib/actions/user.action';

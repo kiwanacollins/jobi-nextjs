@@ -1,14 +1,14 @@
-import BlogFour from '@/app/components/blogs/blog-four';
-import { TrendingJobs } from '@/app/components/category/category-section-3';
-import CategorySectionSix from '@/app/components/category/category-section-6';
-import FancyBannerThree from '@/app/components/fancy-banner/fancy-banner-3';
-import FancyBannerSix from '@/app/components/fancy-banner/fancy-banner-6';
-import FeatureNine from '@/app/components/features/feature-nine';
-import FeatureTwo from '@/app/components/features/feature-two';
-import FeedbackFive from '@/app/components/feedBacks/feedback-five';
-import HeroBannerSix from '@/app/components/hero-banners/hero-banner-six';
-import { JobListItems } from '@/app/components/jobs/list/job-list-one';
-import PartnersSlider from '@/app/components/partners/partners-slider';
+import BlogFour from '@/components/blogs/blog-four';
+import { TrendingJobs } from '@/components/category/category-section-3';
+import CategorySectionSix from '@/components/category/category-section-6';
+import FancyBannerThree from '@/components/fancy-banner/fancy-banner-3';
+import FancyBannerSix from '@/components/fancy-banner/fancy-banner-6';
+import FeatureNine from '@/components/features/feature-nine';
+import FeatureTwo from '@/components/features/feature-two';
+import FeedbackFive from '@/components/feedBacks/feedback-five';
+import HeroBannerSix from '@/components/hero-banners/hero-banner-six';
+import { JobListItems } from '@/components/jobs/list/job-list-one';
+import PartnersSlider from '@/components/partners/partners-slider';
 import Link from 'next/link';
 
 export default function HomePage() {
@@ -83,7 +83,10 @@ export default function HomePage() {
           <div className="text-center mt-50 wow fadeInUp">
             <div className="btn-eight fw-500">
               Do you want to post a job for your company?{' '}
-              <span>We can help.</span> <Link href='/dashboard/employ-dashboard/submit-job'>Click here</Link>
+              <span>We can help.</span>{' '}
+              <Link href="/dashboard/employ-dashboard/submit-job">
+                Click here
+              </Link>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
-import CommonBreadcrumb from '@/app/components/common/common-breadcrumb';
-import WishlistArea from '@/app/components/wishlist/wishlist-area';
+import CommonBreadcrumb from '@/components/common/common-breadcrumb';
+import WishlistArea from '@/components/wishlist/wishlist-area';
 import { getUserById } from '@/lib/actions/user.action';
-import { auth, currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 const Page = async () => {

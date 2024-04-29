@@ -3,11 +3,11 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { EB_Garamond } from 'next/font/google';
-import BackToTopCom from './components/common/back-to-top-com';
+import BackToTopCom from '@/components/common/back-to-top-com';
 import { Providers } from '@/redux/provider';
 import React from 'react';
 import NextTopLoader from 'nextjs-toploader';
-import WhatsAppButton from './components/common/WhatsAppButton';
+import WhatsAppButton from '@/components/common/WhatsAppButton';
 
 const gordita = localFont({
   src: [
@@ -43,7 +43,7 @@ const garamond = EB_Garamond({
 
 export const metadata: Metadata = {
   title: 'OneSkill - Job Portal',
-  description: 'OneSkill - Job Porta - Find your dream job today!'
+  description: 'OneSkill - Job Portal - Find your dream job today!'
 };
 
 export default function RootLayout({

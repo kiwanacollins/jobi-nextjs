@@ -1,5 +1,5 @@
 import React from 'react';
-import SavedCandidateArea from '@/app/components/dashboard/employ/saved-candidate-area';
+import SavedCandidateArea from '@/components/dashboard/employ/saved-candidate-area';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { getSavedCandidates } from '@/lib/actions/employee.action';

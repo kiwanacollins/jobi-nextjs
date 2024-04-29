@@ -1,5 +1,5 @@
 import React from 'react';
-import DashboardProfileArea from '@/app/components/dashboard/candidate/dashboard-profile-area';
+import DashboardProfileArea from '@/components/dashboard/candidate/dashboard-profile-area';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';

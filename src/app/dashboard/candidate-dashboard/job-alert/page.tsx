@@ -1,5 +1,5 @@
 import React from 'react';
-import JobAlertArea from '@/app/components/dashboard/candidate/job-alert-area';
+import JobAlertArea from '@/components/dashboard/candidate/job-alert-area';
 
 const CandidateProfileJobAlertPage = () => {
   return (

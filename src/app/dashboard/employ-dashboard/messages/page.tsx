@@ -1,5 +1,5 @@
 import React from 'react';
-import DashboardMessage from '@/app/components/dashboard/candidate/dashboard-message';
+import DashboardMessage from '@/components/dashboard/candidate/dashboard-message';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 

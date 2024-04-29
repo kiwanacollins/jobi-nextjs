@@ -1,5 +1,5 @@
 'use client';
-import ErrorMsg from '@/app/components/common/error-msg';
+import ErrorMsg from '@/components/common/error-msg';
 import { IBlog } from '@/database/Blog.model';
 import { createBlog, updateBlogById } from '@/lib/actions/blog.action';
 import { notifyError, notifySuccess } from '@/utils/toast';

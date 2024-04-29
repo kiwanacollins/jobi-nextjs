@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
-import MapArea from '../../components/contact/map-area';
-import ContactArea from '../../components/contact/contact-area';
+import MapArea from '@/components/contact/map-area';
+import ContactArea from '@/components/contact/contact-area';
 
 export const metadata: Metadata = {
   title: 'Contact | OneSkill',

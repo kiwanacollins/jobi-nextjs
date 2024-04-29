@@ -5,7 +5,7 @@ import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { updateUserByAdmin } from '@/lib/actions/user.action';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import ErrorMsg from '@/app/components/common/error-msg';
+import ErrorMsg from '@/components/common/error-msg';
 import { userSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IUser } from '@/database/user.model';

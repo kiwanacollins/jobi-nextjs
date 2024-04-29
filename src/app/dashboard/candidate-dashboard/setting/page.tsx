@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DashboardSettingArea from '@/app/components/dashboard/candidate/dashboard-setting';
+import DashboardSettingArea from '@/components/dashboard/candidate/dashboard-setting';
 
 const CandidateDashboardSettingPage = () => {
   return (

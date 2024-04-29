@@ -1,9 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
-import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
-import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
-import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkeletonLoading';
-import FilterSkeleton from '@/app/components/skaletons/FilterSkeleton';
+import JobBreadcrumb from '@/components/jobs/breadcrumb/job-breadcrumb';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import CandidateSkeletonLoading from '@/components/skaletons/CandidateSkeletonLoading';
+import FilterSkeleton from '@/components/skaletons/FilterSkeleton';
 
 export const metadata: Metadata = {
   title: 'Jobs - OneSkill',

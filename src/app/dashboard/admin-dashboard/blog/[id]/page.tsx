@@ -1,4 +1,4 @@
-import Blog from '@/app/components/dashboard/admin/blog/Blog';
+import Blog from '@/components/dashboard/admin/blog/Blog';
 import { getBlogById } from '@/lib/actions/blog.action';
 interface URLProps {
   params: { id: string };

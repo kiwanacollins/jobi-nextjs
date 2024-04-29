@@ -7,7 +7,7 @@ import logo from '@/assets/images/logo/logo_04.png';
 import icon from '@/assets/images/icon/icon_21.svg';
 import NiceSelect from '@/ui/nice-select';
 import useSticky from '@/hooks/use-sticky';
-import LoginModal from '@/app/components/common/popup/login-modal';
+import LoginModal from '@/components/common/popup/login-modal';
 
 // search select
 function SearchSelect() {

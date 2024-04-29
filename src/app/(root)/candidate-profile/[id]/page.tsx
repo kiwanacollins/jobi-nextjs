@@ -1,8 +1,8 @@
 import React from 'react';
 import { Metadata } from 'next';
-import JobPortalIntro from '../../../components/job-portal-intro/job-portal-intro';
-import CandidateProfileBreadcrumb from '../../../components/candidate-details/profile-bredcrumb';
-import CandidateDetailsArea from '../../../components/candidate-details/candidate-details-area';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import CandidateProfileBreadcrumb from '@/components/candidate-details/profile-bredcrumb';
+import CandidateDetailsArea from '@/components/candidate-details/candidate-details-area';
 import { getResumeById } from '@/lib/actions/candidate.action';
 
 export const metadata: Metadata = {

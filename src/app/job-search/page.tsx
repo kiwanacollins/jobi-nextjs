@@ -1,14 +1,14 @@
-import React from "react";
-import { Metadata } from "next";
-import Wrapper from "@/layouts/wrapper";
-import Header from "@/layouts/headers/header";
-import FooterOne from "@/layouts/footers/footer-one";
-import JobBreadcrumb from "../components/jobs/breadcrumb/job-breadcrumb";
-import JobPortalIntro from "../components/job-portal-intro/job-portal-intro";
-import SearchItemsCom from "../components/search-area/search-items";
+import React from 'react';
+import { Metadata } from 'next';
+import Wrapper from '@/layouts/wrapper';
+import Header from '@/layouts/headers/header';
+import FooterOne from '@/layouts/footers/footer-one';
+import JobBreadcrumb from '@/components/jobs/breadcrumb/job-breadcrumb';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import SearchItemsCom from '@/components/search-area/search-items';
 
 export const metadata: Metadata = {
-  title: "Search Page",
+  title: 'Search Page'
 };
 
 const SearchPage = () => {

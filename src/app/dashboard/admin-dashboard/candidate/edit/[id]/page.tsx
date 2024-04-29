@@ -1,4 +1,4 @@
-import UpdateUserArea from '@/app/components/dashboard/admin/candidates/UpdateUserArea';
+import UpdateUserArea from '@/components/dashboard/admin/candidates/UpdateUserArea';
 import { getCategories } from '@/lib/actions/admin.action';
 import { getUserByMongoId } from '@/lib/actions/user.action';
 

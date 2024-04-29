@@ -1,5 +1,5 @@
 import React from 'react';
-import DashboardResume from '@/app/components/dashboard/candidate/dashboard-resume';
+import DashboardResume from '@/components/dashboard/candidate/dashboard-resume';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { redirect } from 'next/navigation';

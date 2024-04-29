@@ -1,7 +1,7 @@
 import React from 'react';
 // import candidate_data from '@/data/candidate-data';
 
-import CandidateSkeletonLoading from '@/app/components/skaletons/CandidateSkeletonLoading';
+import CandidateSkeletonLoading from '@/components/skaletons/CandidateSkeletonLoading';
 
 const Loading = () => {
   return (

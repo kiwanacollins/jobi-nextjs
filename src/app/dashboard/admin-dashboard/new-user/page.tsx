@@ -1,4 +1,4 @@
-import CreateUserArea from '@/app/components/dashboard/admin/candidates/CreateUserArea';
+import CreateUserArea from '@/components/dashboard/admin/candidates/CreateUserArea';
 import { getCategories } from '@/lib/actions/admin.action';
 
 const Page = async () => {

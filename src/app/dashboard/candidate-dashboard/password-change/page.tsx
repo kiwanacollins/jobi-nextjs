@@ -1,16 +1,19 @@
-'use client'
-import React,{useState} from 'react';
-import Wrapper from "@/layouts/wrapper";
-import CandidateAside from "@/app/components/dashboard/candidate/aside";
-import ChangePasswordArea from "@/app/components/dashboard/candidate/change-password";
+'use client';
+import React, { useState } from 'react';
+import Wrapper from '@/layouts/wrapper';
+import CandidateAside from '@/components/dashboard/candidate/aside';
+import ChangePasswordArea from '@/components/dashboard/candidate/change-password';
 
 const CandidateDashboardPasswordChangePage = () => {
-  const [isOpenSidebar,setIsOpenSidebar] = useState<boolean>(false);
+  const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   return (
     <Wrapper>
       <div className="main-page-wrapper">
         {/* aside start */}
-        <CandidateAside isOpenSidebar={isOpenSidebar} setIsOpenSidebar={setIsOpenSidebar} />
+        <CandidateAside
+          isOpenSidebar={isOpenSidebar}
+          setIsOpenSidebar={setIsOpenSidebar}
+        />
         {/* aside end  */}
 
         {/* password change area start */}

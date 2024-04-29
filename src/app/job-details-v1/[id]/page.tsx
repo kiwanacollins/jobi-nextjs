@@ -1,12 +1,12 @@
-import React from "react";
-import Wrapper from "@/layouts/wrapper";
-import Header from "@/layouts/headers/header";
-import JobDetailsV1Area from "@/app/components/job-details/job-details-v1-area";
-import JobPortalIntro from "@/app/components/job-portal-intro/job-portal-intro";
-import JobDetailsBreadcrumb from "@/app/components/jobs/breadcrumb/job-details-breadcrumb";
-import RelatedJobs from "@/app/components/jobs/related-jobs";
-import FooterOne from "@/layouts/footers/footer-one";
-import job_data from "@/data/job-data";
+import React from 'react';
+import Wrapper from '@/layouts/wrapper';
+import Header from '@/layouts/headers/header';
+import JobDetailsV1Area from '@/components/job-details/job-details-v1-area';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import JobDetailsBreadcrumb from '@/components/jobs/breadcrumb/job-details-breadcrumb';
+import RelatedJobs from '@/components/jobs/related-jobs';
+import FooterOne from '@/layouts/footers/footer-one';
+import job_data from '@/data/job-data';
 
 const JobDetailsDynamicPage = ({ params }: { params: { id: string } }) => {
   const job = job_data.find((j) => Number(j.id) === Number(params.id));

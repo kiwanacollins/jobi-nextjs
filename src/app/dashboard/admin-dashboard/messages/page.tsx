@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DashboardAdminMessages from '@/app/components/dashboard/admin/DashboardAdminMessages';
+import DashboardAdminMessages from '@/components/dashboard/admin/DashboardAdminMessages';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 

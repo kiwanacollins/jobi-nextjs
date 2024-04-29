@@ -1,6 +1,6 @@
 import React from 'react';
 import { IUser } from '@/database/user.model';
-import CandidateListItem from '@/app/components/candidate/candidate-list-item';
+import CandidateListItem from '@/components/candidate/candidate-list-item';
 
 interface IProps {
   candidates: IUser[];

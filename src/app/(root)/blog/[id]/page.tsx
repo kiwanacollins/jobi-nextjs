@@ -1,8 +1,8 @@
 import React from 'react';
 
-import BlogSidebar from '@/app/components/blogs/blog-postbox/sidebar';
-import CommonBreadcrumb from '../../../components/common/common-breadcrumb';
-import BlogArticleDetails from '@/app/components/blogs/BlogArticleDetails/BlogArticleDetails';
+import BlogSidebar from '@/components/blogs/blog-postbox/sidebar';
+import CommonBreadcrumb from '@/components/common/common-breadcrumb';
+import BlogArticleDetails from '@/components/blogs/BlogArticleDetails/BlogArticleDetails';
 import { fetchAllBlogs, getBlogById } from '@/lib/actions/blog.action';
 import { IBlog } from '@/database/Blog.model';
 

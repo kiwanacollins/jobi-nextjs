@@ -1,4 +1,4 @@
-import DashboardResume from '@/app/components/dashboard/candidate/dashboard-resume';
+import DashboardResume from '@/components/dashboard/candidate/dashboard-resume';
 import { getResumeById } from '@/lib/actions/candidate.action';
 import { getUserByMongoId } from '@/lib/actions/user.action';
 import { currentUser } from '@clerk/nextjs';

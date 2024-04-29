@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UpdateJobArea from '@/app/components/dashboard/employ/update-job-area';
+import UpdateJobArea from '@/components/dashboard/employ/update-job-area';
 import { getJobById } from '@/lib/actions/job.action';
 import { IJobData } from '@/database/job.model';
 import { currentUser } from '@clerk/nextjs';

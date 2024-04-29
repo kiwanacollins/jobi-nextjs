@@ -1,5 +1,5 @@
 import React from 'react';
-import EmployMembershipArea from '@/app/components/dashboard/employ/membership-area';
+import EmployMembershipArea from '@/components/dashboard/employ/membership-area';
 import { currentUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 

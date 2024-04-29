@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import Wrapper from '@/layouts/wrapper';
 import Header from '@/layouts/headers/header';
 import FooterOne from '@/layouts/footers/footer-one';
-import JobPortalIntro from '../components/job-portal-intro/job-portal-intro';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 
 export const metadata: Metadata = {
   title: 'Job Details v2'

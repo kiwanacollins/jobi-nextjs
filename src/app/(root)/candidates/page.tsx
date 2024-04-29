@@ -1,8 +1,8 @@
 import React from 'react';
 import { Metadata } from 'next';
-import JobBreadcrumb from '../../components/jobs/breadcrumb/job-breadcrumb';
-import JobPortalIntro from '../../components/job-portal-intro/job-portal-intro';
-import CandidateV1Area from '../../components/candidate/candidate-v1-area';
+import JobBreadcrumb from '@/components/jobs/breadcrumb/job-breadcrumb';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import CandidateV1Area from '@/components/candidate/candidate-v1-area';
 
 import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';

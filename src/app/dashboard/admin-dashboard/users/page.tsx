@@ -1,10 +1,10 @@
 import React from 'react';
 // import candidate_data from '@/data/candidate-data';
-import EmployShortSelect from '@/app/components/dashboard/employ/short-select';
-import CandidateItem from '@/app/components/dashboard/employ/candidate-item';
+import EmployShortSelect from '@/components/dashboard/employ/short-select';
+import CandidateItem from '@/components/dashboard/employ/candidate-item';
 import { getAllCandidates } from '@/lib/actions/candidate.action';
 import { IUser } from '@/database/user.model';
-import CommonPagination from '@/app/components/common/CommonPagination';
+import CommonPagination from '@/components/common/CommonPagination';
 import { SearchParamsProps } from '@/types';
 
 const UsersPage = async ({ searchParams }: SearchParamsProps) => {

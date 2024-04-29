@@ -1,6 +1,6 @@
 import React from 'react';
 
-import DashboardMessage from '@/app/components/dashboard/candidate/dashboard-message';
+import DashboardMessage from '@/components/dashboard/candidate/dashboard-message';
 
 const CandidateDashboardMessagesPage = () => {
   return (

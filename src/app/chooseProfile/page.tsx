@@ -1,4 +1,4 @@
-import ChooseProfileArea from '../components/select/ChooseProfileArea';
+import ChooseProfileArea from '@/components/select/ChooseProfileArea';
 
 const Page = () => {
   return (
