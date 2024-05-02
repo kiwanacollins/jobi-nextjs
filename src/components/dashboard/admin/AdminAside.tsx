@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image, { StaticImageData } from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import logo from '@/assets/dashboard/images/logo_01.png';
 import profile_icon_1 from '@/assets/dashboard/images/icon/icon_23.svg';
 import profile_icon_2 from '@/assets/dashboard/images/icon/icon_24.svg';
@@ -20,9 +20,10 @@ import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
 import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 import LogoutModal from '../../common/popup/logout-modal';
-import { useAuth } from '@clerk/nextjs';
+import { useAuth, useClerk } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { IUser } from '@/database/user.model';
+import Swal from 'sweetalert2';
 
 // nav data
 const nav_data: {
@@ -147,6 +148,8 @@ type IProps = {
 const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
   const pathname = usePathname();
   const { userId } = useAuth();
+  const { signOut } = useClerk();
+  const router = useRouter();
 
   const [currentUser, setCurrentUser] = useState<IUser>({} as IUser);
 
@@ -157,6 +160,27 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
     };
     fetchCurrentUser();
   }, [userId]);
+
+  const handleLogoutButton = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to logout your account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut(() => router.push('/'));
+        // Swal.fire({
+        //   title: 'Logged out!',
+        //   text: 'Logged out successfully!',
+        //   icon: 'success'
+        // });
+      }
+    });
+  };
 
   return (
     <>
@@ -234,6 +258,17 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                     <span className="ms-2 ps-1">Notification</span>
                   </a>
                 </li>
+                <li>
+                  <button
+                    onClick={handleLogoutButton}
+                    className="d-flex w-100 text-decoration-none align-items-center logout-btn"
+                  >
+                    <Image src={logout} alt="icon" className="lazy-img" />
+                    <span className="ms-2 text-decoration-none ps-1">
+                      Logout
+                    </span>
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
@@ -303,10 +338,12 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
             <p>Profile Complete</p>
           </div>
 
-          <button className="d-flex text-decoration-none w-100 align-items-center logout-btn">
+          {/* Logout button start */}
+          {/* <button className="d-flex w-100 text-decoration-none align-items-center logout-btn">
             <Image src={logout} alt="icon" className="lazy-img" />
             <span>Logout</span>
-          </button>
+          </button> */}
+          {/* Logout button end */}
         </div>
       </aside>
       {/* LogoutModal star */}

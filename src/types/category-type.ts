@@ -1,17 +1,19 @@
-import { StaticImageData } from "next/image";
+import { StaticImageData } from 'next/image';
+import React from 'react';
 
 export interface category_dropdown {
   id: number;
   category_items: {
-      id: number;
-      icon: StaticImageData;
-      title: string;
-      count: string;
-      bg_clr?: string;
+    id: number;
+    icon: StaticImageData;
+    title: string;
+    count: string;
+    bg_clr?: string;
   }[];
-}[]
+}
+[];
 
-// category two 
+// category two
 export interface ICategoryTwo {
   id: number;
   icon: StaticImageData;

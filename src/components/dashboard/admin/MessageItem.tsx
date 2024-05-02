@@ -3,9 +3,12 @@
 import Swal from 'sweetalert2';
 import ViewMessageModal from './ViewMessageModal';
 import { deleteContactMessageById } from '@/lib/actions/contact.action';
+import deleteIcon from '@/assets/dashboard/images/icon/icon_21.svg';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { getTimestamp } from '@/utils/utils';
+import Image from 'next/image';
+import { Eye, MessageCircleReply } from 'lucide-react';
 
 interface IAdminItemProps {
   id: string;
@@ -81,11 +84,12 @@ const MessageItem = ({
             className="job-name fw-500"
           >
             <button
-              className="btn btn-primary "
+              className="btn "
               data-bs-toggle="modal"
+              title="View Message"
               data-bs-target={`#viewMessageModal-${id}`}
             >
-              view
+              <Eye size={25} />
             </button>
           </div>
         </td>
@@ -96,16 +100,16 @@ const MessageItem = ({
               <Link
                 href={`mailto:${email}?subject=${subject}%20Here&body=In response to your message:%0D%0A"${message}"%0D%0A%0D%0AHello${' ' + name},%0D%0A%0D%0A`}
                 title="Reply to message"
-                className="btn btn-primary"
+                className="btn "
               >
-                Reply
+                <MessageCircleReply size={25} />
               </Link>
               <button
                 onClick={() => handleDeleteContactMessage(id)}
                 title="Delete Message"
-                className="btn btn-danger"
+                className="btn "
               >
-                X
+                <Image src={deleteIcon} alt="delete" width={25} height={25} />
               </button>
             </div>
           </div>

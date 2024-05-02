@@ -1,12 +1,10 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import category_dropdown from '@/data/category-dropdown';
+import { categoryMenu } from '@/data/category-data';
 
 const CategorySectionSix = ({ style_2 = false }: { style_2?: boolean }) => {
-  const category_items = category_dropdown.flatMap(
-    (category) => category.category_items
-  );
+  const category_items = categoryMenu.map((category) => category);
   return (
     <section
       className={`category-section-five position-relative ${style_2 ? 'mt-85 md-mt-60' : 'mt-190 lg-mt-150'}`}
@@ -24,7 +22,7 @@ const CategorySectionSix = ({ style_2 = false }: { style_2?: boolean }) => {
           <div className="col-lg-4">
             <div className="d-flex justify-content-lg-end">
               <Link
-                href="/job-grid-v2"
+                href="/jobs"
                 className="btn-six d-none text-decoration-none  d-lg-inline-block"
               >
                 Explore all fields
@@ -40,12 +38,23 @@ const CategorySectionSix = ({ style_2 = false }: { style_2?: boolean }) => {
               data-wow-delay={`0.${i + 1}s`}
             >
               <Link
-                href="/job-grid-v3"
+                href={{
+                  pathname: '/jobs',
+                  query: {
+                    category: item.title
+                  }
+                }}
                 className="wrapper text-decoration-none d-flex align-items-center"
                 style={{ background: style_2 ? `${item.bg_clr}` : '' }}
               >
                 <div className="icon d-flex align-items-center justify-content-center">
-                  <Image src={item.icon} alt="icon" className="lazy-img" />
+                  <Image
+                    src={item.icon}
+                    width={25}
+                    height={25}
+                    alt="icon"
+                    className="lazy-img"
+                  />
                 </div>
                 <div className="title text-decoration-none fw-500">
                   {item.title}
@@ -55,7 +64,7 @@ const CategorySectionSix = ({ style_2 = false }: { style_2?: boolean }) => {
           ))}
         </div>
         <div className="text-center mt-40 d-lg-none">
-          <Link href="/job-grid-v2" className="btn-six">
+          <Link href="/jobs" className="btn-six">
             Explore all fields
           </Link>
         </div>

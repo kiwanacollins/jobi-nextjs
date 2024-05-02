@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Image, { StaticImageData } from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import logo from '@/assets/dashboard/images/logo_01.png';
 
@@ -15,19 +15,20 @@ import nav_2 from '@/assets/dashboard/images/icon/icon_2.svg';
 import nav_2_active from '@/assets/dashboard/images/icon/icon_2_active.svg';
 import nav_3 from '@/assets/dashboard/images/icon/icon_3.svg';
 import nav_3_active from '@/assets/dashboard/images/icon/icon_3_active.svg';
-import nav_4 from '@/assets/dashboard/images/icon/icon_4.svg';
-import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
+// import nav_4 from '@/assets/dashboard/images/icon/icon_4.svg';
+// import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
 import nav_5 from '@/assets/dashboard/images/icon/icon_39.svg';
 import nav_5_active from '@/assets/dashboard/images/icon/icon_39_active.svg';
 import nav_6 from '@/assets/dashboard/images/icon/icon_6.svg';
 import nav_6_active from '@/assets/dashboard/images/icon/icon_6_active.svg';
 import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
-import nav_9 from '@/assets/dashboard/images/icon/icon_40.svg';
-import nav_9_active from '@/assets/dashboard/images/icon/icon_40_active.svg';
-import nav_8 from '@/assets/dashboard/images/icon/icon_8.svg';
+// import nav_9 from '@/assets/dashboard/images/icon/icon_40.svg';
+// import nav_9_active from '@/assets/dashboard/images/icon/icon_40_active.svg';
+// import nav_8 from '@/assets/dashboard/images/icon/icon_8.svg';
 import LogoutModal from '../../common/popup/logout-modal';
-import { useUser } from '@clerk/nextjs';
+import { useClerk, useUser } from '@clerk/nextjs';
+import Swal from 'sweetalert2';
 
 // nav data
 const nav_data: {
@@ -102,6 +103,30 @@ type IProps = {
 const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
   const pathname = usePathname();
   const { user } = useUser();
+  const { signOut } = useClerk();
+  const router = useRouter();
+
+  const handleLogoutButton = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You want to logout your account!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        signOut(() => router.push('/'));
+        // Swal.fire({
+        //   title: 'Logged out!',
+        //   text: 'Logged out successfully!',
+        //   icon: 'success'
+        // });
+      }
+    });
+  };
+
   return (
     <>
       <aside className={`dash-aside-navbar ${isOpenSidebar ? 'show' : ''}`}>
@@ -184,6 +209,17 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                     </span>
                   </a>
                 </li>
+                <li>
+                  <button
+                    onClick={handleLogoutButton}
+                    className="d-flex w-100 text-decoration-none align-items-center logout-btn"
+                  >
+                    <Image src={logout} alt="icon" className="lazy-img" />
+                    <span className="ms-2 text-decoration-none ps-1">
+                      Logout
+                    </span>
+                  </button>
+                </li>
               </ul>
             </div>
           </div>
@@ -209,7 +245,8 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                   </li>
                 );
               })}
-              <li>
+              {/* Delete Account Button start */}
+              {/* <li>
                 <a
                   href="#"
                   className="d-flex w-100 align-items-center"
@@ -219,21 +256,26 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
                   <Image src={nav_8} alt="icon" className="lazy-img" />
                   <span className="text-decoration-none">Delete Account</span>
                 </a>
-              </li>
+              </li> */}
+              {/* Delete Account Button end */}
             </ul>
           </nav>
-          <div className="profile-complete-status">
+          {/* Profile completion start */}
+          {/* <div className="profile-complete-status">
             <div className="progress-value fw-500">87%</div>
             <div className="progress-line position-relative">
               <div className="inner-line" style={{ width: '80%' }}></div>
             </div>
             <p className="text-decoration-none">Profile Complete</p>
-          </div>
+          </div> */}
+          {/* Profile completion end */}
 
-          <button className="d-flex w-100 text-decoration-none align-items-center logout-btn">
+          {/* Logout button start */}
+          {/* <button className="d-flex w-100 text-decoration-none align-items-center logout-btn">
             <Image src={logout} alt="icon" className="lazy-img" />
             <span>Logout</span>
-          </button>
+          </button> */}
+          {/* Logout button end */}
         </div>
       </aside>
       {/* LogoutModal star */}

@@ -4,6 +4,8 @@ import { IUser } from '@/database/user.model';
 import CandidateListItem from '../../candidate/candidate-list-item';
 import Swal from 'sweetalert2';
 import { shareSavedCandidates } from '@/lib/actions/employee.action';
+import Image from 'next/image';
+import iconShare from '@/assets/images/icon/share-icon.svg';
 
 interface ISavedCandidateArea {
   candidates: IUser[];
@@ -69,10 +71,18 @@ const SavedCandidateArea = ({
                   role="status"
                   aria-hidden="true"
                 ></span>
-                Sharing...
+                <span>Sharing...</span>
               </>
             ) : (
-              'Share with Admin'
+              <div className="d-flex justify-content-center  align-items-center ">
+                <Image
+                  src={iconShare}
+                  alt="share icon"
+                  width={30}
+                  height={30}
+                />
+                <span>Share with Admin</span>
+              </div>
             )}
           </button>
         </div>
