@@ -158,14 +158,20 @@ const CandidateDetailsArea = ({
                       );
                     })}
                 </div>
-                <div className="inner-card border-style mb-75 lg-mb-50">
-                  <h3 className="title">Skills</h3>
-                  {/* skill area */}
 
-                  <Skills skills={candidateDetials?.skills} />
+                {
+                  //@ts-ignore
+                  candidateDetials?.skills?.length > 0 ? (
+                    <div className="inner-card border-style mb-75 lg-mb-50">
+                      <h3 className="title">Skills</h3>
+                      {/* skill area */}
 
-                  {/* skill area */}
-                </div>
+                      <Skills skills={candidateDetials?.skills} />
+
+                      {/* skill area */}
+                    </div>
+                  ) : null
+                }
                 <div className="inner-card border-style mb-60 lg-mb-50">
                   <h3 className="title">Work Experience</h3>
                   {/* WorkExperience */}
@@ -219,7 +225,7 @@ const CandidateDetailsArea = ({
                     data-bs-toggle="modal"
                     data-bs-target="#resumeModal"
                     rel="noopener noreferrer"
-                    className="btn-ten fw-500 text-white w-100 text-center tran3s mt-15"
+                    className="btn-ten d-none d-lg-block   fw-500 text-white w-100 text-center tran3s mt-15"
                   >
                     View Resume
                   </button>

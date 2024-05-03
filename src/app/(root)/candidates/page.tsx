@@ -56,7 +56,7 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
       {/* candidate area end */}
 
       {/* job portal intro start */}
-      <JobPortalIntro top_border={true} />
+      <JobPortalIntro loggInUser={loggedInUser} top_border={true} />
       {/* job portal intro end */}
     </div>
   );

@@ -20,7 +20,7 @@ const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
     query: searchParams.query
   });
   const { userId } = auth();
-  const currentUser = await getUserById({ userId });
+  const loggInUser = await getUserById({ userId });
   return (
     <>
       {/* search breadcrumb start */}
@@ -30,13 +30,13 @@ const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
       {/* job list three start */}
       <JobListThree
         allJobs={jobs}
-        currentUser={JSON.parse(JSON.stringify(currentUser))}
+        currentUser={JSON.parse(JSON.stringify(loggInUser))}
         itemsPerPage={8}
       />
       {/* job list three end */}
 
       {/* job portal intro start */}
-      <JobPortalIntro top_border={true} />
+      <JobPortalIntro loggInUser={loggInUser} top_border={true} />
       {/* job portal intro end */}
     </>
   );

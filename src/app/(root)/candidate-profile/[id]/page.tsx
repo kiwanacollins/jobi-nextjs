@@ -4,6 +4,8 @@ import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 import CandidateProfileBreadcrumb from '@/components/candidate-details/profile-bredcrumb';
 import CandidateDetailsArea from '@/components/candidate-details/candidate-details-area';
 import { getResumeById } from '@/lib/actions/candidate.action';
+import { auth } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
   title: 'Candidate Details'
@@ -16,6 +18,8 @@ export interface URLProps {
 
 const CandidateProfileDetailsPage = async ({ params }: URLProps) => {
   const candidateDetials = await getResumeById(params.id);
+  const { userId } = auth();
+  const loggInUser = await getUserById({ userId });
 
   return (
     <>
@@ -33,7 +37,7 @@ const CandidateProfileDetailsPage = async ({ params }: URLProps) => {
       {/* candidate details area end */}
 
       {/* job portal intro start */}
-      <JobPortalIntro top_border={true} />
+      <JobPortalIntro loggInUser={loggInUser} top_border={true} />
       {/* job portal intro end */}
     </>
   );
