@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { add_to_wishlist } from '@/redux/features/wishlist';
 import { IJobData } from '@/database/job.model';
+import { getTime } from '@/utils/utils';
 
 const ListItem = ({
   item,
@@ -61,7 +62,7 @@ const ListItem = ({
             {duration}
           </Link>
           <div className="job-date">
-            date by{' '}
+            {getTime(item?.createAt as Date)} by{' '}
             <Link className="text-decoration-none" href={`/job/${_id}`}>
               {industry}
             </Link>
