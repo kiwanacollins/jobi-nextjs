@@ -23,7 +23,7 @@ const CourseCard = ({
   user,
   clerkId
 }: CourseCardProps) => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
   const handleEnrllToCourse = async (courseId: string, userId: string) => {
     Swal.fire({
@@ -36,10 +36,10 @@ const CourseCard = ({
       confirmButtonText: 'Yes, Confirm it!'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        setIsLoading(true) 
+        setIsLoading(true);
         const res = await enrollToCourse({
           courseId,
-          userId: userId,
+          userId,
           path: pathname
         });
         if (res?.success) {
@@ -48,11 +48,11 @@ const CourseCard = ({
             text: res.message,
             icon: 'success'
           });
-          setIsLoading(false) 
+          setIsLoading(false);
         }
         if (res?.error) {
           Swal.fire({ title: 'Error!', text: res.message, icon: 'error' });
-          setIsLoading(false) 
+          setIsLoading(false);
         }
       }
     });
@@ -88,7 +88,9 @@ const CourseCard = ({
                 disabled={isLoading}
                 className="btn btn-success"
               >
-                <span className=" p-0">{isLoading ? 'Enrolling..' : 'Enroll'}</span>
+                <span className=" p-0">
+                  {isLoading ? 'Enrolling..' : 'Enroll'}
+                </span>
               </button>
             ) : isEnrolled ? (
               <Link href={`/courses/${courseId}`} className="btn btn-success">
