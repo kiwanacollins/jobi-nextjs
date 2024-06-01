@@ -34,6 +34,11 @@ const menu_data: IMenuData[] = [
     id: 5,
     link: '/contact',
     title: 'Contact'
+  },
+  {
+    id: 6,
+    link: '/courses',
+    title: 'Courses'
   }
   // {
   //   id: 6,

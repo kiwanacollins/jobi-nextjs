@@ -84,41 +84,48 @@ const nav_data: {
   },
   {
     id: 7,
+    icon: nav_3,
+    icon_active: nav_3_active,
+    link: '/dashboard/admin-dashboard/courses',
+    title: 'Courses'
+  },
+  {
+    id: 8,
     icon: nav_4,
     icon_active: nav_4_active,
     link: '/dashboard/admin-dashboard/messages',
     title: 'Messages'
   },
   {
-    id: 8,
+    id: 9,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/received-data',
     title: 'Received Data'
   },
   {
-    id: 9,
+    id: 10,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/createBlog',
     title: 'Create Blog'
   },
   {
-    id: 10,
+    id: 11,
     icon: nav_3,
     icon_active: nav_3_active,
     link: '/dashboard/admin-dashboard/blogs',
     title: 'Blogs'
   },
   {
-    id: 11,
+    id: 12,
     icon: nav_7,
     icon_active: nav_7_active,
     link: '/dashboard/admin-dashboard/setting',
     title: 'Account Settings'
   },
   {
-    id: 12,
+    id: 13,
     icon: nav_2,
     icon_active: nav_2_active,
     link: '/dashboard/candidate-dashboard',
