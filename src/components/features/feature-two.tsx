@@ -2,11 +2,11 @@ import React from 'react';
 import Image, { StaticImageData } from 'next/image';
 // internal
 import logo from '@/assets/images/logo/logo_02.png';
-import media_1 from '@/assets/images/logo/media_09.png';
-import media_2 from '@/assets/images/logo/media_10.png';
-import media_3 from '@/assets/images/logo/media_11.png';
-import media_4 from '@/assets/images/logo/media_12.png';
-import media_5 from '@/assets/images/logo/media_13.png';
+import media_1 from '@/assets/images/logo/facebook.png';
+import media_2 from '@/assets/images/logo/linkedin.png';
+import media_3 from '@/assets/images/logo/whatsapp.png';
+import media_4 from '@/assets/images/logo/youtube.png';
+import media_5 from '@/assets/images/logo/instagram.png';
 import shape from '@/assets/images/shape/shape_10.svg';
 import Link from 'next/link';
 

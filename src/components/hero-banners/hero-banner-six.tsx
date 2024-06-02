@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
-import banner_1 from '@/assets/images/assets/banner_img_01.jpg';
-import banner_2 from '@/assets/images/assets/banner_img_02.jpg';
+import banner_1 from '@/assets/images/assets/hero-banner-5.jpg';
+import banner_2 from '@/assets/images/assets/hero-banner-2.jpg';
 import CounterOne from '../counter/counter-one';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
