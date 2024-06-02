@@ -22,7 +22,16 @@ export async function createBlog(data: any) {
       data.image.public_id = result.public_id;
     }
     const newBlog = await Blog.create(data);
-    return JSON.parse(JSON.stringify(newBlog));
+    if (!newBlog) {
+      return {
+        error: false,
+        message: 'Failed to create blog'
+      };
+    }
+    return {
+      success: true,
+      message: 'Blog created successfully'
+    };
   } catch (error) {
     // Handle error (e.g., log, throw, or return a specific error message)
     console.error('Error creating blog:', error);
@@ -112,8 +121,9 @@ export async function updateBlogById(params: IUpdateBlogByIdParams) {
   try {
     await connectToDatabase(); // Assuming this function connects to your MongoDB database
     connectToCloudinary();
+    const blog = await Blog.findById(blogId);
 
-    if (newData.image?.url) {
+    if (newData.image?.url && newData.image?.url !== blog?.image?.url) {
       const result = await cloudinary.v2.uploader.upload(newData.image.url, {
         folder: 'blogs',
         unique_filename: false,
@@ -121,21 +131,37 @@ export async function updateBlogById(params: IUpdateBlogByIdParams) {
       });
       newData.image.url = result.secure_url;
       newData.image.public_id = result.public_id;
+
+      // delete old image from cloudinary
+      if (blog?.image.url && blog?.image.public_id) {
+        await cloudinary.v2.uploader.destroy(blog.image.public_id);
+      }
+    } else {
+      //@ts-ignore
+      newData.image.url = blog?.image.url;
+      //@ts-ignore
+      newData.image.public_id = blog?.image.public_id;
     }
 
     // Set updatedAt field to the current date and time
     newData.updatedAt = new Date();
     // Find the existing blog by ID
-    const blog = await Blog.findOneAndUpdate({ _id: blogId }, newData, {
+    const updatedBlog = await Blog.findOneAndUpdate({ _id: blogId }, newData, {
       new: true
     });
-    if (!blog) {
-      throw new Error('Blog not found');
+    if (!updatedBlog) {
+      return {
+        error: true,
+        message: 'Failed to update blog'
+      };
     }
 
     revalidatePath(path);
     // Return the updated blog data
-    return JSON.parse(JSON.stringify(blog));
+    return {
+      success: true,
+      message: 'Blog updated successfully'
+    };
   } catch (error) {
     // Handle error (e.g., log, throw, or return a specific error message)
     console.error(`Error updating blog with ID ${blogId}:`, error);

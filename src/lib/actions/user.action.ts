@@ -145,7 +145,9 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
     const { mongoId, updateData, path } = params;
     const { picture } = updateData;
 
-    if (picture) {
+    const user = await User.findById(mongoId);
+
+    if (picture !== user.picture) {
       const result = await cloudinary.v2.uploader.upload(picture as string, {
         folder: 'users',
         unique_filename: false,
@@ -153,6 +155,8 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
       });
 
       updateData.picture = result.secure_url;
+    } else {
+      updateData.picture = user.picture;
     }
 
     const updatedUser = await User.findOneAndUpdate(

@@ -5,7 +5,7 @@ import CountrySelect from '../candidate/country-select';
 import EmployExperience from './employ-experience';
 import { Controller, useForm } from 'react-hook-form';
 import { creatJobPost } from '@/lib/actions/job.action';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { Country } from 'country-state-city';
@@ -36,6 +36,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   const { userId } = useAuth();
 
   const pathname = usePathname();
+  const router = useRouter();
   const type = 'add';
 
   type IJobDataSchemaType = z.infer<typeof formJobDataSchema>;
@@ -175,6 +176,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
         if (res.success) {
           notifySuccess(res.message);
           setProgress(100);
+          router.push('/dashboard/employ-dashboard/jobs');
         }
         if (res.error) {
           notifyError(res.message);

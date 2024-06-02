@@ -150,7 +150,12 @@ export const contactFormSchema = z.object({
 });
 
 const imageSchema = z.object({
-  url: z.string().min(1, { message: 'Image is required' }),
+  url: z
+    .string()
+    .min(1, {
+      message: 'Image is required'
+    })
+    .url(),
   public_id: z.string().optional()
 });
 

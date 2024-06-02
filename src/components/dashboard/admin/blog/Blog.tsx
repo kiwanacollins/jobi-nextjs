@@ -1,12 +1,13 @@
 'use client';
 import ErrorMsg from '@/components/common/error-msg';
 import { IBlog } from '@/database/Blog.model';
+import avatarPerson from '@/assets/images/avatar-person.svg';
 import { createBlog, updateBlogById } from '@/lib/actions/blog.action';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { blogSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
@@ -20,6 +21,7 @@ interface IProps {
 
 const Blog = ({ type, blog }: IProps) => {
   const pathname = usePathname();
+  const router = useRouter();
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
@@ -95,7 +97,7 @@ const Blog = ({ type, blog }: IProps) => {
     simulateProgress();
     try {
       if (type === 'add') {
-        await createBlog({
+        const res = await createBlog({
           title: data.title,
           content: data.content,
           tags: data.tags,
@@ -104,11 +106,22 @@ const Blog = ({ type, blog }: IProps) => {
             public_id: ''
           }
         });
-        setProgress(100);
-        notifySuccess('BLog post created successfully!');
+        if (res?.success) {
+          setProgress(100);
+          notifySuccess(res.message);
+          setIsSubmitting(false);
+          setImagePreview('');
+          setFilename('');
+          router.push('/dashboard/admin-dashboard/blogs');
+          reset();
+        }
+        if (res.error) {
+          notifyError(res.message);
+          setIsSubmitting(false);
+        }
       } else {
         //  update blog
-        await updateBlogById({
+        const res = await updateBlogById({
           blogId: blog?._id as string,
           newData: {
             title: data.title,
@@ -121,8 +134,17 @@ const Blog = ({ type, blog }: IProps) => {
           },
           path: pathname
         });
-        setProgress(100);
-        notifySuccess('Blog updated successfully!');
+        if (res?.success) {
+          setProgress(100);
+          notifySuccess(res.message);
+          setIsSubmitting(false);
+          setFilename('');
+          router.push('/dashboard/admin-dashboard/blogs');
+        }
+        if (res.error) {
+          notifyError(res.message);
+          setIsSubmitting(false);
+        }
       }
     } catch (error: any) {
       console.log('onSubmit  error:', error);
@@ -140,16 +162,17 @@ const Blog = ({ type, blog }: IProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white card-box border-20">
         <div className="user-avatar-setting d-flex align-items-center mb-30">
-          {imagePreview && (
+          {errors.image?.url ? (
+            <ErrorMsg msg={errors.image?.url?.message as string} />
+          ) : (
             <Image
-              src={imagePreview}
+              src={imagePreview || avatarPerson}
               alt="avatar"
-              height={80}
-              width={80}
+              height={200}
+              width={200}
               className="lazy-img user-img"
             />
           )}
-
           <div className="upload-btn w-auto px-3  position-relative tran3s ms-4 me-3">
             <small>{filename || ' Upload Thumbnail'}</small>
             {errors.image?.url && (
