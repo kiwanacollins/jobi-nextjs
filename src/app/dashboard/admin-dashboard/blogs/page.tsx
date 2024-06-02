@@ -1,5 +1,4 @@
-import BlogCard from '@/components/dashboard/admin/blog/BlogCard';
-import { IBlog } from '@/database/Blog.model';
+import BlogsTable from '@/components/dashboard/admin/blog/BlogsTable';
 import { fetchAllBlogs } from '@/lib/actions/blog.action';
 
 const AllBlogsPage = async () => {
@@ -7,12 +6,8 @@ const AllBlogsPage = async () => {
   return (
     <div>
       <h2 className="main-title">All Blogs</h2>
-      <div className="container mx-auto ">
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 gap-4">
-          {blogs?.map((blog: IBlog, index: any) => {
-            return <BlogCard key={index} blog={blog} />;
-          })}
-        </div>
+      <div className="container-flued ">
+        <BlogsTable blogs={blogs} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import { blogSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import CreatableSelect from 'react-select/creatable';
 import { z } from 'zod';
@@ -16,12 +16,12 @@ import { Editor } from '@tinymce/tinymce-react';
 
 interface IProps {
   type: string;
-  blog?: IBlog;
+  blog?: IBlog | null;
 }
 
 const Blog = ({ type, blog }: IProps) => {
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useRouter()
   const editorRef = useRef(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
@@ -43,17 +43,16 @@ const Blog = ({ type, blog }: IProps) => {
       }
     }
   });
+
   const {
     handleSubmit,
     setValue,
+    clearErrors,
     reset,
     control,
     formState: { errors }
   } = methods;
-
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  
 
   const simulateProgress = () => {
     let currentProgress = 0;
@@ -81,6 +80,7 @@ const Blog = ({ type, blog }: IProps) => {
       pdfFile.onload = () => {
         if (pdfFile.readyState === 2) {
           setValue('image.url', pdfFile.result as string);
+          clearErrors('image.url');
         }
       };
 
@@ -112,8 +112,9 @@ const Blog = ({ type, blog }: IProps) => {
           setIsSubmitting(false);
           setImagePreview('');
           setFilename('');
-          router.push('/dashboard/admin-dashboard/blogs');
+          router.push('/dashboard/admin-dashboard/blogs')
           reset();
+
         }
         if (res.error) {
           notifyError(res.message);
@@ -121,7 +122,7 @@ const Blog = ({ type, blog }: IProps) => {
         }
       } else {
         //  update blog
-        const res = await updateBlogById({
+        const res =  await updateBlogById({
           blogId: blog?._id as string,
           newData: {
             title: data.title,
@@ -139,7 +140,7 @@ const Blog = ({ type, blog }: IProps) => {
           notifySuccess(res.message);
           setIsSubmitting(false);
           setFilename('');
-          router.push('/dashboard/admin-dashboard/blogs');
+          router.push('/dashboard/admin-dashboard/blogs')
         }
         if (res.error) {
           notifyError(res.message);
@@ -147,14 +148,12 @@ const Blog = ({ type, blog }: IProps) => {
         }
       }
     } catch (error: any) {
-      console.log('onSubmit  error:', error);
-      notifyError(error.message);
+     
+      notifyError(error?.message);
       setProgress(0);
     } finally {
-      reset();
       setProgress(0);
       setIsSubmitting(false);
-      setFilename('');
     }
   };
 
@@ -175,24 +174,27 @@ const Blog = ({ type, blog }: IProps) => {
           )}
           <div className="upload-btn w-auto px-3  position-relative tran3s ms-4 me-3">
             <small>{filename || ' Upload Thumbnail'}</small>
-            {errors.image?.url && (
-              <ErrorMsg msg={errors.image?.url?.message as string} />
-            )}
+
             <Controller
               name="image.url"
               control={control}
               render={({ field }) => (
-                <input
-                  type="file"
-                  id="uploadImg"
-                  name="file"
-                  accept="image/*"
-                  placeholder="Upload new photo"
-                  onChange={(e) => {
-                    field.onChange(e);
-                    handleFileChange(e);
-                  }}
-                />
+                <>
+                  <input
+                    type="file"
+                    id="uploadImg"
+                    name="file"
+                    accept="image/*"
+                    placeholder="Upload new photo"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleFileChange(e);
+                    }}
+                  />
+                  {/* {errors.image?.url && (
+                    <ErrorMsg msg={errors.image?.url?.message as string} />
+                  )} */}
+                </>
               )}
             />
           </div>
@@ -204,10 +206,10 @@ const Blog = ({ type, blog }: IProps) => {
             control={control}
             defaultValue={blog?.title || ''}
             render={({ field }) => (
-              <input type="text" placeholder="Your name" {...field} />
+              <input type="text" placeholder="Your blog title" {...field} />
             )}
           />
-          {errors.title && <ErrorMsg msg={errors.title?.message as string} />}
+          {errors?.title && <ErrorMsg msg={errors.title?.message as string} />}
         </div>
 
         <div className="dash-input-wrapper mb-30">
@@ -215,7 +217,6 @@ const Blog = ({ type, blog }: IProps) => {
           <Controller
             name="content"
             control={control}
-            defaultValue={blog?.content || ''}
             render={({ field }) => (
               <Editor
                 apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}

@@ -54,9 +54,9 @@ const BlogCard = ({ blog }: BlogCardProps) => {
             ? blog.title.slice(0, 30) + '...'
             : blog.title}
         </h5>
-        <p className="text-secondary ">
+        {/* <p className="text-secondary ">
           {parse(blog.content.slice(0, 90) + '...')}
-        </p>
+        </p> */}
         <div className="d-flex flex-column flex-md-row gap-1 py-2">
           <Link
             href={`/dashboard/admin-dashboard/blog/${blog._id}`}
