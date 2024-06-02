@@ -179,6 +179,16 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                         </Link>
                       </li>
                     )}
+                    {currentUser?.role !== 'employee' && (
+                      <li className="d-md-none mt-5">
+                        <Link
+                          href="/createProfile"
+                          className="btn-five w-100 text-decoration-none "
+                        >
+                          Join as Employee
+                        </Link>
+                      </li>
+                    )}
                   </ul>
                 </div>
               </nav>

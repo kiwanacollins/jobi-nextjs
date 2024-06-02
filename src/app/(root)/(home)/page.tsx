@@ -9,9 +9,11 @@ import FeedbackFive from '@/components/feedBacks/feedback-five';
 import HeroBannerSix from '@/components/hero-banners/hero-banner-six';
 import { JobListItems } from '@/components/jobs/list/job-list-one';
 import PartnersSlider from '@/components/partners/partners-slider';
+import { getTestimonials } from '@/lib/actions/Testimonial.action';
 import Link from 'next/link';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const reviews = await getTestimonials();
   return (
     <>
       {/* hero banner start */}
@@ -102,7 +104,7 @@ export default function HomePage() {
       {/* text feature end */}
 
       {/* feedback start */}
-      <FeedbackFive />
+      <FeedbackFive reviews={reviews} />
       {/* feedback end */}
 
       {/* blog start */}
