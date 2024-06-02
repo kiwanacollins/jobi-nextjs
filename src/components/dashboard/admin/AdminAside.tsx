@@ -20,7 +20,7 @@ import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
 import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 import LogoutModal from '../../common/popup/logout-modal';
-import { useAuth, useClerk } from '@clerk/nextjs';
+import { UserButton, useAuth, useClerk } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { IUser } from '@/database/user.model';
 import Swal from 'sweetalert2';
@@ -206,12 +206,19 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
           </div>
           <div className="user-data">
             <div className="user-avatar online position-relative rounded-circle">
-              <Image
-                src={currentUser?.picture as string}
-                alt="avatar"
-                className="lazy-img"
-                width={75}
-                height={75}
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: {
+                      height: '75px',
+                      width: '75px'
+                    }
+                  },
+                  variables: {
+                    colorPrimary: '#ff7000'
+                  }
+                }}
               />
             </div>
             <div className="user-name-data">

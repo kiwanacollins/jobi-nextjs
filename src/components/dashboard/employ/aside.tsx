@@ -27,7 +27,7 @@ import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 // import nav_9_active from '@/assets/dashboard/images/icon/icon_40_active.svg';
 // import nav_8 from '@/assets/dashboard/images/icon/icon_8.svg';
 import LogoutModal from '../../common/popup/logout-modal';
-import { useClerk, useUser } from '@clerk/nextjs';
+import { UserButton, useClerk, useUser } from '@clerk/nextjs';
 import Swal from 'sweetalert2';
 
 // nav data
@@ -144,12 +144,19 @@ const EmployAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
           </div>
           <div className="user-data">
             <div className="user-avatar online position-relative rounded-circle">
-              <Image
-                src={user?.imageUrl as string | StaticImageData}
-                alt="avatar"
-                className="lazy-img"
-                width={75}
-                height={75}
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: {
+                      height: '75px',
+                      width: '75px'
+                    }
+                  },
+                  variables: {
+                    colorPrimary: '#ff7000'
+                  }
+                }}
               />
             </div>
             <div className="user-name-data">
