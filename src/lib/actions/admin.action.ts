@@ -141,17 +141,25 @@ export async function updateCategoryById(params: UpdateCategoryParams) {
       }
     }
     // upload image to cloudinary
-    if (image.url) {
+    if (image.url !== category.image.url) {
       const result = await cloudinary.v2.uploader.upload(image.url as string, {
         folder: 'categories',
         width: 350
       });
 
       if (!result) {
-        return { success: false, message: 'Error uploading image' };
+        return { error: true, message: 'Error uploading image' };
       }
       image.url = result.secure_url;
       image.public_id = result.public_id;
+
+      // delete old image from cloudinary
+      if (category.image.public_id) {
+        await cloudinary.v2.uploader.destroy(category.image.public_id);
+      }
+    } else {
+      image.url = category.image.url;
+      image.public_id = category.image.public_id;
     }
 
     category.name = name;

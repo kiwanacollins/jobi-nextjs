@@ -1,6 +1,7 @@
 'use client';
 import ErrorMsg from '@/components/common/error-msg';
 import { ICategory } from '@/database/category.model';
+import avatarPerson from '@/assets/images/avatar-person.svg';
 import {
   createCategory,
   deleteSingleSubcategory,
@@ -47,7 +48,6 @@ const CategoryForm = ({ type, category }: IProps) => {
     setValue,
     setError,
     clearErrors,
-    watch,
     reset,
     formState: { errors }
   } = methods;
@@ -66,6 +66,7 @@ const CategoryForm = ({ type, category }: IProps) => {
       pdfFile.onload = () => {
         if (pdfFile.readyState === 2) {
           setValue('image.url', pdfFile.result as string);
+          clearErrors('image.url');
         }
       };
 
@@ -134,6 +135,8 @@ const CategoryForm = ({ type, category }: IProps) => {
         });
         if (res.success) {
           notifySuccess(res.message);
+          setImagePreview('');
+          reset();
         }
         if (!res.success) {
           notifyError(res.message);
@@ -166,8 +169,8 @@ const CategoryForm = ({ type, category }: IProps) => {
       setSkillsTag([]);
       setValue('name', '');
       setValue('subcategory', []);
-      setImagePreview('');
-      reset();
+
+      setFilename('');
       setIsSubmitting(false);
     }
   };
@@ -175,27 +178,39 @@ const CategoryForm = ({ type, category }: IProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white card-box border-20">
         <div className="user-avatar-setting d-flex align-items-center mb-30">
-          {(imagePreview || category?.image?.url) && (
+          {errors?.image?.url ? (
+            <ErrorMsg msg={errors.image.url.message} />
+          ) : (
             <Image
-              //@ts-ignore
-              src={imagePreview || category?.image?.url}
+              src={imagePreview || category?.image.url || avatarPerson}
               alt="avatar"
-              height={120}
-              width={120}
+              height={200}
+              width={200}
               className="lazy-img user-img"
             />
           )}
-
           <div className="upload-btn position-relative tran3s ms-4 me-3">
             <small>{filename || ' Upload Category photo'}</small>
             {errors.image && <ErrorMsg msg={errors.image.message as string} />}
-            <input
-              type="file"
-              id="uploadImg"
-              name="file"
-              accept="image/*"
-              placeholder="Upload new photo"
-              onChange={(e) => handleFileChange(e)}
+            <Controller
+              name="image.url"
+              control={control}
+              rules={{ required: 'Image is required' }}
+              render={() => (
+                <>
+                  <input
+                    type="file"
+                    id="uploadImg"
+                    name="file"
+                    accept="image/*"
+                    placeholder="Upload Image"
+                    onChange={(e) => handleFileChange(e)}
+                  />
+                  {/* {errors?.image?.url && (
+                    <ErrorMsg msg={errors.image.url.message} />
+                  )} */}
+                </>
+              )}
             />
           </div>
           {/* <button className="delete-btn tran3s">Delete</button> */}
