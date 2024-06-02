@@ -143,6 +143,20 @@ const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
         />
       </div>
 
+      <h2 className="main-title">Course Stats</h2>
+      <div className="row">
+        {statistics?.courseStatistics.map((stats: any, index: number) => {
+          return (
+            <CardItem
+              key={index}
+              img={icon_4}
+              title={stats?.name}
+              value={stats?.enrolledUsersCount}
+            />
+          );
+        })}
+      </div>
+
       <div className="row d-flex pt-50 lg-pt-10">
         <div className="col-xl-7 col-lg-6 d-flex flex-column">
           <div className="user-activity-chart bg-white border-20 mt-30 h-100">

@@ -11,6 +11,7 @@ import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
 import { FilterQuery } from 'mongoose';
 import Job from '@/database/job.model';
+import Course from '@/database/Course.model';
 
 interface ICreateCategory {
   name: string;
@@ -478,13 +479,23 @@ export async function getUserStatistics() {
       { $sort: { _id: 1 } } // Sort by joinedAt date
     ]);
 
+    const courses = await Course.find();
+    const courseStatistics: { name: string; enrolledUsersCount: number }[] =
+      courses?.map((course) => {
+        return {
+          name: course?.title,
+          enrolledUsersCount: course.enrolledUsers?.length
+        };
+      });
+
     return {
       totalUsers,
       totalCandidates,
       totalEmployees,
       usersByJoinedAt,
       totalJobPosts,
-      totalHiredUsers
+      totalHiredUsers,
+      courseStatistics: JSON.parse(JSON.stringify(courseStatistics))
     };
   } catch (error) {
     console.log(error);
