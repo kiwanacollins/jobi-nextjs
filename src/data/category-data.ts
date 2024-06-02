@@ -30,7 +30,7 @@ export const categoryMenu: IcategoryMenu[] = [
   {
     id: 2,
     icon: welderIcon,
-    title: 'Welding',
+    title: 'Welder',
     count: '7k+',
     bg_clr: '#FFFAEC'
   },

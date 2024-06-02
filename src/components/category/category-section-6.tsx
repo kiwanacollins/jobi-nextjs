@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { categoryMenu } from '@/data/category-data';
 
 const CategorySectionSix = ({ style_2 = false }: { style_2?: boolean }) => {
-  const category_items = categoryMenu.map((category) => category);
+  const category_items = categoryMenu?.map((category) => category);
   return (
     <section
       className={`category-section-five position-relative ${style_2 ? 'mt-85 md-mt-60' : 'mt-190 lg-mt-150'}`}
@@ -31,7 +31,7 @@ const CategorySectionSix = ({ style_2 = false }: { style_2?: boolean }) => {
           </div>
         </div>
         <div className="card-wrapper d-flex flex-wrap justify-content-center justify-content-lg-between pt-50 lg-pt-30">
-          {category_items.map((item, i) => (
+          {category_items?.map((item, i) => (
             <div
               key={item.id}
               className="card-style-seven bg-color text-center mt-15 wow fadeInUp"
