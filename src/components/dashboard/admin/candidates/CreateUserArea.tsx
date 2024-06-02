@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { createUserByAdmin } from '@/lib/actions/user.action';
+import avatarPerson from '@/assets/images/avatar-person.svg';
 import * as z from 'zod';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import ErrorMsg from '@/components/common/error-msg';
@@ -75,6 +76,7 @@ const CreateUserArea = ({
     register,
     reset,
     setValue,
+    clearErrors,
     watch,
     control,
     handleSubmit,
@@ -112,6 +114,7 @@ const CreateUserArea = ({
       pdfFile.onload = () => {
         if (pdfFile.readyState === 2) {
           setValue('picture', pdfFile.result as string);
+          clearErrors('picture');
         }
       };
 
@@ -184,26 +187,36 @@ const CreateUserArea = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="bg-white card-box border-20">
             <div className="user-avatar-setting d-flex align-items-center mb-30">
-              {imagePreview && (
+              {errors?.picture ? (
+                <ErrorMsg msg={errors?.picture.message} />
+              ) : (
                 <Image
-                  src={imagePreview}
+                  src={imagePreview || avatarPerson}
                   alt="avatar"
-                  height={80}
-                  width={80}
+                  height={200}
+                  width={200}
                   className="lazy-img user-img"
                 />
               )}
-
               <div className="upload-btn position-relative tran3s ms-4 me-3">
                 <small>{filename || ' Upload new photo'}</small>
 
-                <input
-                  type="file"
-                  id="uploadImg"
-                  name="file"
-                  accept="image/*"
-                  placeholder="Upload new photo"
-                  onChange={(e) => handleFileChange(e)}
+                <Controller
+                  name="picture"
+                  control={control}
+                  rules={{ required: 'Image is required' }}
+                  render={() => (
+                    <>
+                      <input
+                        type="file"
+                        id="uploadImg"
+                        name="file"
+                        accept="image/*"
+                        placeholder="Upload Image"
+                        onChange={(e) => handleFileChange(e)}
+                      />
+                    </>
+                  )}
                 />
               </div>
               <button className="delete-btn tran3s">Delete</button>
