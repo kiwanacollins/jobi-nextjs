@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { IBlog } from '@/database/Blog.model';
 import ParseHTML from '../../common/parseHTML';
 import { getTimestamp } from '@/utils/utils';
+import SocialMediaShare from '@/components/common/SocialMediaShare';
 const BlogArticleDetails = ({ item }: { item: IBlog }) => {
   return (
     <article className="blog-details-meta">
@@ -31,24 +32,7 @@ const BlogArticleDetails = ({ item }: { item: IBlog }) => {
             </li>
           ))}
         </ul>
-        <ul className="d-flex share-icon align-items-center style-none pb-20">
-          <li>Share:</li>
-          <li>
-            <a href="#">
-              <i className="bi bi-google"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bi bi-twitter"></i>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bi bi-instagram"></i>
-            </a>
-          </li>
-        </ul>
+        <SocialMediaShare />
       </div>
     </article>
   );

@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import ModalVideo from 'react-modal-video';
 import Slider from 'react-slick';
 import { slider_setting } from '@/constants';
+import SocialMediaShare from '../common/SocialMediaShare';
 
 interface ICandidateDetailsAreaProps {
   candidateDetials: IResumeType;
@@ -219,6 +220,10 @@ const CandidateDetailsArea = ({
                     //@ts-ignore
                     user={user}
                   />
+
+                  {/* Social Share Start */}
+                  <SocialMediaShare />
+                  {/* Social Share End */}
                   {/* CandidateBio */}
                   <button
                     type="button"
