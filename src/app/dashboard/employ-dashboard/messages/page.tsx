@@ -1,12 +1,14 @@
 import React from 'react';
 import DashboardMessage from '@/components/dashboard/candidate/dashboard-message';
-import { currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+import { getUserById } from '@/lib/actions/user.action';
 
 const EmployDashboardMessagesPage = async () => {
-  const user = await currentUser();
-  if (!user || user.privateMetadata.role !== 'employee') {
-    return redirect('/');
+  const { userId } = auth();
+  const currentUser = await getUserById({ userId });
+  if (currentUser?.role !== 'employee') {
+    redirect('/');
   }
   return (
     <div>

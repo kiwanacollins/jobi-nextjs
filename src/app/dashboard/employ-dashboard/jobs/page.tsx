@@ -1,16 +1,17 @@
 import React from 'react';
 import EmployJobArea from '@/components/dashboard/employ/job-area';
-import { auth, currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import { getEmployeeJobPosts } from '@/lib/actions/employee.action';
 import { redirect } from 'next/navigation';
 import { SearchParamsProps } from '@/types';
+import { getUserById } from '@/lib/actions/user.action';
 
 const EmployDashboardJobsPage = async ({ searchParams }: SearchParamsProps) => {
-  const user = await currentUser();
-  if (!user || user.privateMetadata.role !== 'employee') {
-    return redirect('/');
-  }
   const { userId: clerkId } = auth();
+  const currentUser = await getUserById({ userId: clerkId });
+  if (currentUser?.role !== 'employee') {
+    redirect('/');
+  }
   const { jobs, totalJob, isNext } = await getEmployeeJobPosts({
     userId: clerkId as string,
     page: searchParams.page ? +searchParams.page : 1,

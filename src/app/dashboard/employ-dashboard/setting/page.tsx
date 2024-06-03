@@ -1,12 +1,14 @@
 import React from 'react';
 import DashboardSettingArea from '@/components/dashboard/candidate/dashboard-setting';
-import { currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
+import { getUserById } from '@/lib/actions/user.action';
 
 const EmployDashboardSettingPage = async () => {
-  const user = await currentUser();
-  if (!user || user.privateMetadata.role !== 'employee') {
-    return redirect('/');
+  const { userId } = auth();
+  const currentUser = await getUserById({ userId });
+  if (currentUser?.role !== 'employee') {
+    redirect('/');
   }
   return (
     <>
