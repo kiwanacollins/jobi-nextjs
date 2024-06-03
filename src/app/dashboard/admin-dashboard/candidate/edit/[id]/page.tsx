@@ -1,6 +1,8 @@
 import UpdateUserArea from '@/components/dashboard/admin/candidates/UpdateUserArea';
 import { getCategories } from '@/lib/actions/admin.action';
-import { getUserByMongoId } from '@/lib/actions/user.action';
+import { getUserById, getUserByMongoId } from '@/lib/actions/user.action';
+import { currentUser } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 interface ParamsProps {
   params: {
@@ -9,6 +11,11 @@ interface ParamsProps {
 }
 
 const Page = async ({ params }: ParamsProps) => {
+  const user = await currentUser();
+  const loggedInUser = await getUserById({ userId: user?.id });
+  if (!user || !loggedInUser.isAdmin) {
+    return redirect('/');
+  }
   const mongoUser = await getUserByMongoId({ id: params.id });
   const response = await getCategories();
   const categoriesData = response?.map((item: any) => ({

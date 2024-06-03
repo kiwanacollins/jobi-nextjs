@@ -5,12 +5,14 @@ import DashboardMakeAdmin from '@/components/dashboard/admin/DashboardMakeAdmin'
 import AdminsTable from '@/components/dashboard/admin/AdminsTable';
 import { getAdmins } from '@/lib/actions/admin.action';
 import { SearchParamsProps } from '@/types';
+import { getUserById } from '@/lib/actions/user.action';
 
 const AdminDashboardMakeAdminPage = async ({
   searchParams
 }: SearchParamsProps) => {
   const user = await currentUser();
-  if (!user || !user.privateMetadata.isAdmin) {
+  const loggedInUser = await getUserById({ userId: user?.id });
+  if (!user || !loggedInUser.isAdmin) {
     return redirect('/');
   }
   const admins = await getAdmins({
