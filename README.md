@@ -1,35 +1,131 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## 🌐 Demo Live
 
-## Getting Started
+Here is a working live demo: https://jobi-jobportal.vercel.app/
 
-First, run the development server:
+## 📝 Description
+
+Jobi is an advanced job portal website designed to streamline the hiring process for employers and provide a comprehensive job search experience for candidates. Employers can create job posts, shortlist favorite candidates, and manage their hiring process efficiently through a feature-rich admin dashboard. Candidates can apply for jobs, track their application status, and more. Jobi includes a plethora of features aimed at enhancing both user and admin experiences.
+
+## Features
+
+### Admin Dashboard
+
+- **Analytics:** Get insights into job postings, applications, and user engagement.
+- **User Management:** View and manage detailed information about all users.
+- **Job Management:** Easily create, edit, and delete job postings.
+- **Notifications:** Stay updated with alerts and notifications regarding job applications and other important activities.
+
+### Employer Dashboard
+
+- **Job Analytics:** Monitor the performance of job postings and track application statistics.
+- **Candiate Search:** Find and shortlist candidates that match your expectations and preferences
+- **Candidate Shortlisting:** Shortlist and manage favorite candidates for different job postings.
+- **Share Candidates with adminstration:** Employee sharing information with admin about shortlisted candidates.
+- **Profile Management:** Update company information and job posting details.
+
+## 📖 Table of Contents (Optional)
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
+
+## 🛠️ Setup Project
+
+To get this project up and running in your development environment, follow these step-by-step instructions.
+
+### 🍴 Prerequisites
+
+We need to install or make sure that these tools are pre-installed on your machine:
+
+- [NodeJS](https://nodejs.org/en/download/): It is a JavaScript runtime build.
+- [Git](https://git-scm.com/downloads): It is an open source version control system.
+
+- [clerk Webhook](https://clerk.com/docs/integrations/webhooks/overview): Setup a webhook integration on your project.
+
+### 🚀 Install Project
+
+1. Clone the Repository
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/rakibtweets/jobi-nextjs.git
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install packages in directory project directory
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. In root directory create a `.env.local` file and add necessary environment variables
 
-## Learn More
+```bash
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
 
-To learn more about Next.js, take a look at the following resources:
+NEXT_CLERK_WEBHOOK_SECRET=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+NEXT_PUBLIC_TINY_EDITOR_API_KEY=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+NEXT_PUBLIC_SERVER_URL=
 
-## Deploy on Vercel
+MONGODB_URL=
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# jobi-nextjs
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+## 🔍 Usage
+
+### How To Use
+
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+
+```bash
+# Clone this repository
+$ git clone https://github.com/rakibtweets/jobi-nextjs.git
+
+# Go into the repository
+$ cd jobi
+
+# Install dependencies
+$ npm install
+
+# Run the app
+$ npm start
+```
+
+> **Note**
+> If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+
+## 📋 License
+
+MIT License
+
+Copyright (c) [2024] [Jobi]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
