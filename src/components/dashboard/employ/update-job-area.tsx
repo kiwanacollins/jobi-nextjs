@@ -228,9 +228,9 @@ const UpdateJobArea = ({ job }: IProps) => {
                       'table'
                     ],
                     toolbar:
-                      'undo redo | ' +
-                      ' bold italic forecolor | alignleft aligncenter |' +
-                      'alignright alignjustify | bullist numlist',
+                      'undo redo | casechange blocks | bold italic backcolor | ' +
+                      'alignleft aligncenter alignright alignjustify | ' +
+                      'bullist numlist checklist outdent indent | removeformat | a11ycheck ',
                     content_style: 'body { font-family:Inter; font-size:16px }',
                     skin: 'oxide',
                     content_css: 'light'
