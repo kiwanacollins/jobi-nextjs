@@ -8,7 +8,7 @@ import HowItWorks from '@/components/how-it-works/how-it-works';
 import FeedbackOne from '@/components/feedBacks/feedback-one';
 
 export const metadata: Metadata = {
-  title: 'About us | OneSkill',
+  title: 'About us | Jobi',
   description: 'About us page'
 };
 

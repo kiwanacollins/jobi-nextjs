@@ -8,7 +8,6 @@ import FeatureTwo from '@/components/features/feature-two';
 import FeedbackFive from '@/components/feedBacks/feedback-five';
 import HeroBannerSix from '@/components/hero-banners/hero-banner-six';
 import { JobListItems } from '@/components/jobs/list/job-list-one';
-import PartnersSlider from '@/components/partners/partners-slider';
 import { getTestimonials } from '@/lib/actions/Testimonial.action';
 import Link from 'next/link';
 
@@ -20,10 +19,6 @@ export default async function HomePage() {
       <HeroBannerSix />
       {/* hero banner end */}
 
-      {/* partners logo start*/}
-      <div className="partner-logos bg-color border-0 pt-45 pb-45 ps-3 pe-3">
-        <PartnersSlider />
-      </div>
       {/* partners logo end*/}
 
       {/* category section start */}
@@ -81,15 +76,6 @@ export default async function HomePage() {
             <Link href="/jobs" className="btn-six">
               Explore all jobs
             </Link>
-          </div>
-          <div className="text-center mt-50 wow fadeInUp">
-            <div className="btn-eight fw-500">
-              Do you want to post a job for your company?{' '}
-              <span>We can help.</span>{' '}
-              <Link href="/dashboard/employ-dashboard/submit-job">
-                Click here
-              </Link>
-            </div>
           </div>
         </div>
       </section>

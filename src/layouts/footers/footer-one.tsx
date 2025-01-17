@@ -94,7 +94,7 @@ const FooterOne = ({
             </div>
             <div className="col-lg-4 order-lg-2">
               <p className={`text-center mb-15 ${style_2 ? 'text-white' : ''}`}>
-                Copyright @{new Date().getFullYear()} OneSkill inc.
+                Copyright @{new Date().getFullYear()} Jobi inc.
               </p>
             </div>
           </div>

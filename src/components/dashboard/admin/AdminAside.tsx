@@ -82,13 +82,7 @@ const nav_data: {
     link: '/dashboard/admin-dashboard/users',
     title: 'Users'
   },
-  {
-    id: 7,
-    icon: nav_3,
-    icon_active: nav_3_active,
-    link: '/dashboard/admin-dashboard/courses',
-    title: 'Courses'
-  },
+
   {
     id: 8,
     icon: nav_4,

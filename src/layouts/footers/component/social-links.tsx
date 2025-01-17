@@ -2,33 +2,32 @@ import Link from 'next/link';
 import React from 'react';
 
 const SocialLinks = () => {
-  const defaultMsg = 'Hello, I would like to know about your services';
-const whatsappUrl = `https://wa.me/${"+8801938056537"}?text=${encodeURIComponent(
-  defaultMsg
-)}`;
+  const defaultMsg =
+    'Hello from Jobi, I would like to know about your services';
+  const whatsappUrl = `https://wa.me/${'+8801938056537'}?text=${encodeURIComponent(
+    defaultMsg
+  )}`;
   return (
     <>
       <li>
-        <Link  href={whatsappUrl} 
-        target="_blank"
-      rel="noopener noreferrer">
+        <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
           <i className="bi bi-whatsapp"></i>
         </Link>
       </li>
+
       <li>
-        <a href="#">
-          <i className="bi bi-dribbble"></i>
-        </a>
-      </li>
-      <li>
-        <a href="#">
+        <Link href="mailto:rakibhasanroky0@gmail.com">
           <i className="bi bi-google"></i>
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="#">
+        <Link
+          href="https://www.instagram.com/rakibtweets"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <i className="bi bi-instagram"></i>
-        </a>
+        </Link>
       </li>
     </>
   );

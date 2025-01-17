@@ -36,7 +36,6 @@ export interface IUser extends Document {
   saved?: Schema.Types.ObjectId[];
   resumeId?: Schema.Types.ObjectId | string;
   jobPosts?: Schema.Types.ObjectId[];
-  course?: Schema.Types.ObjectId[];
   joinedAt?: Date;
 }
 
@@ -71,7 +70,6 @@ const UserSchema = new Schema({
   country: { type: String },
   saved: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   resumeId: { type: Schema.Types.ObjectId, ref: 'Resume' },
-  course: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
   jobPosts: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   joinedAt: { type: Date, default: Date.now }
 });
