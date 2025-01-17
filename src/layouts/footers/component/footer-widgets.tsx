@@ -19,19 +19,10 @@ export function WidgetOne({
             Browse Jobs
           </Link>
         </li>
-        <li>
-          <Link className="text-decoration-none" href="/company-v1">
-            Companies
-          </Link>
-        </li>
+
         <li>
           <Link className="text-decoration-none" href="/candidates">
             Candidates
-          </Link>
-        </li>
-        <li>
-          <Link className="text-decoration-none" href="/pricing">
-            Pricing
           </Link>
         </li>
       </ul>

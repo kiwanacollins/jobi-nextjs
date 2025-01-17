@@ -176,16 +176,16 @@ export const aboutUsContent = [
   {
     question: 'Who are we?',
     answer:
-      'We are OneSkill, a dynamic and innovative job posting web application dedicated to connecting employers with talented candidates. With a passion for streamlining the hiring process and fostering meaningful career opportunities, we strive to empower businesses and individuals alike through our user-friendly platform.'
+      'We are Jobi, a dynamic and innovative job posting web application dedicated to connecting employers with talented candidates. With a passion for streamlining the hiring process and fostering meaningful career opportunities, we strive to empower businesses and individuals alike through our user-friendly platform.'
   },
   {
     question: "What's our goal?",
     answer:
-      'Our goal at OneSkill is to revolutionize the way job postings are handled, making it easier and more efficient for employers to find the perfect candidates and for job seekers to discover their ideal career opportunities. By harnessing the power of technology and data-driven insights, we aim to create a seamless and transparent recruitment experience that benefits both employers and candidates.'
+      'Our goal at Jobi is to revolutionize the way job postings are handled, making it easier and more efficient for employers to find the perfect candidates and for job seekers to discover their ideal career opportunities. By harnessing the power of technology and data-driven insights, we aim to create a seamless and transparent recruitment experience that benefits both employers and candidates.'
   },
   {
     question: 'Our vision',
     answer:
-      'Our vision at OneSkill is to become the go-to platform for job posting and job searching, setting the standard for excellence in the recruitment industry. We envision a future where every employer can effortlessly find the talent they need, and every candidate can easily access the opportunities that align with their skills and aspirations. By continuously innovating and adapting to the evolving needs of the job market, we are committed to realizing this vision and empowering individuals and businesses to thrive.'
+      'Our vision at Jobi is to become the go-to platform for job posting and job searching, setting the standard for excellence in the recruitment industry. We envision a future where every employer can effortlessly find the talent they need, and every candidate can easily access the opportunities that align with their skills and aspirations. By continuously innovating and adapting to the evolving needs of the job market, we are committed to realizing this vision and empowering individuals and businesses to thrive.'
   }
 ];

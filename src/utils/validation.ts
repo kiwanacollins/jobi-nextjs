@@ -177,28 +177,6 @@ export const categorySchema = z.object({
   image: imageSchema
 });
 
-export const courseSchema = z.object({
-  title: z.string().min(1, { message: 'Title is required' }),
-  introVideo: z.string().min(1, { message: 'intro video is required' }),
-  description: z.string().min(1, { message: 'Description is required' }),
-  thumbnail: imageSchema
-});
-
-export const moduleVideoSchema = z.object({
-  moduleName: z.string().min(1, { message: 'Title is required' }),
-  content: z.array(videoSchema)
-});
-
-export const moduleNameSchema = z.object({
-  moduleName: z.string().min(1, { message: 'Title is required' })
-});
-
-export const videoModuleFormSchema = z.object({
-  modules: z
-    .array(moduleVideoSchema)
-    .nonempty('At least one module is required')
-});
-
 export const TestimonialSchema = z.object({
   review_text: z.string(),
   review_star: z.number().min(1).max(5),

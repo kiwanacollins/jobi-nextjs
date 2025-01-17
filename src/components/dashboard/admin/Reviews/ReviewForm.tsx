@@ -4,7 +4,7 @@ import avatarPerson from '@/assets/images/avatar-person.svg';
 import { notifyError, notifySuccess } from '@/utils/toast';
 import { TestimonialSchema } from '@/utils/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Image from 'next/image';
@@ -23,7 +23,7 @@ interface ReviewFormProps {
 }
 const ReviewForm = ({ type, reviewData, reviewId }: ReviewFormProps) => {
   const pathname = usePathname();
-  const router = useRouter()
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filename, setFilename] = useState('');
   const [imagePreview, setImagePreview] = useState<string | undefined>();
@@ -87,13 +87,12 @@ const ReviewForm = ({ type, reviewData, reviewId }: ReviewFormProps) => {
   const onSubmit = async (data: TestimonialSchemaType) => {
     setIsSubmitting(true);
     try {
-      // Call the API to create a new course
       if (type === 'add') {
         const res = await createTestimonial(data);
         if (res.success) {
           notifySuccess(res.message);
           setIsSubmitting(false);
-          router.push('/dashboard/admin-dashboard/reviews')
+          router.push('/dashboard/admin-dashboard/reviews');
           reset();
         }
         if (res.error) {
@@ -109,7 +108,7 @@ const ReviewForm = ({ type, reviewData, reviewId }: ReviewFormProps) => {
         });
         if (res.success) {
           notifySuccess(res.message);
-          router.push('/dashboard/admin-dashboard/reviews')
+          router.push('/dashboard/admin-dashboard/reviews');
         }
         if (res.error) {
           notifyError(res.message);
