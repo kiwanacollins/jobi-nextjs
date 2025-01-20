@@ -8,6 +8,7 @@ import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 import { getActiveCandidates } from '@/lib/actions/candidate.action';
+import { getCategoriesAndSubcategories } from '@/lib/actions/category.action';
 
 export const metadata: Metadata = {
   title: 'Candidates',
@@ -35,6 +36,7 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
 
   const { userId } = auth();
   const loggedInUser = await getUserById({ userId });
+  const res = await getCategoriesAndSubcategories();
 
   return (
     <div>
@@ -48,6 +50,7 @@ const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {
       {/* candidate area start */}
       <CandidateV1Area
         candidates={JSON.parse(JSON.stringify(candidates))}
+        subcategories={res?.subcategories}
         loggedInUser={loggedInUser}
         style_2={true}
         pageNumber={searchParams?.page ? +searchParams.page : 1}

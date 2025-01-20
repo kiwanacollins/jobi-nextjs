@@ -12,6 +12,7 @@ import CommonPagination from '../common/CommonPagination';
 
 interface IProps {
   style_2?: boolean;
+  subcategories?: any;
   candidates?: any[] | undefined;
   loggedInUser?: IUser;
   pageNumber: number;
@@ -23,6 +24,7 @@ const CandidateV1Area = ({
   candidates,
   loggedInUser,
   pageNumber,
+  subcategories,
   isNext
 }: IProps) => {
   const [jobType, setJobType] = useState<string>(style_2 ? 'list' : 'grid');
@@ -43,7 +45,7 @@ const CandidateV1Area = ({
                 Filter
               </button>
               {/* filter area start */}
-              <CandidateV1FilterArea />
+              <CandidateV1FilterArea subcategories={subcategories} />
               {/* filter area end */}
             </div>
 

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import NiceSelect from '@/ui/nice-select';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery } from '@/utils/utils';
+import { qualificationOptions } from '@/constants';
 
 const SelectCandidateQualification = () => {
   const router = useRouter();
@@ -34,11 +35,7 @@ const SelectCandidateQualification = () => {
 
   return (
     <NiceSelect
-      options={[
-        { value: `master's degree`, label: `Master's Degree` },
-        { value: `bachelor degree`, label: `Bachelor Degree` },
-        { value: `None`, label: `None` }
-      ]}
+      options={qualificationOptions}
       defaultCurrent={0}
       onChange={(item) => handleQualification(item)}
       name="Qualification"

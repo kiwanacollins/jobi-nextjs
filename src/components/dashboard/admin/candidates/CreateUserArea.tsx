@@ -83,10 +83,6 @@ const CreateUserArea = ({
     formState: { errors }
   } = methods;
 
-  // console.log('new-user', watch());
-  // console.log('skill', watch('skills'));
-  // console.log('errors', errors);
-
   const selectedPost = watch('post');
 
   const skillsOfSelectedPost = categories?.find(
@@ -467,46 +463,6 @@ const CreateUserArea = ({
               {/* English Fluency End */}
             </div>
 
-            {/* Salary start */}
-            {/* <div className="row">
-              <div className="col-md-6">
-                <div className="dash-input-wrapper">
-                  <label htmlFor="">Salary*</label>
-                  <SalaryDurationSelect register={register} />
-                  {errors?.salary_duration && (
-                    <ErrorMsg msg={errors?.salary_duration.message} />
-                  )}
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="dash-input-wrapper">
-                  <input
-                    type="text"
-                    placeholder="Min Salary"
-                    {...register('minSalary')}
-                    name="minSalary"
-                  />
-                  {errors?.minSalary && (
-                    <ErrorMsg msg={errors?.minSalary.message} />
-                  )}
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="dash-input-wrapper">
-                  <input
-                    type="text"
-                    placeholder="Max salary"
-                    {...register('maxSalary')}
-                    name="maxSalary"
-                  />
-                  {errors?.maxSalary && (
-                    <ErrorMsg msg={errors?.maxSalary.message} />
-                  )}
-                </div>
-              </div>
-            </div> */}
-
-            {/* Salary end */}
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>
               <textarea

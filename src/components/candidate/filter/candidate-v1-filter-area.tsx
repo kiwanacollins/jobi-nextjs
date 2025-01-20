@@ -10,7 +10,11 @@ import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
 import SelectCandidateQualification from './select-qualification';
 import SelectCandidateType from './select-gender';
 
-const CandidateV1FilterArea = () => {
+interface IProps {
+  subcategories?: any;
+}
+
+const CandidateV1FilterArea = ({ subcategories }: IProps) => {
   // const [priceValue, setPriceValue] = useState<number[]>([0, 5000]);
   const router = useRouter();
   const pathname = usePathname();
@@ -41,6 +45,7 @@ const CandidateV1FilterArea = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [keyword, pathname, router, searchParams, query]);
+
   return (
     <div
       className="filter-area-tab offcanvas offcanvas-start"
@@ -92,27 +97,10 @@ const CandidateV1FilterArea = () => {
           </a>
           <div className="collapse show" id="collapseCategory">
             <div className="main-body">
-              <FilterSkills />
+              <FilterSkills subcategories={subcategories} />
             </div>
           </div>
         </div>
-
-        {/* <div className="filter-block bottom-line pb-25 mt-25">
-          <a
-            className="filter-title text-decoration-none  fw-500 text-dark"
-            data-bs-toggle="collapse"
-            href="#collapseLocation"
-            role="button"
-            aria-expanded="false"
-          >
-            Location
-          </a>
-          <div className="collapse show" id="collapseLocation">
-            <div className="main-body">
-              <FilterCandidateLocation />
-            </div>
-          </div>
-        </div> */}
 
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
@@ -165,25 +153,6 @@ const CandidateV1FilterArea = () => {
           </div>
         </div>
 
-        {/* <div className="filter-block bottom-line pb-25 mt-25">
-          <a
-            className="filter-title text-decoration-none  fw-500 text-dark collapsed"
-            data-bs-toggle="collapse"
-            href="#collapseSalary"
-            role="button"
-            aria-expanded="false"
-          >
-            Salary Range
-          </a>
-          <div className="collapse" id="collapseSalary">
-            <JobPrices
-              priceValue={priceValue}
-              setPriceValue={setPriceValue}
-              maxPrice={5000}
-            />
-          </div>
-        </div> */}
-
         <div className="filter-block bottom-line pb-25 mt-25">
           <a
             className="filter-title text-decoration-none  fw-500 text-dark collapsed"
@@ -200,13 +169,6 @@ const CandidateV1FilterArea = () => {
             </div>
           </div>
         </div>
-
-        <a
-          href="#"
-          className="btn-ten fw-500 text-decoration-none text-white w-100 text-center tran3s mt-30"
-        >
-          Apply Filter
-        </a>
       </div>
     </div>
   );

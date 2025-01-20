@@ -25,7 +25,7 @@ const ContactArea = () => {
                     </div>
                     <h5 className="title">Our Address</h5>
                     <p>
-                      Awal Center, Kamal Ataturk Avenue,34, 19th floor  <br />
+                      Awal Center, Kamal Ataturk Avenue,34, 19th floor <br />
                       Banani, Dhaka, Bangladesh
                     </p>
                   </div>
@@ -52,8 +52,11 @@ const ContactArea = () => {
                     <h5 className="title">Live Support</h5>
                     <p>
                       live chat service <br />
-                      <Link href="https://www.oneskill.io" className="webaddress">
-                        www.oneskill.io
+                      <Link
+                        href="https://jobi-jobportal.vercel.app"
+                        className="webaddress"
+                      >
+                        https://jobi-jobportal.vercel.app
                       </Link>
                     </p>
                   </div>

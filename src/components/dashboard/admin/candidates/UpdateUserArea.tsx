@@ -60,6 +60,7 @@ const UpdateUserArea = ({
     defaultValues: {
       name: mongoUser?.name || '',
       phone: mongoUser?.phone || '',
+      picture: mongoUser?.picture || '',
       post: mongoUser?.post || '',
       age: mongoUser?.age,
       email: mongoUser?.email || '',
@@ -521,47 +522,6 @@ const UpdateUserArea = ({
               {/* English Fluency End */}
             </div>
 
-            {/* Salary start */}
-            {/* <div className="row">
-              <div className="col-md-6">
-                <div className="dash-input-wrapper">
-                  <label htmlFor="">Salary*</label>
-                  <SalaryDurationSelect register={register} />
-                  {errors?.salary_duration && (
-                    <ErrorMsg msg={errors?.salary_duration.message} />
-                  )}
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="dash-input-wrapper">
-                  <input
-                    type="text"
-                    defaultValue={mongoUser?.minSalary || ''}
-                    placeholder="Min Salary"
-                    {...register('minSalary', { valueAsNumber: true })}
-                    name="minSalary"
-                  />
-                  {errors?.minSalary && (
-                    <ErrorMsg msg={errors?.minSalary.message} />
-                  )}
-                </div>
-              </div>
-              <div className="col-md-3">
-                <div className="dash-input-wrapper">
-                  <input
-                    type="text"
-                    defaultValue={mongoUser?.maxSalary || ''}
-                    placeholder="Max salary"
-                    {...register('maxSalary', { valueAsNumber: true })}
-                    name="maxSalary"
-                  />
-                  {errors?.maxSalary && (
-                    <ErrorMsg msg={errors?.maxSalary.message} />
-                  )}
-                </div>
-              </div>
-            </div> */}
-            {/* Salary end */}
             <div className="dash-input-wrapper">
               <label htmlFor="">Bio*</label>
               <textarea
