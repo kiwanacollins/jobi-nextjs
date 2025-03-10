@@ -10,13 +10,15 @@ interface IProps {
   company?: string;
   createdAt?: Date;
   website?: URL;
+  createdBy?: any;
 }
 
 const JobDetailsBreadcrumbTwo = ({
   title,
   company,
   createdAt,
-  website
+  website,
+  createdBy
 }: IProps) => {
   return (
     <div className="inner-banner-one position-relative">
@@ -26,7 +28,10 @@ const JobDetailsBreadcrumbTwo = ({
             <div className="col-xl-8 m-auto text-center">
               <div className="post-date">
                 {getTimestamp(createdAt as Date)} by{' '}
-                <Link href={website as URL} className="fw-500 text-white">
+                <Link
+                  href={`/company/${createdBy}`}
+                  className="fw-500 text-white"
+                >
                   {company}
                 </Link>
               </div>
@@ -44,22 +49,22 @@ const JobDetailsBreadcrumbTwo = ({
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href={'#'}
                     className="d-flex align-items-center justify-content-center"
                   >
                     <i className="bi bi-twitter"></i>
                     <span>Twitter</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href={website as URL}
                     className="d-flex align-items-center justify-content-center"
                   >
                     <i className="bi bi-link-45deg"></i>
-                    <span>Copy</span>
-                  </a>
+                    <span>website</span>
+                  </Link>
                 </li>
               </ul>
             </div>

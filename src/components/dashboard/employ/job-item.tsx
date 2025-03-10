@@ -6,7 +6,7 @@ interface IEmployJobItemProps {
   title: string;
   info: string;
   date: string;
-
+  createdBy: any;
   status: string;
   jobId?: string | undefined;
 }
@@ -16,7 +16,8 @@ const EmployJobItem = ({
   info,
   date,
   status,
-  jobId
+  jobId,
+  createdBy
 }: IEmployJobItemProps) => {
   return (
     <tr className={status}>
@@ -44,7 +45,7 @@ const EmployJobItem = ({
             <span></span>
           </button>
           {/* action dropdown start */}
-          <JobActionDropdown jobId={jobId} />
+          <JobActionDropdown createdBy={createdBy._id} jobId={jobId} />
           {/* action dropdown end */}
         </div>
       </td>

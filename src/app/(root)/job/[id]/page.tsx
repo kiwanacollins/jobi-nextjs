@@ -15,7 +15,7 @@ interface URLProps {
 }
 
 const JobDetailsV1Page = async ({ params }: URLProps) => {
-  const { job } = await getJobById(params.id);
+  const { job } = await getJobById(params?.id);
   return (
     <>
       {/* job details breadcrumb start */}
@@ -24,6 +24,7 @@ const JobDetailsV1Page = async ({ params }: URLProps) => {
         company={job?.createdBy?.name as string}
         createdAt={job?.createAt as Date}
         website={job?.createdBy?.website as URL}
+        createdBy={job?.createdBy._id}
       />
       {/* job details breadcrumb end */}
 

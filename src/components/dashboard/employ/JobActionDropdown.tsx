@@ -12,9 +12,10 @@ import { deleteEmployeeJobPost } from '@/lib/actions/employee.action';
 
 interface IProps {
   jobId: string | undefined;
+  createdBy: string | undefined;
 }
 
-const JobActionDropdown = ({ jobId }: IProps) => {
+const JobActionDropdown = ({ jobId, createdBy }: IProps) => {
   const pathname = usePathname();
 
   const handleDeleteUser = async (jobId: string | undefined) => {
@@ -48,6 +49,11 @@ const JobActionDropdown = ({ jobId }: IProps) => {
       <li className="dropdown-item">
         <Link href={`/candidate-profile/${jobId}`} className="dropdown-item">
           <Image src={view} alt="icon" className="lazy-img" /> View
+        </Link>
+      </li>
+      <li className="dropdown-item">
+        <Link href={`/company/${createdBy}`} className="dropdown-item">
+          <Image src={view} alt="icon" className="lazy-img" /> company details
         </Link>
       </li>
       <li className="dropdown-item">

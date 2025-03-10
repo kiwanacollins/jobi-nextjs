@@ -250,3 +250,86 @@ export const getJobById = async (jobId: string) => {
     throw error;
   }
 };
+
+export interface getJobsByCompanyIdParams {
+  companyId: string;
+  page?: number;
+  pageSize?: number;
+  query?: string;
+  sort?: string;
+}
+
+export async function getJobsByCompanyId(params: getJobsByCompanyIdParams) {
+  try {
+    connectToDatabase();
+
+    const {
+      companyId,
+      page = 1,
+      pageSize = 8,
+      query: searchQuery,
+      sort
+    } = params;
+
+    const user = await User.findById(companyId);
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Calculcate the number of posts to skip based on the page number and page size
+    const skipAmount = (page - 1) * pageSize;
+
+    const query: FilterQuery<typeof Job> = { createdBy: user._id };
+    if (searchQuery) {
+      query.$or = [
+        { category: { $regex: new RegExp(searchQuery, 'i') } },
+        { title: { $regex: new RegExp(searchQuery, 'i') } },
+        { experience: { $regex: new RegExp(searchQuery, 'i') } },
+        { industry: { $regex: new RegExp(searchQuery, 'i') } },
+        { duration: { $regex: new RegExp(searchQuery, 'i') } }
+      ];
+    }
+
+    let sortOptions = {};
+
+    switch (sort) {
+      case 'old':
+        sortOptions = { createAt: 1 };
+        break;
+
+      case 'name':
+        sortOptions = { title: 1 };
+        break;
+
+      case 'new':
+        sortOptions = { createAt: -1 };
+        break;
+
+      default:
+        sortOptions = { createAt: -1 };
+        break;
+    }
+
+    const myJobPosts = await Job.find(query)
+      .populate(
+        'createdBy',
+        'name email picture website companyName categories bio address country'
+      )
+      .skip(skipAmount)
+      .limit(pageSize)
+      .sort(sortOptions);
+
+    const totalJobPosts = await Job.countDocuments({ createdBy: user._id });
+    const isNext = totalJobPosts > skipAmount + myJobPosts.length;
+
+    return {
+      jobs: JSON.parse(JSON.stringify(myJobPosts)),
+      totalJob: totalJobPosts,
+      isNext
+    };
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

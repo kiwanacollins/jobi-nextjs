@@ -84,6 +84,7 @@ const EmployJobArea = ({
                       info={job.overview}
                       date={getTimestamp(job?.createAt as Date)}
                       status="active"
+                      createdBy={job?.createdBy}
                     />
                   ))}
                   {jobs.length === 0 && (

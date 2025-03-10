@@ -9,7 +9,7 @@ const EmployeeWishListPage = async ({ params }: SearchParamsProps) => {
     <>
       {/*breadcrumb start */}
       <CompanyBreadCrumb
-        title="Comany Wishlist"
+        title="Company Wishlist"
         subtitle="Candiate details of saved wishlist."
       />
       {/*breadcrumb end */}

@@ -12,7 +12,7 @@ export default authMiddleware({
     '/candidates(.*)',
     '/about',
     '/contact',
-
+    '/company/:id',
     '/faq',
     '/terms',
     '/termsofuses',
