@@ -5,7 +5,7 @@ import ListItemTwo from '../jobs/list/list-item-2';
 // import { IJobData } from '@/database/job.model';
 
 interface OpenPositionProps {
-  jobs: any[];
+  jobs?: any[];
 }
 
 const OpenPosition = async ({ jobs }: OpenPositionProps) => {
