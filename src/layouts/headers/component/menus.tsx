@@ -117,6 +117,16 @@ const Menus = ({
                   </Link>
                 </li>
               )}
+              {role === 'candidate' && (
+                <li>
+                  <Link
+                    href={'/dashboard/candidate-dashboard'}
+                    className="dropdown-item"
+                  >
+                    <span>Candidate Dashboard</span>
+                  </Link>
+                </li>
+              )}
               {isAdmin && (
                 <li>
                   <Link

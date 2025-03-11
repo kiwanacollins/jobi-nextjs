@@ -92,16 +92,33 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                         </ul>
                       </li>
                     )} */}
-                    {currentUser?.role !== 'employee' && (
-                      <li className="d-none d-md-block ms-3 me-3 ">
-                        <Link
-                          href="/createProfile"
-                          className="btn-five text-decoration-none "
-                        >
-                          Join as Employee
-                        </Link>
-                      </li>
+                    {!['candidate', 'employee'].includes(
+                      currentUser?.role ?? ''
+                    ) && (
+                      <>
+                        {currentUser?.role !== 'employee' && (
+                          <li className="d-none d-md-block ms-3 me-3 ">
+                            <Link
+                              href="/createProfile"
+                              className="btn-five text-decoration-none "
+                            >
+                              Join as Employee
+                            </Link>
+                          </li>
+                        )}
+                        {currentUser?.role !== 'candidate' && (
+                          <li className="d-none d-md-block ms-3 me-3 ">
+                            <Link
+                              href="/new-candidateProfile"
+                              className="btn-five text-decoration-none "
+                            >
+                              Join as Candidate
+                            </Link>
+                          </li>
+                        )}
+                      </>
                     )}
+
                     <UserButton
                       afterSignOutUrl="/"
                       appearance={{

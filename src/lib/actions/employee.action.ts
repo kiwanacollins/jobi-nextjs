@@ -24,8 +24,6 @@ export async function createEmployeeProfileByUpdating(
       new: true
     });
 
-    console.log('updatedUser', updatedUser);
-
     const clerkUser = await clerkClient.users.getUser(clerkId as string);
     // If the user doesn't have a role, set it to user
     if (!clerkUser.privateMetadata.role) {

@@ -86,7 +86,7 @@ export const userSchema = z.object({
   //   .optional(),
   experience: z.string().min(1, { message: 'experience is required' }),
   skills: z.array(z.string().optional()).optional(),
-  phone: z.string().min(1, { message: 'post is required' }).max(11).optional(),
+  phone: z.string().min(1, { message: 'Phone is required' }).max(11).optional(),
   picture: z.string().optional(),
   mediaLinks: linksSchema.optional(),
   address: z.string().min(1, { message: 'Address is required' }),

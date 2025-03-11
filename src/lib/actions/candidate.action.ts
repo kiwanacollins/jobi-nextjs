@@ -6,11 +6,13 @@ import Resume, {
 } from '@/database/resume.model';
 import { connectToDatabase } from '../mongoose';
 import User from '@/database/user.model';
-import { getCandidatesParams } from './shared.types';
+import { getCandidatesParams, UpdateUserParams } from './shared.types';
 import { FilterQuery } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
+import Category from '@/database/category.model';
+import { clerkClient } from '@clerk/nextjs/server';
 
 // import multer from 'multer';
 
@@ -463,6 +465,97 @@ export async function getAllCandidates(params: I_GetAllCandidatesProps) {
     };
   } catch (error) {
     console.error('Error fetching candidates:', error);
+    throw error;
+  }
+}
+
+export async function createCandidateProfileByUpdating(
+  params: UpdateUserParams
+) {
+  try {
+    await connectToDatabase();
+    await connectToCloudinary();
+
+    const { clerkId, updateData, path } = params;
+    if (clerkId) {
+      updateData.role = 'candidate';
+    }
+
+    const clerkUser = await clerkClient.users.getUser(clerkId as string);
+    // If the user doesn't have a role, set it to user
+    if (!clerkUser.privateMetadata.role) {
+      await clerkClient.users.updateUserMetadata(clerkId as string, {
+        privateMetadata: {
+          role: 'candidate'
+        }
+      });
+    }
+    const { picture } = updateData;
+
+    if (picture) {
+      const result = await cloudinary.v2.uploader.upload(picture as string, {
+        folder: 'users',
+        unique_filename: false,
+        use_filename: true
+      });
+
+      updateData.picture = result.secure_url;
+    }
+    const newUser = await User.findOneAndUpdate({ clerkId }, updateData, {
+      new: true
+    });
+
+    if (updateData.post) {
+      const category = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(updateData.post, 'i')
+          }
+        },
+        { $push: { candidates: newUser._id } },
+        { new: true, upsert: true }
+      );
+
+      for (const subcategoryName of updateData.skills) {
+        const matchingSubcategory = category.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        if (matchingSubcategory) {
+          await Category.findOneAndUpdate(
+            {
+              _id: category._id,
+              'subcategory.name': subcategoryName
+            },
+            {
+              $addToSet: {
+                'subcategory.$.candidates': newUser._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
+          );
+        }
+      }
+    }
+
+    revalidatePath(path);
+
+    return JSON.parse(
+      JSON.stringify({
+        status: 'ok',
+        message: 'User updated successfully',
+        data: newUser
+      })
+    );
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 }
