@@ -611,19 +611,31 @@ export const applyForJob = async (params: {
     // Find the job by jobId
     const job = await Job.findById(jobId);
     if (!job) {
-      throw new Error(`Job with ID ${jobId} not found`);
+      return {
+        status: 'error',
+        message: `Job could not found`
+      };
     }
 
     // Check if the user has already applied for the job
-    if (user?.appliedJobs.includes(jobId)) {
-      throw new Error('User has already applied for this job');
+    if ((user?.appliedJobs || []).includes(jobId)) {
+      return {
+        status: 'error',
+        message: 'User has already applied for this job'
+      };
     }
 
     // Add the job to the user's applied jobs list
+    if (!Array.isArray(user.appliedJobs)) {
+      user.appliedJobs = [];
+    }
     user.appliedJobs.push(jobId);
     await user.save();
 
     // Add the user to the job's applicants list
+    if (!Array.isArray(job.applicants)) {
+      job.applicants = [];
+    }
     job.applicants.push(user._id);
     await job.save();
 

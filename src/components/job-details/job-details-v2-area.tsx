@@ -44,6 +44,13 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
             icon: 'success'
           });
         }
+        if (res.status === 'error') {
+          Swal.fire({
+            title: 'Error!',
+            text: res.message,
+            icon: 'error'
+          });
+        }
       }
     });
   };
