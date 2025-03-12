@@ -18,6 +18,9 @@ import {
   genderOptions,
   qualificationOptions
 } from '@/constants';
+import { createCandidateProfileByUpdating } from '@/lib/actions/candidate.action';
+import { usePathname, useRouter } from 'next/navigation';
+import { IServerResponse } from '@/types';
 
 interface IProps {
   categoryOptions: {
@@ -29,13 +32,19 @@ interface IProps {
     label: string;
   }[];
   categories: ICategory[];
+  mongoUser?: any;
+  isCandidate?: boolean;
 }
 
 const CreateUserArea = ({
   categoryOptions,
   subCategories,
-  categories
+  categories,
+  mongoUser,
+  isCandidate
 }: IProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [filename, setFilename] = useState('');
@@ -52,8 +61,9 @@ const CreateUserArea = ({
   const methods = useForm<userSchemaType>({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      name: '',
-      email: '',
+      name: mongoUser?.name || '',
+      email: mongoUser?.email || '',
+      picture: mongoUser?.picture || '',
       phone: '',
       post: '',
       skills: [],
@@ -137,33 +147,74 @@ const CreateUserArea = ({
     setIsSubmitting(true);
     simulateProgress();
     // console.log(value);
+
+    const updateData = {
+      name: value?.name,
+      email: value.email,
+      post: value.post,
+      bio: value.bio,
+      role: 'candidate',
+      // salary_duration: value.salary_duration,
+      experience: value.experience,
+      phone: value.phone,
+      age: value.age,
+      picture: value.picture,
+      gender: value.gender,
+      qualification: value.qualification,
+      english_fluency: value.english_fluency,
+      skills: value.skills,
+      // minSalary: value.minSalary,
+      // maxSalary: value.maxSalary,
+      mediaLinks: {
+        linkedin: value.mediaLinks?.linkedin || '',
+        github: value.mediaLinks?.github || ''
+      },
+      address: value.address || '',
+      country: value.country || ''
+    };
     try {
-      await createUserByAdmin({
-        name: value?.name,
-        email: value.email,
-        post: value.post,
-        bio: value.bio,
-        role: 'candidate',
-        // salary_duration: value.salary_duration,
-        experience: value.experience,
-        phone: value.phone,
-        age: value.age,
-        picture: value.picture,
-        gender: value.gender,
-        qualification: value.qualification,
-        english_fluency: value.english_fluency,
-        skills: value.skills,
-        // minSalary: value.minSalary,
-        // maxSalary: value.maxSalary,
-        mediaLinks: {
-          linkedin: value.mediaLinks?.linkedin || '',
-          github: value.mediaLinks?.github || ''
-        },
-        address: value.address || '',
-        country: value.country || ''
-      });
-      setProgress(100);
-      notifySuccess('User Created Successfully');
+      if (isCandidate) {
+        const response: IServerResponse =
+          await createCandidateProfileByUpdating({
+            clerkId: mongoUser?.clerkId,
+            updateData,
+            path: pathname
+          });
+        if (response.status === 'ok') {
+          notifySuccess('Candidate profile created successfully');
+          if (pathname === '/new-candidateProfile') {
+            router.push('/');
+          }
+          setProgress(100);
+        }
+      } else {
+        await createUserByAdmin({
+          name: value?.name,
+          email: value.email,
+          post: value.post,
+          bio: value.bio,
+          role: 'candidate',
+          // salary_duration: value.salary_duration,
+          experience: value.experience,
+          phone: value.phone,
+          age: value.age,
+          picture: value.picture,
+          gender: value.gender,
+          qualification: value.qualification,
+          english_fluency: value.english_fluency,
+          skills: value.skills,
+          // minSalary: value.minSalary,
+          // maxSalary: value.maxSalary,
+          mediaLinks: {
+            linkedin: value.mediaLinks?.linkedin || '',
+            github: value.mediaLinks?.github || ''
+          },
+          address: value.address || '',
+          country: value.country || ''
+        });
+        setProgress(100);
+        notifySuccess('User Created Successfully');
+      }
     } catch (error: any) {
       console.log('error', error);
       notifyError(error as string);
@@ -187,7 +238,7 @@ const CreateUserArea = ({
                 <ErrorMsg msg={errors?.picture.message} />
               ) : (
                 <Image
-                  src={imagePreview || avatarPerson}
+                  src={imagePreview || mongoUser?.picture || avatarPerson}
                   alt="avatar"
                   height={200}
                   width={200}
@@ -215,7 +266,6 @@ const CreateUserArea = ({
                   )}
                 />
               </div>
-              <button className="delete-btn tran3s">Delete</button>
             </div>
             <div className="dash-input-wrapper mb-30">
               <label htmlFor="">Full Name*</label>
@@ -237,6 +287,7 @@ const CreateUserArea = ({
                 placeholder="Your email address"
                 {...register('email')}
                 name="email"
+                disabled={isCandidate}
               />
               {errors?.email && (
                 <ErrorMsg msg={errors?.email?.message as string} />

@@ -19,6 +19,7 @@ export interface IJobData extends Document {
   english_fluency: string;
   createdBy?: Schema.Types.ObjectId | string;
   createAt?: Date;
+  applicants?: Schema.Types.ObjectId[];
 }
 
 const jobSchema = new Schema({
@@ -39,7 +40,8 @@ const jobSchema = new Schema({
   industry: { type: String },
   english_fluency: { type: String, required: true },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' }, // Assuming a User model
-  createAt: { type: Date, default: Date.now }
+  createAt: { type: Date, default: Date.now },
+  applicants: [{ type: Schema.Types.ObjectId, ref: 'User' }] // Assuming a User model
 });
 
 const Job = models.Job || model('Job', jobSchema);

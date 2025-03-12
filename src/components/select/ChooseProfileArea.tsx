@@ -32,14 +32,14 @@ function EmployeeCard({ handleSelectAccount, selectAccount }: IProps) {
 function JobSeekerCard({ handleSelectAccount, selectAccount }: IProps) {
   return (
     <div
-      onClick={() => handleSelectAccount('user')}
-      className={`col-md-4 cursor-pointer col-sm-12 d-flex flex-column justify-content-center align-items-center py-3 px-4 rounded shadow bg-light ${selectAccount === 'user' ? 'border border-2 border-success ' : ''}`}
+      onClick={() => handleSelectAccount('candidate')}
+      className={`col-md-4 cursor-pointer col-sm-12 d-flex flex-column justify-content-center align-items-center py-3 px-4 rounded shadow bg-light ${selectAccount === 'candidate' ? 'border border-2 border-success ' : ''}`}
     >
       <UserRound
-        className={`mb-3 ${selectAccount === 'user' ? ' text-success' : ''}`}
+        className={`mb-3 ${selectAccount === 'candidate' ? ' text-success' : ''}`}
         size={48}
       />
-      <h3 className={`${selectAccount === 'user' ? ' text-success' : ''}`}>
+      <h3 className={`${selectAccount === 'candidate' ? ' text-success' : ''}`}>
         I&apos;m a Jobseeker
       </h3>
       <p>Looking for job</p>
@@ -61,9 +61,11 @@ const ChooseProfileArea = () => {
       setLoading(true);
       if (role === 'employee') {
         router.push('/createProfile');
-      } else {
-        router.push('/');
       }
+      if (role === 'candidate') {
+        router.push('/new-candidateProfile');
+      }
+      router.push('/');
     } catch (error) {
       console.log(error);
       notifyError('Something went wrong');

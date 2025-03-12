@@ -6,11 +6,14 @@ import Resume, {
 } from '@/database/resume.model';
 import { connectToDatabase } from '../mongoose';
 import User from '@/database/user.model';
-import { getCandidatesParams } from './shared.types';
+import { getCandidatesParams, UpdateUserParams } from './shared.types';
 import { FilterQuery } from 'mongoose';
 import { revalidatePath } from 'next/cache';
 import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
+import Category from '@/database/category.model';
+import { clerkClient } from '@clerk/nextjs/server';
+import Job from '@/database/job.model';
 
 // import multer from 'multer';
 
@@ -466,3 +469,170 @@ export async function getAllCandidates(params: I_GetAllCandidatesProps) {
     throw error;
   }
 }
+
+export async function createCandidateProfileByUpdating(
+  params: UpdateUserParams
+) {
+  try {
+    await connectToDatabase();
+    await connectToCloudinary();
+
+    const { clerkId, updateData, path } = params;
+    if (clerkId) {
+      updateData.role = 'candidate';
+    }
+
+    const clerkUser = await clerkClient.users.getUser(clerkId as string);
+    // If the user doesn't have a role, set it to user
+    if (!clerkUser.privateMetadata.role) {
+      await clerkClient.users.updateUserMetadata(clerkId as string, {
+        privateMetadata: {
+          role: 'candidate'
+        }
+      });
+    }
+    const { picture } = updateData;
+
+    if (picture) {
+      const result = await cloudinary.v2.uploader.upload(picture as string, {
+        folder: 'users',
+        unique_filename: false,
+        use_filename: true
+      });
+
+      updateData.picture = result.secure_url;
+    }
+    const newUser = await User.findOneAndUpdate({ clerkId }, updateData, {
+      new: true
+    });
+
+    if (updateData.post) {
+      const category = await Category.findOneAndUpdate(
+        {
+          name: {
+            $regex: new RegExp(updateData.post, 'i')
+          }
+        },
+        { $push: { candidates: newUser._id } },
+        { new: true, upsert: true }
+      );
+
+      for (const subcategoryName of updateData.skills) {
+        const matchingSubcategory = category.subcategory.find(
+          (subcategory: any) => subcategory.name === subcategoryName
+        );
+
+        if (matchingSubcategory) {
+          await Category.findOneAndUpdate(
+            {
+              _id: category._id,
+              'subcategory.name': subcategoryName
+            },
+            {
+              $addToSet: {
+                'subcategory.$.candidates': newUser._id
+              }
+            },
+            {
+              new: true
+            }
+          );
+        } else {
+          // Handle case where subcategory doesn't exist within the category (optional)
+          console.log(
+            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
+          );
+        }
+      }
+    }
+
+    revalidatePath(path);
+
+    return JSON.parse(
+      JSON.stringify({
+        status: 'ok',
+        message: 'User updated successfully',
+        data: newUser
+      })
+    );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// create a function called getAppliedJobs that will return all the jobs that a candidate has applied for
+
+interface IGetAppliedJobsParams {
+  clerkId: string;
+}
+
+export const getAppliedJobs = async (params: IGetAppliedJobsParams) => {
+  try {
+    await connectToDatabase();
+    const { clerkId } = params;
+
+    // Find the user by ID and populate the applied jobs
+    const user = await User.findOne({ clerkId }).populate({
+      path: 'appliedJobs', // Assuming 'appliedJobs' is the field in the User model that references the jobs
+      model: Job
+    });
+
+    if (!user) {
+      throw new Error(`User with ID ${user._id} not found`);
+    }
+
+    return {
+      status: 'ok',
+      appliedJobs: JSON.parse(JSON.stringify(user.appliedJobs))
+    };
+  } catch (error) {
+    console.error('Error fetching applied jobs:', error);
+    throw error;
+  }
+};
+
+// create a function called applyForJob that will allow a candidate to apply for a job
+
+export const applyForJob = async (params: {
+  clerkId: string | null | undefined;
+  jobId: string;
+}) => {
+  try {
+    await connectToDatabase();
+    const { clerkId, jobId } = params;
+
+    // Find the user by clerkId
+    const user = await User.findOne({ clerkId });
+    if (!user) {
+      throw new Error(`User with clerkId ${clerkId} not found`);
+    }
+
+    // Find the job by jobId
+    const job = await Job.findById(jobId);
+    if (!job) {
+      throw new Error(`Job with ID ${jobId} not found`);
+    }
+
+    // Check if the user has already applied for the job
+    if (user?.appliedJobs.includes(jobId)) {
+      throw new Error('User has already applied for this job');
+    }
+
+    // Add the job to the user's applied jobs list
+    user.appliedJobs.push(jobId);
+    await user.save();
+
+    // Add the user to the job's applicants list
+    job.applicants.push(user._id);
+    await job.save();
+
+    return {
+      status: 'ok',
+      message: 'Job application successful'
+    };
+  } catch (error) {
+    console.error('Error applying for job:', error);
+    throw error;
+  }
+};
