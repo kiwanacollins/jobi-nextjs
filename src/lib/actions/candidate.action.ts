@@ -564,7 +564,7 @@ export async function createCandidateProfileByUpdating(
 // create a function called getAppliedJobs that will return all the jobs that a candidate has applied for
 
 interface IGetAppliedJobsParams {
-  clerkId: string;
+  clerkId: string | null;
 }
 
 export const getAppliedJobs = async (params: IGetAppliedJobsParams) => {
@@ -572,11 +572,16 @@ export const getAppliedJobs = async (params: IGetAppliedJobsParams) => {
     await connectToDatabase();
     const { clerkId } = params;
 
-    // Find the user by ID and populate the applied jobs
     const user = await User.findOne({ clerkId }).populate({
-      path: 'appliedJobs', // Assuming 'appliedJobs' is the field in the User model that references the jobs
-      model: Job
+      path: 'appliedJobs',
+      model: Job,
+      populate: {
+        path: 'createdBy',
+        model: User,
+        select: 'name picture'
+      }
     });
+    console.log('applied user', user);
 
     if (!user) {
       throw new Error(`User with ID ${user._id} not found`);
@@ -606,6 +611,12 @@ export const applyForJob = async (params: {
     const user = await User.findOne({ clerkId });
     if (!user) {
       throw new Error(`User with clerkId ${clerkId} not found`);
+    }
+    if (user.role === 'employee') {
+      return {
+        status: 'error',
+        message: 'Employee cannot apply for job'
+      };
     }
 
     // Find the job by jobId
