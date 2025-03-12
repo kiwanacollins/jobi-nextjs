@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import icon_1 from '@/assets/images/icon/icon_52.svg';
@@ -7,12 +8,45 @@ import icon_4 from '@/assets/images/icon/icon_55.svg';
 import icon_5 from '@/assets/images/icon/icon_56.svg';
 import { IJobData } from '@/database/job.model';
 import ParseHTML from '../common/parseHTML';
+import { useAuth } from '@clerk/nextjs';
+import { applyForJob } from '@/lib/actions/candidate.action';
+import Swal from 'sweetalert2';
 
 interface IJobDetailsV2AreaProps {
   job: IJobData;
 }
 
 const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
+  const { userId: loginInUserId } = useAuth();
+  const handleJobApplication = async (
+    userId: string | null | undefined,
+    jobId: string
+  ) => {
+    Swal.fire({
+      title: 'Are you sure you want to apply for this job?',
+      text: 'Your application will be sent to the employer with your profile and resume informations!',
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Apply for it'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        //Todo: delete job post by Id
+        const res = await applyForJob({
+          clerkId: userId,
+          jobId
+        });
+        if (res.status === 'ok') {
+          Swal.fire({
+            title: 'Confirmed!',
+            text: res.message,
+            icon: 'success'
+          });
+        }
+      }
+    });
+  };
   return (
     <section className="job-details style-two pt-100 lg-pt-80 pb-130 lg-pb-80">
       <div className="container">
@@ -146,9 +180,12 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
                   <li>Monthly wellness/gym stipend</li>
                 </ul>
               </div> */}
-              {/* <button className="btn-ten text-decoration-none   fw-500 text-white text-center tran3s mt-30">
+              <button
+                onClick={() => handleJobApplication(loginInUserId, job?._id)}
+                className="btn-ten text-decoration-none   fw-500 text-white text-center tran3s mt-30"
+              >
                 Apply for this position
-              </button> */}
+              </button>
             </div>
           </div>
         </div>

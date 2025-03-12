@@ -13,6 +13,7 @@ import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
 import Category from '@/database/category.model';
 import { clerkClient } from '@clerk/nextjs/server';
+import Job from '@/database/job.model';
 
 // import multer from 'multer';
 
@@ -559,3 +560,79 @@ export async function createCandidateProfileByUpdating(
     throw error;
   }
 }
+
+// create a function called getAppliedJobs that will return all the jobs that a candidate has applied for
+
+interface IGetAppliedJobsParams {
+  clerkId: string;
+}
+
+export const getAppliedJobs = async (params: IGetAppliedJobsParams) => {
+  try {
+    await connectToDatabase();
+    const { clerkId } = params;
+
+    // Find the user by ID and populate the applied jobs
+    const user = await User.findOne({ clerkId }).populate({
+      path: 'appliedJobs', // Assuming 'appliedJobs' is the field in the User model that references the jobs
+      model: Job
+    });
+
+    if (!user) {
+      throw new Error(`User with ID ${user._id} not found`);
+    }
+
+    return {
+      status: 'ok',
+      appliedJobs: JSON.parse(JSON.stringify(user.appliedJobs))
+    };
+  } catch (error) {
+    console.error('Error fetching applied jobs:', error);
+    throw error;
+  }
+};
+
+// create a function called applyForJob that will allow a candidate to apply for a job
+
+export const applyForJob = async (params: {
+  clerkId: string | null | undefined;
+  jobId: string;
+}) => {
+  try {
+    await connectToDatabase();
+    const { clerkId, jobId } = params;
+
+    // Find the user by clerkId
+    const user = await User.findOne({ clerkId });
+    if (!user) {
+      throw new Error(`User with clerkId ${clerkId} not found`);
+    }
+
+    // Find the job by jobId
+    const job = await Job.findById(jobId);
+    if (!job) {
+      throw new Error(`Job with ID ${jobId} not found`);
+    }
+
+    // Check if the user has already applied for the job
+    if (user?.appliedJobs.includes(jobId)) {
+      throw new Error('User has already applied for this job');
+    }
+
+    // Add the job to the user's applied jobs list
+    user.appliedJobs.push(jobId);
+    await user.save();
+
+    // Add the user to the job's applicants list
+    job.applicants.push(user._id);
+    await job.save();
+
+    return {
+      status: 'ok',
+      message: 'Job application successful'
+    };
+  } catch (error) {
+    console.error('Error applying for job:', error);
+    throw error;
+  }
+};
