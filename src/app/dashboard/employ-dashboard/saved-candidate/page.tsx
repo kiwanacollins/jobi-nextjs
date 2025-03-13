@@ -11,7 +11,7 @@ const EmployDashboardSavedCandidatePage = async ({
 }: SearchParamsProps) => {
   const { userId } = auth();
   const currentUser = await getUserById({ userId });
-  if (currentUser?.role !== 'employee') {
+  if (!userId || currentUser?.role !== 'employee') {
     redirect('/');
   }
 
