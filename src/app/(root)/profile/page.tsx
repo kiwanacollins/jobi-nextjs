@@ -1,7 +1,12 @@
-import { UserProfile } from '@clerk/nextjs';
+import { currentUser, UserProfile } from '@clerk/nextjs';
 import CompanyBreadcrumb from '@/components/common/common-breadcrumb';
+import { redirect } from 'next/navigation';
 
-const page = () => {
+const page = async () => {
+  const user = await currentUser();
+  if (!user) {
+    return redirect('/sign-in');
+  }
   return (
     <div>
       <CompanyBreadcrumb
