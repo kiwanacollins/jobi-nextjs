@@ -19,7 +19,6 @@ const CompanyDetailsPage = async ({ params }: URLProps) => {
   const { jobs } = await getJobsByCompanyId({
     companyId: params.id as string
   });
-  console.log(jobs[0].createdBy);
   return (
     <>
       {/*breadcrumb start */}

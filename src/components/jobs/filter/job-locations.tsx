@@ -12,7 +12,6 @@ const JobLocations = () => {
   const uniqueLocations = [...new Set(allJobData.map((job) => job.location))];
   const dispatch = useAppDispatch();
   const handleLocation = (item: { value: string; label: string }) => {
-    console.log(item);
     dispatch(setLocation(item.value));
   };
   const options: any = uniqueLocations.map((l) => {

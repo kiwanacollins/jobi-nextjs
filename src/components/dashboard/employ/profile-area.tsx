@@ -91,7 +91,6 @@ const EmployProfileArea = ({ mongoUser }: IProps) => {
         notifySuccess('Profile Updated successfully');
       }
     } catch (error) {
-      console.log('error', error);
       notifyError('Failed to create employee profile');
     } finally {
       setIsSubmitting(false);

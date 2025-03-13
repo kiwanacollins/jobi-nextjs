@@ -454,7 +454,6 @@ export const getCompanyWithJobCount = async (
     const totalCompanyCount = await User.countDocuments({
       role: 'employee'
     });
-    console.log('totalCompanyCount', totalCompanyCount);
 
     return {
       companies: JSON.parse(JSON.stringify(companies)),
