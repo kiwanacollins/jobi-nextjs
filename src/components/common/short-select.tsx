@@ -1,12 +1,17 @@
 'use client';
 import React, { useState } from 'react';
 import NiceSelect from '@/ui/nice-select';
-import { useAppDispatch } from '@/redux/hook';
-import { setJobType } from '@/redux/features/filterSlice';
+
 import { useRouter, useSearchParams } from 'next/navigation';
 import { formUrlQuery } from '@/utils/utils';
 
-const ShortSelect = () => {
+interface I_SortOption {
+  shortlist: {
+    value: string;
+    label: string;
+  }[];
+}
+const ShortSelect = ({ shortlist }: I_SortOption) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sort = searchParams.get('sort');
@@ -36,11 +41,7 @@ const ShortSelect = () => {
   };
   return (
     <NiceSelect
-      options={[
-        { value: "New", label: "New" },
-        { value: "Old", label: "Old" },
-        { value: "Name", label: "Name" }
-      ]}
+      options={shortlist}
       defaultCurrent={0}
       onChange={(item) => handleShort(item)}
       name="Short by"

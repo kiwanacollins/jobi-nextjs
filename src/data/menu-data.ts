@@ -27,11 +27,16 @@ const menu_data: IMenuData[] = [
   },
   {
     id: 4,
+    link: '/company',
+    title: 'Company'
+  },
+  {
+    id: 5,
     link: '/blogs',
     title: 'Blogs'
   },
   {
-    id: 5,
+    id: 6,
     link: '/contact',
     title: 'Contact'
   }

@@ -1,7 +1,37 @@
-import React from "react";
-import FilterCompanyLocation from "./filter-company-location";
+'use client';
+import React, { useEffect, useState } from 'react';
+// import FilterCompanyLocation from './filter-company-location';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
 
 const CompanyV1Filter = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const query = searchParams.get('keyword');
+  const [keyword, setKeyword] = useState<string>(query || '');
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (keyword) {
+        const newUrl = formUrlQuery({
+          params: searchParams.toString(),
+          key: 'keyword',
+          value: keyword
+        });
+
+        router.push(newUrl, { scroll: false });
+      } else {
+        const newUrl = removeKeysFromQuery({
+          params: searchParams.toString(),
+          keysToRemove: ['keyword']
+        });
+        router.push(newUrl, { scroll: false });
+      }
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [keyword, pathname, router, searchParams, query]);
   return (
     <div className="light-bg border-20 ps-4 pe-4 pt-25 pb-30 mt-20">
       <div className="filter-block bottom-line pb-25">
@@ -17,7 +47,12 @@ const CompanyV1Filter = () => {
         <div className="collapse show" id="collapseSemploye">
           <div className="main-body">
             <form action="#" className="input-box position-relative">
-              <input type="text" placeholder="Company Name" />
+              <input
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                type="text"
+                placeholder="Company Name"
+              />
               <button>
                 <i className="bi bi-search"></i>
               </button>
@@ -26,7 +61,7 @@ const CompanyV1Filter = () => {
         </div>
       </div>
 
-      <div className="filter-block bottom-line pb-25 mt-25">
+      {/* <div className="filter-block bottom-line pb-25 mt-25">
         <a
           className="filter-title fw-500 text-dark"
           data-bs-toggle="collapse"
@@ -68,7 +103,7 @@ const CompanyV1Filter = () => {
         </a>
         <div className="collapse show" id="collapseLocation">
           <div className="main-body">
-            <FilterCompanyLocation/>
+            <FilterCompanyLocation />
           </div>
         </div>
       </div>
@@ -115,7 +150,7 @@ const CompanyV1Filter = () => {
         className="btn-ten fw-500 text-white w-100 text-center tran3s mt-30"
       >
         Apply Filter
-      </a>
+      </a> */}
     </div>
   );
 };
