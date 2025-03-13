@@ -17,6 +17,7 @@ import cloudinary from 'cloudinary';
 import { clerkClient } from '@clerk/nextjs';
 import Category from '@/database/category.model';
 import ShareData from '@/database/shareData.model';
+import { FilterQuery } from 'mongoose';
 
 export async function getUserById(params: any) {
   try {
@@ -378,3 +379,90 @@ export async function deleteUserById(params: DeleteUserByIdParams) {
     throw error; // Rethrow to allow for further handling
   }
 }
+
+interface I_GetAllCompaniesProps {
+  keyword?: string;
+  page?: number;
+  pageSize?: number;
+  sort?: string;
+}
+
+export const getCompanyWithJobCount = async (
+  params: I_GetAllCompaniesProps
+) => {
+  try {
+    await connectToDatabase();
+
+    const { keyword: searchQuery, page = 1, pageSize = 8, sort } = params;
+
+    // Calculate the number of posts to skip for pagination
+    const skipAmount = (page - 1) * pageSize;
+
+    // Search filter
+    const matchQuery: FilterQuery<typeof User> = {
+      role: 'employee'
+    };
+
+    if (searchQuery) {
+      matchQuery.companyName = { $regex: new RegExp(searchQuery, 'i') }; // Case-insensitive search
+    }
+
+    // Sorting logic
+    let sortOptions = {};
+
+    switch (sort) {
+      case 'new':
+        sortOptions = { joinedAt: -1 };
+        break;
+      case 'old':
+        sortOptions = { joinedAt: 1 };
+        break;
+      case 'name':
+        sortOptions = { companyName: 1 };
+        break;
+      case 'jobs':
+        sortOptions = { jobPostCount: -1 };
+        break;
+      case 'country':
+        sortOptions = { country: 1 };
+        break;
+      default:
+        sortOptions = { jobPostCount: -1 }; // Default sorting by name
+        break;
+    }
+
+    // Aggregation pipeline
+    const companies = await User.aggregate([
+      { $match: matchQuery },
+      {
+        $project: {
+          picture: 1,
+          _id: 1,
+          companyName: 1,
+          country: 1,
+          jobPostCount: { $size: { $ifNull: ['$jobPosts', []] } }
+        }
+      },
+      { $sort: sortOptions }, // Apply sorting
+      { $skip: skipAmount }, // Pagination
+      { $limit: pageSize }
+    ]);
+
+    // Count total companies for pagination
+    const totalCompanies = await User.countDocuments(matchQuery);
+    const isNext = totalCompanies > skipAmount + companies.length;
+    const totalCompanyCount = await User.countDocuments({
+      role: 'employee'
+    });
+    console.log('totalCompanyCount', totalCompanyCount);
+
+    return {
+      companies: JSON.parse(JSON.stringify(companies)),
+      totalCompanyCount,
+      isNext
+    };
+  } catch (error) {
+    console.error('Error fetching companies:', error);
+    throw error;
+  }
+};

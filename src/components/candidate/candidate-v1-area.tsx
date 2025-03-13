@@ -62,7 +62,13 @@ const CandidateV1Area = ({
                   <div className="d-flex align-items-center">
                     <div className="short-filter d-flex align-items-center">
                       <div className="text-dark fw-500 me-2">Short:</div>
-                      <ShortSelect />
+                      <ShortSelect
+                        shortlist={[
+                          { value: 'New', label: 'New' },
+                          { value: 'Old', label: 'Old' },
+                          { value: 'Name', label: 'Name' }
+                        ]}
+                      />
                     </div>
                     <button
                       onClick={() => setJobType('list')}

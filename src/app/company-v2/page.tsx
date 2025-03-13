@@ -8,7 +8,7 @@ import FooterOne from '@/layouts/footers/footer-one';
 import CompanyV1Area from '@/components/company/company-v1-area';
 
 export const metadata: Metadata = {
-  title: 'Company v2'
+  title: 'Company'
 };
 
 const CompanyV2Page = () => {
@@ -27,7 +27,7 @@ const CompanyV2Page = () => {
         {/*breadcrumb end */}
 
         {/* company v2 area start */}
-        <CompanyV1Area style_2={true} />
+        <CompanyV1Area companies={[]} style_2={true} />
         {/* company v2 area end */}
 
         {/* job portal intro start */}

@@ -13,6 +13,7 @@ export default authMiddleware({
     '/about',
     '/contact',
     '/company/:id',
+    '/company',
     '/faq',
     '/terms',
     '/termsofuses',

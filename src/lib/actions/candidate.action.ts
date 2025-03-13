@@ -384,12 +384,7 @@ export async function getAllCandidates(params: I_GetAllCandidatesProps) {
   try {
     await connectToDatabase();
 
-    const {
-      query: searchQuery,
-      page = 1,
-      pageSize = 8, // default page size is 10,
-      sort
-    } = params;
+    const { query: searchQuery, page = 1, pageSize = 8, sort } = params;
 
     // Calculcate the number of posts to skip based on the page number and page size
     const skipAmount = (page - 1) * pageSize;
