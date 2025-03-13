@@ -146,7 +146,6 @@ const CreateUserArea = ({
   const onSubmit = async (value: userSchemaType) => {
     setIsSubmitting(true);
     simulateProgress();
-    // console.log(value);
 
     const updateData = {
       name: value?.name,

@@ -120,12 +120,11 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
       if (currentProgress >= 100) {
         clearInterval(interval);
       }
-    }, 500); // Adjust the interval and steps based on your preference
+    }, 500);
   };
 
   // on submit
   const onSubmit = async (data: IJobDataSchemaType) => {
-    // console.log('data', data);
     setIsSubmitting(true);
     simulateProgress();
     const {

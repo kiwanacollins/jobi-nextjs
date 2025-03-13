@@ -3,7 +3,7 @@ import React from 'react';
 const SelectYear = ({ index, name }: { index: number; name: string }) => {
   const handleYear = (item: { value: string; label: string }) => {
     const { value } = item;
-    console.log('handleYear  value:', value);
+    console.log(value);
   };
   return (
     <div className="dash-input-wrapper mb-30">

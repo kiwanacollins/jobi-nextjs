@@ -43,7 +43,6 @@ const ContactForm = () => {
         notifySuccess(res.message);
       }
     } catch (error: any) {
-      console.log('onSubmit  error:', error);
     } finally {
       reset();
       setIsSubmitting(false);
