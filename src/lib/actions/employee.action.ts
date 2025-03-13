@@ -363,3 +363,29 @@ export async function getEmployeeStatisticsByClerkId({
     console.error(error);
   }
 }
+
+export const getJobApplicantsByJobId = async (jobId: string) => {
+  try {
+    await connectToDatabase();
+
+    // Find the job by jobId and populate the applicants field
+    const job = await Job.findById(jobId).populate({
+      path: 'applicants',
+      model: User
+      // select: 'name email picture'
+    });
+
+    if (!job) {
+      throw new Error(`Job with ID ${jobId} not found`);
+    }
+
+    return {
+      status: 'ok',
+      applicants: JSON.parse(JSON.stringify(job.applicants)),
+      jobTitle: job.title
+    };
+  } catch (error) {
+    console.error('Error fetching job applicants:', error);
+    throw error;
+  }
+};

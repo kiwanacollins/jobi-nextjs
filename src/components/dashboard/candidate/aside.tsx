@@ -65,12 +65,19 @@ const nav_data: {
     link: '/dashboard/candidate-dashboard/messages',
     title: 'Messages'
   },
+  // {
+  //   id: 5,
+  //   icon: nav_5,
+  //   icon_active: nav_5_active,
+  //   link: '/dashboard/candidate-dashboard/job-alert',
+  //   title: 'Job Alert'
+  // },
   {
     id: 5,
     icon: nav_5,
     icon_active: nav_5_active,
-    link: '/dashboard/candidate-dashboard/job-alert',
-    title: 'Job Alert'
+    link: '/dashboard/candidate-dashboard/applied-jobs',
+    title: 'Applied Jobs'
   },
   {
     id: 6,

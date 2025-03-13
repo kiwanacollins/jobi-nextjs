@@ -57,6 +57,14 @@ const JobActionDropdown = ({ jobId, createdBy }: IProps) => {
         </Link>
       </li>
       <li className="dropdown-item">
+        <Link
+          href={`/dashboard/employ-dashboard/job/${jobId}/applicants`}
+          className="dropdown-item"
+        >
+          <Image src={view} alt="icon" className="lazy-img" /> Show applicants
+        </Link>
+      </li>
+      <li className="dropdown-item">
         <a className="dropdown-item" href="#">
           <Image src={share} alt="icon" className="lazy-img" /> Share
         </a>

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import DashboardArea from '@/components/dashboard/candidate/dashboard-area';
 import { auth } from '@clerk/nextjs';
 
 import { redirect } from 'next/navigation';
 import { getUserById } from '@/lib/actions/user.action';
+import CandidateDashboardArea from '@/components/dashboard/candidate/CandidateDashboardArea';
+import { getUserAppliedJobsCount } from '@/lib/actions/candidate.action';
 
 const CandidateDashboardPage = async () => {
   const { userId } = auth();
@@ -12,9 +13,10 @@ const CandidateDashboardPage = async () => {
   if (currentUser?.role !== 'candidate') {
     redirect('/');
   }
+  const satistics = await getUserAppliedJobsCount(currentUser?._id);
   return (
     <>
-      <DashboardArea statistics={{}} />
+      <CandidateDashboardArea statistics={satistics} />
     </>
   );
 };

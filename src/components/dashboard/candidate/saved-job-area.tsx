@@ -1,124 +1,85 @@
 /* eslint-disable camelcase */
 'use client';
-import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import ShortSelect from '../../common/short-select';
-import ActionDropdown from './action-dropdown';
+import React, { useState } from 'react';
+
 import { useAppSelector } from '@/redux/hook';
+import ListItemTwo from '@/components/jobs/list/list-item-2';
+import JobGridItem from '@/components/jobs/grid/job-grid-item';
 
 const SavedJobArea = () => {
+  const [jobType, setJobType] = useState<string>('list');
   const { wishlist } = useAppSelector((state) => state.wishlist);
-  const job_items = wishlist.slice(0, 4);
+
   return (
-    <>
-      <div className="d-flex align-items-center justify-content-between mb-40 lg-mb-30">
-        <h2 className="main-title m0">Saved Job</h2>
-        <div className="short-filter d-flex align-items-center">
-          <div className="text-dark fw-500 me-2">Short by:</div>
-          <ShortSelect />
-        </div>
-      </div>
-
-      <div className="wrapper">
-        {job_items.map((j) => (
-          <div
-            key={j._id}
-            className="job-list-one style-two position-relative mb-20"
-          >
-            <div className="row justify-content-between align-items-center">
-              <div className="col-xxl-3 col-lg-4">
-                <div className="job-title d-flex align-items-center">
-                  <a href="#" className="logo">
-                    <Image
-                      src={'/assets/images/candidates/img_01.jpg'}
-                      width={60}
-                      height={60}
-                      alt="img"
-                      className="lazy-img m-auto"
-                    />
-                  </a>
-                  <a href="#" className="title fw-500 tran3s">
-                    {j.title}
-                  </a>
-                </div>
-              </div>
-              <div className="col-lg-3 col-md-4 col-sm-6 ms-auto">
-                <Link
-                  href={`/job-details-v1/${j.id}`}
-                  className={`job-duration fw-500 ${
-                    j.duration === 'Part time' ? 'part-time' : ''
-                  }`}
-                >
-                  {j.duration}
-                </Link>
-                <div className="job-salary">
-                  <span className="fw-500 text-dark">
-                    ${j.minSalary}- ${j.maxSalary}
-                  </span>{' '}
-                  / {j.salary_duration} . {j.experience}
-                </div>
-              </div>
-              <div className="col-xxl-2 col-lg-3 col-md-4 col-sm-6 ms-auto xs-mt-10">
-                <div className="job-location">
-                  <a href="#">{j.location}</a>
-                </div>
-                <div className="job-category">
-                  <p>{j.category}</p>
-
-                  {/* {j?.category?.map((c: any, i: any) => (
-                    <a key={i} href="#">
-                      {c}
-                      {i < j.category.length - 1 && ', '}
-                    </a>
-                  ))} */}
-                </div>
-              </div>
-              <div className="col-lg-2 col-md-4">
-                <div className="action-dots float-end">
-                  <button
-                    className="action-btn dropdown-toggle"
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    <span></span>
-                  </button>
-                  {/* action dropdown start */}
-                  <ActionDropdown id={j._id} />
-                  {/* action dropdown end */}
-                </div>
+    <section className="job-listing-three  pb-160 xl-pb-150 lg-pb-80">
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <div className="filter-area-tab">
+              <div className="light-bg border-20 pe-4">
+                <a className="filter-header border-20 d-block search">
+                  <span className="main-title fw-500 text-dark">
+                    {wishlist.length === 0
+                      ? 'No saved Job Found in Your Wishlist.'
+                      : 'Saved Jobs'}
+                  </span>
+                </a>
               </div>
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="dash-pagination d-flex justify-content-end mt-30">
-        <ul className="style-none d-flex align-items-center">
-          <li>
-            <a href="#" className="active">
-              1
-            </a>
-          </li>
-          <li>
-            <a href="#">2</a>
-          </li>
-          <li>
-            <a href="#">3</a>
-          </li>
-          <li>..</li>
-          <li>
-            <a href="#">7</a>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bi bi-chevron-right"></i>
-            </a>
-          </li>
-        </ul>
+          {wishlist.length > 0 && (
+            <div className="col-12">
+              <div className="job-post-item-wrapper">
+                <div className="upper-filter d-flex justify-content-between align-items-center mb-25 mt-40 lg-mt-40">
+                  <div className="total-job-found">
+                    All <span className="text-dark">{wishlist?.length}</span>{' '}
+                    jobs found
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <button
+                      onClick={() => setJobType('list')}
+                      className={`style-changer-btn text-center rounded-circle tran3s ms-2 list-btn 
+                     ${jobType === 'grid' ? 'active' : ''}`}
+                      title="Active List"
+                    >
+                      <i className="bi bi-list"></i>
+                    </button>
+                    <button
+                      onClick={() => setJobType('grid')}
+                      className={`style-changer-btn text-center rounded-circle tran3s ms-2 grid-btn 
+                    ${jobType === 'list' ? 'active' : ''}`}
+                      title="Active Grid"
+                    >
+                      <i className="bi bi-grid"></i>
+                    </button>
+                  </div>
+                </div>
+                <div
+                  className={`accordion-box list-style ${jobType === 'list' ? 'show' : ''}`}
+                >
+                  {wishlist?.map((job) => (
+                    <ListItemTwo key={job._id} item={job} />
+                  ))}
+                </div>
+
+                <div
+                  className={`accordion-box grid-style ${jobType === 'grid' ? 'show' : ''}`}
+                >
+                  <div className="row">
+                    {wishlist?.map((job) => (
+                      <div key={job._id} className="col-sm-6 mb-30">
+                        <JobGridItem item={job} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </>
+    </section>
   );
 };
 
