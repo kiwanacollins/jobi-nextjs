@@ -659,3 +659,15 @@ export const applyForJob = async (params: {
     throw error;
   }
 };
+
+export const getUserAppliedJobsCount = async (userId: string) => {
+  try {
+    const user = await User.findById(userId).select('appliedJobs');
+    const appliedJobsCount = user ? user.appliedJobs.length : 0;
+    return {
+      totalJobApplied: appliedJobsCount
+    };
+  } catch (error) {
+    console.error(error);
+  }
+};
