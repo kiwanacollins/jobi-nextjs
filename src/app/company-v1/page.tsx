@@ -27,7 +27,7 @@ const CompanyV1Page = () => {
         {/*breadcrumb end */}
 
         {/* company v1 area start */}
-        <CompanyV1Area />
+        <CompanyV1Area companies={[]} isNext pageNumber={2} totalCompany={0} />
         {/* company v1 area end */}
 
         {/* job portal intro start */}
