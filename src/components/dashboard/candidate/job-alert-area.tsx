@@ -10,7 +10,13 @@ const JobAlertArea = () => {
         <h2 className="main-title m0">Job Alerts</h2>
         <div className="short-filter d-flex align-items-center">
           <div className="text-dark fw-500 me-2">Short by:</div>
-          <ShortSelect />
+          <ShortSelect
+            shortlist={[
+              { value: 'new', label: 'New' },
+              { value: 'old', label: 'Old' },
+              { value: 'name', label: 'Name' }
+            ]}
+          />
         </div>
       </div>
 
