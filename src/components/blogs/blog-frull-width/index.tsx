@@ -1,5 +1,4 @@
 import React from 'react';
-import BlogPagination from '../blog-postbox/blog-pagination';
 import FullWidthItem from './full-width-item';
 import { IBlog } from '@/database/Blog.model';
 

@@ -4,9 +4,9 @@ import cate_icon_3 from '@/assets/images/icon/icon_65.svg';
 import cate_icon_4 from '@/assets/images/icon/icon_68.svg';
 import cate_icon_5 from '@/assets/images/icon/icon_66.svg';
 import cate_icon_6 from '@/assets/images/icon/icon_67.svg';
-import { category_dropdown } from '@/types/category-type';
+import { category_dropdown as CategoryDropdownType } from '@/types/category-type';
 
-const category_dropdown: category_dropdown[] = [
+const categoryDropdown: CategoryDropdownType[] = [
   {
     id: 1,
     category_items: [
@@ -61,4 +61,4 @@ const category_dropdown: category_dropdown[] = [
   }
 ];
 
-export default category_dropdown;
+export default categoryDropdown;

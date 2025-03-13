@@ -1,8 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import InputRange from '@/ui/input-range';
-import { useRouter, useSearchParams } from 'next/navigation';
-
 
 // prop type
 type IProps = {
@@ -16,13 +14,11 @@ export function SalaryRangeSlider({
   setPriceValue,
   maxPrice
 }: IProps) {
-  
   // handleChanges
   const handleChanges = (val: number[]) => {
     setPriceValue(val);
-    
   };
-  
+
   return (
     <div className="salary-slider">
       <div className="price-input d-flex align-items-center">

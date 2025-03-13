@@ -1,27 +1,27 @@
-"use client";
-import React, { use, useRef, useState } from "react";
-import Image from "next/image";
-import Slider from "react-slick";
-import icon from "@/assets/images/icon/icon_30.svg";
-import user_1 from "@/assets/images/assets/img_34.jpg";
-import user_2 from "@/assets/images/assets/img_35.jpg";
+'use client';
+import React, { useRef, useState } from 'react';
+import Image from 'next/image';
+import Slider from 'react-slick';
+import icon from '@/assets/images/icon/icon_30.svg';
+import user_1 from '@/assets/images/assets/img_34.jpg';
+import user_2 from '@/assets/images/assets/img_35.jpg';
 
 // slider a
 const slider_a = {
   dots: false,
   arrows: false,
-  centerPadding: "0px",
+  centerPadding: '0px',
   slidesToShow: 1,
   slidesToScroll: 1,
   autoplay: true,
   fade: true,
-  autoplaySpeed: 300000,
+  autoplaySpeed: 300000
 };
 // slider b
 const slider_b = {
   dots: true,
   arrows: false,
-  centerPadding: "0px",
+  centerPadding: '0px',
   slidesToShow: 3,
   slidesToScroll: 1,
   autoplay: true,
@@ -30,40 +30,40 @@ const slider_b = {
     {
       breakpoint: 992,
       settings: {
-        slidesToShow: 2,
-      },
+        slidesToShow: 2
+      }
     },
     {
       breakpoint: 576,
       settings: {
-        slidesToShow: 1,
-      },
-    },
-  ],
+        slidesToShow: 1
+      }
+    }
+  ]
 };
 
 // slider a data
 const slider_a_data = [
   {
     desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
-    name: "James Stephens",
-    location: "Sydney",
+    name: 'James Stephens',
+    location: 'Sydney'
   },
   {
     desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
-    name: "Angelina Jolie",
-    location: "Sydney",
+    name: 'Angelina Jolie',
+    location: 'Sydney'
   },
   {
     desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
-    name: "James Brower",
-    location: "Sydney",
+    name: 'James Brower',
+    location: 'Sydney'
   },
   {
     desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
-    name: "Maria Gomez",
-    location: "Sydney",
-  },
+    name: 'Maria Gomez',
+    location: 'Sydney'
+  }
 ];
 // slider b data
 const slider_b_data = [user_1, user_2, user_1, user_2];
@@ -80,7 +80,7 @@ const FeedbackFour = () => {
     sliderRef.current?.slickNext();
   };
 
-  // handle slider 
+  // handle slider
   // const handleSlider = (slider:Slider) => {
   //   setSlider1(slider)
   // }
@@ -90,7 +90,9 @@ const FeedbackFour = () => {
         <div className="row">
           <div className="col-xl-5 col-lg-6 ms-auto order-lg-last">
             <div className="title-one ps-xxl-5">
-              <h2 className="main-font wow fadeInUp" data-wow-delay="0.3s">Our Customer Feedback</h2>
+              <h2 className="main-font wow fadeInUp" data-wow-delay="0.3s">
+                Our Customer Feedback
+              </h2>
             </div>
           </div>
           <div className="col-xxl-7 col-lg-6 order-lg-first">
@@ -112,7 +114,7 @@ const FeedbackFour = () => {
                   <div key={i} className="item">
                     <p>{item.desc}</p>
                     <div className="name text-md text-white">
-                      {item.name},{" "}
+                      {item.name},{' '}
                       <span className="opacity-50">{item.location}</span>
                     </div>
                   </div>
@@ -141,7 +143,7 @@ const FeedbackFour = () => {
                 <Image
                   src={img}
                   alt="img"
-                  style={{ width: "100%", height: "100%" }}
+                  style={{ width: '100%', height: '100%' }}
                 />
               </div>
             ))}
