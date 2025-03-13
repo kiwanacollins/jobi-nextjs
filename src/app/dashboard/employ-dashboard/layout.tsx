@@ -1,6 +1,7 @@
 import EmployeDashboardLayoutContent from '@/components/dashboard/employ/EmployeDashboardLayoutContent';
 import Wrapper from '@/layouts/wrapper';
-import { currentUser } from '@clerk/nextjs';
+import { getUserById } from '@/lib/actions/user.action';
+import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import NextTopLoader from 'nextjs-toploader';
 // import 'bootstrap/dist/js/bootstrap.bundle.js';
@@ -11,15 +12,18 @@ const EmployDashboardLayout = async ({
 }: {
   children: React.ReactNode;
 }) => {
-  const user = await currentUser();
-  if (!user || user.privateMetadata.role === 'employee') {
-    return redirect('/');
+  const { userId } = auth();
+  const currentUser = await getUserById({ userId });
+  if (currentUser?.role !== 'employee') {
+    redirect('/');
   }
 
   return (
     <Wrapper>
       <NextTopLoader showSpinner={false} />
-      <EmployeDashboardLayoutContent>{children}</EmployeDashboardLayoutContent>
+      <EmployeDashboardLayoutContent loggedInUser={currentUser}>
+        {children}
+      </EmployeDashboardLayoutContent>
     </Wrapper>
   );
 };

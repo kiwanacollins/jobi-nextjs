@@ -1,9 +1,15 @@
 import ListItemTwo from '@/components/jobs/list/list-item-2';
 import { getAppliedJobs } from '@/lib/actions/candidate.action';
+import { getUserById } from '@/lib/actions/user.action';
 import { auth } from '@clerk/nextjs';
+import { redirect } from 'next/navigation';
 
 const AppliedJobsPage = async () => {
   const { userId } = auth();
+  const currentUser = await getUserById({ userId });
+  if (currentUser?.role !== 'candidate') {
+    redirect('/');
+  }
   const { appliedJobs: jobs } = await getAppliedJobs({ clerkId: userId });
   return (
     <section className="job-listing-three  pb-160 xl-pb-150 lg-pb-80">

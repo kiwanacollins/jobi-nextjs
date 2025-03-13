@@ -81,6 +81,11 @@ const UpdateUserArea = ({
       country: mongoUser?.country || ''
     }
   });
+  const isResumeExist = !!mongoUser?.resumeId;
+  const resumeHref =
+    mongoUser.role === 'candidate'
+      ? `/dashboard/candidate-dashboard/resume/new/${mongoUser._id}`
+      : `/dashboard/admin-dashboard/candidate/addresume/${mongoUser._id}`;
 
   const {
     register,
@@ -247,11 +252,13 @@ const UpdateUserArea = ({
             </div>
 
             <div>
+              {!isResumeExist && (
+                <p className="text-danger">
+                  You need to add your result to publish your candidate profile{' '}
+                </p>
+              )}
               {mongoUser?._id && (
-                <Link
-                  href={`/dashboard/admin-dashboard/candidate/addresume/${mongoUser._id}`}
-                  className="btn btn-primary mb-3"
-                >
+                <Link href={resumeHref} className="btn btn-primary mb-3">
                   {mongoUser?.resumeId ? 'Update Resume' : 'Add Resume'}
                 </Link>
               )}
@@ -283,6 +290,7 @@ const UpdateUserArea = ({
                   <input
                     type="email"
                     placeholder="Your email address"
+                    disabled={mongoUser?.role === 'candidate'}
                     {...field}
                   />
                 )}
