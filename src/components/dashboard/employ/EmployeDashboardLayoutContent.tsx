@@ -6,9 +6,11 @@ import DashboardHeader from '../candidate/dashboard-header';
 import EmployAside from './aside';
 
 const EmployeDashboardLayoutContent = ({
-  children
+  children,
+  loggedInUser
 }: {
   children: React.ReactNode;
+  loggedInUser?: any;
 }) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState<boolean>(false);
   const pathname = usePathname();
@@ -23,6 +25,7 @@ const EmployeDashboardLayoutContent = ({
           <DashboardHeader
             route={pathname}
             setIsOpenSidebar={setIsOpenSidebar}
+            loggedInUser={loggedInUser}
           />
           {children}
         </div>

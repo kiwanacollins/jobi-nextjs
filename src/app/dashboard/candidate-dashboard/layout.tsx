@@ -1,19 +1,21 @@
 import Wrapper from '@/layouts/wrapper';
 import React from 'react';
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import { currentUser } from '@clerk/nextjs';
+import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import CandidateDashboardLayoutContent from '@/components/dashboard/candidate/CandidateDashboardLayoutContent';
 import NextTopLoader from 'nextjs-toploader';
+import { getUserById } from '@/lib/actions/user.action';
 
 const CandidateDashboardLayout = async ({
   children
 }: {
   children: React.ReactNode;
 }) => {
-  const user = await currentUser();
-  if (!user || user.privateMetadata.role === 'candidate') {
-    return redirect('/');
+  const { userId } = auth();
+  const currentUser = await getUserById({ userId });
+  if (currentUser?.role !== 'candidate') {
+    redirect('/');
   }
   return (
     <Wrapper>

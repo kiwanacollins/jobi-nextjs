@@ -1,6 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import Image, { StaticImageData } from 'next/image';
 // import notifi from '@/assets/dashboard/images/icon/icon_11.svg';
 // import notify_icon_1 from '@/assets/dashboard/images/icon/icon_36.svg';
@@ -9,6 +8,7 @@ import Image, { StaticImageData } from 'next/image';
 import search from '@/assets/dashboard/images/icon/icon_10.svg';
 import { formUrlQuery, removeKeysFromQuery } from '@/utils/utils';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // notification item
 export function NotificationItem({
@@ -36,8 +36,9 @@ export function NotificationItem({
 type IProps = {
   setIsOpenSidebar?: React.Dispatch<React.SetStateAction<boolean>>;
   route?: string;
+  loggedInUser?: any;
 };
-const DashboardHeader = ({ setIsOpenSidebar, route }: IProps) => {
+const DashboardHeader = ({ setIsOpenSidebar, route, loggedInUser }: IProps) => {
   // handle click to open
   const handleOpen = () => {
     if (setIsOpenSidebar) {
@@ -132,14 +133,16 @@ const DashboardHeader = ({ setIsOpenSidebar, route }: IProps) => {
             </li>
           </ul>
         </div> */}
-        <div>
-          <Link
-            href="/dashboard/employ-dashboard/submit-job"
-            className="job-post-btn tran3s"
-          >
-            Post a Job
-          </Link>
-        </div>
+        {loggedInUser?.role === 'employee' && (
+          <div>
+            <Link
+              href="/dashboard/employ-dashboard/submit-job"
+              className="job-post-btn tran3s"
+            >
+              Post a Job
+            </Link>
+          </div>
+        )}
       </div>
     </header>
   );
