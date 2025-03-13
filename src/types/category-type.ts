@@ -11,7 +11,6 @@ export interface category_dropdown {
     bg_clr?: string;
   }[];
 }
-[];
 
 // category two
 export interface ICategoryTwo {

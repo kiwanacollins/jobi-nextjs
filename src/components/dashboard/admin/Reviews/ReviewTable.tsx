@@ -1,5 +1,4 @@
 import { ITestimonial } from '@/database/Testimonial';
-import AdminItem from '../AdminItem';
 import ReviewItem from './ReviewItem';
 
 interface IReviewProps {

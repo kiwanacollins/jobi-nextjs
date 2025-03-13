@@ -1,4 +1,4 @@
-import { StaticImageData } from "next/image";
+import { StaticImageData } from 'next/image';
 
 export interface how_works_type {
   id: number;
@@ -6,4 +6,4 @@ export interface how_works_type {
   title: string;
   sub_title: string;
   icon_white: StaticImageData;
-}[]
+}

@@ -1,5 +1,4 @@
 import { IJobData } from '@/database/job.model';
-import { IJobType } from '@/types/job-data-type';
 
 export const setLocalStorage = (name: string, items: IJobData[]) => {
   if (typeof window !== 'undefined') {

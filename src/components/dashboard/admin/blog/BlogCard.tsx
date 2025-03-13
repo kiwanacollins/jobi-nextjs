@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Swal from 'sweetalert2';
-import parse from 'html-react-parser';
 
 interface BlogCardProps {
   blog: IBlog;
