@@ -9,7 +9,7 @@ import { getUserById } from '@/lib/actions/user.action';
 const EmployDashboardJobsPage = async ({ searchParams }: SearchParamsProps) => {
   const { userId: clerkId } = auth();
   const currentUser = await getUserById({ userId: clerkId });
-  if (currentUser?.role !== 'employee') {
+  if (!clerkId || currentUser?.role !== 'employee') {
     redirect('/');
   }
   const { jobs, totalJob, isNext } = await getEmployeeJobPosts({

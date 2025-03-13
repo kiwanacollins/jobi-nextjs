@@ -5,7 +5,6 @@ import { auth } from '@clerk/nextjs';
 const AppliedJobsPage = async () => {
   const { userId } = auth();
   const { appliedJobs: jobs } = await getAppliedJobs({ clerkId: userId });
-  //   console.log('applied jobs', jobs);
   return (
     <section className="job-listing-three  pb-160 xl-pb-150 lg-pb-80">
       <div className="container">
