@@ -120,23 +120,18 @@ export const formJobDataSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   overview: z.string().min(1, { message: 'Description is required' }),
   duration: z.string().min(1, { message: 'Duration is required' }),
-  salary_duration: z.string().min(1, { message: 'salary is required' }),
   category: z.string().min(1, { message: 'category is required' }),
-  location: z.string().min(1, { message: 'Location is required' }),
-  address: z.string().min(1, { message: 'Address is required' }),
-  country: z.z.string().min(1, { message: 'Country is required' }),
-  city: z.string().min(1, { message: 'city is required' }),
-  skills: z
-    .array(z.string().min(1, { message: 'skills is required' }).optional())
-    .refine((val) => val.length > 0, {
-      message: 'Please select at least one skill.'
-    })
-    .optional(),
-  experience: z.string().min(1, { message: 'Experience salary is required' }),
-  minSalary: z.number(),
-  maxSalary: z.number().min(1, { message: 'Maximum salary is required' }),
-  industry: z.string().min(1, { message: 'Industry salary is required' }),
-  english_fluency: z.string().min(1, { message: 'English fluency is required' })
+  salary_duration: z.string().optional(),
+  location: z.string().optional(),
+  address: z.string().optional(),
+  country: z.string().optional(),
+  city: z.string().optional(),
+  skills: z.array(z.string().optional()).optional(),
+  experience: z.string().optional(),
+  minSalary: z.number().optional(),
+  maxSalary: z.number().optional(),
+  industry: z.string().optional(),
+  english_fluency: z.string().optional()
 });
 
 export const contactFormSchema = z.object({

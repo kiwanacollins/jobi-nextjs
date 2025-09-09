@@ -14,13 +14,14 @@ export const connectToDatabase = async () => {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URL, {
-      dbName: 'jobiNexjs'
-    });
+    const mongooseOptions: any = {};
+    if (process.env.MONGODB_DB_NAME) {
+      mongooseOptions.dbName = process.env.MONGODB_DB_NAME;
+    }
+    const conn = await mongoose.connect(process.env.MONGODB_URL, mongooseOptions);
 
     isConnected = true;
-
-    console.log('MongoDB is connected');
+    console.log('MongoDB is connected to', conn.connection.name);
   } catch (error) {
     console.log('MongoDB connection failed', error);
   }

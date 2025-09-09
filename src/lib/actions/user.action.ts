@@ -18,20 +18,68 @@ import { clerkClient } from '@clerk/nextjs';
 import Category from '@/database/category.model';
 import ShareData from '@/database/shareData.model';
 import { FilterQuery } from 'mongoose';
+import { isAdminEmail } from '../admin-setup';
 
 export async function getUserById(params: any) {
   try {
     connectToDatabase();
 
     const { userId } = params;
+    if (!userId) return null;
 
-    const user = await User.findOne({ clerkId: userId });
+    let user = await User.findOne({ clerkId: userId });
+
+    // If user does not exist in Mongo, attempt to fetch from Clerk and create/link
+    if (!user) {
+      try {
+        const clerkUser = await clerkClient.users.getUser(userId);
+        if (clerkUser) {
+          const primaryEmail = clerkUser.emailAddresses?.[0]?.emailAddress;
+          if (primaryEmail) {
+            // Check if user already exists by email (but without clerkId)
+            const existingUser = await User.findOne({ email: primaryEmail.toLowerCase() });
+            
+            if (existingUser) {
+              // Link existing user to Clerk ID
+              user = await User.findByIdAndUpdate(
+                existingUser._id,
+                { clerkId: userId },
+                { new: true }
+              );
+              console.log(`✅ Linked existing user ${primaryEmail} to Clerk ID`);
+            } else {
+              // Create new user
+              const shouldBeAdmin = isAdminEmail(primaryEmail);
+              user = await User.create({
+                clerkId: userId,
+                email: primaryEmail.toLowerCase(),
+                name: clerkUser.firstName || clerkUser.username || primaryEmail.split('@')[0],
+                isAdmin: shouldBeAdmin,
+                role: shouldBeAdmin ? 'employee' : undefined,
+                joinedAt: new Date()
+              });
+              if (shouldBeAdmin) {
+                console.log(`✅ Auto-created & promoted ${primaryEmail} to admin`);
+              } else {
+                console.log(`✅ Auto-created user ${primaryEmail}`);
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.log('Could not auto-create/link user from Clerk:', e);
+      }
+    }
 
     if (!user) {
-      return {
-        error: true,
-        message: 'User not found'
-      };
+      return null;
+    }
+
+    // Ensure admin promotion if email now matches list
+    if (!user.isAdmin && isAdminEmail(user.email)) {
+      await User.findByIdAndUpdate(user._id, { isAdmin: true });
+      user.isAdmin = true;
+      console.log(`✅ Auto-promoted ${user.email} to admin during getUserById`);
     }
 
     return JSON.parse(JSON.stringify(user));
@@ -64,7 +112,22 @@ export async function getUserByMongoId(params: any) {
 export async function createUser(userData: CreateUserParams) {
   try {
     connectToDatabase();
-    const newUser = await User.create(userData);
+    
+    // Check if this email should be admin
+    const shouldBeAdmin = isAdminEmail(userData.email);
+    
+    // Create user with admin privileges if email is in admin list
+    const newUserData = {
+      ...userData,
+      isAdmin: shouldBeAdmin
+    };
+    
+    const newUser = await User.create(newUserData);
+    
+    if (shouldBeAdmin) {
+      console.log(`✅ Auto-promoted ${userData.email} to admin during user creation`);
+    }
+    
     return newUser;
   } catch (error) {
     console.log(error);

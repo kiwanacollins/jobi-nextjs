@@ -20,7 +20,26 @@ const nextConfig = {
         hostname: '*'
       }
     ]
-  }
+  },
+  // Suppress hydration warnings from browser extensions
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production'
+  },
+  onDemandEntries: {
+    // Period (in ms) where the server will keep pages in the buffer
+    maxInactiveAge: 25 * 1000,
+    // Number of pages that should be kept simultaneously without being disposed
+    pagesBufferLength: 2,
+  },
+  // Additional webpack configuration to suppress warnings
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.infrastructureLogging = {
+        level: 'error',
+      };
+    }
+    return config;
+  },
 };
 
 const withMDX = createMDX({

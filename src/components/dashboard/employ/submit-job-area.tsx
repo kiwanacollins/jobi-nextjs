@@ -1,14 +1,10 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import CitySelect from '../candidate/city-select';
-import CountrySelect from '../candidate/country-select';
-import EmployExperience from './employ-experience';
 import { Controller, useForm } from 'react-hook-form';
 import { creatJobPost } from '@/lib/actions/job.action';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import { Country } from 'country-state-city';
 import { formJobDataSchema } from '@/utils/validation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,12 +22,8 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const editorRef = useRef(null);
   const [progress, setProgress] = useState(0);
-  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
-    {} as any
-  );
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [subCategoryOptions, setSubCategoryOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const { userId } = useAuth();
 
@@ -48,14 +40,7 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
       title: '',
       overview: '',
       duration: '',
-      salary_duration: '',
-      category: '',
-      location: '',
-      country: '',
-      city: '',
-      experience: '',
-      industry: '',
-      english_fluency: ''
+      category: ''
     }
   });
   const {
@@ -63,29 +48,8 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     register,
     reset,
     control,
-    watch,
     formState: { errors }
   } = methods;
-
-  const selectedCountryName = watch('country');
-  const selectedPost = watch('category');
-  const skillsOfSelectedPost = categories?.find(
-    (cat: any) => cat?.name === selectedPost
-  );
-
-  const selectedPostSkills = skillsOfSelectedPost?.subcategory?.map(
-    (item: any) => ({
-      value: item.name,
-      label: item.name
-    })
-  );
-
-  useEffect(() => {
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === selectedCountryName
-    );
-    setSelectedCountryDetails(selectedCountry);
-  }, [selectedCountryName]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -96,16 +60,6 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
         label: item.name
       }));
       setCategoryOptions(categoriesData);
-      const subcategories = res.flatMap((item: any) =>
-        item.subcategory.map((i: any) => i.name)
-      );
-      const uniqueSubcategories = [...new Set(subcategories)];
-      const subCategoryData = uniqueSubcategories.map((item: any) => ({
-        value: item as string,
-        label: item as string
-      }));
-      // @ts-ignore
-      setSubCategoryOptions(subCategoryData);
     };
     fetchCategories();
   }, []);
@@ -130,37 +84,15 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     const {
       title,
       category,
-      english_fluency,
       overview,
-      minSalary,
-      maxSalary,
-      salary_duration,
-      skills,
-      duration,
-      location,
-      experience,
-      industry,
-      address,
-      country,
-      city
+      duration
     } = data;
 
     const mongoData = {
       title,
       category,
-      english_fluency,
       overview,
-      salary_duration,
-      experience,
-      skills,
-      duration,
-      location,
-      address,
-      minSalary,
-      maxSalary,
-      country,
-      city,
-      industry
+      duration
     };
 
     try {
@@ -327,123 +259,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
                     </>
                   )}
                 />
-                {/* <JobTypeSelect register={register} /> */}
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className=" mb-30">
-                <label className="fw-semibold pb-1" htmlFor="">
-                  Salary*
-                </label>
-                <Controller
-                  name="salary_duration"
-                  control={control}
-                  render={({ field }) => (
-                    <>
-                      <Select
-                        {...field}
-                        isClearable
-                        options={[
-                          { value: 'Monthly', label: 'Monthly' },
-                          { value: 'Weekly', label: 'Weekly' },
-                          { value: 'Yearly', label: 'Yearly' }
-                        ]}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        onChange={(selectedOption) => {
-                          field.onChange(selectedOption?.value);
-                        }}
-                        value={
-                          field.value
-                            ? { value: field.value, label: field.value }
-                            : null
-                        }
-                      />
-                      {errors?.salary_duration && (
-                        <ErrorMsg msg={errors?.salary_duration.message} />
-                      )}
-                    </>
-                  )}
-                />
-                {/* <SalaryDurationSelect register={register} /> */}
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="dash-input-wrapper mb-30">
-                <input
-                  type="number"
-                  // defaultValue={0}
-                  placeholder="Min Salary"
-                  {...register('minSalary', {
-                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
-                  })}
-                  name="minSalary"
-                />
-                {errors?.minSalary && (
-                  <ErrorMsg msg={errors?.minSalary.message} />
-                )}
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="dash-input-wrapper mb-30">
-                <input
-                  type="number"
-                  placeholder="Max salary"
-                  {...register('maxSalary', {
-                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
-                  })}
-                  name="maxSalary"
-                />
-                {errors?.maxSalary && (
-                  <ErrorMsg msg={errors?.maxSalary.message} />
-                )}
               </div>
             </div>
           </div>
 
-          <h4 className="dash-title-three pt-50 lg-pt-30">
-            Skills & Experience
-          </h4>
-          <div className=" mb-30">
-            <label className="fw-semibold  mb-3 " htmlFor="">
-              Skills*
-            </label>
-            <Controller
-              name="skills"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <Select
-                    isMulti
-                    {...field}
-                    //@ts-ignore
-                    options={
-                      selectedPost
-                        ? selectedPostSkills
-                        : subCategoryOptions || []
-                    }
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={(selectedOption) =>
-                      field.onChange(
-                        selectedOption?.map(
-                          (option) => option?.value as string | null
-                        )
-                      )
-                    }
-                    value={field.value?.map((val) =>
-                      val ? { value: val, label: val } : null
-                    )}
-                  />
-                  {errors?.skills && <ErrorMsg msg={errors?.skills.message} />}
-                </>
-              )}
-            />
-          </div>
-
-          {/* employ experience start */}
-          <EmployExperience control={control} errors={errors} />
-          {/* employ experience end */}
           {/* file attachment start */}
           {/* <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
           <div className="dash-input-wrapper mb-20">
@@ -462,42 +281,6 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
           </div>
           <small>Upload file .pdf, .doc, .docx</small> */}
           {/* file attachment end */}
-          <h4 className="dash-title-three pt-50 lg-pt-30">
-            Address & Location
-          </h4>
-          <div className="row">
-            <div className="col-12">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">Address*</label>
-                <input
-                  type="text"
-                  placeholder="Cowrasta, Chandana, Gazipur Sadar"
-                  {...register('address', {
-                    required: `Address is required!`
-                  })}
-                  name="address"
-                />
-                {errors?.address && <ErrorMsg msg={errors?.address.message} />}
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">Country*</label>
-                <CountrySelect register={register} />
-                {errors?.country && <ErrorMsg msg={errors?.country.message} />}
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">City*</label>
-                <CitySelect
-                  register={register}
-                  countryCode={selectedCountryDetails?.isoCode || ''}
-                />
-                {errors?.city && <ErrorMsg msg={errors?.city.message} />}
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Progress bar */}

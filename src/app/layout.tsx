@@ -1,4 +1,5 @@
 import './globals.scss';
+import '@/lib/suppress-warnings';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
@@ -8,6 +9,8 @@ import { Providers } from '@/redux/provider';
 import React from 'react';
 import NextTopLoader from 'nextjs-toploader';
 import WhatsAppButton from '@/components/common/WhatsAppButton';
+import HydrationErrorBoundary from '@/components/common/HydrationErrorBoundary';
+import AdminInitializer from '@/components/common/AdminInitializer';
 
 const gordita = localFont({
   src: [
@@ -56,19 +59,69 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <link rel="icon" href="/favicon.ico" sizes="any" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                // Suppress hydration warnings from browser extensions
+                (function() {
+                  if (${process.env.NEXT_PUBLIC_SUPPRESS_HYDRATION_WARNINGS === 'true'}) {
+                    const originalWarn = console.warn;
+                    const originalError = console.error;
+                    
+                    console.warn = function(...args) {
+                      const message = args[0];
+                      if (
+                        typeof message === 'string' && (
+                          message.includes('Extra attributes from the server') ||
+                          message.includes('crxlauncher') ||
+                          message.includes('chrome-extension') ||
+                          message.includes('moz-extension') ||
+                          message.includes('Hydration failed') ||
+                          message.includes('There was an error while hydrating')
+                        )
+                      ) {
+                        return;
+                      }
+                      originalWarn.apply(console, args);
+                    };
+                    
+                    console.error = function(...args) {
+                      const message = args[0];
+                      if (
+                        typeof message === 'string' && (
+                          message.includes('Extra attributes from the server') ||
+                          message.includes('crxlauncher') ||
+                          message.includes('chrome-extension') ||
+                          message.includes('moz-extension') ||
+                          message.includes('Hydration failed') ||
+                          message.includes('There was an error while hydrating')
+                        )
+                      ) {
+                        return;
+                      }
+                      originalError.apply(console, args);
+                    };
+                  }
+                })();
+              `
+            }}
+          />
         </head>
 
         <body
           suppressHydrationWarning={true}
           className={`${gordita.variable} ${garamond.variable}`}
         >
-          <NextTopLoader showSpinner={false} />
-          <Providers>{children}</Providers>
-          <WhatsAppButton
-            phoneNumber={'+8801938056537'}
-            message="Hello, I would like to know about your services"
-          />
-          <BackToTopCom />
+          <AdminInitializer />
+          <HydrationErrorBoundary>
+            <NextTopLoader showSpinner={false} />
+            <Providers>{children}</Providers>
+            <WhatsAppButton
+              phoneNumber={'+8801938056537'}
+              message="Hello, I would like to know about your services"
+            />
+            <BackToTopCom />
+          </HydrationErrorBoundary>
         </body>
       </html>
     </ClerkProvider>
