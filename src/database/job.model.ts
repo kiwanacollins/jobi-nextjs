@@ -5,18 +5,18 @@ export interface IJobData extends Document {
   company?: string;
   overview: string;
   duration: string;
-  salary_duration: string;
+  salary_duration?: string;
   category: string;
-  location: string;
-  country: string;
-  city: string;
+  location?: string;
+  country?: string;
+  city?: string;
   skills?: string[];
   address?: string;
-  experience: string;
-  minSalary: number;
-  maxSalary: number;
-  industry: string;
-  english_fluency: string;
+  experience?: string;
+  minSalary?: number;
+  maxSalary?: number;
+  industry?: string;
+  english_fluency?: string;
   createdBy?: Schema.Types.ObjectId | string;
   createAt?: Date;
   applicants?: Schema.Types.ObjectId[];
@@ -27,18 +27,18 @@ const jobSchema = new Schema({
   company: { type: String },
   overview: { type: String, required: true },
   duration: { type: String, required: true },
-  salary_duration: { type: String, required: true }, // Assuming salary is a number
+  salary_duration: { type: String }, // Made optional
   category: { type: String, required: true },
-  location: { type: String, required: true },
+  location: { type: String }, // Made optional
   address: { type: String },
   country: { type: String },
   city: { type: String },
   skills: { type: [String] },
-  experience: { type: String, required: true },
+  experience: { type: String }, // Made optional
   minSalary: { type: Number },
   maxSalary: { type: Number },
   industry: { type: String },
-  english_fluency: { type: String, required: true },
+  english_fluency: { type: String }, // Made optional
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' }, // Assuming a User model
   createAt: { type: Date, default: Date.now },
   applicants: [{ type: Schema.Types.ObjectId, ref: 'User' }] // Assuming a User model

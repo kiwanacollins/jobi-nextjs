@@ -40,9 +40,15 @@ const CandidateBio = ({ user }: { user: IUser }) => {
           <a href="#" className="me-3">
             <i className="bi bi-twitter"></i>
           </a>
-          <Link href={`${user?.mediaLinks?.linkedin}`}>
-            <i className="bi bi-linkedin"></i>
-          </Link>
+          {user?.mediaLinks?.linkedin ? (
+            <Link href={`${user.mediaLinks.linkedin}`}>
+              <i className="bi bi-linkedin"></i>
+            </Link>
+          ) : (
+            <span>
+              <i className="bi bi-linkedin"></i>
+            </span>
+          )}
         </div>
       </li>
     </ul>

@@ -28,12 +28,16 @@ const JobDetailsBreadcrumbTwo = ({
             <div className="col-xl-8 m-auto text-center">
               <div className="post-date">
                 {getTimestamp(createdAt as Date)} by{' '}
-                <Link
-                  href={`/company/${createdBy}`}
-                  className="fw-500 text-white"
-                >
-                  {company}
-                </Link>
+                {createdBy ? (
+                  <Link
+                    href={`/company/${createdBy}`}
+                    className="fw-500 text-white"
+                  >
+                    {company}
+                  </Link>
+                ) : (
+                  <span className="fw-500 text-white">{company}</span>
+                )}
               </div>
               <div className="title-two">
                 <h2 className="text-white">{title}</h2>
@@ -58,13 +62,20 @@ const JobDetailsBreadcrumbTwo = ({
                   </Link>
                 </li>
                 <li>
-                  <Link
-                    href={website as URL}
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <i className="bi bi-link-45deg"></i>
-                    <span>website</span>
-                  </Link>
+                  {website ? (
+                    <Link
+                      href={website as URL}
+                      className="d-flex align-items-center justify-content-center"
+                    >
+                      <i className="bi bi-link-45deg"></i>
+                      <span>website</span>
+                    </Link>
+                  ) : (
+                    <span className="d-flex align-items-center justify-content-center">
+                      <i className="bi bi-link-45deg"></i>
+                      <span>website</span>
+                    </span>
+                  )}
                 </li>
               </ul>
             </div>

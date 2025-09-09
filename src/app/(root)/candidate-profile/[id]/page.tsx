@@ -6,6 +6,7 @@ import CandidateDetailsArea from '@/components/candidate-details/candidate-detai
 import { getResumeById } from '@/lib/actions/candidate.action';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Candidate Details'
@@ -18,6 +19,12 @@ export interface URLProps {
 
 const CandidateProfileDetailsPage = async ({ params }: URLProps) => {
   const candidateDetials = await getResumeById(params.id);
+  
+  // If no candidate found, return 404
+  if (!candidateDetials) {
+    notFound();
+  }
+  
   const { userId } = auth();
   const loggInUser = await getUserById({ userId });
 

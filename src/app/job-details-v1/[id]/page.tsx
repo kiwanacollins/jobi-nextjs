@@ -7,9 +7,49 @@ import JobDetailsBreadcrumb from '@/components/jobs/breadcrumb/job-details-bread
 import RelatedJobs from '@/components/jobs/related-jobs';
 import FooterOne from '@/layouts/footers/footer-one';
 import job_data from '@/data/job-data';
+import { getJobById } from '@/lib/actions/job.action';
+import { notFound } from 'next/navigation';
 
-const JobDetailsDynamicPage = ({ params }: { params: { id: string } }) => {
-  const job = job_data.find((j) => Number(j.id) === Number(params.id));
+const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => {
+  // First try to find in static data
+  let job = job_data.find((j) => Number(j.id) === Number(params.id));
+  
+  // If not found in static data, try to fetch from database
+  if (!job) {
+    try {
+      const result = await getJobById(params.id);
+      if (result.status === 'ok' && result.job) {
+        // Convert database job to expected format
+        job = {
+          id: result.job._id,
+          _id: result.job._id,
+          logo: job_data[0].logo, // Use a default logo for database jobs
+          title: result.job.title,
+          duration: result.job.duration,
+          date: result.job.createAt ? new Date(result.job.createAt).toLocaleDateString() : 'Recent',
+          company: result.job.createdBy?.name || 'Company',
+          location: result.job.location || 'Remote',
+          category: [result.job.category],
+          tags: result.job.skills || [],
+          experience: result.job.experience || 'Not specified',
+          salary: result.job.maxSalary || 0,
+          salary_duration: result.job.salary_duration || 'month',
+          english_fluency: result.job.english_fluency || 'Not specified',
+          overview: result.job.overview,
+          minSalary: result.job.minSalary?.toString(),
+          maxSalary: result.job.maxSalary?.toString()
+        };
+      }
+    } catch (error) {
+      console.error('Error fetching job:', error);
+    }
+  }
+
+  // If still no job found, return 404
+  if (!job) {
+    notFound();
+  }
+
   return (
     <Wrapper>
       <div className="main-page-wrapper">
@@ -22,11 +62,11 @@ const JobDetailsDynamicPage = ({ params }: { params: { id: string } }) => {
         {/* job details breadcrumb end */}
 
         {/* job details area start */}
-        {job && <JobDetailsV1Area job={job} />}
+        <JobDetailsV1Area job={job} />
         {/* job details area end */}
 
         {/* related job start */}
-        {job && <RelatedJobs category={job.category} />}
+        <RelatedJobs category={job.category} />
         {/* related job end */}
 
         {/* job portal intro start */}

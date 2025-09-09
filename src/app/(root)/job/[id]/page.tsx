@@ -4,6 +4,7 @@ import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 import JobDetailsV2Area from '@/components/job-details/job-details-v2-area';
 import { getJobById } from '@/lib/actions/job.action';
 import JobDetailsBreadcrumbTwo from '@/components/jobs/breadcrumb/job-details-breadcrumb-2';
+import { notFound } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Job Details - Jobi'
@@ -15,16 +16,24 @@ interface URLProps {
 }
 
 const JobDetailsV1Page = async ({ params }: URLProps) => {
-  const { job } = await getJobById(params?.id);
+  const result = await getJobById(params?.id);
+  
+  // Handle case where job is not found
+  if (result.status === 'error' || !result.job) {
+    notFound();
+  }
+  
+  const { job } = result;
+  
   return (
     <>
       {/* job details breadcrumb start */}
       <JobDetailsBreadcrumbTwo
-        title={job?.title}
-        company={job?.createdBy?.name as string}
+        title={job?.title || 'Job Details'}
+        company={job?.createdBy?.name as string || 'Company'}
         createdAt={job?.createAt as Date}
         website={job?.createdBy?.website as URL}
-        createdBy={job?.createdBy._id}
+        createdBy={job?.createdBy?._id}
       />
       {/* job details breadcrumb end */}
 

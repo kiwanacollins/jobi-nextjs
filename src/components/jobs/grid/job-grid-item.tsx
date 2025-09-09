@@ -14,11 +14,18 @@ const JobGridItem = ({
   item: IJobData;
   style_2?: boolean;
 }) => {
-  const { id, duration, location, maxSalary, salary_duration, title } =
+  const { _id, duration, location, maxSalary, salary_duration, title } =
     item || {};
   const { wishlist } = useAppSelector((state) => state.wishlist);
-  const isActive = wishlist.some((p) => p.id === id);
+  const isActive = wishlist.some((p) => p._id === _id);
   const dispatch = useAppDispatch();
+  
+  // Safety check: if no _id, don't render the component
+  if (!_id) {
+    console.warn('JobGridItem: No _id provided for item:', item);
+    return null;
+  }
+  
   // handle add wishlist
   const handleAddWishlist = (item: IJobData) => {
     dispatch(add_to_wishlist(item));
@@ -27,7 +34,7 @@ const JobGridItem = ({
     <div
       className={`job-list-two ${style_2 ? 'style-two' : ''} position-relative`}
     >
-      <Link href={`/job-details-v1/${id}`} className="logo">
+      <Link href={`/job-details-v1/${_id}`} className="logo">
         <Image
           src={
             //@ts-ignore
@@ -50,7 +57,7 @@ const JobGridItem = ({
       </a>
       <div>
         <Link
-          href={`/job-details-v1/${id}`}
+          href={`/job-details-v1/${_id}`}
           className={`job-duration text-decoration-none fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
         >
           {duration}
@@ -58,24 +65,27 @@ const JobGridItem = ({
       </div>
       <div>
         <Link
-          href={`/job-details-v1/${id}`}
+          href={`/job-details-v1/${_id}`}
           className="title text-decoration-none fw-500 tran3s"
         >
           {title}
         </Link>
       </div>
-      <div className="job-salary">
-        <span className="fw-500 text-dark">${maxSalary}</span> /{' '}
-        {salary_duration}
-      </div>
+      {(maxSalary || salary_duration) && (
+        <div className="job-salary">
+          {maxSalary && <span className="fw-500 text-dark">${maxSalary}</span>}
+          {maxSalary && salary_duration && ' / '}
+          {salary_duration}
+        </div>
+      )}
       <div className="d-flex align-items-center justify-content-between mt-auto">
         <div className="job-location">
-          <Link className="text-decoration-none" href={`/job-details-v1/${id}`}>
-            {location}
+          <Link className="text-decoration-none" href={`/job-details-v1/${_id}`}>
+            {location || 'Remote'}
           </Link>
         </div>
         <Link
-          href={`/job-details-v1/${id}`}
+          href={`/job-details-v1/${_id}`}
           className="apply-btn text-decoration-none text-center tran3s"
         >
           APPLY

@@ -15,12 +15,13 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
     const {
       title,
       category,
-      english_fluency,
       overview,
+      duration,
+      // Optional fields that might not be present
+      english_fluency,
       salary_duration,
       experience,
       skills,
-      duration,
       location,
       address,
       city,
@@ -35,19 +36,20 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       createdBy,
       title,
       category,
-      english_fluency,
       overview,
-      salary_duration,
-      experience,
       duration,
-      skills,
-      location,
-      address,
-      city,
-      country,
-      minSalary,
-      maxSalary,
-      industry
+      // Only include optional fields if they exist
+      ...(english_fluency && { english_fluency }),
+      ...(salary_duration && { salary_duration }),
+      ...(experience && { experience }),
+      ...(skills && { skills }),
+      ...(location && { location }),
+      ...(address && { address }),
+      ...(city && { city }),
+      ...(country && { country }),
+      ...(minSalary && { minSalary }),
+      ...(maxSalary && { maxSalary }),
+      ...(industry && { industry })
     });
 
     if (!newJob) {
@@ -65,30 +67,33 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
         { new: true, upsert: true }
       );
 
-      for (const subcategoryName of skills) {
-        const matchingSubcategory = await mongoCategory.subcategory.find(
-          (subcategory: any) => subcategory.name === subcategoryName
-        );
+      // Only process skills if they exist
+      if (skills && Array.isArray(skills)) {
+        for (const subcategoryName of skills) {
+          const matchingSubcategory = await mongoCategory.subcategory.find(
+            (subcategory: any) => subcategory.name === subcategoryName
+          );
 
-        console.log('matchingSubcategory', matchingSubcategory);
+          console.log('matchingSubcategory', matchingSubcategory);
 
-        if (matchingSubcategory) {
-          await Category.findByIdAndUpdate(
-            mongoCategory._id,
-            {
-              $push: {
-                'category.subcategory.$.job': newJob._id
+          if (matchingSubcategory) {
+            await Category.findByIdAndUpdate(
+              mongoCategory._id,
+              {
+                $push: {
+                  'category.subcategory.$.job': newJob._id
+                }
+              },
+              {
+                new: true
               }
-            },
-            {
-              new: true
-            }
-          );
-        } else {
-          // Handle case where subcategory doesn't exist within the category (optional)
-          console.log(
-            `Subcategory '${subcategoryName}' not found in category '${category.name}'.`
-          );
+            );
+          } else {
+            // Handle case where subcategory doesn't exist within the category (optional)
+            console.log(
+              `Subcategory '${subcategoryName}' not found in category '${category}'.`
+            );
+          }
         }
       }
     }

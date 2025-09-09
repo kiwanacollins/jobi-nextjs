@@ -1,8 +1,20 @@
 import React from 'react';
 import { IJobType } from '@/types/job-data-type';
+import { IJobData } from '@/database/job.model';
 import Image from 'next/image';
 
-const JobDetailsV1Area = ({ job }: { job: IJobType }) => {
+// Union type to accept either static job data or database job data
+type JobDetailsProps = {
+  job: IJobType | (IJobData & { 
+    logo: any; 
+    company?: string; 
+    date?: string; 
+    tags?: string[];
+    salary?: number;
+  });
+};
+
+const JobDetailsV1Area = ({ job }: JobDetailsProps) => {
   return (
     <section className="job-details pt-100 lg-pt-80 pb-130 lg-pb-80">
       <div className="container">
@@ -183,41 +195,48 @@ const JobDetailsV1Area = ({ job }: { job: IJobType }) => {
 
               <div className="border-top mt-40 pt-40">
                 <ul className="job-meta-data row style-none">
-                  <li className="col-xl-7 col-md-4 col-sm-6">
-                    <span>Salary</span>
-                    <div>
-                      {job.salary}/{job.salary_duration}
-                    </div>
-                  </li>
-                  <li className="col-xl-5 col-md-4 col-sm-6">
-                    <span>Expertise</span>
-                    <div>{job.experience}</div>
-                  </li>
-                  <li className="col-xl-7 col-md-4 col-sm-6">
-                    <span>Location</span>
-                    <div>{job.location}</div>
-                  </li>
+                  {(job.salary || job.minSalary || job.maxSalary) && (
+                    <li className="col-xl-7 col-md-4 col-sm-6">
+                      <span>Salary</span>
+                      <div>
+                        {job.salary && `${job.salary}/${job.salary_duration || 'month'}`}
+                        {!job.salary && job.minSalary && job.maxSalary && `$${job.minSalary} - $${job.maxSalary}`}
+                        {!job.salary && !job.minSalary && job.maxSalary && `Up to $${job.maxSalary}`}
+                      </div>
+                    </li>
+                  )}
+                  {job.experience && (
+                    <li className="col-xl-5 col-md-4 col-sm-6">
+                      <span>Expertise</span>
+                      <div>{job.experience}</div>
+                    </li>
+                  )}
+                  {job.location && (
+                    <li className="col-xl-7 col-md-4 col-sm-6">
+                      <span>Location</span>
+                      <div>{job.location}</div>
+                    </li>
+                  )}
                   <li className="col-xl-5 col-md-4 col-sm-6">
                     <span>Job Type</span>
                     <div>{job.duration}</div>
                   </li>
-                  <li className="col-xl-7 col-md-4 col-sm-6">
-                    <span>Date</span>
-                    <div>{job.date} </div>
-                  </li>
-                  <li className="col-xl-5 col-md-4 col-sm-6">
-                    <span>Experience</span>
-                    <div>{job.experience}</div>
-                  </li>
+                  {job.date && (
+                    <li className="col-xl-7 col-md-4 col-sm-6">
+                      <span>Date</span>
+                      <div>{job.date}</div>
+                    </li>
+                  )}
                 </ul>
-                <div className="job-tags d-flex flex-wrap pt-15">
-                  {job.tags &&
-                    job.tags.map((t, i) => (
+                {job.tags && job.tags.length > 0 && (
+                  <div className="job-tags d-flex flex-wrap pt-15">
+                    {job.tags.map((t, i) => (
                       <a key={i} href="#">
                         {t}
                       </a>
                     ))}
-                </div>
+                  </div>
+                )}
                 <a href="#" className="btn-one w-100 mt-25">
                   Apply Now
                 </a>

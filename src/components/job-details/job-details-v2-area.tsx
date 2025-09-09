@@ -61,35 +61,45 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
           <div className="col-xxl-9 col-xl-10 m-auto">
             <div className="details-post-data ps-xxl-4 pe-xxl-4">
               <ul className="job-meta-data-two d-flex flex-wrap justify-content-center justify-content-lg-between style-none">
-                <div className="bg-wrapper bg-white text-center">
-                  <Image
-                    src={icon_1}
-                    alt="icon"
-                    className="lazy-img m-auto icon"
-                  />
-                  <span>Salary</span>
-                  <div>
-                    ${job?.minSalary}k-${job?.maxSalary}k/{job?.salary_duration}
+                {(job?.minSalary || job?.maxSalary || job?.salary_duration) && (
+                  <div className="bg-wrapper bg-white text-center">
+                    <Image
+                      src={icon_1}
+                      alt="icon"
+                      className="lazy-img m-auto icon"
+                    />
+                    <span>Salary</span>
+                    <div>
+                      {job?.minSalary && job?.maxSalary 
+                        ? `$${job.minSalary}k-$${job.maxSalary}k${job?.salary_duration ? `/${job.salary_duration}` : ''}`
+                        : job?.maxSalary 
+                        ? `Up to $${job.maxSalary}k${job?.salary_duration ? `/${job.salary_duration}` : ''}`
+                        : 'Negotiable'}
+                    </div>
                   </div>
-                </div>
-                <div className="bg-wrapper bg-white text-center">
-                  <Image
-                    src={icon_2}
-                    alt="icon"
-                    className="lazy-img m-auto icon"
-                  />
-                  <span>Expertise</span>
-                  <div>{job?.experience}</div>
-                </div>
-                <div className="bg-wrapper bg-white text-center">
-                  <Image
-                    src={icon_3}
-                    alt="icon"
-                    className="lazy-img m-auto icon"
-                  />
-                  <span>Location</span>
-                  <div>{job?.location}</div>
-                </div>
+                )}
+                {job?.experience && (
+                  <div className="bg-wrapper bg-white text-center">
+                    <Image
+                      src={icon_2}
+                      alt="icon"
+                      className="lazy-img m-auto icon"
+                    />
+                    <span>Expertise</span>
+                    <div>{job.experience}</div>
+                  </div>
+                )}
+                {job?.location && (
+                  <div className="bg-wrapper bg-white text-center">
+                    <Image
+                      src={icon_3}
+                      alt="icon"
+                      className="lazy-img m-auto icon"
+                    />
+                    <span>Location</span>
+                    <div>{job.location}</div>
+                  </div>
+                )}
                 <div className="bg-wrapper bg-white text-center">
                   <Image
                     src={icon_4}
@@ -97,16 +107,7 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
                     className="lazy-img m-auto icon"
                   />
                   <span>Job Type</span>
-                  <div>{job?.duration}</div>
-                </div>
-                <div className="bg-wrapper bg-white text-center">
-                  <Image
-                    src={icon_5}
-                    alt="icon"
-                    className="lazy-img m-auto icon"
-                  />
-                  <span>Experience</span>
-                  <div>{job?.experience}</div>
+                  <div>{job?.duration || 'Not specified'}</div>
                 </div>
               </ul>
 

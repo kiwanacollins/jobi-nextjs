@@ -33,9 +33,11 @@ const slider_setting = {
 const RelatedJobs = ({ category }: { category: string[] }) => {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
 
-  const job_items = allJobData.filter((job) => {
-    return category.some((c) => job.category.includes(c));
-  });
+  const job_items = allJobData
+    .filter((job) => job._id) // Only include jobs with valid _id
+    .filter((job) => {
+      return category.some((c) => job.category?.includes(c));
+    });
   const sliderRef = useRef<Slider | null>(null);
 
   const sliderPrev = () => {
@@ -67,7 +69,7 @@ const RelatedJobs = ({ category }: { category: string[] }) => {
             className="related-job-slider"
           >
             {job_items?.map((j) => (
-              <div key={j.id} className="item">
+              <div key={j._id} className="item">
                 <JobGridItem item={j} />
               </div>
             ))}

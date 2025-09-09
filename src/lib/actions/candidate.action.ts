@@ -46,13 +46,13 @@ export async function getResumeById(resumeId: string) {
       .populate({ path: 'user', model: User })
       .exec();
     if (!resume) {
-      throw new Error(`User with ID ${resumeId} not found`);
+      return null; // Return null instead of throwing error
     }
 
     return JSON.parse(JSON.stringify(resume));
   } catch (error) {
-    console.error('Error fetching user:', error);
-    throw error;
+    console.error('Error fetching resume:', error);
+    return null; // Return null on any error
   }
 }
 
