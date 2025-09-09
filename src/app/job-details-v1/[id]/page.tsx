@@ -37,7 +37,8 @@ const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => 
           english_fluency: result.job.english_fluency || 'Not specified',
           overview: result.job.overview,
           minSalary: result.job.minSalary?.toString(),
-          maxSalary: result.job.maxSalary?.toString()
+          maxSalary: result.job.maxSalary?.toString(),
+          createdBy: result.job.createdBy
         };
       }
     } catch (error) {

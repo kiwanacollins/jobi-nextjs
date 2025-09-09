@@ -249,7 +249,7 @@ export const getJobById = async (jobId: string) => {
     }
     
     const job = await Job.findById(jobId)
-      .populate('createdBy', 'name picture website')
+      .populate('createdBy', 'name picture website isAdmin')
       .exec();
 
     if (!job) {

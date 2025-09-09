@@ -20,15 +20,20 @@ const menu_data: IMenuData[] = [
     link: '/jobs',
     title: 'Jobs'
   },
+  // {
+  //   id: 3,
+  //   link: '/candidates',
+  //   title: 'Explore'
+  // },
+  // {
+  //   id: 4,
+  //   link: '/company',
+  //   title: 'Company'
+  // },
   {
     id: 3,
-    link: '/candidates',
-    title: 'Explore'
-  },
-  {
-    id: 4,
-    link: '/company',
-    title: 'Company'
+    link: '/about',
+    title: 'About Us'
   },
   {
     id: 5,

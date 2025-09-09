@@ -11,6 +11,11 @@ type JobDetailsProps = {
     date?: string; 
     tags?: string[];
     salary?: number;
+    createdBy?: {
+      isAdmin?: boolean;
+      name?: string;
+      _id?: string;
+    };
   });
 };
 
@@ -237,9 +242,12 @@ const JobDetailsV1Area = ({ job }: JobDetailsProps) => {
                     ))}
                   </div>
                 )}
-                <a href="#" className="btn-one w-100 mt-25">
-                  Apply Now
-                </a>
+                {/* Only show apply button if job is not posted by admin */}
+                {!job.createdBy?.isAdmin && (
+                  <a href="#" className="btn-one w-100 mt-25">
+                    Apply Now
+                  </a>
+                )}
               </div>
             </div>
           </div>

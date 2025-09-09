@@ -16,6 +16,7 @@ const slider_setting = {
   slidesToScroll: 1,
   autoplay: true,
   autoplaySpeed: 3000,
+  infinite: true,
   responsive: [
     {
       breakpoint: 992,
@@ -40,7 +41,13 @@ const slider_setting = {
 
 export function TrendingJobs() {
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const categoryItems = categories?.map((c) => ({
+  
+  // Ensure unique categories by name and create category items
+  const uniqueCategories = categories?.filter((category, index, self) => 
+    index === self.findIndex(c => c.name === category.name)
+  );
+  
+  const categoryItems = uniqueCategories?.map((c) => ({
     id: c._id,
     name: c?.name,
     title: <>{c?.name}</>,
@@ -60,15 +67,51 @@ export function TrendingJobs() {
   useEffect(() => {
     const fetchAllCategory = async () => {
       const res = await getCategories();
-      setCategories(res);
+      console.log('Fetched categories:', res?.length);
+      setCategories(res || []);
     };
     fetchAllCategory();
   }, []);
 
+  // Dynamic slider settings based on number of categories
+  const getSliderSettings = (itemCount: number) => ({
+    ...slider_setting,
+    infinite: itemCount > 4, // Only enable infinite scroll if we have more items than can be shown
+    slidesToShow: Math.min(4, itemCount), // Don't show more slides than we have items
+    responsive: [
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: Math.min(3, itemCount),
+          infinite: itemCount > 3
+        }
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: Math.min(2, itemCount),
+          infinite: itemCount > 2
+        }
+      },
+      {
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 1,
+          infinite: itemCount > 1
+        }
+      }
+    ]
+  });
+
+  // Only render slider if we have categories
+  if (!categoryItems || categoryItems.length === 0) {
+    return <div>Loading categories...</div>;
+  }
+
   return (
     <>
       <Slider
-        {...slider_setting}
+        {...getSliderSettings(categoryItems.length)}
         ref={sliderRef}
         className="card-wrapper category-slider-one row"
       >

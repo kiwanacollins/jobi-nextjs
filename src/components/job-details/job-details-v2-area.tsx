@@ -188,12 +188,15 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
                   <li>Monthly wellness/gym stipend</li>
                 </ul>
               </div> */}
-              <button
-                onClick={() => handleJobApplication(loginInUserId, job?._id)}
-                className="btn-ten text-decoration-none   fw-500 text-white text-center tran3s mt-30"
-              >
-                Apply for this position
-              </button>
+              {/* Only show apply button if job is not posted by admin */}
+              {!job?.createdBy?.isAdmin && (
+                <button
+                  onClick={() => handleJobApplication(loginInUserId, job?._id)}
+                  className="btn-ten text-decoration-none   fw-500 text-white text-center tran3s mt-30"
+                >
+                  Apply for this position
+                </button>
+              )}
             </div>
           </div>
         </div>
