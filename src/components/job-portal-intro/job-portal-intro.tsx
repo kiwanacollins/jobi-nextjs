@@ -38,7 +38,7 @@ const JobPortalIntro = ({
                   <Link
                     href={
                       loggInUser?.role !== 'employee'
-                        ? 'sign-in'
+                        ? '/sign-in'
                         : '/dashboard/employ-dashboard/submit-job'
                     }
                     className="btn-four"

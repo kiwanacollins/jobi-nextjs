@@ -241,6 +241,13 @@ export const getJobPosts = async (params: IJobDataParams) => {
 export const getJobById = async (jobId: string) => {
   try {
     await connectToDatabase();
+    
+    // Check if jobId is a valid MongoDB ObjectId
+    const mongoose = require('mongoose');
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+      return { status: 'error', message: 'Invalid job ID format' };
+    }
+    
     const job = await Job.findById(jobId)
       .populate('createdBy', 'name picture website')
       .exec();
@@ -252,7 +259,7 @@ export const getJobById = async (jobId: string) => {
     return { status: 'ok', job: JSON.parse(JSON.stringify(job)) };
   } catch (error) {
     console.log(error);
-    throw error;
+    return { status: 'error', message: 'Error fetching job' };
   }
 };
 
