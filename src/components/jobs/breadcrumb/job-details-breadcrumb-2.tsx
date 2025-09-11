@@ -42,42 +42,6 @@ const JobDetailsBreadcrumbTwo = ({
               <div className="title-two">
                 <h2 className="text-white">{title}</h2>
               </div>
-              <ul className="share-buttons d-flex flex-wrap justify-content-center style-none mt-10">
-                <li>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <i className="bi bi-facebook"></i>
-                    <span>Facebook</span>
-                  </a>
-                </li>
-                <li>
-                  <Link
-                    href={'#'}
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <i className="bi bi-twitter"></i>
-                    <span>Twitter</span>
-                  </Link>
-                </li>
-                <li>
-                  {website ? (
-                    <Link
-                      href={website as URL}
-                      className="d-flex align-items-center justify-content-center"
-                    >
-                      <i className="bi bi-link-45deg"></i>
-                      <span>website</span>
-                    </Link>
-                  ) : (
-                    <span className="d-flex align-items-center justify-content-center">
-                      <i className="bi bi-link-45deg"></i>
-                      <span>website</span>
-                    </span>
-                  )}
-                </li>
-              </ul>
             </div>
           </div>
         </div>
