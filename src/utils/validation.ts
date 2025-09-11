@@ -118,11 +118,14 @@ export const employeeProfileSchema = z.object({
 
 export const formJobDataSchema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
+  company: z.string().min(1, { message: 'Company name is required' }),
+  companyImage: z.string().url({ message: 'Please provide a valid image URL' }).optional().or(z.literal('')),
+  location: z.string().min(1, { message: 'Location is required' }),
+  deadline: z.string().min(1, { message: 'Deadline is required' }),
   overview: z.string().min(1, { message: 'Description is required' }),
   duration: z.string().min(1, { message: 'Duration is required' }),
   category: z.string().min(1, { message: 'category is required' }),
   salary_duration: z.string().optional(),
-  location: z.string().optional(),
   address: z.string().optional(),
   country: z.string().optional(),
   city: z.string().optional(),

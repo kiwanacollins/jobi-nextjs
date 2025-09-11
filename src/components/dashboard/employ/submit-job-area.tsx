@@ -38,6 +38,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     resolver: zodResolver(formJobDataSchema),
     defaultValues: {
       title: '',
+      company: '',
+      companyImage: '',
+      location: '',
+      deadline: '',
       overview: '',
       duration: '',
       category: ''
@@ -83,6 +87,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
     simulateProgress();
     const {
       title,
+      company,
+      companyImage,
+      location,
+      deadline,
       category,
       overview,
       duration
@@ -90,6 +98,10 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
 
     const mongoData = {
       title,
+      company,
+      companyImage,
+      location,
+      deadline: new Date(deadline), // Convert string to Date
       category,
       overview,
       duration
@@ -139,6 +151,60 @@ const SubmitJobArea = ({ mongoUserId }: IProps) => {
               name="title"
             />
             {errors?.title && <ErrorMsg msg={errors?.title.message} />}
+          </div>
+          
+          <div className="row">
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Company Name*</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Exquisite Solution Limited"
+                  {...register('company', { required: `Company name is required!` })}
+                  name="company"
+                />
+                {errors?.company && <ErrorMsg msg={errors?.company.message} />}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Company Logo (Image URL)</label>
+                <input
+                  type="url"
+                  placeholder="https://example.com/company-logo.png"
+                  {...register('companyImage')}
+                  name="companyImage"
+                />
+                {errors?.companyImage && <ErrorMsg msg={errors?.companyImage.message} />}
+                <small className="text-muted">Provide a direct URL to your company logo image</small>
+              </div>
+            </div>
+          </div>
+          
+          <div className="row">
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Location*</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Kampala"
+                  {...register('location', { required: `Location is required!` })}
+                  name="location"
+                />
+                {errors?.location && <ErrorMsg msg={errors?.location.message} />}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Application Deadline*</label>
+                <input
+                  type="date"
+                  {...register('deadline', { required: `Deadline is required!` })}
+                  name="deadline"
+                />
+                {errors?.deadline && <ErrorMsg msg={errors?.deadline.message} />}
+              </div>
+            </div>
           </div>
           <div className="dash-input-wrapper mb-30">
             <label htmlFor="">Job Description*</label>

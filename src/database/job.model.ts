@@ -3,11 +3,13 @@ import { Schema, models, model, Document } from 'mongoose';
 export interface IJobData extends Document {
   title: string;
   company?: string;
+  companyImage?: string;
+  location?: string;
+  deadline?: Date;
   overview: string;
   duration: string;
   salary_duration?: string;
   category: string;
-  location?: string;
   country?: string;
   city?: string;
   skills?: string[];
@@ -24,12 +26,14 @@ export interface IJobData extends Document {
 
 const jobSchema = new Schema({
   title: { type: String, required: true },
-  company: { type: String },
+  company: { type: String, required: true },
+  companyImage: { type: String },
+  location: { type: String, required: true },
+  deadline: { type: Date, required: true },
   overview: { type: String, required: true },
   duration: { type: String, required: true },
   salary_duration: { type: String }, // Made optional
   category: { type: String, required: true },
-  location: { type: String }, // Made optional
   address: { type: String },
   country: { type: String },
   city: { type: String },

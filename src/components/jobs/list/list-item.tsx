@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { add_to_wishlist } from '@/redux/features/wishlist';
 import { IJobData } from '@/database/job.model';
-import { getTime } from '@/utils/utils';
 
 const ListItem = ({
   item,
@@ -17,7 +16,7 @@ const ListItem = ({
   style_2?: boolean;
   cls?: string;
 }) => {
-  const { _id, category, industry, duration, location, title, createdBy } =
+  const { _id, category, company, companyImage, location, deadline, duration, title, createdBy } =
     item;
   const { wishlist } = useAppSelector((state) => state.wishlist);
   const isActive = wishlist.some((p) => p._id === _id);
@@ -26,66 +25,77 @@ const ListItem = ({
   const handleAddWishlist = (item: IJobData) => {
     dispatch(add_to_wishlist(item));
   };
+
+  // Format deadline
+  const formatDeadline = (date: Date | string | undefined) => {
+    if (!date) return 'No deadline specified';
+    const dateObj = new Date(date);
+    return dateObj.toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+  };
+
+  // Get company image with fallback
+  const getCompanyImage = () => {
+    if (companyImage) return companyImage;
+    if (typeof createdBy === 'object' && createdBy?.picture) return createdBy.picture;
+    return '/assets/images/logo/media_22.png'; // Default fallback image
+  };
+
   return (
     <div
       className={`job-list-one position-relative ${cls} ${style_2 ? 'border-style mb-20' : 'bottom-border'}`}
     >
       <div className="row justify-content-between align-items-center">
-        <div className="col-xxl-3 col-lg-4">
-          <div className="job-title d-flex align-items-center">
+        <div className="col-auto">
+          <div className="company-logo">
             <Link href={`/job/${_id}`} className="logo">
               <Image
-                src={
-                  //@ts-ignore
-                  (createdBy?.picture as string) ||
-                  '/assets/images/logo/media_22.png'
-                }
-                alt="logo"
-                width={50}
-                height={50}
-                className="lazy-img m-auto"
+                src={getCompanyImage()}
+                alt={company || 'Company Logo'}
+                width={60}
+                height={60}
+                className="rounded-circle object-fit-cover"
+                style={{ objectFit: 'cover' }}
               />
             </Link>
+          </div>
+        </div>
+        <div className="col">
+          <div className="job-info ps-3">
             <Link
               href={`/job/${_id}`}
-              className="title text-decoration-none fw-500 tran3s"
+              className="title text-decoration-none fw-600 mb-2 d-block"
             >
               {title}
             </Link>
+            <div className="company-name text-muted mb-2">
+              {company || (typeof createdBy === 'object' && createdBy?.name) || 'Company'}
+            </div>
+            <div className="job-meta d-flex flex-wrap align-items-center gap-3">
+              <span className="job-location">
+                <i className="bi bi-geo-alt me-1"></i>
+                {location || 'Remote'}
+              </span>
+              <span className={`job-duration ${duration === 'Part time' ? 'part-time' : ''}`}>
+                <i className="bi bi-clock me-1"></i>
+                {duration}
+              </span>
+              <span className="job-category">
+                <i className="bi bi-tag me-1"></i>
+                {category}
+              </span>
+              <span className="job-deadline text-warning">
+                <i className="bi bi-calendar me-1"></i>
+                Deadline: {formatDeadline(deadline)}
+              </span>
+            </div>
           </div>
         </div>
-        <div className="col-lg-3 col-md-4 col-sm-6 ms-auto">
-          <Link
-            href={`/job/${_id}`}
-            className={`job-duration text-decoration-none fw-500 ${duration === 'Part time' ? 'part-time' : ''}`}
-          >
-            {duration}
-          </Link>
-          <div className="job-date">
-            {getTime(item?.createAt as Date)} by{' '}
-            <Link className="text-decoration-none" href={`/job/${_id}`}>
-              {industry}
-            </Link>
-          </div>
-        </div>
-        <div className="col-xxl-2 col-lg-3 col-md-4 col-sm-6 ms-auto xs-mt-10">
-          <div className="job-location">
-            <Link className="text-decoration-none" href={`/job/${_id}`}>
-              {location}
-            </Link>
-          </div>
-          <div className="job-category">
-            {/* {category?.map((c, i) => (
-              <a key={i} href="#">
-                {c}
-                {i < category.length - 1 && ', '}
-              </a>
-            ))} */}
-            {category}
-          </div>
-        </div>
-        <div className="col-lg-2 col-md-4">
-          <div className="btn-group d-flex align-items-center justify-content-md-end sm-mt-20">
+        <div className="col-auto">
+          <div className="btn-group d-flex align-items-center justify-content-end">
             <a
               onClick={() => handleAddWishlist(item)}
               className={`save-btn text-center rounded-circle tran3s me-3 cursor-pointer ${isActive ? 'active' : ''}`}

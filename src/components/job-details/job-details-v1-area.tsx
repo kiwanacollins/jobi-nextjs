@@ -20,48 +20,115 @@ type JobDetailsProps = {
 };
 
 const JobDetailsV1Area = ({ job }: JobDetailsProps) => {
+  // Type guards and helper functions
+  const isIJobData = (job: any): job is IJobData => {
+    return job && typeof job._id === 'string' && job.companyImage !== undefined;
+  };
+
+  const getCompanyImage = () => {
+    if (isIJobData(job)) {
+      return job.companyImage || job.logo;
+    }
+    return job.logo;
+  };
+
+  const getDeadline = () => {
+    if (isIJobData(job)) {
+      return job.deadline;
+    }
+    return undefined;
+  };
+
+  const getCreatedBy = () => {
+    if (isIJobData(job)) {
+      return job.createdBy;
+    }
+    return undefined;
+  };
+
+  // Format deadline date
+  const formatDeadline = (deadline: string | Date | undefined) => {
+    if (!deadline) return 'Not specified';
+    const date = new Date(deadline);
+    return date.toLocaleDateString('en-GB', { 
+      day: 'numeric',
+      month: 'long', 
+      year: 'numeric'
+    });
+  };
+
   return (
     <section className="job-details pt-100 lg-pt-80 pb-130 lg-pb-80">
       <div className="container">
+        {/* New Job Header Section */}
+        <div className="job-header-card bg-white border rounded-3 p-4 mb-5" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+          <div className="row align-items-center">
+            <div className="col-lg-8">
+              <div className="d-flex align-items-start gap-4">
+                {/* Company Logo */}
+                <div className="company-logo-wrapper flex-shrink-0">
+                  {getCompanyImage() ? (
+                    <Image
+                      src={getCompanyImage()}
+                      alt={`${job.company || 'Company'} logo`}
+                      width={80}
+                      height={80}
+                      className="rounded-circle border"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center border" style={{ width: '80px', height: '80px', fontSize: '24px', fontWeight: '600' }}>
+                      {(job.company || 'C')[0].toUpperCase()}
+                    </div>
+                  )}
+                </div>
+
+                {/* Job Info */}
+                <div className="job-info flex-grow-1">
+                  <h1 className="job-title h3 text-dark mb-2 fw-bold">{job.title}</h1>
+                  <p className="company-name h6 text-secondary mb-3 fw-normal">{job.company}</p>
+                  
+                  {/* Job Meta Info */}
+                  <div className="job-meta d-flex flex-wrap align-items-center gap-3 mb-0">
+                    {/* Job Type Badge */}
+                    <span className="badge text-primary border border-primary px-3 py-2 rounded-pill fw-normal" style={{ backgroundColor: 'rgba(13, 110, 253, 0.1)' }}>
+                      <i className="bi bi-briefcase me-1"></i>
+                      {job.duration}
+                    </span>
+                    
+                    {/* Category Badge */}
+                    {job.category && (
+                      <span className="badge bg-light text-dark border px-3 py-2 rounded-pill fw-normal">
+                        {job.category}
+                      </span>
+                    )}
+                    
+                    {/* Deadline */}
+                    {getDeadline() && (
+                      <span className="text-muted d-flex align-items-center fw-normal">
+                        <i className="bi bi-calendar-event me-2"></i>
+                        <strong>Deadline:</strong>&nbsp;{formatDeadline(getDeadline())}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Apply Now Button */}
+            <div className="col-lg-4 text-lg-end mt-3 mt-lg-0">
+              {!getCreatedBy()?.isAdmin && (
+                <button className="btn text-white fw-semibold px-4 py-3 rounded-3" style={{ backgroundColor: '#6c5ce7', border: 'none' }}>
+                  Apply Now
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
         <div className="row">
           <div className="col-xxl-9 col-xl-8">
             <div className="details-post-data me-xxl-5 pe-xxl-4">
-              <div className="post-date">
-                {job.date} by{' '}
-                <a href="#" className="fw-500 text-dark">
-                  {job.company}
-                </a>
-              </div>
-              <h3 className="post-title">{job.title}</h3>
-              <ul className="share-buttons d-flex flex-wrap style-none">
-                <li>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <i className="bi bi-facebook"></i>
-                    <span>Facebook</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <i className="bi bi-twitter"></i>
-                    <span>Twitter</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center justify-content-center"
-                  >
-                    <i className="bi bi-link-45deg"></i>
-                    <span>Copy</span>
-                  </a>
-                </li>
-              </ul>
 
               <div className="post-block border-style mt-50 lg-mt-30">
                 <div className="d-flex align-items-center">
@@ -243,7 +310,7 @@ const JobDetailsV1Area = ({ job }: JobDetailsProps) => {
                   </div>
                 )}
                 {/* Only show apply button if job is not posted by admin */}
-                {!job.createdBy?.isAdmin && (
+                {!getCreatedBy()?.isAdmin && (
                   <a href="#" className="btn-one w-100 mt-25">
                     Apply Now
                   </a>

@@ -1,6 +1,4 @@
 import BlogFour from '@/components/blogs/blog-four';
-import { TrendingJobs } from '@/components/category/category-section-3';
-import CategorySectionSix from '@/components/category/category-section-6';
 import FancyBannerThree from '@/components/fancy-banner/fancy-banner-3';
 import FancyBannerSix from '@/components/fancy-banner/fancy-banner-6';
 import FeatureNine from '@/components/features/feature-nine';
@@ -20,29 +18,6 @@ export default async function HomePage() {
       {/* hero banner end */}
 
       {/* partners logo end*/}
-
-      {/* category section start */}
-      <CategorySectionSix style_2={true} />
-      {/* category section end */}
-
-      {/* trending jobs start */}
-
-      <section className="category-section-three pt-140 lg-pt-100">
-        <div className="container">
-          <div className="position-relative">
-            <div className="title-one mb-60 lg-mb-40">
-              <h2
-                className="main-font color-blue wow fadeInUp"
-                data-wow-delay="0.3s"
-              >
-                Trending Job
-              </h2>
-            </div>
-            <TrendingJobs />
-          </div>
-        </div>
-      </section>
-      {/* trending jobs end */}
 
       {/* job list items start */}
       <section className="job-listing-one mt-160 lg-mt-100 sm-mt-80">
