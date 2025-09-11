@@ -7,6 +7,23 @@ import Job, { IJobData } from '@/database/job.model';
 import { revalidatePath } from 'next/cache';
 import Category from '@/database/category.model';
 import { FilterQuery } from 'mongoose';
+import { generateJobSlug } from '@/utils/utils';
+
+// Generate unique slug by checking database for conflicts
+const generateUniqueJobSlug = async (title: string, company?: string): Promise<string> => {
+  const baseSlug = generateJobSlug(title, company);
+  
+  // Check if slug already exists
+  let slug = baseSlug;
+  let counter = 1;
+  
+  while (await Job.findOne({ slug }).exec()) {
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+  
+  return slug;
+};
 
 export const creatJobPost = async (jobDataParams: CreateJobParams) => {
   try {
@@ -34,10 +51,14 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
       industry
     } = data;
 
+    // Generate unique slug for SEO-friendly URLs
+    const slug = await generateUniqueJobSlug(title, company);
+
     const newJob = await Job.create({
       clerkId,
       createdBy,
       title,
+      slug,
       company,
       companyImage,
       location,
@@ -255,6 +276,30 @@ export const getJobById = async (jobId: string) => {
     }
     
     const job = await Job.findById(jobId)
+      .populate('createdBy', 'name picture website isAdmin')
+      .exec();
+
+    if (!job) {
+      return { status: 'error', message: 'Job not found' };
+    }
+
+    return { status: 'ok', job: JSON.parse(JSON.stringify(job)) };
+  } catch (error) {
+    console.log(error);
+    return { status: 'error', message: 'Error fetching job' };
+  }
+};
+
+// Get a single job by slug (SEO-friendly URL)
+export const getJobBySlug = async (slug: string) => {
+  try {
+    await connectToDatabase();
+    
+    if (!slug) {
+      return { status: 'error', message: 'Invalid job slug' };
+    }
+    
+    const job = await Job.findOne({ slug })
       .populate('createdBy', 'name picture website isAdmin')
       .exec();
 

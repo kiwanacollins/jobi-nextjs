@@ -2,6 +2,7 @@ import { Schema, models, model, Document } from 'mongoose';
 
 export interface IJobData extends Document {
   title: string;
+  slug?: string;
   company?: string;
   companyImage?: string;
   location?: string;
@@ -26,6 +27,7 @@ export interface IJobData extends Document {
 
 const jobSchema = new Schema({
   title: { type: String, required: true },
+  slug: { type: String, unique: true },
   company: { type: String, required: true },
   companyImage: { type: String },
   location: { type: String, required: true },

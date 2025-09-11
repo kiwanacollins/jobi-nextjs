@@ -16,9 +16,12 @@ const ListItem = ({
   style_2?: boolean;
   cls?: string;
 }) => {
-  const { _id, category, company, companyImage, location, deadline, duration, title, createdBy } =
+  const { _id, slug, category, company, companyImage, location, deadline, duration, title, createdBy } =
     item;
   const { wishlist } = useAppSelector((state) => state.wishlist);
+  
+  // Use slug for SEO-friendly URLs, fallback to _id for backward compatibility
+  const jobUrl = slug ? `/jobs/${slug}` : `/job/${_id}`;
   const isActive = wishlist.some((p) => p._id === _id);
   const dispatch = useAppDispatch();
   // handle add wishlist
@@ -51,7 +54,7 @@ const ListItem = ({
       <div className="row justify-content-between align-items-center">
         <div className="col-auto">
           <div className="company-logo">
-            <Link href={`/job/${_id}`} className="logo">
+            <Link href={jobUrl} className="logo">
               <Image
                 src={getCompanyImage()}
                 alt={company || 'Company Logo'}
@@ -66,7 +69,7 @@ const ListItem = ({
         <div className="col">
           <div className="job-info ps-3">
             <Link
-              href={`/job/${_id}`}
+              href={jobUrl}
               className="title text-decoration-none fw-600 mb-2 d-block"
             >
               {title}
@@ -104,7 +107,7 @@ const ListItem = ({
               <i className="bi bi-bookmark-dash"></i>
             </a>
             <Link
-              href={`/job/${_id}`}
+              href={jobUrl}
               className="apply-btn text-decoration-none text-center tran3s"
             >
               VIEW

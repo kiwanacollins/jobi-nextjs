@@ -1,0 +1,78 @@
+import React from 'react';
+import { Metadata } from 'next';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import JobDetailsV2Area from '@/components/job-details/job-details-v2-area';
+import { getJobBySlug } from '@/lib/actions/job.action';
+import JobDetailsBreadcrumbTwo from '@/components/jobs/breadcrumb/job-details-breadcrumb-2';
+import { notFound } from 'next/navigation';
+
+interface URLProps {
+  params: { slug: string };
+}
+
+// Generate metadata for SEO
+export async function generateMetadata({ params }: URLProps): Promise<Metadata> {
+  const result = await getJobBySlug(params.slug);
+  
+  if (result.status === 'error' || !result.job) {
+    return {
+      title: 'Job Not Found - Jobi'
+    };
+  }
+  
+  const job = result.job;
+  const title = `${job.title} at ${job.company} - Jobi`;
+  const description = `Apply for ${job.title} position at ${job.company}. ${job.location ? `Located in ${job.location}. ` : ''}${job.duration} position in ${job.category}.`;
+  
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'website',
+      images: job.companyImage ? [job.companyImage] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: job.companyImage ? [job.companyImage] : undefined,
+    }
+  };
+}
+
+const JobDetailsPage = async ({ params }: URLProps) => {
+  const result = await getJobBySlug(params.slug);
+  
+  // Handle case where job is not found
+  if (result.status === 'error' || !result.job) {
+    notFound();
+  }
+  
+  const { job } = result;
+  
+  return (
+    <>
+      {/* job details breadcrumb start */}
+      <JobDetailsBreadcrumbTwo
+        title={job?.title || 'Job Details'}
+        company={job?.createdBy?.name as string || 'Company'}
+        createdAt={job?.createAt as Date}
+        website={job?.createdBy?.website as URL}
+        createdBy={job?.createdBy?._id}
+      />
+      {/* job details breadcrumb end */}
+
+      {/* job details area start */}
+      <JobDetailsV2Area job={job} />
+      {/* job details area end */}
+
+      {/* job portal intro start */}
+      <JobPortalIntro />
+      {/* job portal intro end */}
+    </>
+  );
+};
+
+export default JobDetailsPage;

@@ -14,6 +14,9 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
   const isActive = wishlist.some((p) => p._id === item._id); // edited
   const dispatch = useAppDispatch();
 
+  // Use slug for SEO-friendly URLs, fallback to _id for backward compatibility
+  const jobUrl = item.slug ? `/jobs/${item.slug}` : `/job/${item._id}`;
+
   // handle add wishlist
   const handleAddWishlist = (item: IJobData) => {
     dispatch(add_to_wishlist(item));
@@ -23,7 +26,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
       <div className="row justify-content-between align-items-center">
         <div className="col-md-5">
           <div className="job-title d-flex align-items-center">
-            <Link href={`/job/${item._id}`} className="logo">
+            <Link href={jobUrl} className="logo">
               <Image
                 src={
                   //@ts-ignore
@@ -38,13 +41,13 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
             </Link>
             <div className="split-box1">
               <Link
-                href={`/job/${item._id}`}
+                href={jobUrl}
                 className="job-duration text-decoration-none fw-500"
               >
                 {item?.duration}
               </Link>
               <Link
-                href={`/job/${item._id}`}
+                href={jobUrl}
                 className="title text-decoration-none fw-500 tran3s"
               >
                 {item.title.slice(0, 22)} {item.title.length > 20 ? '..' : ''}
@@ -54,7 +57,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
         </div>
         <div className="col-md-4 col-sm-6">
           <div className="job-location">
-            <Link className="text-decoration-none" href={`/job/${item._id}`}>
+            <Link className="text-decoration-none" href={jobUrl}>
               {item.location}
             </Link>
           </div>
@@ -77,7 +80,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
               <i className="bi bi-bookmark-dash"></i>
             </a>):null}
             <Link
-              href={`/job/${item._id}`}
+              href={jobUrl}
               className="apply-btn text-decoration-none text-center tran3s"
             >
               VIEW

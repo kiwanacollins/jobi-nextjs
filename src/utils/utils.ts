@@ -90,3 +90,37 @@ export const getTime = (dateString: Date): string => {
   };
   return date.toLocaleDateString('en-US', options);
 };
+
+// Generate SEO-friendly slug from company and job title
+export const generateJobSlug = (title: string, company?: string): string => {
+  // Clean and prepare company name
+  const cleanCompany = company 
+    ? company.toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+        .substring(0, 20) // Limit company length
+    : '';
+    
+  // Clean and prepare job title
+  const cleanTitle = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 40); // Limit title length
+    
+  // Combine company + title for SEO-friendly URL
+  const slug = cleanCompany 
+    ? `${cleanCompany}-${cleanTitle}`
+    : cleanTitle;
+    
+  return slug.substring(0, 60); // Overall length limit
+};
+
+// Generate unique slug by adding incremental number if needed
+export const generateUniqueJobSlug = async (title: string, company?: string): Promise<string> => {
+  const baseSlug = generateJobSlug(title, company);
+  
+  // We'll need to import Job model to check for existing slugs
+  // For now, return base slug - we'll handle uniqueness in the job action
+  return baseSlug;
+};
