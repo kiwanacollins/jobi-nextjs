@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 import JobDetailsV2Area from '@/components/job-details/job-details-v2-area';
-import { getJobBySlug } from '@/lib/actions/job.action';
+import { getJobBySlug, getRelatedJobs } from '@/lib/actions/job.action';
 import JobDetailsBreadcrumbTwo from '@/components/jobs/breadcrumb/job-details-breadcrumb-2';
 import { notFound } from 'next/navigation';
 
@@ -52,6 +52,15 @@ const JobDetailsPage = async ({ params }: URLProps) => {
   
   const { job } = result;
   
+  // Fetch related jobs
+  const relatedJobsResult = await getRelatedJobs({
+    currentJobId: job._id,
+    category: job.category,
+    limit: 10
+  });
+  
+  const relatedJobs = relatedJobsResult.status === 'ok' ? relatedJobsResult.jobs : [];
+  
   return (
     <>
       {/* job details breadcrumb start */}
@@ -65,7 +74,7 @@ const JobDetailsPage = async ({ params }: URLProps) => {
       {/* job details breadcrumb end */}
 
       {/* job details area start */}
-      <JobDetailsV2Area job={job} />
+      <JobDetailsV2Area job={job} relatedJobs={relatedJobs} />
       {/* job details area end */}
 
       {/* job portal intro start */}

@@ -396,3 +396,68 @@ export async function getJobsByCompanyId(params: getJobsByCompanyIdParams) {
     throw error;
   }
 }
+
+// Get related jobs based on category, excluding the current job
+interface IRelatedJobsParams {
+  currentJobId: string;
+  category?: string;
+  limit?: number;
+}
+
+export const getRelatedJobs = async (params: IRelatedJobsParams) => {
+  try {
+    await connectToDatabase();
+    
+    const { currentJobId, category, limit = 10 } = params;
+    
+    const query: FilterQuery<typeof Job> = {
+      _id: { $ne: currentJobId } // Exclude current job
+    };
+    
+    // If category is provided, prioritize jobs in the same category
+    if (category) {
+      query.category = { $regex: new RegExp(category, 'i') };
+    }
+    
+    let relatedJobs = await Job.find(query)
+      .populate('createdBy', 'name picture')
+      .sort({ createAt: -1 })
+      .limit(limit)
+      .exec();
+    
+    // If we don't have enough jobs from the same category, get more from other categories
+    if (relatedJobs.length < limit) {
+      const remainingLimit = limit - relatedJobs.length;
+      const additionalQuery: FilterQuery<typeof Job> = {
+        _id: { 
+          $ne: currentJobId,
+          $nin: relatedJobs.map(job => job._id) // Exclude already fetched jobs
+        }
+      };
+      
+      if (category) {
+        additionalQuery.category = { $not: { $regex: new RegExp(category, 'i') } };
+      }
+      
+      const additionalJobs = await Job.find(additionalQuery)
+        .populate('createdBy', 'name picture')
+        .sort({ createAt: -1 })
+        .limit(remainingLimit)
+        .exec();
+      
+      relatedJobs = [...relatedJobs, ...additionalJobs];
+    }
+    
+    return { 
+      status: 'ok', 
+      jobs: JSON.parse(JSON.stringify(relatedJobs)) 
+    };
+  } catch (error) {
+    console.log(error);
+    return { 
+      status: 'error', 
+      message: 'Error fetching related jobs',
+      jobs: [] 
+    };
+  }
+};

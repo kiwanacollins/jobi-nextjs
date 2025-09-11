@@ -4,15 +4,15 @@ import Header from '@/layouts/headers/header';
 import JobDetailsV1Area from '@/components/job-details/job-details-v1-area';
 import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 import JobDetailsBreadcrumb from '@/components/jobs/breadcrumb/job-details-breadcrumb';
-import RelatedJobs from '@/components/jobs/related-jobs';
 import FooterOne from '@/layouts/footers/footer-one';
 import job_data from '@/data/job-data';
-import { getJobById } from '@/lib/actions/job.action';
+import { getJobById, getRelatedJobs } from '@/lib/actions/job.action';
 import { notFound } from 'next/navigation';
 
 const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => {
   // First try to find in static data
   let job = job_data.find((j) => Number(j.id) === Number(params.id));
+  let relatedJobs: any[] = [];
   
   // If not found in static data, try to fetch from database
   if (!job) {
@@ -38,8 +38,18 @@ const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => 
           overview: result.job.overview,
           minSalary: result.job.minSalary?.toString(),
           maxSalary: result.job.maxSalary?.toString(),
-          createdBy: result.job.createdBy
         };
+        
+        // Fetch related jobs for database jobs
+        const relatedResult = await getRelatedJobs({
+          currentJobId: result.job._id,
+          category: result.job.category,
+          limit: 10
+        });
+        
+        if (relatedResult.status === 'ok') {
+          relatedJobs = relatedResult.jobs;
+        }
       }
     } catch (error) {
       console.error('Error fetching job:', error);
@@ -63,12 +73,8 @@ const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => 
         {/* job details breadcrumb end */}
 
         {/* job details area start */}
-        <JobDetailsV1Area job={job} />
+        <JobDetailsV1Area job={job} relatedJobs={relatedJobs} />
         {/* job details area end */}
-
-        {/* related job start */}
-        <RelatedJobs category={job.category} />
-        {/* related job end */}
 
         {/* job portal intro start */}
         <JobPortalIntro />

@@ -11,6 +11,7 @@ import ParseHTML from '../common/parseHTML';
 import { useAuth } from '@clerk/nextjs';
 import { applyForJob } from '@/lib/actions/candidate.action';
 import Swal from 'sweetalert2';
+import RelatedJobs from './RelatedJobs';
 
 interface IJobDetailsV2AreaProps {
   job: IJobData & {
@@ -22,9 +23,10 @@ interface IJobDetailsV2AreaProps {
       _id?: string;
     };
   };
+  relatedJobs?: IJobData[];
 }
 
-const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
+const JobDetailsV2Area = ({ job, relatedJobs = [] }: IJobDetailsV2AreaProps) => {
   const { userId: loginInUserId } = useAuth();
   
   // Format deadline date
@@ -36,6 +38,49 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
       month: 'long', 
       year: 'numeric'
     });
+  };
+
+  // Generate job URL for sharing
+  const getJobUrl = () => {
+    if (typeof window !== 'undefined') {
+      return window.location.href;
+    }
+    return job?.slug ? `${process.env.NEXT_PUBLIC_SERVER_URL}/jobs/${job.slug}` : '#';
+  };
+
+  // Social sharing functions
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(getJobUrl());
+      // You could add a toast notification here
+      alert('Link copied to clipboard!');
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
+
+  const shareOnFacebook = () => {
+    const url = encodeURIComponent(getJobUrl());
+    const title = encodeURIComponent(`${job?.title} at ${job?.company}`);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${title}`, '_blank');
+  };
+
+  const shareOnX = () => {
+    const url = encodeURIComponent(getJobUrl());
+    const text = encodeURIComponent(`Check out this job opportunity: ${job?.title} at ${job?.company}`);
+    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+  };
+
+  const shareOnWhatsApp = () => {
+    const url = encodeURIComponent(getJobUrl());
+    const text = encodeURIComponent(`Check out this job: ${job?.title} at ${job?.company} - ${url}`);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+  };
+
+  const shareViaEmail = () => {
+    const subject = encodeURIComponent(`Job Opportunity: ${job?.title} at ${job?.company}`);
+    const body = encodeURIComponent(`Hi,\n\nI thought you might be interested in this job opportunity:\n\n${job?.title} at ${job?.company}\n${job?.location ? `Location: ${job?.location}\n` : ''}${job?.duration ? `Type: ${job?.duration}\n` : ''}\n${getJobUrl()}\n\nBest regards`);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
   };
 
   const handleJobApplication = async (
@@ -155,6 +200,90 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
                 <h4 className="block-title">Job Description</h4>
                 <ParseHTML data={job?.overview} />
               </div>
+
+              {/* Social Sharing Card */}
+              <div className="post-block border-style mt-50 lg-mt-30">
+                <div className="share-post-wrapper bg-white rounded-3 p-4">
+                  <h5 className="fw-600 mb-3">Share this post:</h5>
+                  <div className="d-flex flex-wrap align-items-center gap-3">
+                    {/* Copy Link */}
+                    <button
+                      onClick={copyToClipboard}
+                      className="share-btn d-flex align-items-center gap-2 px-3 py-2 bg-light border rounded-pill text-decoration-none text-dark fw-500"
+                      style={{ transition: 'all 0.3s ease' }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e9ecef'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+                    >
+                      <i className="bi bi-link-45deg"></i>
+                      <span>Copy Link</span>
+                    </button>
+
+                    {/* Facebook */}
+                    <button
+                      onClick={shareOnFacebook}
+                      className="share-btn d-flex align-items-center gap-2 px-3 py-2 border rounded-pill text-decoration-none fw-500"
+                      style={{ 
+                        backgroundColor: '#1877f2', 
+                        color: 'white',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#166fe5'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#1877f2'}
+                    >
+                      <i className="bi bi-facebook"></i>
+                      <span>Facebook</span>
+                    </button>
+
+                    {/* X (Twitter) */}
+                    <button
+                      onClick={shareOnX}
+                      className="share-btn d-flex align-items-center gap-2 px-3 py-2 border rounded-pill text-decoration-none fw-500"
+                      style={{ 
+                        backgroundColor: '#000000', 
+                        color: 'white',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#000000'}
+                    >
+                      <i className="bi bi-twitter-x"></i>
+                      <span>X</span>
+                    </button>
+
+                    {/* WhatsApp */}
+                    <button
+                      onClick={shareOnWhatsApp}
+                      className="share-btn d-flex align-items-center gap-2 px-3 py-2 border rounded-pill text-decoration-none fw-500"
+                      style={{ 
+                        backgroundColor: '#25d366', 
+                        color: 'white',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#22c55e'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#25d366'}
+                    >
+                      <i className="bi bi-whatsapp"></i>
+                      <span>WhatsApp</span>
+                    </button>
+
+                    {/* Email */}
+                    <button
+                      onClick={shareViaEmail}
+                      className="share-btn d-flex align-items-center gap-2 px-3 py-2 border rounded-pill text-decoration-none fw-500"
+                      style={{ 
+                        backgroundColor: '#6c757d', 
+                        color: 'white',
+                        transition: 'all 0.3s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#5c636a'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#6c757d'}
+                    >
+                      <i className="bi bi-envelope"></i>
+                      <span>Email</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
               {/* <div className="post-block mt-70 lg-mt-40">
                 <h4 className="block-title">Responsibilities</h4>
                 <ul className="list-type-one style-none mb-15">
@@ -241,6 +370,9 @@ const JobDetailsV2Area = ({ job }: IJobDetailsV2AreaProps) => {
           </div>
         </div>
       </div>
+      
+      {/* Related Jobs Section */}
+      <RelatedJobs jobs={relatedJobs} />
     </section>
   );
 };
