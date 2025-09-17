@@ -1,5 +1,4 @@
 import BlogFour from '@/components/blogs/blog-four';
-import FancyBannerSix from '@/components/fancy-banner/fancy-banner-6';
 import FeatureNine from '@/components/features/feature-nine';
 import FeatureTwo from '@/components/features/feature-two';
 import FeedbackFive from '@/components/feedBacks/feedback-five';
@@ -70,10 +69,6 @@ export default async function HomePage() {
       {/* text feature two start */}
       <FeatureTwo />
       {/* text feature two end */}
-
-      {/* fancy banner start */}
-      <FancyBannerSix />
-      {/* fancy banner end */}
     </>
   );
 }
