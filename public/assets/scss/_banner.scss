@@ -212,12 +212,37 @@
   background-color: #212121;
   min-height: 100vh;
   z-index: 5;
+  position: relative;
+
+  // Dark overlay for better text contrast
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  // Ensure content appears above overlay
+  .container {
+    position: relative;
+    z-index: 2;
+  }
 
   h1 {
     font-family: var(--gorditas-font);
     color: #fff;
     font-weight: 500;
     line-height: 1.15em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  p {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   #banner-six-carousel {

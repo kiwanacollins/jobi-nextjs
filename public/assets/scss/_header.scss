@@ -10,7 +10,18 @@
         top:0;
         right: 0;
         left: 0;
-        background: transparent;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        
+        .logo img {
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8));
+        }
+    }
+    &.menu-overlay.menu-style-two {
+        background: rgba(33, 33, 33, 0.8);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
     }
     &.fixed {
         position: fixed;
@@ -189,7 +200,11 @@
 .menu-style-two.theme-main-menu.fixed {
     background: #212121;
 }
-.menu-style-two .navbar .nav-item .nav-link {color: #fff;}
+.menu-style-two .navbar .nav-item .nav-link {
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-weight: 500;
+}
 .menu-style-two .navbar .nav-item:hover .nav-link {color:$color-three;}
 // Mega Menu
 .theme-main-menu .mega-dropdown,.theme-main-menu .navbar {position: static;}
@@ -253,16 +268,24 @@
 }
 .theme-main-menu .login-btn-three {
     padding: 12px 27px;
-    border: 1px solid #fff;
+    border: 2px solid #fff;
     color: #fff;
     border-radius: 50px;
+    background: rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     &:hover {
         background: $color-three;
         border-color: $color-three;
+        color: #fff;
     }
     &.dark-style {
         border-color: #000;
         color: #000;
+        background: rgba(255, 255, 255, 0.9);
+        text-shadow: none;
         &:hover {
             background: $color-three;
             border-color: $color-three;
