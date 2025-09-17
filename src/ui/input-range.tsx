@@ -27,7 +27,7 @@ const InputRange = ({ STEP, MIN, MAX, values, handleChanges }: IProps) => {
               width: '100%',
               background: getTrackBackground({
                 values,
-                colors: ['#EDEDED', '#77BEF0', '#EDEDED'],
+                colors: ['#EDEDED', ' #00bf58', '#EDEDED'],
                 min: MIN,
                 max: MAX
               })
@@ -44,7 +44,7 @@ const InputRange = ({ STEP, MIN, MAX, values, handleChanges }: IProps) => {
               ...props.style,
               height: '17px',
               width: '5px',
-              backgroundColor: '#77BEF0'
+              backgroundColor: ' #00bf58'
             }}
           />
         )}

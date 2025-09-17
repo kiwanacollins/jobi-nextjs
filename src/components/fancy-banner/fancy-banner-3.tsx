@@ -55,7 +55,7 @@ const FancyBannerThree = ({ style_2 = false }: { style_2?: boolean }) => {
                     <div className="title-one mt-35 lg-mt-30 mb-30 lg-mb-20">
                       <h2 className="fw-600 text-white">
                         Let’s get started It’s{' '}
-                        <span style={{ color: '#77BEF0' }}>simple.</span>
+                        <span style={{ color: ' #00bf58' }}>simple.</span>
                       </h2>
                     </div>
                     <p className="text-white">
@@ -109,7 +109,7 @@ const FancyBannerThree = ({ style_2 = false }: { style_2?: boolean }) => {
                     <div className="title-one mt-25 mb-25 lg-mb-20">
                       <h2 className="text-white main-font">
                         Let’s get started It’s{' '}
-                        <span style={{ color: '#77BEF0' }}>simple.</span>
+                        <span style={{ color: ' #00bf58' }}>simple.</span>
                       </h2>
                     </div>
                     <p className="text-white text-md">
