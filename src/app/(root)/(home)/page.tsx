@@ -1,5 +1,4 @@
 import BlogFour from '@/components/blogs/blog-four';
-import FancyBannerThree from '@/components/fancy-banner/fancy-banner-3';
 import FancyBannerSix from '@/components/fancy-banner/fancy-banner-6';
 import FeatureNine from '@/components/features/feature-nine';
 import FeatureTwo from '@/components/features/feature-two';
@@ -55,10 +54,6 @@ export default async function HomePage() {
         </div>
       </section>
       {/* job list items end */}
-
-      {/* fancy banner start */}
-      <FancyBannerThree style_2={true} />
-      {/* fancy banner end */}
 
       {/* text feature start */}
       <FeatureNine />

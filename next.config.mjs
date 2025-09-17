@@ -1,6 +1,8 @@
 import createMDX from '@next/mdx';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable standalone output for Docker
+  output: 'standalone',
   experimental: {
     mdxRs: true,
     serverComponentsExternalPackages: ['mongoose'],
