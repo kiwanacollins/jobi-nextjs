@@ -1,16 +1,12 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import CitySelect from '../candidate/city-select';
-import CountrySelect from '../candidate/country-select';
-import EmployExperience from './employ-experience';
+// Simplified to match create form fields
 import { Controller, useForm } from 'react-hook-form';
 import { notifyError, notifySuccess } from '@/utils/toast';
-import { Country } from 'country-state-city';
 import { formJobDataSchema } from '@/utils/validation';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import ErrorMsg from '../../common/error-msg';
-import SalaryDurationSelect from './salary-duration-select';
 import Select from 'react-select';
 import { IJobData } from '@/database/job.model';
 import { updateJobById } from '@/lib/actions/job.action';
@@ -28,12 +24,7 @@ const UpdateJobArea = ({ job }: IProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const editorRef = useRef(null);
   const [progress, setProgress] = useState(0);
-  const [selectedCountryDetails, setSelectedCountryDetails] = useState(
-    {} as any
-  );
-
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [subCategoryOptions, setSubCategoryOptions] = useState([]);
   const [categoryOptions, setCategoryOptions] = useState([]);
 
   type IJobDataSchemaType = z.infer<typeof formJobDataSchema>;
@@ -45,48 +36,15 @@ const UpdateJobArea = ({ job }: IProps) => {
       title: job?.title || '',
       overview: job?.overview || '',
       duration: job?.duration || '',
-      skills: job?.skills || [],
-      salary_duration: job?.salary_duration || '',
       category: job?.category || '',
+      company: job?.company || '',
+      companyImage: job?.companyImage || '',
       location: job?.location || '',
-      address: job?.address || '',
-      country: job?.country || '',
-      city: job?.city || '',
-      experience: job?.experience || '',
-      minSalary: job?.minSalary,
-      maxSalary: job?.maxSalary,
-      industry: job?.industry || '',
-      english_fluency: job?.english_fluency || ''
+      deadline: job?.deadline ? new Date(job.deadline).toISOString().split('T')[0] : '',
+      // keep schema optional fields untouched; we won't render them here
     }
   });
-  const {
-    handleSubmit,
-    register,
-    reset,
-    control,
-    watch,
-    formState: { errors }
-  } = methods;
-
-  const selectedCountryName = watch('country');
-  const selectedPost = watch('category');
-  const skillsOfSelectedPost = categories.find(
-    (cat: any) => cat?.name === selectedPost
-  );
-
-  const selectedPostSkills = skillsOfSelectedPost?.subcategory?.map(
-    (item: any) => ({
-      value: item.name,
-      label: item.name
-    })
-  );
-
-  useEffect(() => {
-    const selectedCountry = Country.getAllCountries().find(
-      (country) => country.name === selectedCountryName
-    );
-    setSelectedCountryDetails(selectedCountry);
-  }, [selectedCountryName]);
+  const { handleSubmit, register, reset, control, formState: { errors } } = methods;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -97,16 +55,6 @@ const UpdateJobArea = ({ job }: IProps) => {
         label: item.name
       }));
       setCategoryOptions(categoriesData);
-      const subcategories = res.flatMap((item: any) =>
-        item.subcategory.map((i: any) => i.name)
-      );
-      const uniqueSubcategories = [...new Set(subcategories)];
-      const subCategoryData = uniqueSubcategories.map((item: any) => ({
-        value: item as string,
-        label: item as string
-      }));
-      // @ts-ignore
-      setSubCategoryOptions(subCategoryData);
     };
     fetchCategories();
   }, []);
@@ -139,18 +87,10 @@ const UpdateJobArea = ({ job }: IProps) => {
           overview: data.overview,
           duration: data.duration,
           category: data.category,
-          salary_duration: data.salary_duration,
           location: data.location,
-          address: data.address,
-          country: data.country,
-          city: data.city,
-          experience: data.experience,
-          minSalary: data.minSalary,
-          maxSalary: data.maxSalary,
-          industry: data.industry,
-          english_fluency: data.english_fluency,
-          //@ts-ignore
-          skills: data?.skills
+          company: data.company,
+          companyImage: data.companyImage,
+          deadline: data.deadline ? new Date(data.deadline) : undefined
         },
         path: pathname
       });
@@ -178,7 +118,7 @@ const UpdateJobArea = ({ job }: IProps) => {
     <div className="position-relative">
       {/* form start */}
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="main-title">Post a New Job</h2>
+        <h2 className="main-title">Edit Job</h2>
         <div className="bg-white card-box border-20">
           <h4 className="dash-title-three">Job Details</h4>
           <div className="dash-input-wrapper mb-30">
@@ -191,6 +131,33 @@ const UpdateJobArea = ({ job }: IProps) => {
               name="title"
             />
             {errors?.title && <ErrorMsg msg={errors?.title.message} />}
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Company Name*</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Exquisite Solution Limited"
+                  {...register('company', { required: `Company name is required!` })}
+                  name="company"
+                />
+                {errors?.company && <ErrorMsg msg={errors?.company.message} />}
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Company Logo (Image URL)</label>
+                <input
+                  type="url"
+                  placeholder="https://example.com/company-logo.png"
+                  {...register('companyImage')}
+                  name="companyImage"
+                />
+                {errors?.companyImage && <ErrorMsg msg={errors?.companyImage.message} />}
+                <small className="text-muted">Provide a direct URL to your company logo image</small>
+              </div>
+            </div>
           </div>
           <div className="dash-input-wrapper mb-30">
             <label htmlFor="">Job Description*</label>
@@ -240,39 +207,63 @@ const UpdateJobArea = ({ job }: IProps) => {
             />
             {errors?.overview && <ErrorMsg msg={errors?.overview.message} />}
           </div>
-          <div className="row align-items-end">
+          <div className="row">
             <div className="col-md-6">
-              <div className="mb-30">
-                <label className="fw-semibold pb-1" htmlFor="">
-                  Job Category
-                </label>
-                <Controller
-                  name="category"
-                  control={control}
-                  render={({ field }) => (
-                    <>
-                      <Select
-                        {...field}
-                        isClearable
-                        options={categoryOptions || []}
-                        className="basic-multi-select"
-                        classNamePrefix="select"
-                        onChange={(selectedOption) => {
-                          field.onChange(selectedOption?.value);
-                        }}
-                        value={
-                          field.value
-                            ? { value: field.value, label: field.value }
-                            : null
-                        }
-                      />
-                      {errors?.category && (
-                        <ErrorMsg msg={errors?.category?.message} />
-                      )}
-                    </>
-                  )}
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Location*</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Kampala"
+                  {...register('location', { required: `Location is required!` })}
+                  name="location"
                 />
+                {errors?.location && <ErrorMsg msg={errors?.location.message} />}
               </div>
+            </div>
+            <div className="col-md-6">
+              <div className="dash-input-wrapper mb-30">
+                <label htmlFor="">Application Deadline*</label>
+                <input
+                  type="date"
+                  {...register('deadline', { required: `Deadline is required!` })}
+                  name="deadline"
+                />
+                {errors?.deadline && <ErrorMsg msg={errors?.deadline.message} />}
+              </div>
+            </div>
+          </div>
+
+          <div className="row align-items-end">
+            <div className="col-md-6 mb-30">
+              <label className="fw-semibold pb-1" htmlFor="">
+                Job Category
+              </label>
+              <Controller
+                name="category"
+                control={control}
+                render={({ field }) => (
+                  <>
+                    <Select
+                      {...field}
+                      isClearable
+                      options={categoryOptions || []}
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      onChange={(selectedOption) => {
+                        field.onChange(selectedOption?.value);
+                      }}
+                      value={
+                        field.value
+                          ? { value: field.value, label: field.value }
+                          : null
+                      }
+                    />
+                    {errors?.category && (
+                      <ErrorMsg msg={errors?.category?.message} />
+                    )}
+                  </>
+                )}
+              />
             </div>
             <div className="col-md-6">
               <div className=" mb-30">
@@ -315,91 +306,9 @@ const UpdateJobArea = ({ job }: IProps) => {
                 />
               </div>
             </div>
-            <div className="col-md-6">
-              <div className="dash-input-wrapper mb-30">
-                <label htmlFor="">Salary*</label>
-                <SalaryDurationSelect register={register} />
-                {errors?.salary_duration && (
-                  <ErrorMsg msg={errors?.salary_duration.message} />
-                )}
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="dash-input-wrapper mb-30">
-                <input
-                  type="text"
-                  placeholder="Min Salary"
-                  {...register('minSalary', {
-                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
-                  })}
-                  name="minSalary"
-                />
-                {errors?.minSalary && (
-                  <ErrorMsg msg={errors?.minSalary.message} />
-                )}
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="dash-input-wrapper mb-30">
-                <input
-                  type="text"
-                  placeholder="Max salary"
-                  {...register('maxSalary', {
-                    setValueAs: (v) => (v === '' ? undefined : parseInt(v))
-                  })}
-                  name="maxSalary"
-                />
-                {errors?.maxSalary && (
-                  <ErrorMsg msg={errors?.maxSalary.message} />
-                )}
-              </div>
-            </div>
           </div>
 
-          <h4 className="dash-title-three pt-50 lg-pt-30">
-            Skills & Experience
-          </h4>
-          <div className=" mb-30">
-            <label className="fw-semibold  mb-3 " htmlFor="">
-              Skills*
-            </label>
-            <Controller
-              name="skills"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <Select
-                    isMulti
-                    {...field}
-                    //@ts-ignore
-                    options={
-                      selectedPost
-                        ? selectedPostSkills
-                        : subCategoryOptions || []
-                    }
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    onChange={(selectedOption) =>
-                      field.onChange(
-                        selectedOption?.map(
-                          (option) => option?.value as string | null
-                        )
-                      )
-                    }
-                    value={field.value?.map((val) =>
-                      val ? { value: val, label: val } : null
-                    )}
-                  />
-                  {errors?.skills && <ErrorMsg msg={errors?.skills.message} />}
-                </>
-              )}
-            />
-          </div>
-
-          {/* employ experience start */}
-          <EmployExperience control={control} errors={errors} />
-          {/* employ experience end */}
-          {/* File attachment Start */}
+          {/* File attachment placeholder retained as in create form (commented) */}
           {/* <h4 className="dash-title-three pt-50 lg-pt-30">File Attachment</h4>
           <div className="dash-input-wrapper mb-20">
             <label htmlFor="">File Attachment*</label>
@@ -417,43 +326,6 @@ const UpdateJobArea = ({ job }: IProps) => {
           </div>
           <small>Upload file .pdf, .doc, .docx</small> */}
           {/* File attachment End */}
-          <h4 className="dash-title-three pt-50 lg-pt-30">
-            Address & Location
-          </h4>
-          <div className="row">
-            <div className="col-12">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">Address*</label>
-                <input
-                  type="text"
-                  defaultValue={job.address || ''}
-                  placeholder="Cowrasta, Chandana, Gazipur Sadar"
-                  {...register('address', {
-                    required: `Address is required!`
-                  })}
-                  name="address"
-                />
-                {errors?.address && <ErrorMsg msg={errors?.address.message} />}
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">Country*</label>
-                <CountrySelect register={register} />
-                {errors?.country && <ErrorMsg msg={errors?.country.message} />}
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="dash-input-wrapper mb-25">
-                <label htmlFor="">City*</label>
-                <CitySelect
-                  register={register}
-                  countryCode={selectedCountryDetails?.isoCode || ''}
-                />
-                {errors?.city && <ErrorMsg msg={errors?.city.message} />}
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Progress bar */}

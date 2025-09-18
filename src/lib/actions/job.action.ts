@@ -146,7 +146,7 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
 // Update a single job by MongoDB ID
 interface IUpdateJobParams {
   jobId: string;
-  updateData: IJobData;
+  updateData: Partial<IJobData>;
   path: string;
 }
 

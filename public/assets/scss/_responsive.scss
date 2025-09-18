@@ -1062,6 +1062,14 @@
   .card-style-five.arrow-style:after {
     display: none !important;
   }
+  .job-header-card .job-title {
+    font-size: 20px;
+    line-height: 1.35;
+  }
+  .job-header-card .job-meta span,
+  .job-header-card .job-meta .badge {
+    font-size: 13px;
+  }
 }
 /*(max-width: 991px)*/
 /*Grid md Start*/
@@ -1182,6 +1190,17 @@
     top: 25px;
     right: 15px;
     margin: 0;
+  }
+  .related-jobs-section .job-list-one .btn-wrapper,
+  .related-jobs-section .job-list-one .job-tag-2,
+  .related-jobs-section .job-list-one .job-title {
+    gap: 8px !important;
+  }
+  .related-jobs-section .job-list-one .apply-btn {
+    width: 100%;
+  }
+  .related-jobs-section .job-list-one .title {
+    font-size: 16px;
   }
 }
 /*(max-width: 767px)*/

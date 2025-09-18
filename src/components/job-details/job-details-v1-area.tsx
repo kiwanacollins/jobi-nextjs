@@ -109,7 +109,7 @@ const JobDetailsV1Area = ({ job, relatedJobs = [] }: JobDetailsProps) => {
         <div className="job-header-card bg-white border rounded-3 p-4 mb-5" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
           <div className="row align-items-center">
             <div className="col-lg-8">
-              <div className="d-flex align-items-start gap-4">
+              <div className="d-flex align-items-start gap-3 gap-md-4 flex-wrap">
                 {/* Company Logo */}
                 <div className="company-logo-wrapper flex-shrink-0">
                   {getCompanyImage() ? (
@@ -129,12 +129,12 @@ const JobDetailsV1Area = ({ job, relatedJobs = [] }: JobDetailsProps) => {
                 </div>
 
                 {/* Job Info */}
-                <div className="job-info flex-grow-1">
-                  <h1 className="job-title h3 text-dark mb-2 fw-bold">{job.title}</h1>
+                <div className="job-info flex-grow-1" style={{minWidth:'0'}}>
+                  <h1 className="job-title h4 h3-md text-dark mb-2 fw-bold text-truncate">{job.title}</h1>
                   <p className="company-name h6 text-secondary mb-3 fw-normal">{job.company}</p>
                   
                   {/* Job Meta Info */}
-                  <div className="job-meta d-flex flex-wrap align-items-center gap-3 mb-0">
+                  <div className="job-meta d-flex flex-wrap align-items-center gap-2 gap-md-3 mb-0">
                     {/* Job Type Badge */}
                     <span className="badge text-primary border border-primary px-3 py-2 rounded-pill fw-normal" style={{ backgroundColor: 'rgba(13, 110, 253, 0.1)' }}>
                       <i className="bi bi-briefcase me-1"></i>
@@ -296,7 +296,7 @@ const JobDetailsV1Area = ({ job, relatedJobs = [] }: JobDetailsProps) => {
               <div className="post-block border-style mt-50 lg-mt-30">
                 <div className="share-post-wrapper bg-white rounded-3 p-4">
                   <h5 className="fw-600 mb-3">Share this post:</h5>
-                  <div className="d-flex flex-wrap align-items-center gap-3">
+                  <div className="d-flex flex-wrap align-items-center gap-2 gap-md-3">
                     {/* Copy Link */}
                     <button
                       onClick={copyToClipboard}

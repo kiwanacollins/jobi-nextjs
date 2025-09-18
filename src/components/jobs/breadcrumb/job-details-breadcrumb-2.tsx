@@ -27,17 +27,7 @@ const JobDetailsBreadcrumbTwo = ({
           <div className="row">
             <div className="col-xl-8 m-auto text-center">
               <div className="post-date">
-                {getTimestamp(createdAt as Date)} by{' '}
-                {createdBy ? (
-                  <Link
-                    href={`/company/${createdBy}`}
-                    className="fw-500 text-white"
-                  >
-                    {company}
-                  </Link>
-                ) : (
-                  <span className="fw-500 text-white">{company}</span>
-                )}
+                {getTimestamp(createdAt as Date)}
               </div>
               <div className="title-two">
                 <h2 className="text-white">{title}</h2>

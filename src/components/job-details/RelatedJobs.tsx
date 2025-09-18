@@ -20,12 +20,12 @@ const RelatedJobs: React.FC<RelatedJobsProps> = ({ jobs }) => {
           </div>
         </div>
         
-        <div className="row gx-xxl-5">
+        <div className="row gx-xxl-5 gy-3">
           {jobs.map((job, index) => (
-            <div key={job._id} className="col-lg-6 col-xl-4 mb-30">
-              <div className="job-list-one style-two position-relative border-style">
-                <div className="job-title d-flex align-items-center">
-                  <div className="logo order-md-1">
+            <div key={job._id} className="col-12 col-md-6 col-xl-4 mb-3">
+              <div className="job-list-one style-two position-relative border-style h-100">
+                <div className="job-title d-flex align-items-center flex-wrap gap-3">
+                  <div className="logo order-md-1 flex-shrink-0">
                     {job.companyImage ? (
                       <img
                         src={job.companyImage}
@@ -53,9 +53,9 @@ const RelatedJobs: React.FC<RelatedJobsProps> = ({ jobs }) => {
                       </div>
                     )}
                   </div>
-                  <div className="split-box1 order-md-0">
-                    <h4 className="job-duration fw-500">{job.duration || 'Full-time'}</h4>
-                    <h4 className="tran3s fw-500 fs-20 mb-0">
+                  <div className="split-box1 order-md-0" style={{minWidth:'0'}}>
+                    <h4 className="job-duration fw-500 mb-1">{job.duration || 'Full-time'}</h4>
+                    <h4 className="tran3s fw-500 fs-18 mb-0 text-truncate">
                       <Link 
                         href={`/jobs/${job.slug}`}
                         className="title tran3s"
@@ -66,7 +66,7 @@ const RelatedJobs: React.FC<RelatedJobsProps> = ({ jobs }) => {
                   </div>
                 </div>
                 
-                <div className="job-salary">
+                <div className="job-salary d-none d-md-block">
                   <span className="fw-500 text-dark">
                     {job.minSalary && job.maxSalary 
                       ? `$${job.minSalary} - $${job.maxSalary}` 
@@ -80,7 +80,7 @@ const RelatedJobs: React.FC<RelatedJobsProps> = ({ jobs }) => {
                   </span>
                 </div>
                 
-                <div className="job-tag-2 d-flex align-items-center justify-content-between">
+                <div className="job-tag-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
                   <div className="job-location d-flex align-items-center">
                     <i className="bi bi-geo-alt"></i>
                     <span>{job.location || 'Remote'}</span>
@@ -93,7 +93,7 @@ const RelatedJobs: React.FC<RelatedJobsProps> = ({ jobs }) => {
                   </div>
                 </div>
                 
-                <div className="btn-wrapper d-flex align-items-center justify-content-between">
+                <div className="btn-wrapper d-flex align-items-center justify-content-between flex-wrap gap-2">
                   <div className="job-posted text-muted small">
                     {job.company}
                   </div>

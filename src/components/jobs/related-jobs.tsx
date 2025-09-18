@@ -69,13 +69,13 @@ const RelatedJobs = ({ category }: { category: string[] }) => {
             className="related-job-slider"
           >
             {job_items?.map((j) => (
-              <div key={j._id} className="item">
+              <div key={j._id} className="item px-2 px-sm-3 h-100">
                 <JobGridItem item={j} />
               </div>
             ))}
           </Slider>
 
-          <ul className="slider-arrows slick-arrow-one color-two d-flex justify-content-center style-none sm-mt-20">
+          <ul className="slider-arrows slick-arrow-one color-two d-flex justify-content-center style-none sm-mt-20 mt-3 mt-md-0">
             <li onClick={sliderPrev} className="prev_e slick-arrow">
               <i className="bi bi-arrow-left"></i>
             </li>
