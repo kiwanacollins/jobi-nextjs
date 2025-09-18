@@ -66,13 +66,6 @@ const nav_data: {
     title: 'Make admin'
   },
   {
-    id: 6,
-    icon: nav_3,
-    icon_active: nav_3_active,
-    link: '/dashboard/admin-dashboard/users',
-    title: 'Users'
-  },
-  {
     id: 9,
     icon: nav_3,
     icon_active: nav_3_active,
