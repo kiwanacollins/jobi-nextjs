@@ -13,7 +13,7 @@ const FullWidthItem = ({ blog }: IProps) => {
   return (
     <article className="blog-meta-two box-layout mb-50 lg-mb-30">
       <figure className="post-img m0">
-        <Link href={`/blog/${blog._id}`} className="w-100 d-block">
+        <Link href={`/blog/${blog.slug || blog._id}`} className="w-100 d-block">
           <Image
             src={blog.image.url}
             alt="blog-img"
@@ -23,7 +23,7 @@ const FullWidthItem = ({ blog }: IProps) => {
           />
         </Link>
         <Link
-          href={`/blog/${blog._id}`}
+          href={`/blog/${blog.slug || blog._id}`}
           className="tags text-decoration-none fw-500"
         >
           {blog.tags[0]}
@@ -36,20 +36,20 @@ const FullWidthItem = ({ blog }: IProps) => {
               Featured -
             </span>
           )}
-          <Link className="text-decoration-none" href={`/blog/${blog._id}`}>
+          <Link className="text-decoration-none" href={`/blog/${blog.slug || blog._id}`}>
             {getTimestamp(blog.updatedAt as Date)}
           </Link>
         </div>
         <Link
           className="text-decoration-none tran3s"
-          href={`/blog/${blog._id}`}
+          href={`/blog/${blog.slug || blog._id}`}
         >
           <h4 className="tran3s  blog-title">
             {`${blog.title.substring(0, 30)}...`}
           </h4>
         </Link>
         <Link
-          href={`/blog/${blog._id}`}
+          href={`/blog/${blog.slug || blog._id}`}
           className="continue-btn tran3s d-flex align-items-center"
         >
           <span className="fw-500 text-decoration-none me-2">

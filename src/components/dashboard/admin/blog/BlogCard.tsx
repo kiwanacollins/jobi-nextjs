@@ -58,7 +58,7 @@ const BlogCard = ({ blog }: BlogCardProps) => {
         </p> */}
         <div className="d-flex flex-column flex-md-row gap-1 py-2">
           <Link
-            href={`/dashboard/admin-dashboard/blog/${blog._id}`}
+            href={`/dashboard/admin-dashboard/blog/${blog.slug || blog._id}`}
             className="btn btn-primary"
           >
             Update

@@ -40,7 +40,7 @@ const BlogSidebar = ({ blogs }: IBlogSidebarProps) => {
             <div className="post ps-4">
               <h4 className="">
                 <Link
-                  href={`/blog/${b._id}`}
+                  href={`/blog/${b.slug || b._id}`}
                   className="title  text-decoration-none  tran3s"
                 >
                   {b.title}

@@ -3,7 +3,7 @@ import React from 'react';
 import BlogSidebar from '@/components/blogs/blog-postbox/sidebar';
 import CommonBreadcrumb from '@/components/common/common-breadcrumb';
 import BlogArticleDetails from '@/components/blogs/BlogArticleDetails/BlogArticleDetails';
-import { fetchAllBlogs, getBlogById } from '@/lib/actions/blog.action';
+import { fetchAllBlogs, getBlogBySlugOrId } from '@/lib/actions/blog.action';
 import { IBlog } from '@/database/Blog.model';
 
 interface URLProps {
@@ -12,7 +12,7 @@ interface URLProps {
 }
 
 const BlogDetailsArea = async ({ params }: URLProps) => {
-  const blog = await getBlogById(params.id);
+  const blog = await getBlogBySlugOrId(params.id);
   const blogs = await fetchAllBlogs();
   // get other blogs
   const otherBlogs = blogs.filter((b: IBlog) => b._id !== blog._id);

@@ -5,10 +5,44 @@ import { connectToDatabase } from '../mongoose';
 import Blog, { IBlog } from '@/database/Blog.model';
 import cloudinary from 'cloudinary';
 
+// Helper function to generate slug from title
+function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9 -]/g, '') // Remove special characters
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .trim() // Remove leading/trailing spaces
+    .substring(0, 60); // Limit length
+}
+
+// Helper function to ensure unique slug
+async function ensureUniqueSlug(baseSlug: string, blogId?: string): Promise<string> {
+  let slug = baseSlug;
+  let counter = 1;
+  
+  while (true) {
+    const query = blogId ? { slug, _id: { $ne: blogId } } : { slug };
+    const existingBlog = await Blog.findOne(query);
+    
+    if (!existingBlog) {
+      return slug;
+    }
+    
+    slug = `${baseSlug}-${counter}`;
+    counter++;
+  }
+}
+
 export async function createBlog(data: any) {
   try {
     await connectToDatabase();
     connectToCloudinary();
+    
+    // Generate slug from title
+    const baseSlug = generateSlug(data.title);
+    data.slug = await ensureUniqueSlug(baseSlug);
+    
     const { image } = data;
     if (image.url) {
       const result = await cloudinary.v2.uploader.upload(image.url as string, {
@@ -71,6 +105,60 @@ export async function getBlogById(blogId: string) {
   }
 }
 
+export async function getBlogBySlug(slug: string) {
+  try {
+    await connectToDatabase();
+
+    // Find the blog by slug
+    const blog = await Blog.findOne({ slug });
+
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+
+    // Return the blog details
+    return JSON.parse(JSON.stringify(blog));
+  } catch (error) {
+    // Handle error (e.g., log, throw, or return a specific error message)
+    console.error(`Error fetching blog with slug ${slug}:`, error);
+    throw error;
+  }
+}
+
+// Get blog by slug or ID (flexible function)
+export async function getBlogBySlugOrId(identifier: string) {
+  try {
+    await connectToDatabase();
+    
+    if (!identifier) {
+      throw new Error('Invalid blog identifier');
+    }
+    
+    let blog;
+    const mongoose = require('mongoose');
+    
+    // Check if identifier is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(identifier)) {
+      // Try to find by ID first
+      blog = await Blog.findById(identifier);
+    }
+    
+    // If not found by ID or not a valid ObjectId, try to find by slug
+    if (!blog) {
+      blog = await Blog.findOne({ slug: identifier });
+    }
+
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+
+    return JSON.parse(JSON.stringify(blog));
+  } catch (error) {
+    console.error(`Error fetching blog with identifier ${identifier}:`, error);
+    throw error;
+  }
+}
+
 interface IDeleteBlogByIdParams {
   blogId: string;
   path: string;
@@ -122,6 +210,12 @@ export async function updateBlogById(params: IUpdateBlogByIdParams) {
     await connectToDatabase(); // Assuming this function connects to your MongoDB database
     connectToCloudinary();
     const blog = await Blog.findById(blogId);
+
+    // Update slug if title is being changed
+    if (newData.title && newData.title !== blog?.title) {
+      const baseSlug = generateSlug(newData.title);
+      newData.slug = await ensureUniqueSlug(baseSlug, blogId);
+    }
 
     if (newData.image?.url && newData.image?.url !== blog?.image?.url) {
       const result = await cloudinary.v2.uploader.upload(newData.image.url, {
