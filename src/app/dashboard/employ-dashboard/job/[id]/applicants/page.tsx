@@ -1,6 +1,6 @@
 import CandidateListItem from '@/components/candidate/candidate-list-item';
 import { IUser } from '@/database/user.model';
-import { getJobApplicantsByJobId } from '@/lib/actions/employee.action';
+import { getJobApplicantsBySlugOrId } from '@/lib/actions/employee.action';
 import { getUserById } from '@/lib/actions/user.action';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
@@ -15,7 +15,7 @@ const JobApplicantsPage = async ({ params }: ParamsProps) => {
   if (currentUser?.role !== 'employee') {
     redirect('/');
   }
-  const { applicants, jobTitle } = await getJobApplicantsByJobId(
+  const { applicants, jobTitle } = await getJobApplicantsBySlugOrId(
     params.id as string
   );
   return (

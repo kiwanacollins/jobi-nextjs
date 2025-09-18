@@ -1,7 +1,7 @@
 import React from 'react';
 
 import UpdateJobArea from '@/components/dashboard/employ/update-job-area';
-import { getJobById } from '@/lib/actions/job.action';
+import { getJobBySlugOrId } from '@/lib/actions/job.action';
 import { IJobData } from '@/database/job.model';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
@@ -16,7 +16,7 @@ const EmployDashboardSubmitJobPage = async ({ params }: ParamsProps) => {
   if (currentUser?.role !== 'employee') {
     redirect('/');
   }
-  const { job } = await getJobById(params.id as string);
+  const { job } = await getJobBySlugOrId(params.id as string);
 
   return (
     <>

@@ -49,6 +49,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
                 alt="company logo"
                 width={60}
                 height={60}
+                style={{ width: 'auto', height: 'auto', maxWidth: '60px', maxHeight: '60px' }}
                 className="lazy-img m-auto rounded"
               />
             </Link>

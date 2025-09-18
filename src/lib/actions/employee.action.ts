@@ -389,3 +389,47 @@ export const getJobApplicantsByJobId = async (jobId: string) => {
     throw error;
   }
 };
+
+// Get job applicants by slug or ID (flexible function)
+export const getJobApplicantsBySlugOrId = async (identifier: string) => {
+  try {
+    await connectToDatabase();
+    
+    if (!identifier) {
+      throw new Error('Invalid job identifier');
+    }
+    
+    let job;
+    const mongoose = require('mongoose');
+    
+    // Check if identifier is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(identifier)) {
+      // Try to find by ID first
+      job = await Job.findById(identifier).populate({
+        path: 'applicants',
+        model: User
+      });
+    }
+    
+    // If not found by ID or not a valid ObjectId, try to find by slug
+    if (!job) {
+      job = await Job.findOne({ slug: identifier }).populate({
+        path: 'applicants',
+        model: User
+      });
+    }
+
+    if (!job) {
+      throw new Error(`Job with identifier ${identifier} not found`);
+    }
+
+    return {
+      status: 'ok',
+      applicants: JSON.parse(JSON.stringify(job.applicants)),
+      jobTitle: job.title
+    };
+  } catch (error) {
+    console.error('Error fetching job applicants:', error);
+    throw error;
+  }
+};

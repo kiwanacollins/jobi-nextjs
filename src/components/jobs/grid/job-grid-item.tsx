@@ -60,7 +60,7 @@ const JobGridItem = ({
             alt="company logo"
             height={60}
             width={60}
-            style={{ height: 'auto', width: 'auto' }}
+            style={{ height: 'auto', width: 'auto', maxWidth: '60px', maxHeight: '60px' }}
             className="lazy-img m-auto rounded"
           />
         </Link>

@@ -1,6 +1,7 @@
 import React from 'react';
 import JobActionDropdown from './JobActionDropdown';
 import ParseHTML from '../../common/parseHTML';
+import { IJobData } from '@/database/job.model';
 
 interface IEmployJobItemProps {
   title: string;
@@ -8,7 +9,8 @@ interface IEmployJobItemProps {
   date: string;
   createdBy: any;
   status: string;
-  jobId?: string | undefined;
+  job: IJobData;
+  jobId?: string | undefined; // Keep for backward compatibility
 }
 
 const EmployJobItem = ({
@@ -16,6 +18,7 @@ const EmployJobItem = ({
   info,
   date,
   status,
+  job,
   jobId,
   createdBy
 }: IEmployJobItemProps) => {
@@ -45,7 +48,7 @@ const EmployJobItem = ({
             <span></span>
           </button>
           {/* action dropdown start */}
-          <JobActionDropdown createdBy={createdBy._id} jobId={jobId} />
+          <JobActionDropdown job={job} createdBy={createdBy._id} jobId={jobId || job._id} />
           {/* action dropdown end */}
         </div>
       </td>

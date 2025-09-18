@@ -314,6 +314,44 @@ export const getJobBySlug = async (slug: string) => {
   }
 };
 
+// Get a single job by slug or ID (flexible function)
+export const getJobBySlugOrId = async (identifier: string) => {
+  try {
+    await connectToDatabase();
+    
+    if (!identifier) {
+      return { status: 'error', message: 'Invalid job identifier' };
+    }
+    
+    let job;
+    const mongoose = require('mongoose');
+    
+    // Check if identifier is a valid MongoDB ObjectId
+    if (mongoose.Types.ObjectId.isValid(identifier)) {
+      // Try to find by ID first
+      job = await Job.findById(identifier)
+        .populate('createdBy', 'name picture website isAdmin')
+        .exec();
+    }
+    
+    // If not found by ID or not a valid ObjectId, try to find by slug
+    if (!job) {
+      job = await Job.findOne({ slug: identifier })
+        .populate('createdBy', 'name picture website isAdmin')
+        .exec();
+    }
+
+    if (!job) {
+      return { status: 'error', message: 'Job not found' };
+    }
+
+    return { status: 'ok', job: JSON.parse(JSON.stringify(job)) };
+  } catch (error) {
+    console.log(error);
+    return { status: 'error', message: 'Error fetching job' };
+  }
+};
+
 export interface getJobsByCompanyIdParams {
   companyId: string;
   page?: number;

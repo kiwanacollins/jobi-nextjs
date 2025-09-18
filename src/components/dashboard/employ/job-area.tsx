@@ -79,7 +79,7 @@ const EmployJobArea = ({
                   {jobs?.map((job) => (
                     <EmployJobItem
                       key={job._id}
-                      jobId={job._id}
+                      job={job}
                       title={job.title}
                       info={job.overview}
                       date={getTimestamp(job?.createAt as Date)}

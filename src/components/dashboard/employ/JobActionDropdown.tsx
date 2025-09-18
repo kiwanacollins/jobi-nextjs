@@ -9,14 +9,20 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Swal from 'sweetalert2';
 import { deleteEmployeeJobPost } from '@/lib/actions/employee.action';
+import { IJobData } from '@/database/job.model';
 
 interface IProps {
+  job: IJobData;
   jobId: string | undefined;
   createdBy: string | undefined;
 }
 
-const JobActionDropdown = ({ jobId, createdBy }: IProps) => {
+const JobActionDropdown = ({ job, jobId, createdBy }: IProps) => {
   const pathname = usePathname();
+
+  // Use slug for SEO-friendly URLs, fallback to _id for backward compatibility
+  const jobUrl = job.slug ? `/jobs/${job.slug}` : `/job/${job._id}`;
+  const editUrl = job.slug ? `/dashboard/employ-dashboard/job/edit/${job.slug}` : `/dashboard/employ-dashboard/job/edit/${job._id}`;
 
   const handleDeleteUser = async (jobId: string | undefined) => {
     Swal.fire({
@@ -44,35 +50,70 @@ const JobActionDropdown = ({ jobId, createdBy }: IProps) => {
       }
     });
   };
+
+  const handleShare = async () => {
+    const shareUrl = `${window.location.origin}${jobUrl}`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: job.title,
+          text: `Check out this job: ${job.title}`,
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.log('Error sharing:', error);
+        fallbackShare(shareUrl);
+      }
+    } else {
+      fallbackShare(shareUrl);
+    }
+  };
+
+  const fallbackShare = (url: string) => {
+    navigator.clipboard.writeText(url).then(() => {
+      Swal.fire({
+        title: 'Link Copied!',
+        text: 'Job link has been copied to your clipboard',
+        icon: 'success',
+        timer: 2000,
+        showConfirmButton: false
+      });
+    }).catch(() => {
+      Swal.fire({
+        title: 'Share Link',
+        input: 'text',
+        inputValue: url,
+        inputAttributes: {
+          readonly: true
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Copy',
+        cancelButtonText: 'Close'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigator.clipboard.writeText(url);
+        }
+      });
+    });
+  };
+
   return (
     <ul className="dropdown-menu dropdown-menu-end">
       <li className="dropdown-item">
-        <Link href={`/candidate-profile/${jobId}`} className="dropdown-item">
+        <Link href={jobUrl} className="dropdown-item">
           <Image src={view} alt="icon" className="lazy-img" /> View
         </Link>
       </li>
       <li className="dropdown-item">
-        <Link href={`/company/${createdBy}`} className="dropdown-item">
-          <Image src={view} alt="icon" className="lazy-img" /> company details
-        </Link>
-      </li>
-      <li className="dropdown-item">
-        <Link
-          href={`/dashboard/employ-dashboard/job/${jobId}/applicants`}
-          className="dropdown-item"
-        >
-          <Image src={view} alt="icon" className="lazy-img" /> Show applicants
-        </Link>
-      </li>
-      <li className="dropdown-item">
-        <a className="dropdown-item" href="#">
+        <button onClick={handleShare} className="dropdown-item">
           <Image src={share} alt="icon" className="lazy-img" /> Share
-        </a>
+        </button>
       </li>
       <li className="dropdown-item">
         <Link
           className="dropdown-item"
-          href={`/dashboard/employ-dashboard/job/edit/${jobId}`}
+          href={editUrl}
         >
           <Image src={edit} alt="icon" className="lazy-img" /> Edit
         </Link>
