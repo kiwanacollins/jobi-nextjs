@@ -1,13 +1,25 @@
-import SharedCandidateListTable from '@/components/dashboard/admin/candidates/SharedCandidateListTable';
-import { getShareSavedCandidates } from '@/lib/actions/admin.action';
+import EmailSubscriptionTable from '@/components/dashboard/admin/EmailSubscriptionTable';
+import { getEmailSubscriptions } from '@/lib/actions/admin.action';
 
 const Page = async () => {
-  const { data } = await getShareSavedCandidates();
+  // Handle potential errors from getEmailSubscriptions
+  let subscriptions = [];
+  try {
+    const emailResult = await getEmailSubscriptions();
+    subscriptions = emailResult?.data || [];
+  } catch (error) {
+    console.error('Failed to fetch email subscriptions:', error);
+    subscriptions = [];
+  }
 
   return (
     <div>
-      <h2 className="main-title">Shared Candidate List</h2>
-      <SharedCandidateListTable sharedCandidates={data} />
+      <h2 className="main-title mb-40">Received Data</h2>
+      
+      {/* Email Subscriptions Section */}
+      <div>
+        <EmailSubscriptionTable subscriptions={subscriptions} />
+      </div>
     </div>
   );
 };

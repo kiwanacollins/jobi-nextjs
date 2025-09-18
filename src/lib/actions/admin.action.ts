@@ -2,6 +2,7 @@
 
 import Category from '@/database/category.model';
 import User from '@/database/user.model';
+import EmailSubscription from '@/database/emailSubscription.model';
 import { clerkClient } from '@clerk/nextjs';
 import { revalidatePath } from 'next/cache';
 import { connectToDatabase } from '../mongoose';
@@ -488,5 +489,125 @@ export async function getUserStatistics() {
     };
   } catch (error) {
     console.log(error);
+  }
+}
+
+// Email Subscription Functions
+export async function addEmailSubscription(email: string, source: string = 'newsletter') {
+  try {
+    await connectToDatabase();
+    
+    // Check if email already exists
+    const existingSubscription = await EmailSubscription.findOne({ email });
+    
+    if (existingSubscription) {
+      // If exists but inactive, reactivate it
+      if (!existingSubscription.isActive) {
+        existingSubscription.isActive = true;
+        existingSubscription.subscribedAt = new Date();
+        await existingSubscription.save();
+        return { status: 'ok', message: 'Email subscription reactivated' };
+      }
+      return { status: 'error', message: 'Email already subscribed' };
+    }
+    
+    // Create new subscription
+    const newSubscription = new EmailSubscription({
+      email,
+      source,
+      subscribedAt: new Date(),
+      isActive: true
+    });
+    
+    await newSubscription.save();
+    return { status: 'ok', message: 'Email subscribed successfully' };
+  } catch (error) {
+    console.error('Error adding email subscription:', error);
+    return { status: 'error', message: 'Failed to subscribe email' };
+  }
+}
+
+export async function getEmailSubscriptions() {
+  try {
+    await connectToDatabase();
+    
+    const subscriptions = await EmailSubscription.find({ isActive: true })
+      .sort({ subscribedAt: -1 })
+      .exec();
+    
+    return {
+      status: 'ok',
+      data: JSON.parse(JSON.stringify(subscriptions))
+    };
+  } catch (error) {
+    console.error('Error fetching email subscriptions:', error);
+    return { status: 'error', message: 'Failed to fetch email subscriptions', data: [] };
+  }
+}
+
+export async function removeEmailSubscription(email: string) {
+  try {
+    await connectToDatabase();
+    
+    const subscription = await EmailSubscription.findOne({ email });
+    if (!subscription) {
+      return { status: 'error', message: 'Email subscription not found' };
+    }
+    
+    subscription.isActive = false;
+    await subscription.save();
+    
+    return { status: 'ok', message: 'Email unsubscribed successfully' };
+  } catch (error) {
+    console.error('Error removing email subscription:', error);
+    return { status: 'error', message: 'Failed to unsubscribe email' };
+  }
+}
+
+export async function subscribeToNewsletter(email: string) {
+  try {
+    await connectToDatabase();
+    
+    // Check if email already exists
+    const existingSubscription = await EmailSubscription.findOne({ email });
+    
+    if (existingSubscription) {
+      if (existingSubscription.isActive) {
+        return { 
+          success: false, 
+          message: 'This email is already subscribed to our newsletter!' 
+        };
+      } else {
+        // Reactivate the subscription
+        existingSubscription.isActive = true;
+        existingSubscription.subscribedAt = new Date();
+        await existingSubscription.save();
+        return { 
+          success: true, 
+          message: 'Successfully resubscribed to newsletter!' 
+        };
+      }
+    }
+    
+    // Create new subscription
+    const newSubscription = new EmailSubscription({
+      email,
+      subscribedAt: new Date(),
+      isActive: true,
+      source: 'newsletter'
+    });
+    
+    await newSubscription.save();
+    
+    return { 
+      success: true, 
+      message: 'Successfully subscribed to newsletter!' 
+    };
+  } catch (error) {
+    console.error('Error subscribing to newsletter:', error);
+    return { 
+      success: false, 
+      message: 'Failed to subscribe. Please try again later.' 
+    };
   }
 }

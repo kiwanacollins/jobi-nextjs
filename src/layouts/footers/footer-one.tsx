@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 // internal
@@ -8,6 +9,8 @@ import logo_w from '@/assets/images/logo/logo_06.png';
 import shape from '@/assets/images/shape/shape_28.svg';
 import { WidgetOne, WidgetThree, WidgetTwo } from './component/footer-widgets';
 import SocialLinks from './component/social-links';
+import { subscribeToNewsletter } from '@/lib/actions/admin.action';
+import Swal from 'sweetalert2';
 
 const FooterOne = ({
   bottom_bg,
@@ -18,6 +21,61 @@ const FooterOne = ({
   style_2?: boolean;
   style_3?: boolean;
 }) => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please enter your email address!'
+      });
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid Email',
+        text: 'Please enter a valid email address!'
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await subscribeToNewsletter(email);
+      
+      if (result.success) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Thank you for subscribing to our newsletter!'
+        });
+        setEmail('');
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Subscription Failed',
+          text: result.message || 'Something went wrong. Please try again.'
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <div className={`footer-one ${style_2 ? 'bg-two white-version' : ''}`}>
       <div className="container">
@@ -54,11 +112,19 @@ const FooterOne = ({
                 Join & get important new regularly
               </p>
               <form
-                action="#"
+                onSubmit={handleNewsletterSubmit}
                 className={`d-flex ${style_3 ? 'border-style' : ''}`}
               >
-                <input type="email" placeholder="Enter your email*" />
-                <button>Send</button>
+                <input 
+                  type="email" 
+                  placeholder="Enter your email*" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={isSubmitting}
+                />
+                <button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? 'Sending...' : 'Send'}
+                </button>
               </form>
               <p className="note">
                 We only send interesting and relevant emails.
