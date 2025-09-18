@@ -14,7 +14,7 @@ const Page = async () => {
 
   return (
     <div>
-      <h2 className="main-title mb-40">Received Data</h2>
+      <h2 className="main-title mb-40">Subscribed Emails</h2>
       
       {/* Email Subscriptions Section */}
       <div>

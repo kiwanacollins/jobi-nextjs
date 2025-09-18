@@ -35,34 +35,83 @@ const HeroBannerSix = () => {
           </div>
           <div className="position-relative">
             <div className="row">
-              <div className="col-xl-8 col-lg-9 m-auto">
+              <div className="col-xl-6 col-lg-8 col-md-10 m-auto">
                 <div
-                  className="job-search-one style-two position-relative me-xxl-3 ms-xxl-3 mb-100 lg-mb-50 wow fadeInUp"
+                  className="job-search-one style-two position-relative mb-100 lg-mb-50 wow fadeInUp"
                   data-wow-delay="0.5s"
+                  style={{
+                    maxWidth: '600px',
+                    margin: '0 auto'
+                  }}
                 >
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row">
-                      <div className="col-md-9">
-                        <div className="input-box">
-                          <div className="label">Your job title, keyword</div>
-                          <input
-                            type="text"
-                            placeholder="Search Jobs"
-                            className="keyword"
-                            {...register('keyword')}
-                            required
-                          />
-                        </div>
+                    <div className="search-container" style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      background: '#fff',
+                      borderRadius: '50px',
+                      padding: '8px',
+                      boxShadow: '0px 15px 30px rgba(19, 35, 56, 0.1)',
+                      border: '2px solid transparent',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div className="input-wrapper" style={{
+                        flex: 1,
+                        padding: '0 20px'
+                      }}>
+                        <input
+                          type="text"
+                          placeholder="Search for jobs or keywords..."
+                          className="search-input"
+                          {...register('keyword')}
+                          required
+                          style={{
+                            border: 'none',
+                            outline: 'none',
+                            background: 'transparent',
+                            fontSize: '16px',
+                            fontWeight: '400',
+                            color: '#333',
+                            width: '100%',
+                            padding: '12px 0',
+                            lineHeight: '1.5'
+                          }}
+                          onFocus={(e) => {
+                            e.target.parentElement?.parentElement?.style.setProperty('border-color', '#00bf63');
+                            e.target.parentElement?.parentElement?.style.setProperty('box-shadow', '0px 15px 40px rgba(0, 191, 99, 0.15)');
+                          }}
+                          onBlur={(e) => {
+                            e.target.parentElement?.parentElement?.style.setProperty('border-color', 'transparent');
+                            e.target.parentElement?.parentElement?.style.setProperty('box-shadow', '0px 15px 30px rgba(19, 35, 56, 0.1)');
+                          }}
+                        />
                       </div>
-
-                      <div className="col-md-3">
-                        <button
-                          type="submit"
-                          className="fw-500 text-md h-100 w-100 tran3s search-btn-two"
-                        >
-                          Search
-                        </button>
-                      </div>
+                      <button
+                        type="submit"
+                        className="search-button"
+                        style={{
+                          background: '#00bf63',
+                          color: '#fff',
+                          border: 'none',
+                          borderRadius: '40px',
+                          padding: '12px 30px',
+                          fontSize: '16px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease',
+                          minWidth: '120px'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.background = '#00a855';
+                          e.target.style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = '#00bf63';
+                          e.target.style.transform = 'translateY(0)';
+                        }}
+                      >
+                        Search
+                      </button>
                     </div>
                   </form>
                 </div>
