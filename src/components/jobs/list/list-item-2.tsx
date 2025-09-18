@@ -21,55 +21,68 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
   const handleAddWishlist = (item: IJobData) => {
     dispatch(add_to_wishlist(item));
   };
+
+  // Format deadline
+  const formatDeadline = (deadline: Date) => {
+    const date = new Date(deadline);
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return `Deadline: ${date.toLocaleDateString('en-US', options)}`;
+  };
+
   return (
     <div className="job-list-one style-two position-relative border-style mb-20">
       <div className="row justify-content-between align-items-center">
-        <div className="col-md-5">
-          <div className="job-title d-flex align-items-center">
+        <div className="col-md-2">
+          <div className="company-logo">
             <Link href={jobUrl} className="logo">
               <Image
                 src={
+                  item?.companyImage ||
                   //@ts-ignore
                   (item?.createdBy?.picture as string) ||
                   '/assets/images/logo/media_22.png'
                 }
-                alt="logo"
+                alt="company logo"
                 width={60}
                 height={60}
-                className="lazy-img m-auto"
+                className="lazy-img m-auto rounded"
               />
             </Link>
-            <div className="split-box1">
-              <Link
-                href={jobUrl}
-                className="job-duration text-decoration-none fw-500"
-              >
-                {item?.duration}
-              </Link>
-              <Link
-                href={jobUrl}
-                className="title text-decoration-none fw-500 tran3s"
-              >
-                {item.title.slice(0, 22)} {item.title.length > 20 ? '..' : ''}
-              </Link>
+          </div>
+        </div>
+        <div className="col-md-6">
+          <div className="job-details">
+            <div className="job-duration text-decoration-none fw-500 text-success mb-1">
+              {item?.duration}
+            </div>
+            <Link
+              href={jobUrl}
+              className="job-title text-decoration-none fw-600 tran3s d-block mb-1"
+              style={{ fontSize: '18px', color: '#000' }}
+            >
+              {item.title}
+            </Link>
+            <div className="company-name text-muted mb-1">
+              {item.company || 'Next Media'}
+            </div>
+            <div className="job-location text-muted mb-1">
+              {item.location}
+            </div>
+            <div className="job-author text-muted mb-1">
+              {/* @ts-ignore */}
+              {item?.createdBy?.firstName || 'kiwana'}
+            </div>
+            <div className="job-deadline text-muted">
+              {formatDeadline(item.deadline)}
             </div>
           </div>
         </div>
-        <div className="col-md-4 col-sm-6">
-          <div className="job-location">
-            <Link className="text-decoration-none" href={jobUrl}>
-              {item.location}
-            </Link>
-          </div>
-          <div className="job-salary">
-            <span className="fw-500 text-dark">
-              ${item.minSalary} - ${item.maxSalary}
-            </span>{' '}
-            / {item.salary_duration} . {item.experience}
-          </div>
-        </div>
-        <div className="col-md-3 col-sm-6">
-          <div className="btn-group d-flex align-items-center justify-content-sm-end xs-mt-20">
+        <div className="col-md-4">
+          <div className="btn-group d-flex align-items-center justify-content-end">
            {currentUser?.role !== 'employee'?( <a
               onClick={() => handleAddWishlist(item)}
               className={`save-btn text-center rounded-circle tran3s me-3 cursor-pointer ${
