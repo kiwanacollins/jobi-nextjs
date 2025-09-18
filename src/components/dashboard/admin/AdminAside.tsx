@@ -54,14 +54,6 @@ const nav_data: {
     title: 'Home'
   },
   {
-    id: 3,
-    icon: nav_2,
-    icon_active: nav_2_active,
-    link: '/dashboard/admin-dashboard/new-user',
-    title: 'create user'
-  },
-
-  {
     id: 4,
     icon: nav_1,
     icon_active: nav_1_active,
@@ -125,12 +117,6 @@ const nav_data: {
     link: '/dashboard/candidate-dashboard',
     title: 'Candidates',
     sub_menus: [
-      {
-        icon: nav_2,
-        icon_active: nav_2_active,
-        link: '/dashboard/admin-dashboard/new-user',
-        title: 'Create Candidate '
-      },
       {
         icon: nav_3,
         icon_active: nav_3_active,

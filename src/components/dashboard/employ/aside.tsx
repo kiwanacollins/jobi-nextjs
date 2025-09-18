@@ -19,8 +19,6 @@ import nav_3_active from '@/assets/dashboard/images/icon/icon_3_active.svg';
 // import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
 import nav_5 from '@/assets/dashboard/images/icon/icon_39.svg';
 import nav_5_active from '@/assets/dashboard/images/icon/icon_39_active.svg';
-import nav_6 from '@/assets/dashboard/images/icon/icon_6.svg';
-import nav_6_active from '@/assets/dashboard/images/icon/icon_6_active.svg';
 import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 // import nav_9 from '@/assets/dashboard/images/icon/icon_40.svg';
@@ -72,13 +70,6 @@ const nav_data: {
     icon_active: nav_5_active,
     link: '/dashboard/employ-dashboard/submit-job',
     title: 'Submit Job'
-  },
-  {
-    id: 6,
-    icon: nav_6,
-    icon_active: nav_6_active,
-    link: '/dashboard/employ-dashboard/saved-candidate',
-    title: 'Saved Candidate'
   },
   // {
   //   id: 7,
