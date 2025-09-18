@@ -15,8 +15,6 @@ import nav_2 from '@/assets/dashboard/images/icon/icon_2.svg';
 import nav_2_active from '@/assets/dashboard/images/icon/icon_2_active.svg';
 import nav_3 from '@/assets/dashboard/images/icon/icon_3.svg';
 import nav_3_active from '@/assets/dashboard/images/icon/icon_3_active.svg';
-import nav_4 from '@/assets/dashboard/images/icon/icon_4.svg';
-import nav_4_active from '@/assets/dashboard/images/icon/icon_4_active.svg';
 import nav_7 from '@/assets/dashboard/images/icon/icon_7.svg';
 import nav_7_active from '@/assets/dashboard/images/icon/icon_7_active.svg';
 import LogoutModal from '../../common/popup/logout-modal';
@@ -74,14 +72,6 @@ const nav_data: {
     link: '/dashboard/admin-dashboard/users',
     title: 'Users'
   },
-
-  {
-    id: 8,
-    icon: nav_4,
-    icon_active: nav_4_active,
-    link: '/dashboard/admin-dashboard/messages',
-    title: 'Messages'
-  },
   {
     id: 9,
     icon: nav_3,
@@ -109,21 +99,6 @@ const nav_data: {
     icon_active: nav_7_active,
     link: '/dashboard/admin-dashboard/setting',
     title: 'Account Settings'
-  },
-  {
-    id: 13,
-    icon: nav_2,
-    icon_active: nav_2_active,
-    link: '/dashboard/candidate-dashboard',
-    title: 'Candidates',
-    sub_menus: [
-      {
-        icon: nav_3,
-        icon_active: nav_3_active,
-        link: '/dashboard/admin-dashboard/users',
-        title: 'All Candidates'
-      }
-    ]
   }
 ];
 // props type
