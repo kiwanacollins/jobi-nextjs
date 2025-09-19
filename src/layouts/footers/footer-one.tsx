@@ -81,7 +81,7 @@ const FooterOne = ({
             <div className="col-lg-2 col-md-3 footer-intro mb-15">
               <div className="logo mb-15">
                 <Link href="/" className="d-flex align-items-center">
-                  <strong className="text-decoration-none" style={{fontSize: '20px', color: style_2 ? '#fff' : '#244034'}}>Ugandan Jobs</strong>
+                  <strong className="text-decoration-none" style={{fontSize: '20px', color: style_2 ? '#fff' : '#2E7D4A'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <Image

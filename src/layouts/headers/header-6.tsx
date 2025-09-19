@@ -34,7 +34,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     className="text-decoration-none" 
                     style={{
                       fontSize: '24px', 
-                      color: dark_style ? '#fff' : '#244034'
+                      color: dark_style ? '#fff' : '#2E7D4A'
                     }}
                   >
                     Ugandan Jobs
