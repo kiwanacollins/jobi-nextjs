@@ -37,7 +37,7 @@ const HeaderThree = () => {
             <div className="d-flex align-items-center justify-content-between">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <strong className="text-decoration-none" style={{fontSize: '24px', color: '#fff'}}>Ugandan Jobs</strong>
+                  <strong className="text-decoration-none" style={{fontSize: '20px', color: '#fff', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <form
@@ -84,7 +84,7 @@ const HeaderThree = () => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <strong className="text-decoration-none" style={{fontSize: '20px', color: '#fff'}}>Ugandan Jobs</strong>
+                          <strong className="text-decoration-none" style={{fontSize: '18px', color: '#fff', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                         </Link>
                       </div>
                     </li>

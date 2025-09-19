@@ -33,8 +33,9 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   <strong 
                     className="text-decoration-none" 
                     style={{
-                      fontSize: '24px', 
-                      color: dark_style ? '#fff' : '#2E7D4A'
+                      fontSize: '20px', 
+                      color: dark_style ? '#fff' : '#2E7D4A',
+                      whiteSpace: 'nowrap'
                     }}
                   >
                     Ugandan Jobs
@@ -173,8 +174,9 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                           <strong 
                             className="text-decoration-none" 
                             style={{
-                              fontSize: '20px', 
-                              color: '#fff'
+                              fontSize: '18px', 
+                              color: '#fff',
+                              whiteSpace: 'nowrap'
                             }}
                           >
                             Ugandan Jobs

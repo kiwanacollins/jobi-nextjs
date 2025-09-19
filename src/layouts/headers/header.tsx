@@ -20,7 +20,7 @@ const Header = () => {
             <div className="d-flex align-items-center">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <strong className="text-decoration-none" style={{fontSize: '24px', color: '#2E7D4A'}}>Ugandan Jobs</strong>
+                  <strong className="text-decoration-none" style={{fontSize: '20px', color: '#2E7D4A', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <div className="right-widget ms-auto order-lg-3">
@@ -30,13 +30,8 @@ const Header = () => {
                       Post Job
                     </Link>
                   </li>
-                  <li>
-                    <a
-                      href="/sign-in"
-                      className="login-btn-one"
-                      // data-bs-toggle="modal"
-                      // data-bs-target="#loginModal"
-                    >
+                  <li className="d-none d-lg-block">
+                    <a href="/sign-in" className="login-btn-one">
                       Login
                     </a>
                   </li>
@@ -64,7 +59,7 @@ const Header = () => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <strong className="text-decoration-none" style={{fontSize: '20px', color: '#2E7D4A'}}>Ugandan Jobs</strong>
+                          <strong className="text-decoration-none" style={{fontSize: '18px', color: '#2E7D4A', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                         </Link>
                       </div>
                     </li>
@@ -86,6 +81,11 @@ const Header = () => {
                     {/* menus start */}
                     <Menus userId="" role="" handleNavCollapse={() => {}} />
                     {/* menus end */}
+                    <li className="d-md-none">
+                      <Link href="/sign-in" className="btn-one w-100 mb-3" style={{whiteSpace: 'nowrap'}}>
+                        Login/Sign up
+                      </Link>
+                    </li>
                     <li className="d-md-none">
                       <Link href="/register" className="job-post-btn tran3s">
                         Post Job
