@@ -14,7 +14,7 @@ export function JobExperienceItems({
 }) {
   // const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const uniqueExperiences = [
-    ...new Set(allJobs?.map((job) => job?.experience))
+    ...new Set(allJobs?.map((job) => job?.experience).filter((exp): exp is string => Boolean(exp)))
   ];
   const { experience } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();

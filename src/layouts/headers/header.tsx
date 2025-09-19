@@ -1,9 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import Menus from './component/menus';
-import logo from '@/assets/images/logo/logo_01.png';
 import CategoryDropdown from './component/category-dropdown';
 import LoginModal from '@/components/common/popup/login-modal';
 import useSticky from '@/hooks/use-sticky';
@@ -22,7 +20,7 @@ const Header = () => {
             <div className="d-flex align-items-center">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <Image src={logo} alt="logo" priority />
+                  <strong className="text-decoration-none" style={{fontSize: '24px', color: '#244034'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <div className="right-widget ms-auto order-lg-3">
@@ -66,7 +64,7 @@ const Header = () => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <Image src={logo} alt="logo" width={100} priority />
+                          <strong className="text-decoration-none" style={{fontSize: '20px', color: '#244034'}}>Ugandan Jobs</strong>
                         </Link>
                       </div>
                     </li>

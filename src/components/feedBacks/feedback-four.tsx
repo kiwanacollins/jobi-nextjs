@@ -45,22 +45,22 @@ const slider_b = {
 // slider a data
 const slider_a_data = [
   {
-    desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
+    desc: "The best service I've ever received is from Ugandan Jobs, and highly recommended.",
     name: 'James Stephens',
     location: 'Sydney'
   },
   {
-    desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
+    desc: "The best service I've ever received is from Ugandan Jobs, and highly recommended.",
     name: 'Angelina Jolie',
     location: 'Sydney'
   },
   {
-    desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
+    desc: "The best service I've ever received is from Ugandan Jobs, and highly recommended.",
     name: 'James Brower',
     location: 'Sydney'
   },
   {
-    desc: "“The best service I've ever received is from Jobi, and highly recommended.”",
+    desc: "The best service I've ever received is from Ugandan Jobs, and highly recommended.",
     name: 'Maria Gomez',
     location: 'Sydney'
   }

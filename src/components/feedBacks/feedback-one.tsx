@@ -42,7 +42,7 @@ const feedback_data: {
     id: 1,
     logo: logo_1,
     title:
-      '“Seattle opera simplifies Performance planning with jobi eSignature.”',
+      'Seattle opera simplifies Performance planning with Ugandan Jobs eSignature.',
     name: 'James Brower',
     user_title: 'Lead Designer',
     rating: 4.5,
@@ -53,7 +53,7 @@ const feedback_data: {
     id: 2,
     logo: logo_2,
     title:
-      '“Seattle opera simplifies Performance planning with jobi eSignature.”',
+      'Seattle opera simplifies Performance planning with Ugandan Jobs eSignature.',
     name: 'Mark Joge',
     user_title: 'Marketing Chief',
     rating: 4.8,
@@ -64,7 +64,7 @@ const feedback_data: {
     id: 3,
     logo: logo_1,
     title:
-      '“Seattle opera simplifies Performance planning with jobi eSignature.”',
+      'Seattle opera simplifies Performance planning with Ugandan Jobs eSignature.',
     name: 'James Brower',
     user_title: 'Lead Designer',
     rating: 4.8,

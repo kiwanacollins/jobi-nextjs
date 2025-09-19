@@ -6,8 +6,8 @@ import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Jobi - Create Profile',
-  description: 'Jobi - Job Porta - Find your dream job today!'
+  title: 'Ugandan Jobs - Create Profile',
+  description: 'Ugandan Jobs - Job Portal - Find your dream job today!'
 };
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {

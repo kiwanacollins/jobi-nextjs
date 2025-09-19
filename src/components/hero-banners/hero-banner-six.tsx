@@ -102,12 +102,12 @@ const HeroBannerSix = () => {
                           minWidth: '120px'
                         }}
                         onMouseEnter={(e) => {
-                          e.target.style.background = '#00a855';
-                          e.target.style.transform = 'translateY(-1px)';
+                          (e.target as HTMLElement).style.background = '#00a855';
+                          (e.target as HTMLElement).style.transform = 'translateY(-1px)';
                         }}
                         onMouseLeave={(e) => {
-                          e.target.style.background = '#00bf63';
-                          e.target.style.transform = 'translateY(0)';
+                          (e.target as HTMLElement).style.background = '#00bf63';
+                          (e.target as HTMLElement).style.transform = 'translateY(0)';
                         }}
                       >
                         Search

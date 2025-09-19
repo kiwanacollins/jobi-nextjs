@@ -12,8 +12,9 @@ import { getJobPosts } from '@/lib/actions/job.action';
 const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
   const all_jobs = allJobData;
-  const maxPrice = all_jobs.reduce((max, job) => {
-    return job.maxSalary > max ? job.maxSalary : max;
+  const maxPrice: number = all_jobs.reduce((max, job) => {
+    const salary = job.maxSalary || 0;
+    return salary > max ? salary : max;
   }, 0);
   const {
     category,
@@ -27,7 +28,7 @@ const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
   const [filterItems, setFilterItems] = useState<IJobData[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const [priceValue, setPriceValue] = useState([0, maxPrice]);
+  const [priceValue, setPriceValue] = useState<number[]>([0, maxPrice]);
   const [shortValue, setShortValue] = useState('');
 
   useEffect(() => {
@@ -50,13 +51,13 @@ const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
         experience.length !== 0
           ? experience.some(
               (e) =>
-                item.experience.trim().toLowerCase() === e.trim().toLowerCase()
+                item.experience?.trim().toLowerCase() === e.trim().toLowerCase()
             )
           : true
       )
       .filter((e) =>
         english_fluency
-          ? e.english_fluency.toLowerCase() === english_fluency.toLowerCase()
+          ? e.english_fluency?.toLowerCase() === english_fluency.toLowerCase()
           : true
       )
       .filter((item) =>
@@ -67,12 +68,12 @@ const JobListV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
       .filter((item) => (job_type ? item.duration === job_type : true))
       .filter((l) =>
         location
-          ? slugify(l.location.split(',').join('-').toLowerCase(), '-') ===
+          ? slugify(l.location?.split(',').join('-').toLowerCase() || '', '-') ===
             location
           : true
       )
       .filter(
-        (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+        (j) => (j.minSalary || 0) >= priceValue[0] && (j.maxSalary || 0) <= priceValue[1]
       );
 
     if (shortValue === 'price-low-to-high') {

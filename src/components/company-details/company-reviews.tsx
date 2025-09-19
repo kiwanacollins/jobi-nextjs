@@ -45,7 +45,7 @@ const review_data: {
   {
     id: 2,
     rating: 4.5,
-    desc: 'Very impressed with the jobi template. The designs/layouts are modern and professional with quaintly..',
+    desc: 'Very impressed with the Ugandan Jobs template. The designs/layouts are modern and professional with quaintly..',
     user: user_2,
     name: 'John Doe',
     location: 'Italy'
@@ -53,7 +53,7 @@ const review_data: {
   {
     id: 3,
     rating: 4.8,
-    desc: 'Very impressed with the jobi template. The designs/layouts are modern and professional with quaintly..',
+    desc: 'Very impressed with the Ugandan Jobs template. The designs/layouts are modern and professional with quaintly..',
     user: user_3,
     name: 'Martin Jonas',
     location: 'USA'

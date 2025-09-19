@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image, { StaticImageData } from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import logo from '@/assets/dashboard/images/logo_01.png';
 import profile_icon_1 from '@/assets/dashboard/images/icon/icon_23.svg';
 import profile_icon_2 from '@/assets/dashboard/images/icon/icon_24.svg';
 import profile_icon_3 from '@/assets/dashboard/images/icon/icon_25.svg';
@@ -152,7 +151,7 @@ const AdminAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
         <div className="position-relative">
           <div className="logo text-md-center d-md-block d-flex align-items-center justify-content-between">
             <Link href="/">
-              <Image src={logo} alt="logo" priority />
+              <strong className="text-decoration-none" style={{fontSize: '20px', color: '#244034'}}>Ugandan Jobs</strong>
             </Link>
             <button
               onClick={() => setIsOpenSidebar(false)}

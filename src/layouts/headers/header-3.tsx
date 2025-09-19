@@ -1,13 +1,12 @@
 'use client';
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 // internal
-import logo from '@/assets/images/logo/logo_04.png';
 import icon from '@/assets/images/icon/icon_21.svg';
 import NiceSelect from '@/ui/nice-select';
 import useSticky from '@/hooks/use-sticky';
 import LoginModal from '@/components/common/popup/login-modal';
+import Image from 'next/image';
 
 // search select
 function SearchSelect() {
@@ -38,12 +37,7 @@ const HeaderThree = () => {
             <div className="d-flex align-items-center justify-content-between">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <Image
-                    src={logo}
-                    alt="logo"
-                    priority
-                    style={{ height: 'auto' }}
-                  />
+                  <strong className="text-decoration-none" style={{fontSize: '24px', color: '#fff'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <form
@@ -90,13 +84,7 @@ const HeaderThree = () => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <Image
-                            src={logo}
-                            alt="logo"
-                            width="100"
-                            priority
-                            style={{ height: 'auto' }}
-                          />
+                          <strong className="text-decoration-none" style={{fontSize: '20px', color: '#fff'}}>Ugandan Jobs</strong>
                         </Link>
                       </div>
                     </li>

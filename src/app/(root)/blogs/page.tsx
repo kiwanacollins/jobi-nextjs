@@ -8,9 +8,9 @@ import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
-  title: 'Blog - Jobi',
+  title: 'Blog - Ugandan Jobs',
   description:
-    'Stay informed and inspired with the latest insights, trends, and career advice on the Jobi blog. Discover valuable resources to enhance your hiring process and career development.'
+    'Stay informed and inspired with the latest insights, trends, and career advice on the Ugandan Jobs blog. Discover valuable resources to enhance your hiring process and career development.'
 };
 
 const BlogV3Page = async () => {

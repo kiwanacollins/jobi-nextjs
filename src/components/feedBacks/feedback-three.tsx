@@ -16,22 +16,22 @@ const feedback_desc: {
 }[] = [
   {
     active: true,
-    desc: "“Very easy to set-up. I had no experience with hosting before signing up with Jobi but they have made everything seem simple.”",
+    desc: "Very easy to set-up. I had no experience with hosting before signing up with Ugandan Jobs but they have made everything seem simple.",
     name: "John Doe.",
     location: "Italy",
   },
   {
-    desc: "“Very easy to set-up. I had no experience with hosting before signing up with Jobi but they have made everything seem simple.”",
+    desc: "Very easy to set-up. I had no experience with hosting before signing up with Ugandan Jobs but they have made everything seem simple.",
     name: "Juan Marko.",
     location: "London",
   },
   {
-    desc: "“Very easy to set-up. I had no experience with hosting before signing up with Jobi but they have made everything seem simple.”",
+    desc: "Very easy to set-up. I had no experience with hosting before signing up with Ugandan Jobs but they have made everything seem simple.",
     name: "Julia Ark.",
     location: "California",
   },
   {
-    desc: "“Very easy to set-up. I had no experience with hosting before signing up with Jobi but they have made everything seem simple.”",
+    desc: "Very easy to set-up. I had no experience with hosting before signing up with Ugandan Jobs but they have made everything seem simple.",
     name: "Shani Milar..",
     location: "Milan",
   },

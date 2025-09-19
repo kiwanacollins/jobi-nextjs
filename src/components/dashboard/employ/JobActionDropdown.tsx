@@ -85,7 +85,7 @@ const JobActionDropdown = ({ job, jobId, createdBy }: IProps) => {
         input: 'text',
         inputValue: url,
         inputAttributes: {
-          readonly: true
+          readonly: 'true'
         },
         showCancelButton: true,
         confirmButtonText: 'Copy',

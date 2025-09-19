@@ -1,6 +1,6 @@
-# Docker Setup for Jobi Next.js Application
+# Docker Setup for Ugandan Jobs Next.js Application
 
-This document provides instructions for running the Jobi application using Docker.
+This document provides instructions for running the Ugandan Jobs application using Docker.
 
 ## Prerequisites
 
@@ -115,7 +115,7 @@ docker-compose --profile prod up -d
 docker-compose --profile prod down
 
 # Build production image only
-docker-compose build jobi-app
+docker-compose build ugandan-jobs-app
 ```
 
 ## File Structure

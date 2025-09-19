@@ -1,16 +1,13 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 // internal
-import logo from '@/assets/images/logo/logo_03.png';
-import logo_2 from '@/assets/images/logo/logo_04.png';
-import logo_w from '@/assets/images/logo/logo_06.png';
 import shape from '@/assets/images/shape/shape_28.svg';
 import { WidgetOne, WidgetThree, WidgetTwo } from './component/footer-widgets';
 import SocialLinks from './component/social-links';
 import { subscribeToNewsletter } from '@/lib/actions/admin.action';
 import Swal from 'sweetalert2';
+import Image from 'next/image';
 
 const FooterOne = ({
   bottom_bg,
@@ -84,11 +81,7 @@ const FooterOne = ({
             <div className="col-lg-2 col-md-3 footer-intro mb-15">
               <div className="logo mb-15">
                 <Link href="/" className="d-flex align-items-center">
-                  <Image
-                    src={style_2 ? logo_w : style_3 ? logo_2 : logo}
-                    alt="logo"
-                    priority
-                  />
+                  <strong className="text-decoration-none" style={{fontSize: '20px', color: style_2 ? '#fff' : '#244034'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <Image
@@ -160,7 +153,7 @@ const FooterOne = ({
             </div>
             <div className="col-lg-4 order-lg-2">
               <p className={`text-center mb-15 ${style_2 ? 'text-white' : ''}`}>
-                Copyright @{new Date().getFullYear()} Jobi inc.
+                Copyright @{new Date().getFullYear()} Ugandan Jobs inc.
               </p>
             </div>
           </div>

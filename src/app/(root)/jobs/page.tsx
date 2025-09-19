@@ -9,9 +9,9 @@ import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 
 export const metadata: Metadata = {
-  title: 'Jobs - Jobi',
+  title: 'Jobs - Ugandan Jobs',
   description:
-    'Explore a wide range of job opportunities on Jobi. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
+    'Explore a wide range of job opportunities on Ugandan Jobs. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
 };
 
 const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {

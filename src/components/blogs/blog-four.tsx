@@ -19,7 +19,7 @@ const BlogFour = async () => {
                   className="main-font color-blue wow fadeInUp"
                   data-wow-delay="0.3s"
                 >
-                  Jobi Guides
+                  Ugandan Jobs Guides
                 </h2>
               </div>
             </div>

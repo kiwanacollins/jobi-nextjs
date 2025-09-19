@@ -1,9 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import logo from '@/assets/images/logo/logo_01.png';
-import dark_logo from '@/assets/images/logo/logo_04.png';
 import Menus from './component/menus';
 import useSticky from '@/hooks/use-sticky';
 import { SignedIn, UserButton } from '@clerk/nextjs';
@@ -33,11 +30,15 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
             <div className="d-flex align-items-center justify-content-between">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <Image
-                    src={dark_style ? dark_logo : logo}
-                    alt="logo"
-                    priority
-                  />
+                  <strong 
+                    className="text-decoration-none" 
+                    style={{
+                      fontSize: '24px', 
+                      color: dark_style ? '#fff' : '#244034'
+                    }}
+                  >
+                    Ugandan Jobs
+                  </strong>
                 </Link>
               </div>
               <div className="right-widget ms-auto ms-lg-0 order-lg-2">
@@ -169,12 +170,15 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <Image
-                            src={dark_style ? dark_logo : logo}
-                            alt="logo"
-                            priority
-                            width="100"
-                          />
+                          <strong 
+                            className="text-decoration-none" 
+                            style={{
+                              fontSize: '20px', 
+                              color: '#fff'
+                            }}
+                          >
+                            Ugandan Jobs
+                          </strong>
                         </Link>
                       </div>
                     </li>

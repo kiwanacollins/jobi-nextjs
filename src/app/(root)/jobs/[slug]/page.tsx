@@ -16,12 +16,12 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
   
   if (result.status === 'error' || !result.job) {
     return {
-      title: 'Job Not Found - Jobi'
+      title: 'Job Not Found - Ugandan Jobs'
     };
   }
   
   const job = result.job;
-  const title = `${job.title} at ${job.company} - Jobi`;
+  const title = `${job.title} at ${job.company} - Ugandan Jobs`;
   const description = `Apply for ${job.title} position at ${job.company}. ${job.location ? `Located in ${job.location}. ` : ''}${job.duration} position in ${job.category}.`;
   
   return {

@@ -10,7 +10,7 @@ const BlogOne = () => {
       <div className="container">
         <div className="position-relative">
           <div className="title-one mb-30 lg-mb-10 wow fadeInUp" data-wow-delay="0.3s">
-            <h2>Jobi Guides</h2>
+            <h2>Ugandan Jobs Guides</h2>
           </div>
 
           <div className="row gx-xxl-5">

@@ -47,7 +47,7 @@ const FooterTwo = () => {
               </ul>
             </div>
             <div className="col-lg-4 order-lg-2">
-              <p className="text-center mb-15">Copyright @{new Date().getFullYear()} jobi inc.</p>
+              <p className="text-center mb-15">Copyright @{new Date().getFullYear()} Ugandan Jobs inc.</p>
             </div>
           </div>
         </div>

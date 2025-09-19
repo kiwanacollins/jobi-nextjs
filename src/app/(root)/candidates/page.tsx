@@ -13,7 +13,7 @@ import { getCategoriesAndSubcategories } from '@/lib/actions/category.action';
 export const metadata: Metadata = {
   title: 'Candidates',
   description:
-    'Connect with skilled professionals and discover the perfect candidates for your team. Jobi is your go-to platform for finding exceptional talent in various industries.'
+    'Connect with skilled professionals and discover the perfect candidates for your team. Ugandan Jobs is your go-to platform for finding exceptional talent in various industries.'
 };
 
 const CandidateV2Page = async ({ searchParams }: SearchParamsProps) => {

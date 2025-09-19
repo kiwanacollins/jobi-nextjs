@@ -27,7 +27,7 @@ const content_data: {
     link: '/candidates'
   },
   {
-    title: 'Get work done quickly with Jobi gatweay.',
+    title: 'Get work done quickly with Ugandan Jobs gateway.',
     subtitle: 'Payment Method',
     icon: icon_3,
     link: '/contact'

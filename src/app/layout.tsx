@@ -45,8 +45,8 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: 'Jobi - Job Portal',
-  description: 'Jobi - Job Portal - Find your dream job today!'
+  title: 'Ugandan Jobs - Job Portal',
+  description: 'Ugandan Jobs - Job Portal - Find your dream job today!'
 };
 
 export default function RootLayout({

@@ -31,11 +31,12 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
   const [jobType, setJobType] = useState('grid');
   const [shortValue, setShortValue] = useState('');
 
-  const maxPrice = allJobData?.reduce((max, job) => {
-    return job.maxSalary > max ? job.maxSalary : max;
-  }, 0);
+  const maxPrice: number = allJobData?.reduce((max, job) => {
+    const salary = job.maxSalary || 0;
+    return salary > max ? salary : max;
+  }, 0) || 0;
 
-  const [priceValue, setPriceValue] = useState([0, maxPrice]);
+  const [priceValue, setPriceValue] = useState<number[]>([0, maxPrice]);
 
   useEffect(() => {
     const getAllJobs = async () => {
@@ -70,13 +71,13 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
         experience.length !== 0
           ? experience.some(
               (e: any) =>
-                item.experience.trim().toLowerCase() === e.trim().toLowerCase()
+                item.experience?.trim().toLowerCase() === e.trim().toLowerCase()
             )
           : true
       )
       .filter((e) =>
         english_fluency
-          ? e.english_fluency.toLowerCase() === english_fluency.toLowerCase()
+          ? e.english_fluency?.toLowerCase() === english_fluency.toLowerCase()
           : true
       )
       .filter((item) =>
@@ -87,12 +88,12 @@ const JobGridV3Area = ({ itemsPerPage }: { itemsPerPage: number }) => {
       .filter((item) => (job_type ? item.duration === job_type : true))
       .filter((l) =>
         location
-          ? slugify(l.location.split(',').join('-').toLowerCase(), '-') ===
+          ? slugify(l.location?.split(',').join('-').toLowerCase() || '', '-') ===
             location
           : true
       )
       .filter(
-        (j) => j.minSalary >= priceValue[0] && j.maxSalary <= priceValue[1]
+        (j) => (j.minSalary || 0) >= priceValue[0] && (j.maxSalary || 0) <= priceValue[1]
       );
 
     if (shortValue === 'price-low-to-high') {

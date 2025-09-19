@@ -13,9 +13,9 @@ import {
   LinkedinIcon
 } from 'react-share';
 
-const SocialMediaShare = () => {
+const SocialMediaShare = ({ url }: { url?: string }) => {
   const pathName = usePathname();
-  const sharedUrl = `${hostName}${pathName}`;
+  const sharedUrl = url || `${hostName}${pathName}`;
 
   return (
     <ul className="d-flex gap-2 share-icon align-items-center style-none pb-20">

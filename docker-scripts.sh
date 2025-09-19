@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Jobi Docker Management Scripts
+# Ugandan JobsDocker Management Scripts
 
 # Colors for output
 RED='\033[0;31m'
@@ -24,7 +24,7 @@ print_error() {
 
 # Help function
 show_help() {
-    echo -e "${BLUE}Jobi Docker Management${NC}"
+    echo -e "${BLUE}Ugandan JobsDocker Management${NC}"
     echo ""
     echo "Usage: ./docker-scripts.sh [COMMAND]"
     echo ""

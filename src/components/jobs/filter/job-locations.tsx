@@ -9,7 +9,7 @@ import { IJobData } from '@/database/job.model';
 
 const JobLocations = () => {
   const [allJobData, setAllJobData] = useState<IJobData[]>([]);
-  const uniqueLocations = [...new Set(allJobData.map((job) => job.location))];
+  const uniqueLocations = [...new Set(allJobData.map((job) => job.location).filter((loc): loc is string => Boolean(loc)))];
   const dispatch = useAppDispatch();
   const handleLocation = (item: { value: string; label: string }) => {
     dispatch(setLocation(item.value));

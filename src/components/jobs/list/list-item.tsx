@@ -43,7 +43,7 @@ const ListItem = ({
   // Get company image with fallback
   const getCompanyImage = () => {
     if (companyImage) return companyImage;
-    if (typeof createdBy === 'object' && createdBy?.picture) return createdBy.picture;
+    if (typeof createdBy === 'object' && (createdBy as any)?.picture) return (createdBy as any).picture;
     return '/assets/images/logo/media_22.png'; // Default fallback image
   };
 
@@ -75,7 +75,7 @@ const ListItem = ({
               {title}
             </Link>
             <div className="company-name text-muted mb-2">
-              {company || (typeof createdBy === 'object' && createdBy?.name) || 'Company'}
+              {company || (typeof createdBy === 'object' && (createdBy as any)?.name) || 'Company'}
             </div>
             <div className="job-meta d-flex flex-wrap align-items-center gap-3">
               <span className="job-location">

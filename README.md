@@ -4,7 +4,7 @@ Here is a working live demo: https://jobi-jobportal.vercel.app/
 
 ## 📝 Description
 
-Jobi is an advanced job portal website designed to streamline the hiring process for employers and provide a comprehensive job search experience for candidates. Employers can create job posts, shortlist favorite candidates, and manage their hiring process efficiently through a feature-rich admin dashboard. Candidates can apply for jobs, track their application status, and more. Jobi includes a plethora of features aimed at enhancing both user and admin experiences.
+Ugandan Jobsis an advanced job portal website designed to streamline the hiring process for employers and provide a comprehensive job search experience for candidates. Employers can create job posts, shortlist favorite candidates, and manage their hiring process efficiently through a feature-rich admin dashboard. Candidates can apply for jobs, track their application status, and more. Ugandan Jobsincludes a plethora of features aimed at enhancing both user and admin experiences.
 
 ## Features
 

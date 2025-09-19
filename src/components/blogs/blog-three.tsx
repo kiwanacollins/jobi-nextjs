@@ -12,7 +12,7 @@ const BlogThree = () => {
           <div className="row">
             <div className="col-xl-7">
               <div className="title-one mb-30 lg-mb-10">
-                <h2 className="main-font wow fadeInUp" data-wow-delay="0.3s">Jobi Guides</h2>
+                <h2 className="main-font wow fadeInUp" data-wow-delay="0.3s">Ugandan Jobs Guides</h2>
               </div>
             </div>
           </div>

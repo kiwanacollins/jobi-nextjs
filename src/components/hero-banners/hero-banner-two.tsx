@@ -26,7 +26,7 @@ const HeroBannerTwo = () => {
         <div className="position-relative pt-225 xl-pt-200 lg-pt-150 pb-80 lg-pb-60">
           <div className="row">
             <div className="col-lg-6 col-md-8">
-              <h1 className="wow fadeInUp" data-wow-delay="0.3s">Find & Hire <br /> Top 3% of expert on jobi.</h1>
+              <h1 className="wow fadeInUp" data-wow-delay="0.3s">Find & Hire <br /> Top 3% of expert on Ugandan Jobs.</h1>
               <p className="text-md mt-35 mb-50 lg-mb-30 pe-xxl-5 wow fadeInUp" data-wow-delay="0.4s">With the largest professional creative community online, simply search through from our website</p>
             </div>
           </div>

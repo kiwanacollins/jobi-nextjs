@@ -4,6 +4,7 @@ import { IBlog } from '@/database/Blog.model';
 import ParseHTML from '../../common/parseHTML';
 import { getTimestamp } from '@/utils/utils';
 import SocialMediaShare from '@/components/common/SocialMediaShare';
+import { hostName } from '@/constants';
 const BlogArticleDetails = ({ item }: { item: IBlog }) => {
   return (
     <article className="blog-details-meta">
@@ -32,7 +33,7 @@ const BlogArticleDetails = ({ item }: { item: IBlog }) => {
             </li>
           ))}
         </ul>
-        <SocialMediaShare />
+  <SocialMediaShare url={`${hostName}/blog/${item.slug}`} />
       </div>
     </article>
   );

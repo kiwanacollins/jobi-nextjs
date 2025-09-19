@@ -97,7 +97,7 @@ const JobGridItem = ({
         {item?.createdBy?.firstName || 'kiwana'}
       </div>
       <div className="text-center text-muted mb-3" style={{ fontSize: '12px' }}>
-        {formatDeadline(deadline)}
+        {deadline ? formatDeadline(deadline) : 'No deadline set'}
       </div>
       <div className="text-center">
         <Link

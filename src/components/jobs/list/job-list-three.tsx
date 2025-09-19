@@ -48,14 +48,15 @@ currentUser
         experience.length !== 0
           ? experience.some(
               (e) =>
-                item.experience.trim().toLowerCase() === e.trim().toLowerCase()
+                (e: any) =>
+                item.experience?.trim().toLowerCase() === e.trim().toLowerCase()
             )
           : true
       )
       .filter((item) => (job_type ? item.duration === job_type : true))
       .filter((l) =>
         location
-          ? slugify(l.location.split(',').join('-').toLowerCase(), '-') ===
+          ? slugify(l.location?.split(',').join('-').toLowerCase() || '', '-') ===
             location
           : true
       )

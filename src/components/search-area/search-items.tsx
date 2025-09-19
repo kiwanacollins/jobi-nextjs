@@ -28,7 +28,7 @@ const SearchItems = () => {
   };
   const locationMatch = (item: IJobData) => {
     return (
-      slugify(item.location.split(',').join('-').toLowerCase(), '-') ===
+      slugify(item.location?.split(',').join('-').toLowerCase() || '', '-') ===
       location
     );
   };

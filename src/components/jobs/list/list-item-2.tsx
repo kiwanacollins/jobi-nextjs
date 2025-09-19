@@ -78,7 +78,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
               {item?.createdBy?.firstName || 'kiwana'}
             </div>
             <div className="job-deadline text-muted">
-              {formatDeadline(item.deadline)}
+              {item.deadline ? formatDeadline(item.deadline) : 'No deadline set'}
             </div>
           </div>
         </div>

@@ -44,7 +44,7 @@ const FancyBannerTwo = () => {
                     ))}
                   </div>
                 </div>
-                <Link href="/about-us" className="explore-btn tran3s">Explore Jobi business</Link>
+                <Link href="/about-us" className="explore-btn tran3s">Explore Ugandan Jobs business</Link>
               </div>
             </div>
             <div className="col-xl-6 col-lg-5">

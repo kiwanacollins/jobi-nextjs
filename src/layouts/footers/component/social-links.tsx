@@ -3,7 +3,7 @@ import React from 'react';
 
 const SocialLinks = () => {
   const defaultMsg =
-    'Hello from Jobi, I would like to know about your services';
+    'Hello from Ugandan Jobs, I would like to know about your services';
   const whatsappUrl = `https://wa.me/${'+8801938056537'}?text=${encodeURIComponent(
     defaultMsg
   )}`;
