@@ -81,13 +81,13 @@ const Header = () => {
                     {/* menus start */}
                     <Menus userId="" role="" handleNavCollapse={() => {}} />
                     {/* menus end */}
-                    <li className="d-md-none">
+                    <li className="d-md-none mt-4">
                       <Link href="/sign-in" className="btn-one w-100 mb-3" style={{whiteSpace: 'nowrap'}}>
                         Login/Sign up
                       </Link>
                     </li>
                     <li className="d-md-none">
-                      <Link href="/register" className="job-post-btn tran3s">
+                      <Link href="/register" className="job-post-btn tran3s w-100 mb-3">
                         Post Job
                       </Link>
                     </li>

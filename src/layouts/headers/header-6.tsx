@@ -42,10 +42,10 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                   </strong>
                 </Link>
               </div>
-              <div className="right-widget ms-auto ms-lg-0 order-lg-2">
+              <div className={`right-widget ms-auto ms-lg-0 order-lg-2 ${!userId ? 'd-none d-lg-block' : ''}`}>
                 <ul className="d-flex align-items-center style-none">
                   {!userId && (
-                    <li>
+                    <li className="d-none d-lg-block">
                       <a
                         href="/sign-in"
                         className={`fw-500 text-decoration-none login-btn-three ${
@@ -192,6 +192,18 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                       handleNavCollapse={handleNavCollapse}
                     />
                     {/* menus end */}
+                    {!userId && (
+                      <li className="d-lg-none mt-4">
+                        <a
+                          href="/sign-in"
+                          className={`fw-500 text-decoration-none login-btn-three ${
+                            dark_style ? 'dark-style' : ''
+                          } tran3s w-100`}
+                        >
+                          Login/Sign up
+                        </a>
+                      </li>
+                    )}
                     {currentUser?.role === 'employee' && (
                       <li className="d-md-none mt-5">
                         <Link
