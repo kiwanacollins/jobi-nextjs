@@ -1,18 +1,8 @@
 import React from 'react';
 import { Metadata } from 'next';
-import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 import CompanyBreadcrumb from '@/components/common/common-breadcrumb';
 import BlogFullWidthArea from '@/components/blogs/blog-frull-width';
-import { fetchAllBlogs } from '@/lib/actions/blog.action';
-import { auth } from '@clerk/nextjs';
-import { getUserById } from '@/lib/actions/user.action';
-
-import React from 'react';
-import { Metadata } from 'next';
-import Wrapper from '@/layouts/wrapper';
-import Header from '@/layouts/headers/header';
-import FooterOne from '@/layouts/footers/footer-one';
-import BlogPageArea from '@/components/blogs/blog-page-area';
+import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
 import { fetchAllBlogs } from '@/lib/actions/blog.action';
 import { getUserById } from '@/lib/actions/user.action';
 import { auth } from '@clerk/nextjs/server';
