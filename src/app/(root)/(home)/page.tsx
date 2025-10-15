@@ -7,6 +7,10 @@ import { JobListItems } from '@/components/jobs/list/job-list-one';
 import { getTestimonials } from '@/lib/actions/Testimonial.action';
 import Link from 'next/link';
 
+// Force dynamic rendering to prevent build timeouts
+export const dynamic = 'force-dynamic';
+export const revalidate = 60;
+
 export default async function HomePage() {
   const reviews = await getTestimonials();
   return (

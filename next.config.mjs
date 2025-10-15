@@ -23,6 +23,8 @@ const nextConfig = {
       }
     ]
   },
+  // Increase timeout for static generation
+  staticPageGenerationTimeout: 180,
   // Suppress hydration warnings from browser extensions
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
@@ -38,6 +40,17 @@ const nextConfig = {
     if (dev && !isServer) {
       config.infrastructureLogging = {
         level: 'error',
+      };
+    }
+    // Ignore mongoose during client-side builds
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        mongodb: false,
+        mongoose: false,
       };
     }
     return config;

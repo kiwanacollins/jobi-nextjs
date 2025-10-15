@@ -9,6 +9,10 @@ import job_data from '@/data/job-data';
 import { getJobById, getRelatedJobs } from '@/lib/actions/job.action';
 import { notFound } from 'next/navigation';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => {
   // First try to find in static data
   let job = job_data.find((j) => Number(j.id) === Number(params.id));

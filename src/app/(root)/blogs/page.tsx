@@ -7,6 +7,20 @@ import { fetchAllBlogs } from '@/lib/actions/blog.action';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 
+import React from 'react';
+import { Metadata } from 'next';
+import Wrapper from '@/layouts/wrapper';
+import Header from '@/layouts/headers/header';
+import FooterOne from '@/layouts/footers/footer-one';
+import BlogPageArea from '@/components/blogs/blog-page-area';
+import { fetchAllBlogs } from '@/lib/actions/blog.action';
+import { getUserById } from '@/lib/actions/user.action';
+import { auth } from '@clerk/nextjs/server';
+
+// Force dynamic rendering to prevent build timeouts
+export const dynamic = 'force-dynamic';
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: 'Blog - Ugandan Jobs',
   description:

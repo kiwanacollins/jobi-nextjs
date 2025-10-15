@@ -8,6 +8,10 @@ import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
 
+// Force dynamic rendering to prevent build timeouts
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'Jobs - Ugandan Jobs',
   description:
