@@ -29,20 +29,22 @@ Add the following secrets to your GitHub repository (`Settings > Secrets and var
 - `VPS_PORT`: SSH port (usually 22)
 
 #### Application Environment Variables
-- `NEXT_PUBLIC_APP_URL`: Your application URL (e.g., https://yourdomain.com)
-- `MONGODB_URI`: MongoDB connection string
-- `NEXTAUTH_SECRET`: Random secret for NextAuth
-- `NEXTAUTH_URL`: Your application URL
-- `CLERK_SECRET_KEY`: Clerk secret key
+- `NEXT_PUBLIC_CLERK_SIGN_IN_URL`: Clerk sign-in URL (e.g., /sign-in)
+- `NEXT_PUBLIC_CLERK_SIGN_UP_URL`: Clerk sign-up URL (e.g., /sign-up)
+- `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`: Redirect URL after sign-in (e.g., /)
+- `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL`: Redirect URL after sign-up (e.g., /chooseProfile)
+- `NEXT_CLERK_WEBHOOK_SECRET`: Clerk webhook secret
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`: Clerk publishable key
-- `NEXT_PUBLIC_CLERK_SIGN_IN_URL`: Clerk sign-in URL
-- `NEXT_PUBLIC_CLERK_SIGN_UP_URL`: Clerk sign-up URL
-- `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL`: Redirect URL after sign-in
-- `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL`: Redirect URL after sign-up
+- `CLERK_SECRET_KEY`: Clerk secret key
+- `NEXT_PUBLIC_TINY_EDITOR_API_KEY`: TinyMCE editor API key
+- `NEXT_PUBLIC_SERVER_URL`: Your application URL (e.g., https://yourdomain.com)
+- `MONGODB_URL`: MongoDB connection string
+- `MONGODB_DB_NAME`: MongoDB database name
+- `NEXT_PUBLIC_SUPPRESS_HYDRATION_WARNINGS`: Set to "true" to suppress hydration warnings
+- `ADMIN_EMAILS`: Comma-separated list of admin emails
 - `CLOUDINARY_CLOUD_NAME`: Cloudinary cloud name
 - `CLOUDINARY_API_KEY`: Cloudinary API key
 - `CLOUDINARY_API_SECRET`: Cloudinary API secret
-- `WEBHOOK_SECRET`: Webhook secret for API endpoints
 
 ## VPS Server Preparation
 

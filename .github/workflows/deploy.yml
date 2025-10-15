@@ -54,21 +54,35 @@ jobs:
           if [ ! -f /home/${{ secrets.VPS_USER }}/jobi-nextjs/.env.local ]; then
             mkdir -p /home/${{ secrets.VPS_USER }}/jobi-nextjs
             cat > /home/${{ secrets.VPS_USER }}/jobi-nextjs/.env.local << 'EOF'
-          # Environment variables for production
-          NEXT_PUBLIC_APP_URL=${{ secrets.NEXT_PUBLIC_APP_URL }}
-          MONGODB_URI=${{ secrets.MONGODB_URI }}
-          NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}
-          NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
-          CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          # Clerk Authentication
           NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
           NEXT_PUBLIC_CLERK_SIGN_UP_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
           NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL }}
           NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=${{ secrets.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL }}
+          NEXT_CLERK_WEBHOOK_SECRET=${{ secrets.NEXT_CLERK_WEBHOOK_SECRET }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}
+
+          # TinyMCE Editor
+          NEXT_PUBLIC_TINY_EDITOR_API_KEY=${{ secrets.NEXT_PUBLIC_TINY_EDITOR_API_KEY }}
+
+          # Server URL
+          NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
+
+          # MongoDB
+          MONGODB_URL=${{ secrets.MONGODB_URL }}
+          MONGODB_DB_NAME=${{ secrets.MONGODB_DB_NAME }}
+
+          # Next.js Settings
+          NEXT_PUBLIC_SUPPRESS_HYDRATION_WARNINGS=${{ secrets.NEXT_PUBLIC_SUPPRESS_HYDRATION_WARNINGS }}
+
+          # Admin Configuration
+          ADMIN_EMAILS=${{ secrets.ADMIN_EMAILS }}
+
+          # Cloudinary
           CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
-          WEBHOOK_SECRET=${{ secrets.WEBHOOK_SECRET }}
           EOF
           fi
           
