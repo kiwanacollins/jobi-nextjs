@@ -57,11 +57,32 @@ setup_docker() {
         exit 1
     fi
     
-    # Create .env.docker from example
-    if [ ! -f ".env.docker" ]; then
-        print_status "Creating .env.docker from example..."
-        cp .env.docker.example .env.docker
-        print_warning "Please update .env.docker with your actual environment variables"
+    # Check if .env.local exists (Docker Compose will use this file)
+    if [ ! -f ".env.local" ]; then
+        print_warning ".env.local not found. Creating a basic template..."
+        cat > .env.local << 'EOF'
+# MongoDB Configuration
+MONGODB_URI=mongodb://mongo:27017/jobi-nextjs
+
+# NextAuth Configuration
+NEXTAUTH_SECRET=your-nextauth-secret-here
+NEXTAUTH_URL=http://localhost:3000
+
+# Admin Setup
+ADMIN_SETUP_KEY=your-admin-setup-key-here
+
+# Cloudinary Configuration (optional)
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Email Configuration (optional)
+EMAIL_USER=your-email@example.com
+EMAIL_PASS=your-email-password
+EOF
+        print_warning "Please update .env.local with your actual environment variables"
+    else
+        print_status ".env.local already exists and will be used by Docker Compose"
     fi
     
     print_status "Docker environment setup complete!"
