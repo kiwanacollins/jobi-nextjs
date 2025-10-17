@@ -8,7 +8,7 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-password}
       MONGO_INITDB_DATABASE: jobiNextjs
     volumes:
       - mongodb_data:/data/db
@@ -47,9 +47,7 @@ services:
 
   # Next.js Application - Production
   jobi-app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKERHUB_USERNAME:-kiwanacollins}/jobi-nextjs:latest
     container_name: jobi-nextjs
     restart: unless-stopped
     ports:
@@ -60,7 +58,7 @@ services:
     # Explicit overrides (take precedence over env_file)
     environment:
       - NODE_ENV=production
-      - MONGODB_URL=mongodb://admin:password@mongodb:27017/jobiNextjs?authSource=admin
+      - MONGODB_URL=mongodb://admin:${MONGO_ROOT_PASSWORD:-password}@mongodb:27017/jobiNextjs?authSource=admin
     depends_on:
       - mongodb
     networks:

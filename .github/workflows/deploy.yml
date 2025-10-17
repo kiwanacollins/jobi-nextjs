@@ -51,22 +51,17 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          # Stop and remove existing containers
-          docker stop jobi-nextjs || true
-          docker rm jobi-nextjs || true
-          
-          # Remove old images (keep last 3 versions)
-          docker images ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs --format "table {{.Repository}}\t{{.Tag}}\t{{.ID}}" | tail -n +4 | awk '{print $3}' | xargs -r docker rmi || true
-          
-          # Pull latest image
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
+          # Navigate to deployment directory
+          cd ${{ secrets.VPS_FOLDER }}
           
           # Create deployment directory if it doesn't exist
           mkdir -p ${{ secrets.VPS_FOLDER }}
           
-          # Create .env file if it doesn't exist
-          if [ ! -f ${{ secrets.VPS_FOLDER }}/.env.local ]; then
-            cat > ${{ secrets.VPS_FOLDER }}/.env.local << 'EOF'
+          # Download docker-compose.yml from repository
+          curl -o docker-compose.yml https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docker-compose.yml
+          
+          # Create/Update .env.local file
+          cat > .env.local << 'EOF'
           # Clerk Authentication
           NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
           NEXT_PUBLIC_CLERK_SIGN_UP_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
@@ -82,9 +77,10 @@ jobs:
           # Server URL
           NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
 
-          # MongoDB
-          MONGODB_URL=${{ secrets.MONGODB_URL }}
-          MONGODB_DB_NAME=${{ secrets.MONGODB_DB_NAME }}
+          # MongoDB Configuration
+          MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}
+          MONGODB_URL=mongodb://admin:${{ secrets.MONGO_ROOT_PASSWORD }}@mongodb:27017/jobiNextjs?authSource=admin
+          MONGODB_DB_NAME=jobiNextjs
 
           # Next.js Settings
           NEXT_PUBLIC_SUPPRESS_HYDRATION_WARNINGS=${{ secrets.NEXT_PUBLIC_SUPPRESS_HYDRATION_WARNINGS }}
@@ -96,16 +92,19 @@ jobs:
           CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
-          EOF
-          fi
           
-          # Run new container
-          docker run -d \
-            --name jobi-nextjs \
-            --restart unless-stopped \
-            -p 3000:3000 \
-            --env-file ${{ secrets.VPS_FOLDER }}/.env.local \
-            ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
+          # Docker Hub Username
+          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+          EOF
+          
+          # Pull latest images
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
+          
+          # Stop and remove existing containers using docker-compose
+          docker-compose --profile prod down || true
+          
+          # Start services with docker-compose
+          docker-compose --profile prod up -d
           
           # Clean up unused Docker resources
           docker system prune -f
@@ -114,18 +113,18 @@ jobs:
           echo "Waiting for application to start..."
           sleep 30
           
-          # Check if container is running
-          if docker ps | grep jobi-nextjs; then
-            echo "✅ Deployment successful! Container is running."
-            # Optional: Test endpoint
+          # Check if containers are running
+          if docker ps | grep jobi-nextjs && docker ps | grep jobi-mongodb; then
+            echo "✅ Deployment successful! All containers are running."
+            # Test endpoint
             if curl -f http://localhost:3000 > /dev/null 2>&1; then
               echo "✅ Application is responding to requests."
             else
               echo "⚠️ Application may still be starting up."
             fi
           else
-            echo "❌ Deployment failed! Container is not running."
-            docker logs jobi-nextjs --tail 50
+            echo "❌ Deployment failed! Containers are not running."
+            docker-compose --profile prod logs --tail 50
             exit 1
           fi
 
