@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React from 'react';
-import { Metadata } from 'next';
 import Wrapper from '@/layouts/wrapper';
 import Header from '@/layouts/headers/header';
 import FooterOne from '@/layouts/footers/footer-one';
@@ -9,10 +8,17 @@ import JobDetailsBreadcrumb from '@/components/jobs/breadcrumb/job-details-bread
 import JobDetailsV1Area from '@/components/job-details/job-details-v1-area';
 import job_data from '@/data/job-data';
 import RelatedJobs from '@/components/jobs/related-jobs';
+import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Job Details v1'
-};
+// Force dynamic rendering to prevent build timeouts
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Job Details v1'
+  };
+}
 
 const JobDetailsV1Page = () => {
   const job = job_data[0];

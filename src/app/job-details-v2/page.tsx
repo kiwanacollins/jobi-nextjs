@@ -1,13 +1,19 @@
 import React from 'react';
-import { Metadata } from 'next';
 import Wrapper from '@/layouts/wrapper';
 import Header from '@/layouts/headers/header';
 import FooterOne from '@/layouts/footers/footer-one';
 import JobPortalIntro from '@/components/job-portal-intro/job-portal-intro';
+import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Job Details v2'
-};
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Job Details v2'
+  };
+}
 
 const JobDetailsV2Page = () => {
   return (

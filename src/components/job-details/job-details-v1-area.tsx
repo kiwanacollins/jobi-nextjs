@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { IJobType } from '@/types/job-data-type';
 import { IJobData } from '@/database/job.model';

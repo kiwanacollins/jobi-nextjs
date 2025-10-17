@@ -8,10 +8,17 @@ import FooterOne from '@/layouts/footers/footer-one';
 import job_data from '@/data/job-data';
 import { getJobById, getRelatedJobs } from '@/lib/actions/job.action';
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 
-// Force dynamic rendering
+// Force dynamic rendering to prevent build timeouts
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: `Job Details - ${params.id}`
+  };
+}
 
 const JobDetailsDynamicPage = async ({ params }: { params: { id: string } }) => {
   // First try to find in static data

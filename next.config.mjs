@@ -8,7 +8,9 @@ const nextConfig = {
     serverComponentsExternalPackages: ['mongoose'],
     serverActions: {
       bodySizeLimit: '3mb'
-    }
+    },
+    // Skip generating static pages for faster builds
+    isrMemoryCacheSize: 0
   },
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {
@@ -23,8 +25,15 @@ const nextConfig = {
       }
     ]
   },
-  // Increase timeout for static generation
-  staticPageGenerationTimeout: 180,
+  // Reasonable timeout for static generation
+  staticPageGenerationTimeout: 60,
+  // Skip prerendering during build for faster deployment
+  ...(process.env.SKIP_BUILD_STATIC_GENERATION === 'true' && {
+    experimental: {
+      ...nextConfig.experimental,
+      isrFlushToDisk: false
+    }
+  }),
   // Suppress hydration warnings from browser extensions
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production'
