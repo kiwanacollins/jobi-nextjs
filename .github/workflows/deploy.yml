@@ -61,10 +61,12 @@ jobs:
           # Pull latest image
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
           
+          # Create deployment directory if it doesn't exist
+          mkdir -p ${{ secrets.VPS_FOLDER }}
+          
           # Create .env file if it doesn't exist
-          if [ ! -f /home/${{ secrets.VPS_USER }}/jobi-nextjs/.env.local ]; then
-            mkdir -p /home/${{ secrets.VPS_USER }}/jobi-nextjs
-            cat > /home/${{ secrets.VPS_USER }}/jobi-nextjs/.env.local << 'EOF'
+          if [ ! -f ${{ secrets.VPS_FOLDER }}/.env.local ]; then
+            cat > ${{ secrets.VPS_FOLDER }}/.env.local << 'EOF'
           # Clerk Authentication
           NEXT_PUBLIC_CLERK_SIGN_IN_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_IN_URL }}
           NEXT_PUBLIC_CLERK_SIGN_UP_URL=${{ secrets.NEXT_PUBLIC_CLERK_SIGN_UP_URL }}
@@ -102,7 +104,7 @@ jobs:
             --name jobi-nextjs \
             --restart unless-stopped \
             -p 3000:3000 \
-            --env-file /home/${{ secrets.VPS_USER }}/jobi-nextjs/.env.local \
+            --env-file ${{ secrets.VPS_FOLDER }}/.env.local \
             ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
           
           # Clean up unused Docker resources
