@@ -101,6 +101,12 @@ jobs:
           docker stop jobi-nextjs jobi-mongodb 2>/dev/null || true
           docker rm jobi-nextjs jobi-mongodb 2>/dev/null || true
           
+          # Stop any MongoDB running on host (if installed via apt)
+          sudo systemctl stop mongod 2>/dev/null || true
+          
+          # Kill any process using port 27017
+          sudo lsof -ti:27017 | xargs -r sudo kill -9 2>/dev/null || true
+          
           # Create Docker network if it doesn't exist
           docker network create jobi-network 2>/dev/null || true
           
