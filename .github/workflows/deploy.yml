@@ -95,10 +95,14 @@ jobs:
           
           # Pull latest images
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
+          docker pull mongo:7.0
           
           # Stop and remove existing containers
           docker stop jobi-nextjs jobi-mongodb 2>/dev/null || true
           docker rm jobi-nextjs jobi-mongodb 2>/dev/null || true
+          
+          # Create Docker network if it doesn't exist
+          docker network create jobi-network 2>/dev/null || true
           
           # Start MongoDB container
           docker run -d \
@@ -110,20 +114,11 @@ jobs:
             -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }} \
             -e MONGO_INITDB_DATABASE=jobiNextjs \
             -v mongodb_data:/data/db \
-            mongo:7.0 || docker network create jobi-network && \
-            docker run -d \
-              --name jobi-mongodb \
-              --restart unless-stopped \
-              --network jobi-network \
-              -p 27017:27017 \
-              -e MONGO_INITDB_ROOT_USERNAME=admin \
-              -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }} \
-              -e MONGO_INITDB_DATABASE=jobiNextjs \
-              -v mongodb_data:/data/db \
-              mongo:7.0
+            mongo:7.0
           
           # Wait for MongoDB to be ready
-          sleep 10
+          echo "Waiting for MongoDB to start..."
+          sleep 15
           
           # Start Next.js application container
           docker run -d \
@@ -134,30 +129,41 @@ jobs:
             --env-file .env.local \
             ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
           
-          # Clean up unused Docker resources
-          docker system prune -f
-          
           # Health check
           echo "Waiting for application to start..."
-          sleep 30
+          sleep 20
           
           # Check if containers are running
-          if docker ps | grep jobi-nextjs && docker ps | grep jobi-mongodb; then
+          if docker ps | grep -q jobi-nextjs && docker ps | grep -q jobi-mongodb; then
             echo "✅ Deployment successful! All containers are running."
+            echo ""
+            echo "Container status:"
+            docker ps | grep jobi
+            echo ""
             # Test endpoint
             if curl -f http://localhost:3000 > /dev/null 2>&1; then
               echo "✅ Application is responding to requests."
             else
               echo "⚠️ Application may still be starting up."
+              echo "Checking logs..."
+              docker logs jobi-nextjs --tail 20
             fi
           else
             echo "❌ Deployment failed! Containers are not running."
-            echo "Next.js logs:"
-            docker logs jobi-nextjs --tail 50
-            echo "MongoDB logs:"
-            docker logs jobi-mongodb --tail 50
+            echo ""
+            echo "Container status:"
+            docker ps -a | grep jobi || echo "No containers found"
+            echo ""
+            echo "=== Next.js logs ==="
+            docker logs jobi-nextjs --tail 50 2>&1 || echo "No Next.js container found"
+            echo ""
+            echo "=== MongoDB logs ==="
+            docker logs jobi-mongodb --tail 50 2>&1 || echo "No MongoDB container found"
             exit 1
           fi
+          
+          # Clean up unused Docker resources (after success check)
+          docker system prune -f
 
   notify:
     needs: deploy
