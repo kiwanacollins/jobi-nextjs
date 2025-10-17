@@ -20,6 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+
 const JobDetailsV1Page = () => {
   const job = job_data[0];
   return (
