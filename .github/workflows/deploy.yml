@@ -51,11 +51,11 @@ jobs:
         key: ${{ secrets.VPS_SSH_KEY }}
         port: ${{ secrets.VPS_PORT }}
         script: |
-          # Navigate to deployment directory
-          cd ${{ secrets.VPS_FOLDER }}
-          
           # Create deployment directory if it doesn't exist
           mkdir -p ${{ secrets.VPS_FOLDER }}
+          
+          # Navigate to deployment directory
+          cd ${{ secrets.VPS_FOLDER }}
           
           # Download docker-compose.yml from repository
           curl -o docker-compose.yml https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/docker-compose.yml
@@ -77,9 +77,8 @@ jobs:
           # Server URL
           NEXT_PUBLIC_SERVER_URL=${{ secrets.NEXT_PUBLIC_SERVER_URL }}
 
-          # MongoDB Configuration
-          MONGO_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }}
-          MONGODB_URL=mongodb://admin:${{ secrets.MONGO_ROOT_PASSWORD }}@mongodb:27017/jobiNextjs?authSource=admin
+          # MongoDB Configuration (Docker network)
+          MONGODB_URL=mongodb://admin:${{ secrets.MONGO_ROOT_PASSWORD }}@jobi-mongodb:27017/jobiNextjs?authSource=admin
           MONGODB_DB_NAME=jobiNextjs
 
           # Next.js Settings
@@ -92,19 +91,48 @@ jobs:
           CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}
           CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}
-          
-          # Docker Hub Username
-          DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
           EOF
           
           # Pull latest images
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
           
-          # Stop and remove existing containers using docker-compose
-          docker-compose --profile prod down || true
+          # Stop and remove existing containers
+          docker stop jobi-nextjs jobi-mongodb 2>/dev/null || true
+          docker rm jobi-nextjs jobi-mongodb 2>/dev/null || true
           
-          # Start services with docker-compose
-          docker-compose --profile prod up -d
+          # Start MongoDB container
+          docker run -d \
+            --name jobi-mongodb \
+            --restart unless-stopped \
+            --network jobi-network \
+            -p 27017:27017 \
+            -e MONGO_INITDB_ROOT_USERNAME=admin \
+            -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }} \
+            -e MONGO_INITDB_DATABASE=jobiNextjs \
+            -v mongodb_data:/data/db \
+            mongo:7.0 || docker network create jobi-network && \
+            docker run -d \
+              --name jobi-mongodb \
+              --restart unless-stopped \
+              --network jobi-network \
+              -p 27017:27017 \
+              -e MONGO_INITDB_ROOT_USERNAME=admin \
+              -e MONGO_INITDB_ROOT_PASSWORD=${{ secrets.MONGO_ROOT_PASSWORD }} \
+              -e MONGO_INITDB_DATABASE=jobiNextjs \
+              -v mongodb_data:/data/db \
+              mongo:7.0
+          
+          # Wait for MongoDB to be ready
+          sleep 10
+          
+          # Start Next.js application container
+          docker run -d \
+            --name jobi-nextjs \
+            --restart unless-stopped \
+            --network jobi-network \
+            -p 3000:3000 \
+            --env-file .env.local \
+            ${{ secrets.DOCKERHUB_USERNAME }}/jobi-nextjs:latest
           
           # Clean up unused Docker resources
           docker system prune -f
@@ -124,7 +152,10 @@ jobs:
             fi
           else
             echo "❌ Deployment failed! Containers are not running."
-            docker-compose --profile prod logs --tail 50
+            echo "Next.js logs:"
+            docker logs jobi-nextjs --tail 50
+            echo "MongoDB logs:"
+            docker logs jobi-mongodb --tail 50
             exit 1
           fi
 
