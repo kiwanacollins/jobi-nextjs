@@ -137,19 +137,6 @@ currentUser
                   found
                 </div>
                 <div className="d-flex align-items-center">
-                  <div className="short-filter d-flex align-items-center">
-                    <div className="text-dark fw-500 me-2">Short:</div>
-                    <NiceSelect
-                      options={[
-                        { value: '', label: 'Price Short' },
-                        { value: 'price-low-to-high', label: 'low to high' },
-                        { value: 'price-high-to-low', label: 'High to low' }
-                      ]}
-                      defaultCurrent={0}
-                      onChange={(item) => handleShort(item)}
-                      name="Price Short"
-                    />
-                  </div>
                   <button
                     onClick={() => setJobType('list')}
                     className={`style-changer-btn text-center rounded-circle tran3s ms-2 list-btn 
