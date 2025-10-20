@@ -19,12 +19,6 @@ export function WidgetOne({
             Browse Jobs
           </Link>
         </li>
-
-        <li>
-          <Link className="text-decoration-none" href="/candidates">
-            Candidates
-          </Link>
-        </li>
       </ul>
     </div>
   );
