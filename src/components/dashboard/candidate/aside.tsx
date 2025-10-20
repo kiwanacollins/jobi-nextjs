@@ -119,7 +119,7 @@ const CandidateAside = ({ isOpenSidebar, setIsOpenSidebar }: IProps) => {
         <div className="position-relative">
           <div className="logo text-md-center d-md-block d-flex align-items-center justify-content-between">
             <Link href="/">
-              <strong className="text-decoration-none" style={{fontSize: '20px', color: '#2E7D4A'}}>Ugandan Jobs</strong>
+              <strong className="text-decoration-none" style={{ fontSize: '20px', color: '#00bf58'}}>Ugandan Jobs</strong>
             </Link>
             <button
               onClick={() => setIsOpenSidebar(false)}

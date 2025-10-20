@@ -20,7 +20,7 @@ const Header = () => {
             <div className="d-flex align-items-center">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <strong className="text-decoration-none" style={{fontSize: '20px', color: '#2E7D4A', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
+                  <strong className="text-decoration-none" style={{ fontSize: '20px', color: '#01BF58', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <div className="right-widget ms-auto order-lg-3">
@@ -59,7 +59,7 @@ const Header = () => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <strong className="text-decoration-none" style={{fontSize: '18px', color: '#2E7D4A', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
+                          <strong className="text-decoration-none" style={{ fontSize: '18px', color: '#00bf58', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                         </Link>
                       </div>
                     </li>

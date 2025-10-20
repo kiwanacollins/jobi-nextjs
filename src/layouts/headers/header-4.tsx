@@ -18,7 +18,7 @@ const HeaderFour = () => {
             <div className="d-flex align-items-center justify-content-between">
               <div className="logo order-lg-0">
                 <Link href="/" className="d-flex align-items-center">
-                  <strong className="text-decoration-none" style={{fontSize: '20px', color: '#2E7D4A', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
+                  <strong className="text-decoration-none" style={{ fontSize: '20px', color: '#01BF58', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                 </Link>
               </div>
               <div className="right-widget ms-auto ms-lg-0 order-lg-2">
@@ -57,7 +57,7 @@ const HeaderFour = () => {
                     <li className="d-block d-lg-none">
                       <div className="logo">
                         <Link href="/" className="d-block">
-                          <strong className="text-decoration-none" style={{fontSize: '18px', color: '#2E7D4A', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
+                          <strong className="text-decoration-none" style={{ fontSize: '18px', color: '#00bf58', whiteSpace: 'nowrap'}}>Ugandan Jobs</strong>
                         </Link>
                       </div>
                     </li>

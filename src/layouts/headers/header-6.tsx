@@ -34,7 +34,7 @@ const HeaderSix = ({ dark_style = false, userId, currentUser }: Props) => {
                     className="text-decoration-none" 
                     style={{
                       fontSize: '20px', 
-                      color: dark_style ? '#fff' : '#2E7D4A',
+                      color: dark_style ? '#fff' : '#01BF58',
                       whiteSpace: 'nowrap'
                     }}
                   >
