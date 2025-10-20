@@ -38,9 +38,6 @@ const FeatureSix = () => {
                   We collaborate with a number of top tier companies on
                   imagining the future of work, have a look.
                 </p>
-                <Link href="/company-v1" className="btn-five">
-                  Learn More
-                </Link>
               </div>
             </div>
             <div className="col-lg-6 text-center text-lg-end md-mt-40">
