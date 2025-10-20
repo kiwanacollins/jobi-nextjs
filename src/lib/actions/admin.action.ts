@@ -12,6 +12,8 @@ import connectToCloudinary from '../cloudinary';
 import cloudinary from 'cloudinary';
 import { FilterQuery } from 'mongoose';
 import Job from '@/database/job.model';
+import Contact from '@/database/contact.model';
+import Blog from '@/database/Blog.model';
 
 interface ICreateCategory {
   name: string;
@@ -459,6 +461,7 @@ export async function getSingleCompanySharedData(employeeId: string) {
 // get user statistics
 export async function getUserStatistics() {
   try {
+    await connectToDatabase();
     const totalUsers = await User.countDocuments();
 
     const totalCandidates = await User.countDocuments({ role: 'candidate' });
@@ -468,6 +471,9 @@ export async function getUserStatistics() {
     const totalHiredUsers = await User.countDocuments({ isHired: true });
 
     const totalJobPosts = await Job.countDocuments();
+
+    const totalMessages = await Contact.countDocuments();
+    const totalBlogs = await Blog.countDocuments();
 
     const usersByJoinedAt = await User.aggregate([
       {
@@ -485,7 +491,9 @@ export async function getUserStatistics() {
       totalEmployees,
       usersByJoinedAt,
       totalJobPosts,
-      totalHiredUsers
+      totalHiredUsers,
+      totalMessages,
+      totalBlogs
     };
   } catch (error) {
     console.log(error);

@@ -1,10 +1,6 @@
 'use client';
 import React from 'react';
-import Image, { StaticImageData } from 'next/image';
-import icon_1 from '@/assets/dashboard/images/icon/icon_12.svg';
-import icon_2 from '@/assets/dashboard/images/icon/icon_13.svg';
-import icon_3 from '@/assets/dashboard/images/icon/icon_14.svg';
-import icon_4 from '@/assets/dashboard/images/icon/icon_15.svg';
+import { MessageCircle, FileText, Users, Briefcase } from 'lucide-react';
 // import main_graph from '@/assets/dashboard/images/main-graph.png';
 
 import {
@@ -34,11 +30,11 @@ ChartJS.register(
 
 // card item
 export function CardItem({
-  img,
+  icon,
   value,
   title
 }: {
-  img: StaticImageData;
+  icon: React.ReactNode;
   value: string;
   title: string;
 }) {
@@ -47,7 +43,7 @@ export function CardItem({
       <div className="dash-card-one bg-white border-30 position-relative mb-15">
         <div className="d-sm-flex align-items-center justify-content-between">
           <div className="icon rounded-circle d-flex align-items-center justify-content-center order-sm-1">
-            <Image src={img} alt="icon" className="lazy-img" />
+            {icon}
           </div>
           <div className="order-sm-0">
             <div className="value fw-500">{value}</div>
@@ -122,22 +118,22 @@ const DashboardArea = ({ statistics, candidates }: IDashboardAreaProps) => {
       <h2 className="main-title">Dashboard</h2>
       <div className="row">
         <CardItem
-          img={icon_1}
+          icon={<Users size={24} style={{ color: '#000000' }} />}
           title="Total Users"
           value={statistics?.totalUsers}
         />
         <CardItem
-          img={icon_2}
-          title="Total Employee"
-          value={statistics?.totalEmployees}
+          icon={<MessageCircle size={24} style={{ color: '#000000' }} />}
+          title="Messages"
+          value={statistics?.totalMessages}
         />
         <CardItem
-          img={icon_3}
-          title="Total Candidates"
-          value={statistics?.totalCandidates}
+          icon={<FileText size={24} style={{ color: '#000000' }} />}
+          title="Blogs"
+          value={statistics?.totalBlogs}
         />
         <CardItem
-          img={icon_4}
+          icon={<Briefcase size={24} style={{ color: '#000000' }} />}
           title="Total Jobs"
           value={statistics?.totalJobPosts}
         />
