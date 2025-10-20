@@ -23,7 +23,7 @@ const HeroBannerFour = () => {
             <div className="row">
               <div className="col-xxl-7 col-lg-8 m-auto text-center">
                 <h1 className="wow fadeInUp" data-wow-delay="0.3s">
-                  Find your job without any hassle.
+                  Find your dream job without any hassle.
                 </h1>
                 <p
                   className="text-md mt-25 mb-45 md-mb-30 wow fadeInUp"

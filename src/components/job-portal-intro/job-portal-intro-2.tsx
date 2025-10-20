@@ -11,7 +11,7 @@ const JobPortalIntroTwo = () => {
               <div className="text-center text-lg-start wow fadeInUp" data-wow-delay="0.3s">
                 <h2>Most complete job portal.</h2>
                 <p className="text-md m0 md-pb-20">
-                  Signup and start find your job or talents.
+                  Signup and find your dream job 
                 </p>
               </div>
             </div>

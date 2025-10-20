@@ -19,7 +19,7 @@ const FancyBannerFour = () => {
 								<p className="text-white text-md mb-55 lg-mb-30">Commonly used in the graphic, print publishing industris
 									for previewing visual mockups. limited social discrimination.</p>
 								<Link href="/job-list-v1" className="find-job-btn d-flex align-items-center text-white">
-									<span className="fw-500">Find your job.</span>
+									<span className="fw-500">Find your dream job.</span>
 									<span className="ms-1"> <u>Explore all</u></span>
 									<span className="ms-auto"><i className="bi bi-chevron-right"></i></span>
 								</Link>
