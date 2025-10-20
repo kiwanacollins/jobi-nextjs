@@ -25,7 +25,7 @@ const CommonBreadcrumb = ({
         </div>
       </div>
       <Image src={shape_1} alt="shape" className="lazy-img shapes shape_01" />
-      <Image src={shape_2} alt="shape" className="lazy-img shapes shape_02" />
+      <Image src={shape_2} alt="shape" className="lazy-img shapes shape_02" priority />
     </div>
   );
 };
