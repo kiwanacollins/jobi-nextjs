@@ -11,16 +11,18 @@ const HomeRootLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Wrapper>
-      {/* header start */}
-      <HeaderSix
-        userId={userId?.toString()}
-        currentUser={JSON.parse(JSON.stringify(currentUser))}
-      />
-      {/* header end */}
-      {children}
-      {/* footer start */}
-      <FooterOne style_2={true} />
-      {/* footer end */}
+      <div className="main-page-wrapper">
+        {/* header start */}
+        <HeaderSix
+          userId={userId?.toString()}
+          currentUser={JSON.parse(JSON.stringify(currentUser))}
+        />
+        {/* header end */}
+        {children}
+        {/* footer start */}
+        <FooterOne style_2={true} />
+        {/* footer end */}
+      </div>
     </Wrapper>
   );
 };

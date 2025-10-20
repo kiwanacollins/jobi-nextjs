@@ -113,6 +113,7 @@ export default function RootLayout({
         <body
           suppressHydrationWarning={true}
           className={`${gordita.variable} ${garamond.variable}`}
+          style={{ overflowX: 'hidden', maxWidth: '100vw' }}
         >
           <AdminInitializer />
           <HydrationErrorBoundary>

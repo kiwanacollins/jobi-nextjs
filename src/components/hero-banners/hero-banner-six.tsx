@@ -41,7 +41,10 @@ const HeroBannerSix = () => {
                   data-wow-delay="0.5s"
                   style={{
                     maxWidth: '600px',
-                    margin: '0 auto'
+                    margin: '0 auto',
+                    width: '100%',
+                    paddingLeft: '15px',
+                    paddingRight: '15px'
                   }}
                 >
                   <form onSubmit={handleSubmit(onSubmit)}>
