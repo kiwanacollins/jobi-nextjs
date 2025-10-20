@@ -48,7 +48,7 @@ const FeatureTwo = () => {
           <div className="col-lg-7 order-lg-first">
             <div className="big-circle rounded-circle position-relative d-flex align-items-center justify-content-center ms-lg-5 wow fadeInLeft">
               <div className="inner-circle rounded-circle d-flex align-items-center justify-content-center">
-                <Image src={logo} alt="logo" className="lazy-img" />
+                <Image src={logo} alt="logo" className="lazy-img" style={{width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain'}} />
               </div>
               {/*  /.inner-circle  */}
               <BrandIcon id="01" img={media_1} />

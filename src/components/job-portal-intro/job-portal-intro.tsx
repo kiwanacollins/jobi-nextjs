@@ -27,27 +27,7 @@ const JobPortalIntro = ({
                 </p>
               </div>
             </div>
-            <div className="col-lg-5">
-              <ul className="btn-group style-none d-flex flex-wrap justify-content-center justify-content-lg-end">
-                <li className="me-2">
-                  <Link href="/jobs" className="btn-three">
-                    Looking for job?
-                  </Link>
-                </li>
-                <li className="ms-2">
-                  <Link
-                    href={
-                      loggInUser?.role !== 'employee'
-                        ? '/sign-in'
-                        : '/dashboard/employ-dashboard/submit-job'
-                    }
-                    className="btn-four"
-                  >
-                    Post a job
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            {/* Removed action buttons (Looking for job? / Post a job) per request */}
           </div>
         </div>
       </div>

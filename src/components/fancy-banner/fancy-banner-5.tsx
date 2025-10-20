@@ -21,18 +21,7 @@ const FancyBannerFive = () => {
                       for everyone.
                     </h2>
                   </div>
-                  <ul className="btn-group style-none d-flex">
-                    <li className="me-2">
-                      <Link href="/job-list-v1" className="btn-seven border6">
-                        Looking for job?
-                      </Link>
-                    </li>
-                    <li className="ms-2">
-                      <Link href='/register' className="btn-five border6">
-                        Post a job
-                      </Link>
-                    </li>
-                  </ul>
+                  {/* Removed action buttons (Looking for job? / Post a job) per request */}
                 </div>
                 <div className="col-md-5">
                   <div className="img-meta sm-mt-30 position-relative">

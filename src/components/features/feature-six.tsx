@@ -3,7 +3,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 // internal
 import shape from "@/assets/images/shape/bg_shape_02.png";
-import logo from "@/assets/images/logo/logo_05.png";
+import logo from "@/assets/images/logo/logo_02.png";
 import media_1 from "@/assets/images/logo/media_17.png";
 import media_2 from "@/assets/images/logo/media_18.png";
 import media_3 from "@/assets/images/logo/media_19.png";
@@ -47,7 +47,7 @@ const FeatureSix = () => {
               <div className="big-circle d-inline-block position-relative wow fadeInRight">
                 <Image src={shape} alt="shape" className="lazy-img" />
                 <div className="logo rounded-circle d-flex align-items-center justify-content-center">
-                  <Image src={logo} alt="logo" className="lazy-img" style={{height:'auto'}} />
+                  <Image src={logo} alt="logo" className="lazy-img" style={{width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%', objectFit: 'contain'}} />
                 </div>
                 <MediaImg img={media_1} num="01" />
                 <MediaImg img={media_2} num="02" />
