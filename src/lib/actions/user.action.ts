@@ -22,7 +22,7 @@ import { isAdminEmail } from '../admin-setup';
 
 export async function getUserById(params: any) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { userId } = params;
     if (!userId) return null;
@@ -90,7 +90,7 @@ export async function getUserById(params: any) {
 }
 export async function getUserByMongoId(params: any) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { id } = params;
 
@@ -111,7 +111,7 @@ export async function getUserByMongoId(params: any) {
 
 export async function createUser(userData: CreateUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     
     // Check if this email should be admin
     const shouldBeAdmin = isAdminEmail(userData.email);
@@ -289,7 +289,7 @@ export async function updateUserByAdmin(params: UpdateUserByAdminParams) {
 // update user
 export async function updateUser(params: UpdateUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     connectToCloudinary();
     const { clerkId, updateData, path } = params;
     const { picture } = updateData;
@@ -361,7 +361,7 @@ export async function updateUser(params: UpdateUserParams) {
 
 export async function clekUserUpdate(params: ClerkUpdateUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { clerkId, name, email, picture, path } = params;
 
     const updateData = {
@@ -385,7 +385,7 @@ export async function clekUserUpdate(params: ClerkUpdateUserParams) {
 
 export async function deleteUser(params: DeleteUserParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
 
     const { clerkId } = params;
 
@@ -415,7 +415,7 @@ interface DeleteUserByIdParams {
 
 export async function deleteUserById(params: DeleteUserByIdParams) {
   try {
-    connectToDatabase();
+    await connectToDatabase();
     const { id, path } = params;
     // Find the user with the specified ID
     const user = await User.findByIdAndDelete(id);

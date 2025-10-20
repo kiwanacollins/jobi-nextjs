@@ -7,7 +7,7 @@ import { getUserById } from '@/lib/actions/user.action';
 const EmployDashboardSettingPage = async () => {
   const { userId } = auth();
   const currentUser = await getUserById({ userId });
-  if (currentUser?.role !== 'employee') {
+  if (!currentUser || (currentUser.role && currentUser.role !== 'employee')) {
     redirect('/');
   }
   return (

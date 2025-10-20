@@ -63,53 +63,52 @@ const MessageItem = ({
           <div className="job-name fw-500">{serial}</div>
         </td>
         <td>
-          <div className="job-name fw-500">{name}</div>
+          <div className="job-name fw-500" style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {name}
+          </div>
         </td>
         <td>
-          <div className="job-name fw-500">{email}</div>
+          <div className="job-name fw-500" style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {email}
+          </div>
+        </td>
+        <td>
+          <div className="job-name fw-500" style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {subject || 'No subject'}
+          </div>
         </td>
         <td>
           <div className="job-name fw-500">{getTimestamp(sentAt as Date)}</div>
         </td>
         <td>
-          <div
-            style={{
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              display: '-webkit-box',
-              boxOrient: 'vertical',
-              WebkitLineClamp: 1,
-              whiteSpace: 'nowrap'
-            }}
-            className="job-name fw-500"
-          >
+          <div className="job-name fw-500">
             <button
-              className="btn "
+              className="btn btn-sm btn-outline-primary"
               data-bs-toggle="modal"
               title="View Message"
               data-bs-target={`#viewMessageModal-${id}`}
             >
-              <Eye size={25} />
+              <Eye size={18} />
             </button>
           </div>
         </td>
 
         <td>
-          <div className="action-dots float-end ">
-            <div className="d-flex justify-content-end  align-items-center  gap-2 ">
+          <div className="action-dots float-end">
+            <div className="d-flex justify-content-end align-items-center gap-2">
               <Link
-                href={`mailto:${email}?subject=${subject}%20Here&body=In response to your message:%0D%0A"${message}"%0D%0A%0D%0AHello${' ' + name},%0D%0A%0D%0A`}
+                href={`mailto:${email}?subject=Re: ${encodeURIComponent(subject || 'Your message')}&body=In response to your message:%0D%0A"${encodeURIComponent(message)}"%0D%0A%0D%0AHello ${name},%0D%0A%0D%0A`}
                 title="Reply to message"
-                className="btn "
+                className="btn btn-sm btn-outline-success"
               >
-                <MessageCircleReply size={25} />
+                <MessageCircleReply size={18} />
               </Link>
               <button
                 onClick={() => handleDeleteContactMessage(id)}
                 title="Delete Message"
-                className="btn "
+                className="btn btn-sm btn-outline-danger"
               >
-                <Image src={deleteIcon} alt="delete" width={25} height={25} />
+                <Image src={deleteIcon} alt="delete" width={18} height={18} />
               </button>
             </div>
           </div>

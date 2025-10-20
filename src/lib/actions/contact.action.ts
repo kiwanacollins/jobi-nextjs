@@ -24,6 +24,7 @@ export const createContact = async (params: contactFromParams) => {
     });
     await newContact.save();
     revalidatePath(path);
+    revalidatePath('/dashboard/admin-dashboard/messages');
     return { status: 'success', message: 'Message sent successfully' };
   } catch (error: any) {
     console.log('createContact  error:', error);
@@ -31,14 +32,55 @@ export const createContact = async (params: contactFromParams) => {
   }
 };
 
-export const getAllContactsMessages = async () => {
+interface GetMessagesParams {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+}
+
+export const getAllContactsMessages = async ({
+  page = 1,
+  pageSize = 10,
+  searchQuery = ''
+}: GetMessagesParams = {}) => {
   try {
     await connectToDatabase();
-    // Retrieve all contact messages from the collection
-    const messages = await Contact.find({});
+    
+    // Build search filter
+    const searchFilter = searchQuery
+      ? {
+          $or: [
+            { name: { $regex: searchQuery, $options: 'i' } },
+            { email: { $regex: searchQuery, $options: 'i' } },
+            { subject: { $regex: searchQuery, $options: 'i' } },
+            { message: { $regex: searchQuery, $options: 'i' } }
+          ]
+        }
+      : {};
+
+    // Calculate skip value for pagination
+    const skip = (page - 1) * pageSize;
+
+    // Get total count for pagination
+    const totalMessages = await Contact.countDocuments(searchFilter);
+    
+    // Retrieve contact messages with pagination and sorting
+    const messages = await Contact.find(searchFilter)
+      .sort({ sentAt: -1 }) // Sort by newest first
+      .skip(skip)
+      .limit(pageSize);
+    
+    const totalPages = Math.ceil(totalMessages / pageSize);
+    
     return {
       status: 'success',
-      messages: JSON.parse(JSON.stringify(messages))
+      messages: JSON.parse(JSON.stringify(messages)),
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalMessages,
+        pageSize
+      }
     };
   } catch (error: any) {
     console.error('getAllContacts error:', error);

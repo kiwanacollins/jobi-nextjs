@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 const CandidateDashboardSettingPage = async () => {
   const { userId } = auth();
   const currentUser = await getUserById({ userId });
-  if (currentUser?.role !== 'candidate') {
+  if (!currentUser || (currentUser.role && currentUser.role !== 'candidate')) {
     redirect('/');
   }
   return (

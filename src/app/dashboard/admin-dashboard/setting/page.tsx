@@ -1,13 +1,8 @@
 import React from 'react';
 import DashboardSettingArea from '@/components/dashboard/candidate/dashboard-setting';
-import { currentUser } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
 
-const EmployDashboardSettingPage = async () => {
-  const user = await currentUser();
-  if (!user || !user.privateMetadata.isAdmin) {
-    return redirect('/');
-  }
+const AdminDashboardSettingPage = async () => {
+  // Admin check is handled by the layout
   return (
     <>
       {/* dashboard area start */}
@@ -17,4 +12,4 @@ const EmployDashboardSettingPage = async () => {
   );
 };
 
-export default EmployDashboardSettingPage;
+export default AdminDashboardSettingPage;
