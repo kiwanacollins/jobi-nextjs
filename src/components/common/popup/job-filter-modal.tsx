@@ -7,7 +7,6 @@ import FilterCategory from "../../jobs/filter/job-filter-2/filter-category";
 import FilterLocation from "../../jobs/filter/job-filter-2/filter-location";
 import FilterEnglishFluency from "../../jobs/filter/job-filter-2/filter-english-fluency";
 import FilterJobType from "../../jobs/filter/job-filter-2/filter-job-type";
-import FilterExperience from "../../jobs/filter/job-filter-2/filter-experience";
 import { SalaryRangeSlider } from "../../jobs/filter/job-prices";
 
 // prop type
@@ -62,13 +61,10 @@ const JobFilterModal = ({ priceValue, setPriceValue, maxPrice }: IProps) => {
                 </div>
 
                 <div className="row">
-                  <div className="col-lg-4 col-sm-6">
+                  <div className="col-lg-6 col-sm-6">
                     <FilterJobType />
                   </div>
-                  <div className="col-lg-4 col-sm-6">
-                    <FilterExperience />
-                  </div>
-                  <div className="col-lg-4">
+                  <div className="col-lg-6">
                     <div className="filter-block d-xl-flex pb-25">
                       <div className="filter-title fw-500 text-dark mt-1">
                         Salary Range :

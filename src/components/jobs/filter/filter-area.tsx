@@ -2,9 +2,7 @@
 import React from 'react';
 // import JobLocations from './job-locations';
 import JobType from './job-type';
-import JobExperience from './job-experience';
 import JobCategory from './job-category';
-import JobTags from './job-tags';
 // import JobPrices from './job-prices';
 import { useAppDispatch } from '@/redux/hook';
 import { resetFilter } from '@/redux/features/filterSlice';
@@ -74,21 +72,6 @@ const FilterArea = ({
           </div>
         </div>
         {/* <!-- /.filter-block --> */}
-        <div className="filter-block bottom-line pb-25 mt-25">
-          <a
-            className="filter-title text-decoration-none fw-500 text-dark"
-            data-bs-toggle="collapse"
-            href="#collapseExp"
-            role="button"
-            aria-expanded="false"
-          >
-            Experience
-          </a>
-          <div className="collapse show" id="collapseExp">
-            <JobExperience allJobs={allJobs} />
-          </div>
-        </div>
-        {/* <!-- /.filter-block --> */}
         {/* <div className="filter-block bottom-line pb-25 mt-25">
           <a
             className="filter-title text-decoration-none fw-500 text-dark"
@@ -120,21 +103,6 @@ const FilterArea = ({
           </a>
           <div className="collapse" id="collapseCategory">
             <JobCategory allJobs={allJobs} />
-          </div>
-        </div>
-        {/* <!-- /.filter-block --> */}
-        <div className="filter-block bottom-line pb-25 mt-25">
-          <a
-            className="filter-title text-decoration-none fw-500 text-dark collapsed"
-            data-bs-toggle="collapse"
-            href="#collapseTag"
-            role="button"
-            aria-expanded="false"
-          >
-            Tags
-          </a>
-          <div className="collapse" id="collapseTag">
-            <JobTags allJobs={allJobs} />
           </div>
         </div>
         {/* <!-- /.filter-block --> */}

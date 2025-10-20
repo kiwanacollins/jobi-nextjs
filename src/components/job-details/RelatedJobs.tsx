@@ -115,7 +115,7 @@ const RelatedJobs: React.FC<RelatedJobsProps> = ({ jobs }) => {
         <div className="row">
           <div className="col-12 text-center mt-40 lg-mt-30">
             <Link
-              href="/job-search"
+              href="/jobs"
               className="btn-six fw-500"
               style={{
                 backgroundColor: '#00BF63',
