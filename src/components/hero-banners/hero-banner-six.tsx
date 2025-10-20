@@ -22,7 +22,7 @@ const HeroBannerSix = () => {
           <div className="row">
             <div className="col-xxl-8 col-xl-9 col-lg-8 m-auto text-center">
               <h1 className="wow fadeInUp" data-wow-delay="0.3s">
-                Find & Hire Experts for any Job.
+                Find & Hire Experts for any Job
               </h1>
               <p
                 className="text-md text-white mt-25 mb-55 lg-mb-40 wow fadeInUp"

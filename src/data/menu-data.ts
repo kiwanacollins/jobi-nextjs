@@ -32,7 +32,7 @@ const menu_data: IMenuData[] = [
   // },
   {
     id: 3,
-    link: '/about',
+    link: '/about-us',
     title: 'About Us'
   },
   {

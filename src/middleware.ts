@@ -10,7 +10,7 @@ export default authMiddleware({
     '/candidates',
     '/candidate-profile(.*)',
     '/candidates(.*)',
-    '/about',
+    '/about-us',
     '/contact',
     '/company/:id',
     '/company',
