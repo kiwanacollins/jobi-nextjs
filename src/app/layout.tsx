@@ -120,8 +120,9 @@ export default function RootLayout({
             <NextTopLoader showSpinner={false} />
             <Providers>{children}</Providers>
             <WhatsAppButton
-              phoneNumber={'+8801938056537'}
-              message="Hello, I would like to know about your services"
+              phoneNumber={''}
+              message=""
+              groupLink="https://chat.whatsapp.com/Ifc2unpiZTwD6HYk73Qqeh"
             />
             <BackToTopCom />
           </HydrationErrorBoundary>

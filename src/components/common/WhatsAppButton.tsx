@@ -7,11 +7,13 @@ import Image from 'next/image';
 interface WhatsAppButtonProps {
   phoneNumber: string;
   message: string;
+  groupLink?: string;
 }
 
 const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   phoneNumber,
-  message
+  message,
+  groupLink
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -30,9 +32,10 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
   const defaultMsg =
     message || 'Hello, I would like to know about your services';
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+  const whatsappUrl = groupLink || `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
     defaultMsg
   )}`;
 
