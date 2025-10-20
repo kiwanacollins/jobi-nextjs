@@ -15,7 +15,6 @@ const JobPortalIntroTwo = () => {
                 </p>
               </div>
             </div>
-            {/* Removed action buttons (Looking for job? / Post a job) per request */}
           </div>
         </div>
       </div>
