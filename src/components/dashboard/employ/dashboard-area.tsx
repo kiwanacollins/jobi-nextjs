@@ -130,15 +130,15 @@ const EmployDashboardArea = ({
     <>
       <h2 className="main-title">Dashboard</h2>
       <div className="row">
-        {/* <CardItem img={icon_1} title="Total Visitor" value="1.7k+" /> */}
+        {/* <CardItem icon={<img src={icon_1.src} alt="Total Visitor" style={{width:32,height:32}} />} title="Total Visitor" value="1.7k+" /> */}
         <CardItem
-          img={icon_2}
+          icon={<img src={icon_2.src} alt="Shortlisted" style={{width:32,height:32}} />}
           title="Shortlisted"
           value={statistics?.totalSavedUsers}
         />
-        {/* <CardItem img={icon_3} title="Views" value="2.1k" /> */}
+        {/* <CardItem icon={<img src={icon_3.src} alt="Views" style={{width:32,height:32}} />} title="Views" value="2.1k" /> */}
         <CardItem
-          img={icon_4}
+          icon={<img src={icon_4.src} alt="Posted Job" style={{width:32,height:32}} />}
           title="Posted Job"
           value={statistics?.totalPostedJobs}
         />

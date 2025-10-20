@@ -10,7 +10,7 @@ const CandidateDashboardArea = ({ statistics }: IDashboardAreaProps) => {
       <h2 className="main-title">Dashboard</h2>
       <div className="row">
         <CardItem
-          img={icon_2}
+          icon={<img src={icon_2.src} alt="Applied Jobs" style={{width:32,height:32}} />}
           title="Total Applied Jobs"
           value={statistics?.totalJobApplied}
         />

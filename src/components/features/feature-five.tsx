@@ -16,12 +16,12 @@ const FeatureFive = () => {
           <div className="wow fadeInRight">
             <div className="title-two">
               <div className="sub-title">Why choose us?</div>
-              <h2 className="fw-600 color-blue">World of talent at your fingertips</h2>
+              <h2 className="fw-600 color-blue">Your Gateway to Better Jobs</h2>
             </div>
             <div className="accordion accordion-style-one color-two mt-40" id="accordionOne">
-            <AccordionItem id='one' isShow={true} title='Seamless Search' desc='It only takes 5 minutes. Set-up is smooth and simple, with fully customisable page design to reflect your brand. It only takes 5 minutes.' parent='accordionOne' />
-            <AccordionItem id='two' title='Hire top talents' desc='Practice what you learned on realistic lorem quis test questions testing.' parent='accordionOne' />
-            <AccordionItem id='three' title='Protected payments, every time' desc='It only takes 5 minutes. Set-up is smooth and simple, with fully customisable page design to reflect your brand.' parent='accordionOne' />
+              <AccordionItem id='one' isShow={true} title='Thousands of Verified Jobs' desc='Access a wide range of job opportunities from trusted employers, updated daily for every skill level.' parent='accordionOne' />
+              <AccordionItem id='two' title='Fast & Easy Applications' desc='Apply in minutes with our streamlined process and get noticed by top companies.' parent='accordionOne' />
+              <AccordionItem id='three' title='Career Growth Support' desc='Benefit from resources, tips, and support to help you land your dream job and advance your career.' parent='accordionOne' />
             </div>
             {/* <Link href="/candidates-v4" className="btn-five mt-45 lg-mt-20">Learn More</Link> */}
           </div>

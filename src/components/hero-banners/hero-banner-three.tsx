@@ -23,7 +23,7 @@ const HeroBannerThree = () => {
 						<div className="col-lg-6 col-md-7">
 							<div className="slogan fw-500 mb-5 wow fadeInUp" data-wow-delay="0.3s">#1 Online Marketplace</div>
 							<h1 className="wow fadeInUp" data-wow-delay="0.4s">Find the talents for any job.</h1>
-							<p className="text-lg mt-35 md-mt-30 mb-30 md-mb-20 pe-xl-5 wow fadeInUp" data-wow-delay="0.5s">Unlock your potential with quality job & earn from world leading brands & co.</p>
+							<p className="text-lg mt-35 md-mt-30 mb-30 md-mb-20 pe-xl-5 wow fadeInUp" data-wow-delay="0.5s">Unlock your potential with quality job & earn High Salaries</p>
 							<Link href='/register' className="btn-five wow fadeInUp" data-wow-delay="0.6s">Post a Job</Link>
 							<div className="d-flex flex-wrap align-items-center mt-70 lg-mt-50 md-mt-40 wow fadeInUp" data-wow-delay="0.7s">
 								<div className="partner-title">Trusted by:</div>

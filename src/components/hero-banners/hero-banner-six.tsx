@@ -21,16 +21,21 @@ const HeroBannerSix = () => {
         <div className="position-relative">
           <div className="row">
             <div className="col-xxl-8 col-xl-9 col-lg-8 m-auto text-center">
-              <h1 className="wow fadeInUp" data-wow-delay="0.3s">
-                Find & Hire Experts for any Job
-              </h1>
-              <p
-                className="text-md text-white mt-25 mb-55 lg-mb-40 wow fadeInUp"
-                data-wow-delay="0.4s"
-              >
-                Unlock your potential with quality job & earn from world leading
-                brands.
-              </p>
+                <h1 className="wow fadeInUp" data-wow-delay="0.3s">
+                  Discover Thousands of Jobs for Every Skill
+                </h1>
+                <p
+                  className="text-md text-white mt-25 mb-55 lg-mb-40 wow fadeInUp"
+                  data-wow-delay="0.4s"
+                >
+                  Explore diverse opportunities from top employers. Find your perfect job, apply in minutes, and start your career journey today.
+                </p>
+                <div className="feature-lines text-white mb-30 wow fadeInUp" data-wow-delay="0.45s">
+                  <ul style={{listStyle: 'none', padding: 0, margin: 0, fontSize: '18px'}}>
+                    <li>• Find top jobs across all industries</li>
+                    <li>• Secure your application with trusted employers</li>
+                  </ul>
+                </div>
             </div>
           </div>
           <div className="position-relative">

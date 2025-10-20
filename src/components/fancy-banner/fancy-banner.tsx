@@ -20,7 +20,7 @@ const FancyBanner = () => {
                     <div className="title-two">
                       <h2 className="text-white">Get your <br /> <span>Matched Jobs</span> in a few minutes.</h2>
                     </div>
-                    <p className="text-md mt-25 lg-mt-20 mb-45 lg-mb-30">Find your dream job & earn from world leading brands. Upload your CV now.</p>
+                    <p className="text-md mt-25 lg-mt-20 mb-45 lg-mb-30">Find your dream job & earn high Salaries</p>
                     <form action="#" className="upload-btn position-relative d-flex align-items-center justify-content-center">
                       <Image src={icon} alt="icon" className="lazy-img" /> <span className="fw-500 ms-2 text-dark">Upload your CV</span>
                       <input type="file" id="uploadCV" name="uploadCV" />

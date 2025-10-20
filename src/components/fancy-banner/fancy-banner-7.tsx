@@ -22,7 +22,7 @@ const FancyBannerSeven = () => {
                       </h2>
                     </div>
                     <p className="text-md text-dark opacity-70 mt-25 lg-mt-20 mb-45 lg-mb-30">
-                      Find your dream job & earn from world leading brands.
+                      Find your dream job & earn high salaries
                       Upload your CV now.
                     </p>
                     <form
