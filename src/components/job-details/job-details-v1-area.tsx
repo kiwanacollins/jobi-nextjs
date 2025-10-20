@@ -329,16 +329,17 @@ const JobDetailsV1Area = ({ job, relatedJobs = [] }: JobDetailsProps) => {
                     {/* X (Twitter) */}
                     <button
                       onClick={shareOnX}
-                      className="share-btn d-flex align-items-center gap-2 px-3 py-2 border rounded-pill text-decoration-none fw-500"
+                      className="share-btn d-flex align-items-center justify-content-center gap-2 px-3 py-2 border rounded-pill text-decoration-none fw-500"
                       style={{ 
                         backgroundColor: '#000000', 
                         color: 'white',
-                        transition: 'all 0.3s ease'
+                        transition: 'all 0.3s ease',
+                        lineHeight: '1.5'
                       }}
                       onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'}
                       onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#000000'}
                     >
-                      <i className="bi bi-twitter-x"></i>
+                      <i className="bi bi-twitter-x" style={{lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center'}}></i>
                       <span>X</span>
                     </button>
 
