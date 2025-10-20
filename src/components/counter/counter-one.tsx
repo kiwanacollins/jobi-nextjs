@@ -10,21 +10,21 @@ const counter_data: {
 }[] = [
   {
     id: 1,
-    number: 7,
+    number: 1,
     title: "million",
-    subtitle: "Completed Jobs",
+    subtitle: "People Helped",
   },
   {
     id: 2,
-    number: 30,
+    number: 180,
     title: "k+",
-    subtitle: "Worldwide Client",
+    subtitle: "Businesses in Partnership",
   },
   {
     id: 3,
-    number: 13,
-    title: "billion",
-    subtitle: "Dollar Payout",
+    number: 100,
+    title: "Million",
+    subtitle: "UGX Payout",
   },
 ];
 

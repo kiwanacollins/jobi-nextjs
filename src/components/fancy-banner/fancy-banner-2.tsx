@@ -8,10 +8,10 @@ const counter_data: {
   text: string;
   title: string;
 }[] = [
-    { count: 30, text: 'k+', title: 'World wide Client' },
-    { count: 3, text: '%', title: 'Top Talents' },
-    { count: 7, text: 'k+', title: 'Dollar Payout' },
-  ]
+  { count: 7, text: 'million', title: 'People Helped' },
+  { count: 30, text: 'k+', title: 'Businesses in Partnership' },
+  { count: 13, text: 'billion', title: 'UGX Payout' }
+];
 
 const FancyBannerTwo = () => {
   return (
