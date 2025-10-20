@@ -20,6 +20,17 @@
 @import 'responsive';
 
 /* Markdown Start */
+.markdown {
+  /* Force Gordita font family for all job description content */
+  font-family: var(--gorditas-font) !important;
+  font-weight: 400 !important;
+
+  /* Apply font to all child elements */
+  * {
+    font-family: var(--gorditas-font) !important;
+    font-weight: 400 !important;
+  }
+}
 .markdown a {
   color: #1da1f2;
 }
