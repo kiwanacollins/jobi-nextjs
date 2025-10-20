@@ -32,7 +32,7 @@ currentUser
   const [filterItems, setFilterItems] = useState<IJobData[]>([]);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
-  const [jobType, setJobType] = useState('grid');
+  const [jobType, setJobType] = useState(grid_style ? 'grid' : 'list');
   // const [priceValue, setPriceValue] = useState([0, maxPrice]);
   const [shortValue, setShortValue] = useState('');
 

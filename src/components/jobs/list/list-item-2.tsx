@@ -36,7 +36,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
   return (
     <div className="job-list-one style-two position-relative border-style mb-20">
       <div className="row justify-content-between align-items-center">
-        <div className="col-md-2">
+        <div className="col-md-2 text-center text-md-start">
           <div className="company-logo">
             <Link href={jobUrl} className="logo">
               <Image
@@ -55,7 +55,7 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
             </Link>
           </div>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 text-center text-md-start">
           <div className="job-details">
             <div className="job-duration text-decoration-none fw-500 text-success mb-1">
               {item?.duration}
@@ -82,8 +82,8 @@ const ListItemTwo = ({ item,currentUser }: { item: IJobData,  currentUser?: IUse
             </div>
           </div>
         </div>
-        <div className="col-md-4">
-          <div className="btn-group d-flex align-items-center justify-content-end">
+        <div className="col-md-4 text-center text-md-end">
+          <div className="btn-group d-flex align-items-center justify-content-center justify-content-md-end">
            {currentUser?.role !== 'employee'?( <a
               onClick={() => handleAddWishlist(item)}
               className={`save-btn text-center rounded-circle tran3s me-3 cursor-pointer ${
