@@ -37,9 +37,52 @@ export const buildUrl = (path = '/') => {
   }
 };
 
+// Ensure image URL is absolute for social sharing
+export const normalizeImageUrl = (imageUrl?: string | null, fallback = '/logo.png'): string => {
+  if (!imageUrl) return buildUrl(fallback);
+  
+  // If already absolute URL, return as is
+  if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // If relative path, make it absolute
+  return buildUrl(imageUrl);
+};
+
 const stripHtml = (value?: string | null) => {
   if (!value) return undefined;
   return value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+};
+
+// Build rich metadata for job sharing on social platforms (WhatsApp, Facebook, Twitter, etc.)
+export const buildJobShareMetadata = (job: Partial<IJobData>) => {
+  if (!job) return null;
+
+  const title = job.company && job.title 
+    ? `${job.title} at ${job.company}` 
+    : job.title || 'Job Opening';
+  
+  const overview = stripHtml(job.overview) || '';
+  const locationText = job.location ? `📍 ${job.location}` : '';
+  const durationText = job.duration ? `⏰ ${job.duration}` : '';
+  const categoryText = job.category ? `💼 ${job.category}` : '';
+  
+  const details = [locationText, durationText, categoryText].filter(Boolean).join(' • ');
+  const descriptionPreview = overview.slice(0, 120);
+  
+  const description = details 
+    ? `${details}\n\n${descriptionPreview}${overview.length > 120 ? '...' : ''}`
+    : descriptionPreview;
+
+  const imageUrl = normalizeImageUrl(job.companyImage);
+
+  return {
+    title,
+    description: description || 'Find the latest job vacancies in Uganda across various industries.',
+    imageUrl,
+    alt: `${job.company || 'Company'} logo - Job opportunity in Uganda`
+  };
 };
 
 const normaliseCurrency = (country?: string) => {
@@ -95,22 +138,6 @@ export const buildJobPostingJsonLd = (job: Partial<IJobData>) => {
     ? job.deadline.toISOString()
     : (typeof job.deadline === 'string' ? job.deadline : undefined);
 
-  const creatorPicture =
-    typeof job.createdBy === 'object' && job.createdBy !== null && (job.createdBy as unknown as Record<string, unknown>).picture
-      ? String((job.createdBy as unknown as Record<string, unknown>).picture)
-      : undefined;
-
-  const rawLogo =
-    (typeof job.companyImage === 'string' ? job.companyImage : undefined) || creatorPicture;
-
-  const logoUrl = rawLogo
-    ? rawLogo.startsWith('http')
-      ? rawLogo
-      : rawLogo.startsWith('data:')
-        ? undefined
-        : buildUrl(rawLogo)
-    : undefined;
-
   return JSON.stringify(
     {
       '@context': 'https://schema.org',
@@ -124,7 +151,13 @@ export const buildJobPostingJsonLd = (job: Partial<IJobData>) => {
         '@type': 'Organization',
         name: job.company,
         sameAs: siteMetadata.siteUrl,
-        ...(logoUrl ? { logo: logoUrl } : {})
+        ...(job.companyImage
+          ? {
+              logo: job.companyImage.startsWith('http')
+                ? job.companyImage
+                : buildUrl(job.companyImage)
+            }
+          : {})
       },
       jobLocation,
       jobLocationType,

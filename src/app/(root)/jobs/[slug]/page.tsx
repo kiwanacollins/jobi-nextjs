@@ -5,7 +5,7 @@ import JobDetailsV2Area from '@/components/job-details/job-details-v2-area';
 import { getJobBySlug, getRelatedJobs } from '@/lib/actions/job.action';
 import JobDetailsBreadcrumbTwo from '@/components/jobs/breadcrumb/job-details-breadcrumb-2';
 import { notFound } from 'next/navigation';
-import { buildUrl, buildJobPostingJsonLd, siteMetadata } from '@/lib/seo';
+import { buildUrl, buildJobPostingJsonLd, buildJobShareMetadata, siteMetadata } from '@/lib/seo';
 
 interface URLProps {
   params: { slug: string };
@@ -22,6 +22,14 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
   }
   
   const job = result.job;
+  const shareData = buildJobShareMetadata(job);
+  
+  if (!shareData) {
+    return {
+      title: 'Job Not Found - Ugandan Jobs'
+    };
+  }
+
   const title = `${job.title} at ${job.company} | Jobs in Uganda`;
   const overview = typeof job.overview === 'string' ? job.overview : '';
   const plainDescription = overview
@@ -32,19 +40,6 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
   const summary = `${locationText}${plainDescription || `${job.duration} role in ${job.category}.`}`.slice(0, 180);
   const description = summary.endsWith('.') ? summary : `${summary}...`;
   const jobUrl = buildUrl(`/jobs/${params.slug}`);
-  const rawImage =
-    job.companyImage ||
-    (typeof job.createdBy?.picture === 'string' ? job.createdBy.picture : undefined);
-  const imageUrl = rawImage
-    ? rawImage.startsWith('http')
-      ? rawImage
-      : rawImage.startsWith('data:')
-        ? buildUrl('/logo.png')
-        : buildUrl(rawImage)
-    : buildUrl('/logo.png');
-  const imageAlt = job.company
-    ? `${job.company} company logo`
-    : `${siteMetadata.siteName} job listing`;
   
   return {
     title,
@@ -60,27 +55,28 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
       job.location || 'Uganda'
     ].filter(Boolean) as string[],
     openGraph: {
-      title,
-      description,
+      title: shareData.title,
+      description: shareData.description,
       url: jobUrl,
       siteName: siteMetadata.siteName,
       type: 'article',
       locale: siteMetadata.locale,
       images: [
         {
-          url: imageUrl,
-          ...(imageUrl.startsWith('https://') ? { secureUrl: imageUrl } : {}),
+          url: shareData.imageUrl,
           width: 1200,
           height: 630,
-          alt: imageAlt
+          alt: shareData.alt,
+          type: 'image/png'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title,
-      description,
-      images: [imageUrl]
+      title: shareData.title,
+      description: shareData.description,
+      images: [shareData.imageUrl],
+      creator: siteMetadata.twitterHandle
     }
   };
 }
