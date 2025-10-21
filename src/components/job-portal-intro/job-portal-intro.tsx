@@ -21,9 +21,9 @@ const JobPortalIntro = ({
                 className="text-center text-lg-start wow fadeInUp"
                 data-wow-delay="0.3s"
               >
-                <h2>Most complete job portal.</h2>
+                <h2>Uganda&apos;s trusted job portal for ambitious seekers.</h2>
                 <p className="text-md m0 md-pb-20">
-                  Signup and find your dream job 
+                  Create a profile, shortlist roles across Uganda and land remote opportunities with employers worldwide.
                 </p>
               </div>
             </div>

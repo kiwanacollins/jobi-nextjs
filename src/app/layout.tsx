@@ -11,6 +11,7 @@ import NextTopLoader from 'nextjs-toploader';
 import WhatsAppButton from '@/components/common/WhatsAppButton';
 import HydrationErrorBoundary from '@/components/common/HydrationErrorBoundary';
 import AdminInitializer from '@/components/common/AdminInitializer';
+import { siteMetadata, buildUrl } from '@/lib/seo';
 
 const gordita = localFont({
   src: [
@@ -45,8 +46,55 @@ const garamond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: 'Ugandan Jobs - Job Portal',
-  description: 'Ugandan Jobs - Job Portal - Find your dream job today!'
+  metadataBase: new URL(siteMetadata.siteUrl),
+  title: {
+    default: siteMetadata.title,
+    template: `%s | ${siteMetadata.siteName}`
+  },
+  description: siteMetadata.description,
+  applicationName: siteMetadata.siteName,
+  keywords: siteMetadata.keywords,
+  authors: [{ name: siteMetadata.siteName, url: siteMetadata.siteUrl }],
+  creator: siteMetadata.siteName,
+  publisher: siteMetadata.siteName,
+  category: 'jobs',
+  alternates: {
+    canonical: siteMetadata.siteUrl
+  },
+  openGraph: {
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    url: siteMetadata.siteUrl,
+    siteName: siteMetadata.siteName,
+    locale: siteMetadata.locale,
+    type: 'website',
+    images: [
+      {
+        url: buildUrl('/logo.png'),
+        width: 1200,
+        height: 630,
+        alt: `${siteMetadata.siteName} logo`
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteMetadata.title,
+    description: siteMetadata.description,
+    creator: siteMetadata.twitterHandle,
+    images: [buildUrl('/logo.png')]
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1
+    }
+  }
 };
 
 export default function RootLayout({
@@ -54,13 +102,44 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteMetadata.siteName,
+    url: siteMetadata.siteUrl,
+    description: siteMetadata.description,
+    inLanguage: siteMetadata.locale,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${siteMetadata.siteUrl}/jobs?query={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  };
+
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteMetadata.siteName,
+    url: siteMetadata.siteUrl,
+    logo: buildUrl('/logo.png'),
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      email: siteMetadata.contactEmail,
+      availableLanguage: ['en', 'en-UG']
+    }
+  };
+
+  const structuredData = JSON.stringify([websiteJsonLd, organizationJsonLd]);
+
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en-UG">
         <head>
           <link rel="icon" href="/favicon.ico" sizes="any" />
           <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
           <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
           <script
             dangerouslySetInnerHTML={{
               __html: `

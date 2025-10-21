@@ -5,6 +5,7 @@ import JobDetailsV2Area from '@/components/job-details/job-details-v2-area';
 import { getJobBySlug, getRelatedJobs } from '@/lib/actions/job.action';
 import JobDetailsBreadcrumbTwo from '@/components/jobs/breadcrumb/job-details-breadcrumb-2';
 import { notFound } from 'next/navigation';
+import { buildUrl, buildJobPostingJsonLd, siteMetadata } from '@/lib/seo';
 
 interface URLProps {
   params: { slug: string };
@@ -21,23 +22,49 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
   }
   
   const job = result.job;
-  const title = `${job.title} at ${job.company} - Ugandan Jobs`;
-  const description = `Apply for ${job.title} position at ${job.company}. ${job.location ? `Located in ${job.location}. ` : ''}${job.duration} position in ${job.category}.`;
+  const title = `${job.title} at ${job.company} | Jobs in Uganda`;
+  const description = `${job.title} — Find the latest job vacancies in Uganda across various industries. Explore full-time, part-time, remote, and international opportunities tailored for Ugandan professionals.`;
+  const jobUrl = buildUrl(`/jobs/${params.slug}`);
+  const imageUrl = job.companyImage
+    ? job.companyImage.startsWith('http')
+      ? job.companyImage
+      : buildUrl(job.companyImage)
+    : buildUrl('/logo.png');
   
   return {
     title,
     description,
+    alternates: {
+      canonical: jobUrl
+    },
+    keywords: [
+      job.title,
+      job.company,
+      job.category,
+      'Uganda jobs',
+      job.location || 'Uganda'
+    ].filter(Boolean) as string[],
     openGraph: {
       title,
       description,
-      type: 'website',
-      images: job.companyImage ? [job.companyImage] : undefined,
+      url: jobUrl,
+      siteName: siteMetadata.siteName,
+      type: 'article',
+      locale: siteMetadata.locale,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${job.company} job listing`
+        }
+      ]
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: job.companyImage ? [job.companyImage] : undefined,
+      images: [imageUrl]
     }
   };
 }
@@ -51,6 +78,7 @@ const JobDetailsPage = async ({ params }: URLProps) => {
   }
   
   const { job } = result;
+  const structuredData = buildJobPostingJsonLd(job);
   
   // Fetch related jobs
   const relatedJobsResult = await getRelatedJobs({
@@ -63,6 +91,9 @@ const JobDetailsPage = async ({ params }: URLProps) => {
   
   return (
     <>
+      {structuredData ? (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
+      ) : null}
       {/* job details breadcrumb start */}
       <JobDetailsBreadcrumbTwo
         title={job?.title || 'Job Details'}

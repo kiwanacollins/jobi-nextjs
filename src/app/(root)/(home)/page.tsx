@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import BlogFour from '@/components/blogs/blog-four';
 import FeatureNine from '@/components/features/feature-nine';
 import FeatureTwo from '@/components/features/feature-two';
@@ -6,10 +7,40 @@ import HeroBannerSix from '@/components/hero-banners/hero-banner-six';
 import { JobListItems } from '@/components/jobs/list/job-list-one';
 import { getTestimonials } from '@/lib/actions/Testimonial.action';
 import Link from 'next/link';
+import { siteMetadata, buildUrl } from '@/lib/seo';
 
 // Force dynamic rendering to prevent build timeouts
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: 'Jobs in Uganda & Remote Roles for Ugandan Professionals',
+  description:
+    'Browse the latest verified vacancies in Kampala, Entebbe, Gulu, and remote employers hiring Ugandan talent. Search by skill, industry, or location and apply in minutes.',
+  alternates: {
+    canonical: '/'
+  },
+  openGraph: {
+    title: 'Ugandan Jobs | Fresh Vacancies for Ugandan Job Seekers',
+    description:
+      'Discover curated job listings across Uganda and international companies recruiting Ugandan professionals.',
+    url: buildUrl('/'),
+    images: [
+      {
+        url: buildUrl('/logo.png'),
+        width: 1200,
+        height: 630,
+        alt: `${siteMetadata.siteName} hero`
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Find Your Next Job in Uganda',
+    description:
+      'Daily updated vacancies for Ugandan professionals including remote and overseas opportunities.'
+  }
+};
 
 export default async function HomePage() {
   const reviews = await getTestimonials();

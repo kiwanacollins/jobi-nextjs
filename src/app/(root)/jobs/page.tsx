@@ -7,15 +7,40 @@ import { getJobPosts } from '@/lib/actions/job.action';
 import { SearchParamsProps } from '@/types';
 import { auth } from '@clerk/nextjs';
 import { getUserById } from '@/lib/actions/user.action';
+import { siteMetadata, buildUrl } from '@/lib/seo';
 
 // Force dynamic rendering to prevent build timeouts
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: 'Jobs - Ugandan Jobs',
+  title: 'Browse Jobs in Uganda & Remote Roles for Ugandan Candidates',
   description:
-    'Explore a wide range of job opportunities on Ugandan Jobs. From tech to marketing, find your dream job and take the next step in your career. Your future starts here.'
+    'Filter verified vacancies across Kampala, Entebbe, Mbarara and remote teams abroad. Discover full-time, part-time and contract roles for Ugandan professionals.',
+  alternates: {
+    canonical: '/jobs'
+  },
+  openGraph: {
+    title: 'Latest Jobs in Uganda | Ugandan Jobs Portal',
+    description:
+      'Search the newest listings from local employers and international companies seeking Ugandan talent.',
+    url: buildUrl('/jobs'),
+    type: 'website',
+    images: [
+      {
+        url: buildUrl('/logo.png'),
+        width: 1200,
+        height: 630,
+        alt: `${siteMetadata.siteName} job listings`
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Ugandan Jobs – Fresh Listings Updated Daily',
+    description:
+      'Find trusted openings for Ugandan job seekers including remote and international opportunities.'
+  }
 };
 
 const JobListOnePage = async ({ searchParams }: SearchParamsProps) => {
