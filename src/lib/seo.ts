@@ -95,6 +95,22 @@ export const buildJobPostingJsonLd = (job: Partial<IJobData>) => {
     ? job.deadline.toISOString()
     : (typeof job.deadline === 'string' ? job.deadline : undefined);
 
+  const creatorPicture =
+    typeof job.createdBy === 'object' && job.createdBy !== null && (job.createdBy as Record<string, unknown>).picture
+      ? String((job.createdBy as Record<string, unknown>).picture)
+      : undefined;
+
+  const rawLogo =
+    (typeof job.companyImage === 'string' ? job.companyImage : undefined) || creatorPicture;
+
+  const logoUrl = rawLogo
+    ? rawLogo.startsWith('http')
+      ? rawLogo
+      : rawLogo.startsWith('data:')
+        ? undefined
+        : buildUrl(rawLogo)
+    : undefined;
+
   return JSON.stringify(
     {
       '@context': 'https://schema.org',
@@ -108,13 +124,7 @@ export const buildJobPostingJsonLd = (job: Partial<IJobData>) => {
         '@type': 'Organization',
         name: job.company,
         sameAs: siteMetadata.siteUrl,
-        ...(job.companyImage
-          ? {
-              logo: job.companyImage.startsWith('http')
-                ? job.companyImage
-                : buildUrl(job.companyImage)
-            }
-          : {})
+        ...(logoUrl ? { logo: logoUrl } : {})
       },
       jobLocation,
       jobLocationType,

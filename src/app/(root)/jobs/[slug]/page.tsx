@@ -23,13 +23,28 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
   
   const job = result.job;
   const title = `${job.title} at ${job.company} | Jobs in Uganda`;
-  const description = `${job.title} — Find the latest job vacancies in Uganda across various industries. Explore full-time, part-time, remote, and international opportunities tailored for Ugandan professionals.`;
+  const overview = typeof job.overview === 'string' ? job.overview : '';
+  const plainDescription = overview
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const locationText = job.location ? `Based in ${job.location}. ` : '';
+  const summary = `${locationText}${plainDescription || `${job.duration} role in ${job.category}.`}`.slice(0, 180);
+  const description = summary.endsWith('.') ? summary : `${summary}...`;
   const jobUrl = buildUrl(`/jobs/${params.slug}`);
-  const imageUrl = job.companyImage
-    ? job.companyImage.startsWith('http')
-      ? job.companyImage
-      : buildUrl(job.companyImage)
+  const rawImage =
+    job.companyImage ||
+    (typeof job.createdBy?.picture === 'string' ? job.createdBy.picture : undefined);
+  const imageUrl = rawImage
+    ? rawImage.startsWith('http')
+      ? rawImage
+      : rawImage.startsWith('data:')
+        ? buildUrl('/logo.png')
+        : buildUrl(rawImage)
     : buildUrl('/logo.png');
+  const imageAlt = job.company
+    ? `${job.company} company logo`
+    : `${siteMetadata.siteName} job listing`;
   
   return {
     title,
@@ -54,9 +69,10 @@ export async function generateMetadata({ params }: URLProps): Promise<Metadata> 
       images: [
         {
           url: imageUrl,
+          ...(imageUrl.startsWith('https://') ? { secureUrl: imageUrl } : {}),
           width: 1200,
           height: 630,
-          alt: `${job.company} job listing`
+          alt: imageAlt
         }
       ]
     },
