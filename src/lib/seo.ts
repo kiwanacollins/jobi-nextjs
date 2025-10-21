@@ -96,8 +96,8 @@ export const buildJobPostingJsonLd = (job: Partial<IJobData>) => {
     : (typeof job.deadline === 'string' ? job.deadline : undefined);
 
   const creatorPicture =
-    typeof job.createdBy === 'object' && job.createdBy !== null && (job.createdBy as Record<string, unknown>).picture
-      ? String((job.createdBy as Record<string, unknown>).picture)
+    typeof job.createdBy === 'object' && job.createdBy !== null && (job.createdBy as unknown as Record<string, unknown>).picture
+      ? String((job.createdBy as unknown as Record<string, unknown>).picture)
       : undefined;
 
   const rawLogo =
