@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:images": "tsx scripts/migrate-company-images.ts"
+    "migrate:images": "tsx scripts/migrate-company-images.ts",
+    "migrate:images:prod": "node scripts/migrate-company-images.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.4",
