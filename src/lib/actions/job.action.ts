@@ -8,6 +8,7 @@ import { revalidatePath } from 'next/cache';
 import Category from '@/database/category.model';
 import { FilterQuery } from 'mongoose';
 import { generateJobSlug } from '@/utils/utils';
+import { ensureCloudinaryUrl } from '@/lib/cloudinary-utils';
 
 // Generate unique slug by checking database for conflicts
 const generateUniqueJobSlug = async (title: string, company?: string): Promise<string> => {
@@ -54,13 +55,29 @@ export const creatJobPost = async (jobDataParams: CreateJobParams) => {
     // Generate unique slug for SEO-friendly URLs
     const slug = await generateUniqueJobSlug(title, company);
 
+    // Ensure company image is uploaded to Cloudinary (convert base64 if needed)
+    let finalCompanyImage = companyImage;
+    if (companyImage) {
+      try {
+        finalCompanyImage = await ensureCloudinaryUrl(
+          companyImage,
+          'ugandanjobs/company-logos',
+          `${slug}-logo`
+        );
+        console.log('✓ Company image processed:', finalCompanyImage);
+      } catch (error) {
+        console.error('Failed to upload company image to Cloudinary:', error);
+        // Continue with original image if upload fails
+      }
+    }
+
     const newJob = await Job.create({
       clerkId,
       createdBy,
       title,
       slug,
       company,
-      companyImage,
+      companyImage: finalCompanyImage,
       location,
       deadline,
       category,

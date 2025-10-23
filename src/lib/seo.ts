@@ -1,6 +1,6 @@
 import { IJobData } from '@/database/job.model';
 
-const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, '') || 'https://ugandanjobs.example.com';
+const DEFAULT_SITE_URL = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, '') || 'https://ugandanjobs.net';
 
 export const siteMetadata = {
   title: 'Ugandan Jobs | Find Verified Opportunities in Uganda and Abroad',
@@ -43,6 +43,11 @@ export const normalizeImageUrl = (imageUrl?: string | null, fallback = '/logo.pn
   
   // If already absolute URL, return as is
   if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+    return imageUrl;
+  }
+  
+  // If it's a data URL (base64), return as is
+  if (imageUrl.startsWith('data:')) {
     return imageUrl;
   }
   
