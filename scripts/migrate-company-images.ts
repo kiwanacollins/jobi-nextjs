@@ -12,6 +12,7 @@
 import cloudinary from 'cloudinary';
 import { connectToDatabase } from '@/lib/mongoose';
 import Job from '@/database/job.model';
+import type { Types } from 'mongoose';
 
 // Configure Cloudinary
 cloudinary.v2.config({
@@ -19,6 +20,13 @@ cloudinary.v2.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+// Define type for job with base fields
+interface JobWithImage {
+  _id: Types.ObjectId;
+  company: string;
+  companyImage?: string;
+}
 
 /**
  * Check if a string is a base64 data URL
@@ -74,7 +82,7 @@ async function migrateCompanyImages() {
     console.log('✓ Connected to database\n');
 
     // Find all jobs with base64 company images
-    const jobs = await Job.find({}).lean();
+    const jobs = await Job.find({}).lean<JobWithImage[]>();
     console.log(`Found ${jobs.length} total jobs\n`);
 
     let base64Count = 0;
