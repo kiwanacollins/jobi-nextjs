@@ -68,6 +68,23 @@ services:
     profiles:
       - prod
 
+  # Migration Runner (one-time tasks)
+  migrate:
+    image: ${DOCKERHUB_USERNAME:-kiwanacollins}/jobi-nextjs:latest
+    container_name: jobi-migrate
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URL=mongodb://admin:${MONGO_ROOT_PASSWORD:-password}@mongodb:27017/jobiNextjs?authSource=admin
+    depends_on:
+      - mongodb
+    networks:
+      - jobi-network
+    command: node scripts/migrate-company-images.js
+    profiles:
+      - tools
+
   # MongoDB Express (for database management)
   mongo-express:
     image: mongo-express:1.0.2
