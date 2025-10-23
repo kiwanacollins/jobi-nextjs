@@ -1,7 +1,9 @@
+// Host name used for building share URLs in client components
+// Prefer NEXT_PUBLIC_HOST_URL, fallback to NEXT_PUBLIC_SITE_URL, then localhost
 export const hostName =
   process.env.NODE_ENV === 'production'
-    ? process.env.NEXT_PUBLIC_HOST_URL
-    : 'http://localhost:3000';
+    ? (process.env.NEXT_PUBLIC_HOST_URL || process.env.NEXT_PUBLIC_SITE_URL || '')
+    : (process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
 
 export const skills = [
   'Design',

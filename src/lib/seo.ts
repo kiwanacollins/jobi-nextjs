@@ -50,6 +50,25 @@ export const normalizeImageUrl = (imageUrl?: string | null, fallback = '/logo.pn
   return buildUrl(imageUrl);
 };
 
+// Ensure image fits social media preview requirements (1200x630 recommended)
+// If Cloudinary URL, apply a transformation to fill with white background
+export const ensureSocialImageSize = (url: string): string => {
+  try {
+    const absolute = normalizeImageUrl(url);
+    const isCloudinary = /res\.cloudinary\.com\//.test(absolute);
+    if (!isCloudinary) return absolute;
+
+    // Inject transformation segment after '/upload/' if not already present
+    // e.g., https://res.cloudinary.com/<cloud>/image/upload/<transform>/path.png
+    return absolute.replace(
+      /(\/upload\/)(?!.*w_\d+)/,
+      '$1w_1200,h_630,c_fill,b_white,f_auto,q_auto/'
+    );
+  } catch {
+    return normalizeImageUrl(url);
+  }
+};
+
 const stripHtml = (value?: string | null) => {
   if (!value) return undefined;
   return value.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
@@ -75,7 +94,7 @@ export const buildJobShareMetadata = (job: Partial<IJobData>) => {
     ? `${details}\n\n${descriptionPreview}${overview.length > 120 ? '...' : ''}`
     : descriptionPreview;
 
-  const imageUrl = normalizeImageUrl(job.companyImage);
+  const imageUrl = ensureSocialImageSize(normalizeImageUrl(job.companyImage));
 
   return {
     title,
