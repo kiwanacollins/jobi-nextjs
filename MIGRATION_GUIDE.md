@@ -140,6 +140,7 @@ if (companyImage) {
 }
 ```
 
+
 ### 4. WhatsApp-Optimized Metadata (`src/lib/seo.ts`)
 The `ensureSocialImageSize()` function applies:
 - 1200x630 dimensions (WhatsApp recommended)
